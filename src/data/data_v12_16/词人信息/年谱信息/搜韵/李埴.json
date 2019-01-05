@@ -1,0 +1,517 @@
+{
+    "lines": [
+        {
+            "Latitude": 30.58077,
+            "Longitude": 103.930161,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN510122",
+            "Title": "双流 (出生地)",
+            "Detail": [
+                {
+                    "time": "1161年",
+                    "activity": "出生"
+                },
+                {
+                    "time": "1161年",
+                    "activity": "少随父居。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.345379,
+            "Longitude": 104.784891,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN5103",
+            "Title": "自贡",
+            "Detail": [
+                {
+                    "time": "1162-1163年",
+                    "activity": "少随父居。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.020291,
+            "Longitude": 103.519424,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN511424",
+            "Title": "丹棱",
+            "Detail": [
+                {
+                    "time": "1164-1167年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1179-1180年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1185-1187年",
+                    "activity": "丁忧居家。"
+                },
+                {
+                    "time": "1188年",
+                    "activity": "服除居家。"
+                },
+                {
+                    "time": "1191年10月",
+                    "activity": "丁母忧，回籍奔丧。"
+                },
+                {
+                    "time": "1192-1193年",
+                    "activity": "丁母忧居家。"
+                },
+                {
+                    "time": "1236年2月",
+                    "activity": "以端明殿学士、宣奉大夫除资政殿学士，知眉州。"
+                },
+                {
+                    "time": "1236年4月",
+                    "activity": "与门生程公许会，留连三日，互有赠答。"
+                },
+                {
+                    "time": "1236年5月",
+                    "activity": "诏赐埴夏药银合百两。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1168-1170年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1176-1177年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1184年",
+                    "activity": "授承务郎，官制干。"
+                },
+                {
+                    "time": "1189年",
+                    "activity": "省试中选。"
+                },
+                {
+                    "time": "1190年4月",
+                    "activity": "与兄壁同登余复榜进士，埴治诗赋，声华甚藉，召试入馆职。师刘清之卒。"
+                },
+                {
+                    "time": "1194年6月",
+                    "activity": "服除赴阙。"
+                },
+                {
+                    "time": "1195-1197年",
+                    "activity": "在临安。"
+                },
+                {
+                    "time": "1198年",
+                    "activity": "除秘书省校书郎。"
+                },
+                {
+                    "time": "1201-1203年",
+                    "activity": "在临安。"
+                },
+                {
+                    "time": "1213年10月",
+                    "activity": "除起居舍人，再兼史职。"
+                },
+                {
+                    "time": "1214年8月",
+                    "activity": "迁朝议大夫、起居郎兼国史院编修官、实录院检讨官，兼侍讲。"
+                },
+                {
+                    "time": "1214年9月",
+                    "activity": "又兼权礼部侍郎。"
+                },
+                {
+                    "time": "1214年10月13日",
+                    "activity": "与范之柔、真德秀合奏请讲读《春秋》"
+                },
+                {
+                    "time": "1215-1217年",
+                    "activity": "以兄壁故，降两官。"
+                },
+                {
+                    "time": "1218年",
+                    "activity": "著《续帝学》十卷。"
+                },
+                {
+                    "time": "1234年2月",
+                    "activity": "除权刑部尚书，被召赴行都，过泸州，魏了翁以诗赠。"
+                },
+                {
+                    "time": "1234年8月",
+                    "activity": "以权刑部尚书兼国史院同修国史及实录院同修撰。"
+                },
+                {
+                    "time": "1234年9月",
+                    "activity": "友刘宰与书称谢荐举之德意。"
+                },
+                {
+                    "time": "1234年11月",
+                    "activity": "擢权礼部尚书兼侍读。是岁举程珌自代，珌以书谢。"
+                },
+                {
+                    "time": "1235年1月",
+                    "activity": "除礼部尚书兼侍读。埴奏胡瑗、孙复、邵雍、欧阳修、周敦颐、司马光、苏轼、张载、程颐、程颢十人，从祀孔庙。又奏请将子思并与升祀，列在十哲之间。皆从之。"
+                },
+                {
+                    "time": "1235年3月",
+                    "activity": "除守吏部尚书兼给事中兼修国史兼实录院修撰，再除兼侍读。"
+                },
+                {
+                    "time": "1235年4月",
+                    "activity": "除刑部尚书兼修国史兼实录院修撰兼侍讲。"
+                },
+                {
+                    "time": "1235年7月",
+                    "activity": "上章乞归故里，优诏不允。除端明殿学士提举万寿观兼侍读兼修国史。"
+                },
+                {
+                    "time": "1235年9月",
+                    "activity": "四上章乞赐骸，归还故里，皆优诏不允。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.048079,
+            "Longitude": 112.431153,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN421024",
+            "Title": "江陵",
+            "Detail": [
+                {
+                    "time": "1171年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1207年7月",
+                    "activity": "除湖北路提点刑狱。"
+                },
+                {
+                    "time": "1207年8月",
+                    "activity": "权湖北帅兼知江陵府。"
+                },
+                {
+                    "time": "1208年",
+                    "activity": "除荆湖北路安抚使兼知江陵府，撰《开禧德安守城录》"
+                },
+                {
+                    "time": "1209年",
+                    "activity": "荆湖北路安抚使兼江陵知府任上。"
+                }
+            ]
+        },
+        {
+            "Latitude": 28.877577,
+            "Longitude": 105.449092,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN5105",
+            "Title": "泸州",
+            "Detail": [
+                {
+                    "time": "1172年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1173年1月1日",
+                    "activity": "少随父居。闰正月初一，随父焘及众兄弟赴云安，泊舟万户驿横石滩。"
+                },
+                {
+                    "time": "1174年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1219年7月7日",
+                    "activity": "张福乱平，埴守潼，建治城隍。"
+                },
+                {
+                    "time": "1220年1月1日",
+                    "activity": "在潼川府任。"
+                }
+            ]
+        },
+        {
+            "Latitude": 28.687675,
+            "Longitude": 115.864528,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3601",
+            "Title": "南昌",
+            "Detail": [
+                {
+                    "time": "1175年",
+                    "activity": "少随父居。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.037723,
+            "Longitude": 111.704994,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4307",
+            "Title": "常德",
+            "Detail": [
+                {
+                    "time": "1178年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1220年11月",
+                    "activity": "改知常德府，"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.539156,
+            "Longitude": 105.599152,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN5109",
+            "Title": "遂宁",
+            "Detail": [
+                {
+                    "time": "1181-1183年",
+                    "activity": "少随父居。"
+                },
+                {
+                    "time": "1226年",
+                    "activity": "与诸司争曲直不相能，诏以焕章阁待制知遂宁府。作品：《南风之歌》"
+                },
+                {
+                    "time": "1227年",
+                    "activity": "在遂宁任上，八月虞刚简卒，撰文祭之。作品：《舆地纪胜序》"
+                },
+                {
+                    "time": "1228年",
+                    "activity": "在遂宁任上，于眉之北郊创筑别墅，名曰北园，魏了翁为之记。"
+                },
+                {
+                    "time": "1229年",
+                    "activity": "与眉州郡守黄申共创眉州贡院，魏了翁为之记。"
+                },
+                {
+                    "time": "1230年1月7日",
+                    "activity": "撰《定斋集序》"
+                },
+                {
+                    "time": "1230年2月",
+                    "activity": "友人吴泳修书通问，道仰慕之意。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.872851,
+            "Longitude": 106.753912,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN5119",
+            "Title": "巴中",
+            "Detail": [
+                {
+                    "time": "1199年4月",
+                    "activity": "罢校书郎，知巴州。"
+                },
+                {
+                    "time": "1200年9月",
+                    "activity": "撰《云安桔堂记》"
+                },
+                {
+                    "time": "1200年11月",
+                    "activity": "罢知巴州。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.994321,
+            "Longitude": 103.653155,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN510181",
+            "Title": "都江堰",
+            "Detail": [
+                {
+                    "time": "1204年",
+                    "activity": "奏陈备兵要略。作品：《备兵要略》"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.024561,
+            "Longitude": 109.470533,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN500236",
+            "Title": "奉节",
+            "Detail": [
+                {
+                    "time": "1205年",
+                    "activity": "任夔州路运判。"
+                },
+                {
+                    "time": "1206年12月",
+                    "activity": "吴曦反叛，埴拒伪归朝。"
+                },
+                {
+                    "time": "1207年2月29日",
+                    "activity": "奉诏入对。"
+                },
+                {
+                    "time": "1207年3月27日",
+                    "activity": "降两官放罢，得旨宽宥。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.636505,
+            "Longitude": 103.679324,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN510184",
+            "Title": "崇州",
+            "Detail": [
+                {
+                    "time": "1207年12月",
+                    "activity": "降两官放罢。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.576279,
+            "Longitude": 104.071216,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN5101",
+            "Title": "成都",
+            "Detail": [
+                {
+                    "time": "1210年",
+                    "activity": "任成都府路提点刑狱。"
+                },
+                {
+                    "time": "1211年3月19日",
+                    "activity": "直秘阁、成都府路提刑。"
+                },
+                {
+                    "time": "1211年11月28日",
+                    "activity": "奏陈嘉定府沿边屯田事宜。"
+                },
+                {
+                    "time": "1212年",
+                    "activity": "以成都府路帅臣兼领叙州兵事。"
+                },
+                {
+                    "time": "1212年5月",
+                    "activity": "虚恨蛮犯嘉定，埴屡招徕之，不至。"
+                },
+                {
+                    "time": "1231年10月26日",
+                    "activity": "以焕章阁待制知遂宁府，擢焕章阁直学士、四川安抚制置使，兼知成都府。"
+                },
+                {
+                    "time": "1231年12月",
+                    "activity": "以年逾七十，上章请免四川安抚制置使。"
+                },
+                {
+                    "time": "1232年4月13日",
+                    "activity": "接替桂如渊守蜀抗元。"
+                },
+                {
+                    "time": "1233年5月",
+                    "activity": "是年夏，生日，魏了翁以诗贺。"
+                },
+                {
+                    "time": "1233年9月10日",
+                    "activity": "明堂大礼成，大赦天下，埴进敷文阁学士，加食邑实封。"
+                },
+                {
+                    "time": "1237年1月9日",
+                    "activity": "除资政殿学士、同知枢密院事、四川宣抚使。埴请退休，不允。"
+                },
+                {
+                    "time": "1237年4月1日",
+                    "activity": "诏埴以同知枢密院事、四川宣抚使兼知成都府。又恳辞，不允。"
+                },
+                {
+                    "time": "1238年2月",
+                    "activity": "奏蜀渐次恢复。"
+                },
+                {
+                    "time": "1238年4月29日",
+                    "activity": "除同签书枢密院事、督视江淮京湖军马，发行都并湖广会子百余万犒师。"
+                },
+                {
+                    "time": "1238年6月23日",
+                    "activity": "卒于官，年七十八。友人程珌致祭。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.598428,
+            "Longitude": 114.311831,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4201",
+            "Title": "武汉",
+            "Detail": [
+                {
+                    "time": "1221年6月",
+                    "activity": "除沿江置制司副使兼知鄂州。"
+                },
+                {
+                    "time": "1222年",
+                    "activity": "在沿江置制司副使兼知鄂州任上，与魏了翁结通家之好。"
+                },
+                {
+                    "time": "1223年",
+                    "activity": "在沿江置制司副使兼知鄂州任上，设勤武堂，振刷军备。"
+                },
+                {
+                    "time": "1224年3月9日",
+                    "activity": "在沿江置制司副使兼知鄂州任上，撰《鄂州重修北榭记》"
+                },
+                {
+                    "time": "1224年8月11日",
+                    "activity": "在沿江置制司副使兼知鄂州任上，重修岳鄂王飞庙，为文祭之。"
+                },
+                {
+                    "time": "1224年11月",
+                    "activity": "在沿江置制司副使兼知鄂州任上，撰《开禧德安守城录后序》"
+                },
+                {
+                    "time": "1225年",
+                    "activity": "在沿江置制司副使兼知鄂州任上。"
+                }
+            ]
+        }
+    ]
+}

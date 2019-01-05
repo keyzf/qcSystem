@@ -1,0 +1,446 @@
+{
+    "lines": [
+        {
+            "Latitude": 32.39986,
+            "Longitude": 119.419107,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN321",
+            "Title": "扬州 (出生地)",
+            "Detail": [
+                {
+                    "time": "1127年",
+                    "activity": "出生"
+                },
+                {
+                    "time": "1127年",
+                    "activity": "因其父王铚本年携家至扬州，疑王明清生于扬州。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1128年",
+                    "activity": "其父王铚将举家迁至杭州。"
+                },
+                {
+                    "time": "1129-1135年",
+                    "activity": "在杭州居住。"
+                },
+                {
+                    "time": "1136年",
+                    "activity": "朱敦儒、徐度拜访王铚，王铚命王明清出拜，回答国史中数事，由是受知于朱、徐二公。"
+                },
+                {
+                    "time": "1159年",
+                    "activity": "春日，与兄王廉清馆于起居舍人张孝祥家。曾与诸友人同游西湖。"
+                },
+                {
+                    "time": "1161年",
+                    "activity": "拜访吏部侍郎徐度，徐问以“侍郎桥”之故及司马光兄弟命名之由。"
+                },
+                {
+                    "time": "1177年",
+                    "activity": "春，觅官杭州，结识李焘，与其子游。"
+                },
+                {
+                    "time": "1184年",
+                    "activity": "欲访李焘，李已去世。"
+                },
+                {
+                    "time": "1185-1186年",
+                    "activity": "主管台州崇道观。"
+                },
+                {
+                    "time": "1187年",
+                    "activity": "主管台州崇道观，跋杨盘斋所藏《兰亭贴》作品：题杨盘斋所藏《兰亭贴》"
+                },
+                {
+                    "time": "1188年",
+                    "activity": "调官于临安，结识徐端益之子。徐端益为虹县尉时，曾拒绝张邦昌伪诏。王明清父王铚尝以诗赞其节义。"
+                },
+                {
+                    "time": "1189年",
+                    "activity": "春，因贫甚，离开杭州。"
+                },
+                {
+                    "time": "1193年12月",
+                    "activity": "十二月，以朝散郎提辖行在杂买务杂卖场。"
+                },
+                {
+                    "time": "1194年1月",
+                    "activity": "正月，作《挥麈后录》跋。作品：挥麈后录跋。"
+                },
+                {
+                    "time": "1194年5月",
+                    "activity": "五月，被授泰州通判。"
+                },
+                {
+                    "time": "1194年",
+                    "activity": "夏日，拜访尤袤。尤问以高宗东狩四明事；又为楼大防辨认《重屏图》中南唐中主之像。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.594696,
+            "Longitude": 120.828141,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330683",
+            "Title": "嵊州",
+            "Detail": [
+                {
+                    "time": "1137年",
+                    "activity": "其父王铚将家迁至嵊县，隐居于此。"
+                },
+                {
+                    "time": "1138-1140年",
+                    "activity": "在嵊县家居。"
+                },
+                {
+                    "time": "1141年",
+                    "activity": "在嵊县家居，结识程迥。"
+                },
+                {
+                    "time": "1142-1143年",
+                    "activity": "在嵊县家居。"
+                },
+                {
+                    "time": "1144年",
+                    "activity": "在嵊县家居，其父王铚去世。"
+                },
+                {
+                    "time": "1149年1月",
+                    "activity": "正月，从镇江至绍兴，赠陆游《彩选》一书。"
+                },
+                {
+                    "time": "1150年",
+                    "activity": "在嵊县家居，为徐俯子徐瑀作表。"
+                },
+                {
+                    "time": "1151-1154年",
+                    "activity": "在嵊县家居。"
+                },
+                {
+                    "time": "1155年",
+                    "activity": "在嵊县家居。与方滋之女成婚。"
+                },
+                {
+                    "time": "1156-1158年",
+                    "activity": "在嵊县家居。"
+                },
+                {
+                    "time": "1159年",
+                    "activity": "在嵊县家居。著《投辖录》成书。作品：投辖录。（《投辖录》为一卷。）"
+                },
+                {
+                    "time": "1160年",
+                    "activity": "在嵊县家居。"
+                },
+                {
+                    "time": "1161年",
+                    "activity": "在嵊县家居。朝廷派人访其父王铚所著《国朝史述》于其家，王明清只能凭记忆和一些旧文应差。"
+                },
+                {
+                    "time": "1163年",
+                    "activity": "在绍兴家居。曾向友人出示其父王铚节录的《曾文公日录》，并将原本借给其人。"
+                },
+                {
+                    "time": "1163年",
+                    "activity": "在绍兴家居。汤思退被封庆国公，王明清启以仁宗皇帝曾受此号。汤遂辞，改封荥国公。"
+                },
+                {
+                    "time": "1164年",
+                    "activity": "在绍兴家居。尝启问知府吴芾不刊刻文籍之故。"
+                },
+                {
+                    "time": "1165年",
+                    "activity": "在绍兴家居。"
+                },
+                {
+                    "time": "1166年",
+                    "activity": "在绍兴家居。著《挥麈录》成书。作品：挥麈录。（《挥麈录》分四卷。）"
+                },
+                {
+                    "time": "1167-1168年",
+                    "activity": "在绍兴家居。"
+                },
+                {
+                    "time": "1169年",
+                    "activity": "在绍兴家居。题荣次新所藏《兰亭贴》"
+                },
+                {
+                    "time": "1170年",
+                    "activity": "在绍兴家居。"
+                }
+            ]
+        },
+        {
+            "Latitude": 28.662297,
+            "Longitude": 121.426996,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN331",
+            "Title": "台州",
+            "Detail": [
+                {
+                    "time": "1144-1147年",
+                    "activity": "随舅父曾惇守台州。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.195688,
+            "Longitude": 119.431494,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3211",
+            "Title": "镇江",
+            "Detail": [
+                {
+                    "time": "1148年",
+                    "activity": "随舅父曾惇守镇江，曾请朱敦儒为其父王铚文集作序。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.064735,
+            "Longitude": 118.802891,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3201",
+            "Title": "南京",
+            "Detail": [
+                {
+                    "time": "1162年1月",
+                    "activity": "正月，岳父方滋知庐州，从行。在建康郊外，遇到张孝祥。"
+                },
+                {
+                    "time": "1162年2月",
+                    "activity": "二月，方滋遵旨募夫乘舰从蒋山至采石矶掩埋战场遗骨。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.82687,
+            "Longitude": 117.235447,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3401",
+            "Title": "合肥",
+            "Detail": [
+                {
+                    "time": "1162年",
+                    "activity": "夏，孝宗即位，王明清以异性补官。"
+                },
+                {
+                    "time": "1162年",
+                    "activity": "在方滋幕府，从王譓处听说其祖父王子高遇芙蓉仙人事。于庐州治所前读唐天宝年间所立的《唐崔相国德政碑》"
+                },
+                {
+                    "time": "1171年",
+                    "activity": "赴寿春任安丰军判官，途径合肥，重寻《唐崔相国德政碑》，已为武帅郭振所拆。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.579375,
+            "Longitude": 116.793572,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN341521",
+            "Title": "寿县",
+            "Detail": [
+                {
+                    "time": "1171年",
+                    "activity": "因观元符诏旨《钦圣献肃皇后传》载元丰末命，认为所引犹存绍圣谤语，并将其告诉岳父方滋。"
+                },
+                {
+                    "time": "1172年",
+                    "activity": "结识寿春人孙立，见其所藏“寿州兵马钤辖之印”"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.750912,
+            "Longitude": 120.762045,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3304",
+            "Title": "嘉兴",
+            "Detail": [
+                {
+                    "time": "1177年",
+                    "activity": "冬，李焘被贬官。王明清在秀州为李焘父子送行。"
+                },
+                {
+                    "time": "1190-1191年",
+                    "activity": "寓居嘉兴。"
+                },
+                {
+                    "time": "1192年7月",
+                    "activity": "寓居嘉兴，为所藏《兰亭》拓本题识。作品：题定武兰亭贴。"
+                },
+                {
+                    "time": "1197年",
+                    "activity": "疑于是年至嘉兴，居甥馆。"
+                },
+                {
+                    "time": "1198年",
+                    "activity": "在嘉兴，居甥馆，于鲍子正处得一玉照，遂著《玉照新志》成。作品：玉照新志。（《玉照新志》分六卷。）"
+                },
+                {
+                    "time": "1199年",
+                    "activity": "在嘉兴，居甥馆。"
+                },
+                {
+                    "time": "1200年",
+                    "activity": "在嘉兴，居甥馆。请赵不谫为其《挥麈后录》、《挥麈余话》作跋。《挥麈余话》当成于此前。作品：挥麈余话。（《挥麈余话》分二卷。）"
+                },
+                {
+                    "time": "1201年",
+                    "activity": "在嘉兴，居甥馆。"
+                },
+                {
+                    "time": "1202-1203年",
+                    "activity": "在嘉兴，居甥馆。任浙江参议官。"
+                },
+                {
+                    "time": "1204年",
+                    "activity": "在嘉兴，居甥馆。任浙江参议官。春末，为人所藏李西台墨迹题跋。此后之事皆不可考。作品：题李西台淮颍贴。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.458519,
+            "Longitude": 118.442163,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN341122",
+            "Title": "来安",
+            "Detail": [
+                {
+                    "time": "1182-1183年",
+                    "activity": "疑本年在来安知县任上。"
+                },
+                {
+                    "time": "1184年",
+                    "activity": "疑本年在来安知县任上。欲访李焘，李已去世。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.946576,
+            "Longitude": 118.765196,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3418",
+            "Title": "宣城",
+            "Detail": [
+                {
+                    "time": "1192年",
+                    "activity": "是岁，签书宁国军节度判官。曾寻访李之仪后人。"
+                },
+                {
+                    "time": "1193年",
+                    "activity": "在宁国军节度判官任上。"
+                },
+                {
+                    "time": "1193年",
+                    "activity": "著《挥麈后录》书成。作品：挥麈后录。（《挥麈后录》跋称六卷，今存十一卷。）"
+                },
+                {
+                    "time": "1193年12月",
+                    "activity": "在宁国军节度判官任上，曾观宁国放粮事。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.899015,
+            "Longitude": 120.094566,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3305",
+            "Title": "湖州",
+            "Detail": [
+                {
+                    "time": "1193年",
+                    "activity": "是年，曾入湖州拜访徐度。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.4612,
+            "Longitude": 119.932115,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3212",
+            "Title": "泰州",
+            "Detail": [
+                {
+                    "time": "1194年",
+                    "activity": "秋，赴泰州通判任。"
+                },
+                {
+                    "time": "1195年",
+                    "activity": "在泰州通判任上。"
+                },
+                {
+                    "time": "1195年2月",
+                    "activity": "在泰州通判任上。二月，著《挥麈三录》成。作品：挥麈三录。（《挥麈三录》分三卷。）"
+                },
+                {
+                    "time": "1196年",
+                    "activity": "疑在泰州通判任上。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.251772,
+            "Longitude": 120.139058,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301 西湖",
+            "Title": "西湖"
+        },
+        {
+            "Latitude": 29.605607,
+            "Longitude": 120.842762,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3306 剡溪",
+            "Title": "剡溪"
+        },
+        {
+            "Latitude": 29.168498,
+            "Longitude": 121.013953,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN331 天台山",
+            "Title": "天台山"
+        }
+    ]
+}

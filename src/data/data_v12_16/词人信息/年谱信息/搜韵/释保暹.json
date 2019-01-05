@@ -1,0 +1,65 @@
+{
+    "lines": [
+        {
+            "Latitude": 29.084455,
+            "Longitude": 119.654027,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3307",
+            "Title": "金华 (出生地)",
+            "Detail": [
+                {
+                    "time": "980年",
+                    "activity": "出生"
+                },
+                {
+                    "time": "980年",
+                    "activity": "约于本年，出生于金华。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.802941,
+            "Longitude": 114.313904,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4102",
+            "Title": "开封",
+            "Detail": [
+                {
+                    "time": "1002年",
+                    "activity": "约于本年，至京师。"
+                },
+                {
+                    "time": "1003-1004年",
+                    "activity": "本年，居京师。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.032626,
+            "Longitude": 119.916604,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330522",
+            "Title": "长兴",
+            "Detail": [
+                {
+                    "time": "1034年",
+                    "activity": "本年，居吴山解空院。"
+                },
+                {
+                    "time": "1035年",
+                    "activity": "本年，居吴山解空院，收净端为徒。"
+                },
+                {
+                    "time": "1036-1049年",
+                    "activity": "本年，居吴山解空院。"
+                }
+            ]
+        }
+    ]
+}

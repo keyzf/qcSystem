@@ -1,0 +1,473 @@
+{
+    "lines": [
+        {
+            "Latitude": 26.891516,
+            "Longitude": 120.011988,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN350921",
+            "Title": "霞浦 (出生地)",
+            "Detail": [
+                {
+                    "time": "1249-1264年",
+                    "activity": "居乡。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.239732,
+            "Longitude": 119.731318,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330185",
+            "Title": "临安",
+            "Detail": [
+                {
+                    "time": "1265年",
+                    "activity": "世父业，既冠有声，从父如临安，初登钓台。"
+                },
+                {
+                    "time": "1266年",
+                    "activity": "侍父寓临安。"
+                },
+                {
+                    "time": "1267年",
+                    "activity": "试进士不第，因作《宋铙歌鼓吹曲十二篇》，又为《宋骑吹曲十篇》"
+                }
+            ]
+        },
+        {
+            "Latitude": 24.519197,
+            "Longitude": 117.653827,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3506",
+            "Title": "漳州",
+            "Detail": [
+                {
+                    "time": "1268-1275年",
+                    "activity": "落魄漳泉间，具体行迹无考。"
+                },
+                {
+                    "time": "1277年1月",
+                    "activity": "从汀州移漳州。"
+                }
+            ]
+        },
+        {
+            "Latitude": 26.647662,
+            "Longitude": 118.1843,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3507",
+            "Title": "南平",
+            "Detail": [
+                {
+                    "time": "1276年",
+                    "activity": "倾家资，率乡兵数百人赴文天祥幕，遂署咨议参军。"
+                }
+            ]
+        },
+        {
+            "Latitude": 24.294311,
+            "Longitude": 116.129179,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4414",
+            "Title": "梅州",
+            "Detail": [
+                {
+                    "time": "1277年3月",
+                    "activity": "三月入梅州。"
+                }
+            ]
+        },
+        {
+            "Latitude": 25.606652,
+            "Longitude": 115.79246,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN360733",
+            "Title": "会昌",
+            "Detail": [
+                {
+                    "time": "1277年5月",
+                    "activity": "五月兵出梅岭，入赣州会昌县。"
+                }
+            ]
+        },
+        {
+            "Latitude": 27.119751,
+            "Longitude": 115.00027,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3608",
+            "Title": "吉安",
+            "Detail": [
+                {
+                    "time": "1277年6月",
+                    "activity": "引兵至吉州，战于终步，不利。"
+                }
+            ]
+        },
+        {
+            "Latitude": 25.837179,
+            "Longitude": 114.94126,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3607",
+            "Title": "赣州",
+            "Detail": [
+                {
+                    "time": "1277年6月",
+                    "activity": "谢翱与文天祥别于赣。"
+                }
+            ]
+        },
+        {
+            "Latitude": 27.923406,
+            "Longitude": 118.547818,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN350722",
+            "Title": "浦城",
+            "Detail": [
+                {
+                    "time": "1278年",
+                    "activity": "归浦城后，家室散亡。"
+                }
+            ]
+        },
+        {
+            "Latitude": 28.001095,
+            "Longitude": 120.705869,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3303",
+            "Title": "温州",
+            "Detail": [
+                {
+                    "time": "1279年",
+                    "activity": "力作自给，因委而出游。"
+                }
+            ]
+        },
+        {
+            "Latitude": 28.861854,
+            "Longitude": 120.995266,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN331082107",
+            "Title": "括苍",
+            "Detail": [
+                {
+                    "time": "1280年",
+                    "activity": "避地浙东永嘉括苍，游乐清之雁山，缙云之鼎湖。"
+                }
+            ]
+        },
+        {
+            "Latitude": 27.028915,
+            "Longitude": 118.311441,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN350783",
+            "Title": "建瓯",
+            "Detail": [
+                {
+                    "time": "1280年",
+                    "activity": "留瓯括间。"
+                }
+            ]
+        },
+        {
+            "Latitude": 28.662297,
+            "Longitude": 121.426996,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN331",
+            "Title": "台州",
+            "Detail": [
+                {
+                    "time": "1281年",
+                    "activity": "留瓯括间。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1282年",
+                    "activity": "因文天祥死节，悲不能禁，游浙东失声痛哭。"
+                },
+                {
+                    "time": "1284年",
+                    "activity": "往来鄞越。"
+                },
+                {
+                    "time": "1284年",
+                    "activity": "在越，住王修文竹家。"
+                },
+                {
+                    "time": "1285年",
+                    "activity": "致《西台恸哭记》，过姑苏望夫差之台而始哭文天祥。"
+                },
+                {
+                    "time": "1285年",
+                    "activity": "与唐玉潜、林景熙、郑宗仁协谋收掩帝后陵骨。"
+                },
+                {
+                    "time": "1285年",
+                    "activity": "与唐玉潜别，作《冬青树引》以纪其事。作品：《冬青树引别玉潜》"
+                },
+                {
+                    "time": "1285年",
+                    "activity": "林景熙有诗答谢翱。"
+                },
+                {
+                    "time": "1286年",
+                    "activity": "寓越，哭文天祥于越台。作品：《冬青树引》"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "西入杭，慕屈原，自号晞发子，又称宋累者。"
+                },
+                {
+                    "time": "1294年",
+                    "activity": "寓杭，娶遗民刘氏女，买屋西山。"
+                },
+                {
+                    "time": "1295年",
+                    "activity": "夏由睦入杭，肺疾，八月壬子卒于刘氏舍。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.880177,
+            "Longitude": 121.556686,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3302",
+            "Title": "宁波",
+            "Detail": [
+                {
+                    "time": "1283年",
+                    "activity": "往来鄞越，依附会稽王英孙。"
+                },
+                {
+                    "time": "1286年",
+                    "activity": "间乘舟至鄞，过由门，登侯潮山，则又哭。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.036519,
+            "Longitude": 120.586673,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3306",
+            "Title": "绍兴",
+            "Detail": [
+                {
+                    "time": "1285年",
+                    "activity": "与唐玉潜、林景熙、郑宗仁协谋收掩宋帝后陵骨。作品：《冬青树引》"
+                },
+                {
+                    "time": "1294年",
+                    "activity": "复由鄞入越，与钱塘、邓牧，遇于会稽。"
+                },
+                {
+                    "time": "1294年",
+                    "activity": "往见元大都会文士。"
+                },
+                {
+                    "time": "1294年9月",
+                    "activity": "九月，为吴谦作诗。作品：《乐闻山房记》"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.505471,
+            "Longitude": 120.91042,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330624",
+            "Title": "新昌",
+            "Detail": [
+                {
+                    "time": "1286年",
+                    "activity": "游四明诸胜及新昌之沃洲、天姥。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.458802,
+            "Longitude": 119.898496,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330726",
+            "Title": "浦江",
+            "Detail": [
+                {
+                    "time": "1286年10月",
+                    "activity": "吴渭同作月泉吟社。"
+                },
+                {
+                    "time": "1286年",
+                    "activity": "方凤同作月泉吟社。"
+                },
+                {
+                    "time": "1286年",
+                    "activity": "吴思齐同作月泉吟社。"
+                },
+                {
+                    "time": "1287年",
+                    "activity": "应为参校月泉吟社四方吟卷。"
+                },
+                {
+                    "time": "1287年",
+                    "activity": "月泉吟社开卷之首。"
+                },
+                {
+                    "time": "1287年",
+                    "activity": "月泉吟社开卷之次。"
+                },
+                {
+                    "time": "1287年",
+                    "activity": "月泉吟社开卷之又次。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "住吴渭家授业，游月泉仙华严麓诸胜。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "吴功父素严事翱。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "吴贵受翱《春秋》业。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "方凤命其子从翱学。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "吴谦与翱相善。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "吴似孙从翱游。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "岁晚归浦阳，为文祭文公，复赋《短歌行》以寄悲。短歌行（宋·谢翱）秦淮没日如没鹘，白波摇空湿弦月。舟人倚棹商声发，洞庭脱木如脱发。寒螀哀啼众芳歇，晨梳青林望吴越。吴歈越吟浪花舞，秋槎湿剑归无所。愁生酒醒闻山鸡，石镜飞花汗如雨。起招如意击树枝，为君悲歌君泪垂。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "翁衡俱执弟子礼。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "冯桂芳俱执弟子礼。"
+                },
+                {
+                    "time": "1289年1月5日",
+                    "activity": "携方凤、肖翁、陈公凯、公举、吴似孙等同游金华仙洞。作品：《游录》"
+                },
+                {
+                    "time": "1289年",
+                    "activity": "寓浦江，授徒著书。作品：《除岁诗》"
+                },
+                {
+                    "time": "1290年",
+                    "activity": "寓浦江，冬，过严陵，登西台，设文公主酹酒哭奠。作品：《西台恸哭记》"
+                },
+                {
+                    "time": "1290年",
+                    "activity": "以竹如意击石，歌招魂之词。"
+                },
+                {
+                    "time": "1290年",
+                    "activity": "《西台恸哭记》记三友人之一吴思齐。"
+                },
+                {
+                    "time": "1290年",
+                    "activity": "《西台恸哭记》记三友人之一冯桂芳。"
+                },
+                {
+                    "time": "1290年",
+                    "activity": "《西台恸哭记》记三友人之一翁衡。"
+                },
+                {
+                    "time": "1291年",
+                    "activity": "寓浦江，元旦立春有诗，作《浦阳先民传》"
+                },
+                {
+                    "time": "1292年",
+                    "activity": "过严陵，于钓台南得唐方干旧隐处，名白云原。作品：《许剑录思集》"
+                },
+                {
+                    "time": "1292年",
+                    "activity": "于秋暮载炭至杭易米，以充游资。"
+                },
+                {
+                    "time": "1295年",
+                    "activity": "复过婺睦，寻汐社旧盟。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.481104,
+            "Longitude": 119.287608,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330182",
+            "Title": "建德",
+            "Detail": [
+                {
+                    "time": "1288年",
+                    "activity": "西至睦，住翁登家。"
+                },
+                {
+                    "time": "1288年",
+                    "activity": "拟四亭二桥名。"
+                },
+                {
+                    "time": "1292年",
+                    "activity": "往来婺、睦间，憩睦，住翁登兄弟家。"
+                },
+                {
+                    "time": "1293年",
+                    "activity": "憩睦，游迹无考。"
+                }
+            ]
+        }
+    ]
+}

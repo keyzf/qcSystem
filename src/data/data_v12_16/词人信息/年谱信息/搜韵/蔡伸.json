@@ -1,0 +1,95 @@
+{
+    "lines": [
+        {
+            "Latitude": 25.45996,
+            "Longitude": 119.014232,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3503",
+            "Title": "莆田 (出生地)",
+            "Detail": [
+                {
+                    "time": "1088年",
+                    "activity": "蔡伸生。"
+                },
+                {
+                    "time": "1089年",
+                    "activity": "不详。"
+                },
+                {
+                    "time": "1090年",
+                    "activity": "伸父旻卒，此后养于外家。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.802941,
+            "Longitude": 114.313904,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4102",
+            "Title": "开封",
+            "Detail": [
+                {
+                    "time": "1115年",
+                    "activity": "进士及第。"
+                },
+                {
+                    "time": "1120年",
+                    "activity": "释褐将仕郎、辟雍正，入太学，为博士。又知潍州北海县。除京东提举学事司干当公事。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.210143,
+            "Longitude": 117.29235,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3203",
+            "Title": "徐州",
+            "Detail": [
+                {
+                    "time": "1122年",
+                    "activity": "与同僚向子諲以词唱和。作品：《浣溪沙·壬寅五月西湖》、《南乡子（木落雁南翔）》浣溪沙其一壬寅五月西湖（宋·蔡伸）双佩雷文拂手香。青纱衫子淡梳妆。冰姿绰约自生凉。虚掉玉钗惊翡翠，缓移兰棹趁鸳鸯。鬓鬟风乱绿云长。南乡子其二（宋·蔡伸）序：宣和壬寅，予与向伯恭俱为大漕属官，向有词云：“书续断肠。”因为此词木落雁南翔。锦鲤殷勤为渡江。泪墨银钩相忆字，成行。滴损云笺小凤皇。陈事费思量。回首烟波卷夕阳。尽道凭书聊破恨，难忘。及至书来更断肠。1123-1125年小重山其三（宋·蔡伸）宣和甲辰，余自彭城倅沿檄燕山，取道莫闾。见所谓陈懿者于州治之筹边阁，诚不负所闻。明年归，则陈已入道矣。崔守呼之至，即席赠此流水桃花小洞天。壶中春不老，胜尘寰。霞衣鹤氅并桃冠。新装好，风韵愈飘然。功行满三千。婴儿并姹女，炼成丹。刘郎曾约共升仙。十个月，养个小金坛。"
+                },
+                {
+                    "time": "1126年",
+                    "activity": "以智计平息禁卒之乱。"
+                }
+            ]
+        },
+        {
+            "Latitude": 36.103649,
+            "Longitude": 114.3996,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4105",
+            "Title": "安阳",
+            "Detail": [
+                {
+                    "time": "1126年12月",
+                    "activity": "赴康王大元帅幕府，参议军事。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.420378,
+            "Longitude": 115.662798,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4114",
+            "Title": "商丘",
+            "Detail": [
+                {
+                    "time": "1127年",
+                    "activity": "康王即皇帝位，蔡伸随侍。"
+                }
+            ]
+        }
+    ]
+}

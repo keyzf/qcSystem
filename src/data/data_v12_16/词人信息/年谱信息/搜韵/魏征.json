@@ -1,0 +1,379 @@
+{
+    "lines": [
+        {
+            "Latitude": 35.857585,
+            "Longitude": 115.510696,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN410926",
+            "Title": "范县 (出生地)",
+            "Detail": [
+                {
+                    "time": "580年",
+                    "activity": "当在临黄出生（出生地难确考）"
+                },
+                {
+                    "time": "581-590年",
+                    "activity": "随父居于临黄。"
+                },
+                {
+                    "time": "591年",
+                    "activity": "为父守丧于临黄（本年前后其父卒）"
+                },
+                {
+                    "time": "592-593年",
+                    "activity": "为父守丧于临黄。"
+                },
+                {
+                    "time": "638年1月",
+                    "activity": "还乡扫墓。"
+                }
+            ]
+        },
+        {
+            "Latitude": 36.541552,
+            "Longitude": 115.312712,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN130433",
+            "Title": "馆陶",
+            "Detail": [
+                {
+                    "time": "594年",
+                    "activity": "出家做道士于馆陶。"
+                },
+                {
+                    "time": "595-602年",
+                    "activity": "道士隐居于馆陶。"
+                },
+                {
+                    "time": "605-615年",
+                    "activity": "做道士。"
+                },
+                {
+                    "time": "616年",
+                    "activity": "做道士。《道观内柏树赋并序》本年或稍前。"
+                },
+                {
+                    "time": "617年8月",
+                    "activity": "八、九月间，出山佐郡丞元宝藏起兵。"
+                }
+            ]
+        },
+        {
+            "Latitude": 35.602155,
+            "Longitude": 110.718432,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN140882",
+            "Title": "河津",
+            "Detail": [
+                {
+                    "time": "603年",
+                    "activity": "去河、汾访学于王通。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.26471,
+            "Longitude": 112.610147,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN410482103",
+            "Title": "临汝",
+            "Detail": [
+                {
+                    "time": "604年",
+                    "activity": "或至崆峒山访道。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.036519,
+            "Longitude": 120.586673,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3306",
+            "Title": "绍兴",
+            "Detail": [
+                {
+                    "time": "604年",
+                    "activity": "游会稽，题诗山寺。作品：《宿沃洲山寺》"
+                }
+            ]
+        },
+        {
+            "Latitude": 35.681885,
+            "Longitude": 114.557388,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN410621",
+            "Title": "浚县",
+            "Detail": [
+                {
+                    "time": "617年9月",
+                    "activity": "入李密军，掌记室。为李密作书劝降荥阳守郇王杨庆。作品：《为李密檄荥阳守郇王庆文》"
+                },
+                {
+                    "time": "618年11月",
+                    "activity": "秘书丞。，有书与徐世绩劝降。作品：《与徐世绩书》"
+                },
+                {
+                    "time": "619年2月",
+                    "activity": "被窦建德俘虏，任起居舍人。为李密撰墓志铭。作品：《唐故邢国公李密墓志铭》"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.347436,
+            "Longitude": 108.946306,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN6101",
+            "Title": "西安",
+            "Detail": [
+                {
+                    "time": "618年10月",
+                    "activity": "在长安，任李密府文学参军。"
+                },
+                {
+                    "time": "621年",
+                    "activity": "入东宫。"
+                },
+                {
+                    "time": "622年",
+                    "activity": "在长安。任太子洗马。"
+                },
+                {
+                    "time": "623年",
+                    "activity": "在长安。任太子洗马。有文。作品：《赏旧左右议》"
+                },
+                {
+                    "time": "624-625年",
+                    "activity": "在长安。任太子洗马。"
+                },
+                {
+                    "time": "626年4月",
+                    "activity": "在长安。任詹事主簿。"
+                },
+                {
+                    "time": "626年9月",
+                    "activity": "在京任谏议大夫。"
+                },
+                {
+                    "time": "626年11月",
+                    "activity": "迁给事中，谏诏免租赋。作品：《谏诏免租赋又令输纳疏》"
+                },
+                {
+                    "time": "627年6月",
+                    "activity": "拜尚书右丞相。置宅东都劝善坊。"
+                },
+                {
+                    "time": "628年",
+                    "activity": "与王圭上表请为李建成送葬。作品：《请陪送葬建成元吉表》"
+                },
+                {
+                    "time": "629年",
+                    "activity": "在长安任秘书监。"
+                },
+                {
+                    "time": "630年",
+                    "activity": "进言仁义，收聚石经。"
+                },
+                {
+                    "time": "631年9月27日",
+                    "activity": "上所撰《群书治要》，太宗手诏答之。作品：《群书治要序》"
+                },
+                {
+                    "time": "632年4月",
+                    "activity": "奉敕撰《九成宫醴泉铭》作品：《九成宫醴泉碑铭》"
+                },
+                {
+                    "time": "633年1月",
+                    "activity": "奉命与虞世南等改制《破阵乐》歌词。"
+                },
+                {
+                    "time": "633年6月",
+                    "activity": "与房玄龄游戴胄卒地，数为之流涕。"
+                },
+                {
+                    "time": "633年",
+                    "activity": "奉命作《自古诸侯王善恶录》（今已佚，仅存序）作品：《诸王善恶录序》"
+                },
+                {
+                    "time": "633年",
+                    "activity": "追赠其父为定州刺史。"
+                },
+                {
+                    "time": "634年",
+                    "activity": "得太宗赞赏孜孜辅弼之功。"
+                },
+                {
+                    "time": "635年",
+                    "activity": "欲拜右仆射，魏征固辞之。"
+                },
+                {
+                    "time": "636年1月",
+                    "activity": "与房玄龄等上所撰五代史。作品：《隋书·文学传序》"
+                },
+                {
+                    "time": "636年",
+                    "activity": "加左光禄大夫，进封郑国公。"
+                },
+                {
+                    "time": "637年",
+                    "activity": "上疏论君子小人。作品：《论君子小人疏》"
+                },
+                {
+                    "time": "637年",
+                    "activity": "上论时政第一、二、三、四疏。"
+                },
+                {
+                    "time": "637年",
+                    "activity": "上疏论理狱与纳谏。作品：《理狱听谏疏》"
+                },
+                {
+                    "time": "637年",
+                    "activity": "于洛阳西苑积翠池宴会赋《西汉》"
+                },
+                {
+                    "time": "638年2月",
+                    "activity": "从太宗返京。"
+                },
+                {
+                    "time": "639年5月",
+                    "activity": "上“十渐疏”作品：《十渐疏》"
+                },
+                {
+                    "time": "639年",
+                    "activity": "参与整理御府所藏王羲之等书法作品。"
+                },
+                {
+                    "time": "640年5月",
+                    "activity": "上所撰《类礼》二十卷。"
+                },
+                {
+                    "time": "640年",
+                    "activity": "上疏论任臣之弊、御臣之弊。作品：《论御臣之疏》《论治道疏》"
+                },
+                {
+                    "time": "641年7月",
+                    "activity": "谏于西域市马。作品：《谏遣使市马疏》"
+                },
+                {
+                    "time": "641年10月",
+                    "activity": "与高士廉等撰成《文思博要》一千二百卷。"
+                },
+                {
+                    "time": "642年7月",
+                    "activity": "卧病，太宗手诏问疾，魏征上四奏。作品：《答太宗手诏疏》"
+                },
+                {
+                    "time": "642年",
+                    "activity": "得赐庄田于澄城县，子孙居住，称郑公庄。"
+                },
+                {
+                    "time": "643年1月",
+                    "activity": "正月卒。临终草遗表讽谏。作品：《遗表稿》"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.550316,
+            "Longitude": 110.253065,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN610522",
+            "Title": "潼关",
+            "Detail": [
+                {
+                    "time": "618年11月",
+                    "activity": "过潼关，有《抒怀》诗。作品：《述怀》述怀（一作出关）（唐·魏徵）　　五言排律　押元韵引用典故：无二诺　投笔　侯嬴　请缨　逐鹿　纵横　中原初（一作还）逐鹿，投笔事戎轩。纵横计不就，慷慨志犹存。杖策谒天子，驱马出关门。请缨系南粤，凭轼下东藩。郁纡陟高岫，出没望平原。古木鸣寒鸟（一作雁），空山啼夜猿。既伤千里目，还惊九折（一作逝）魂。岂不惮艰险，深怀国士恩。季布无二诺，侯嬴重一言。人生感意气，功名谁复论。"
+                }
+            ]
+        },
+        {
+            "Latitude": 36.631222,
+            "Longitude": 114.545808,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN1304",
+            "Title": "邯郸",
+            "Detail": [
+                {
+                    "time": "620年",
+                    "activity": "在河北任起居舍人。"
+                }
+            ]
+        },
+        {
+            "Latitude": 35.952793,
+            "Longitude": 114.905961,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN410527",
+            "Title": "内黄",
+            "Detail": [
+                {
+                    "time": "621年",
+                    "activity": "本年或稍后，徙家相州内黄，后置宅于相州安阳，妻裴氏。"
+                }
+            ]
+        },
+        {
+            "Latitude": 36.713019,
+            "Longitude": 118.836327,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN370725",
+            "Title": "昌乐",
+            "Detail": [
+                {
+                    "time": "622年12月",
+                    "activity": "随李建成至河北，献绥抚攻心之策，大败刘黑闼。"
+                }
+            ]
+        },
+        {
+            "Latitude": 36.38022,
+            "Longitude": 114.380351,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN130427",
+            "Title": "磁县",
+            "Detail": [
+                {
+                    "time": "626年7月",
+                    "activity": "奉命出使宣慰河北，释放李建成、李元吉之党。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.778442,
+            "Longitude": 111.206832,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4112",
+            "Title": "三门峡",
+            "Detail": [
+                {
+                    "time": "638年2月",
+                    "activity": "从太宗过陕州，观砥柱，奉命勒铭。作品：《砥柱山铭》"
+                }
+            ]
+        }
+    ]
+}

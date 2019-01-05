@@ -1,0 +1,65 @@
+{
+    "lines": [
+        {
+            "Latitude": 30.899015,
+            "Longitude": 120.094566,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3305",
+            "Title": "湖州 (出生地)",
+            "Detail": [
+                {
+                    "time": "1114年",
+                    "activity": "或生于本年。倪称生卒年难确考。其年岁为虚拟数。"
+                },
+                {
+                    "time": "1115-1137年",
+                    "activity": "居乡？"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1138年",
+                    "activity": "中进士。"
+                },
+                {
+                    "time": "1143-1146年",
+                    "activity": "曾任太常寺主簿？"
+                },
+                {
+                    "time": "1147年",
+                    "activity": "子倪思生？"
+                },
+                {
+                    "time": "1166年",
+                    "activity": "子倪思中进士，其后事迹不详。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.816791,
+            "Longitude": 119.980142,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3204",
+            "Title": "常州",
+            "Detail": [
+                {
+                    "time": "1139-1142年",
+                    "activity": "曾任常州教授？"
+                }
+            ]
+        }
+    ]
+}

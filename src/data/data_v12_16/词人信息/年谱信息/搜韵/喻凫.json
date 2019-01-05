@@ -1,0 +1,107 @@
+{
+    "lines": [
+        {
+            "Latitude": 31.816791,
+            "Longitude": 119.980142,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3204",
+            "Title": "常州 (出生地)",
+            "Detail": [
+                {
+                    "time": "810-829年",
+                    "activity": "在故乡晋陵家居。"
+                },
+                {
+                    "time": "841年",
+                    "activity": "及第次年春，归乡省亲，姚合赠诗《送喻凫校书归毗陵》"
+                },
+                {
+                    "time": "841年",
+                    "activity": "及第次年春，归乡省亲，顾非熊赠诗《送喻凫春归江南》"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.347436,
+            "Longitude": 108.946306,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN6101",
+            "Title": "西安",
+            "Detail": [
+                {
+                    "time": "830年",
+                    "activity": "到长安，求取功名。"
+                },
+                {
+                    "time": "831-837年",
+                    "activity": "在长安，求取功名。"
+                },
+                {
+                    "time": "839年",
+                    "activity": "在长安，第九年，感叹功名不遂，作诗呈薛博士。呈薛博士（唐·喻凫）　　五言律诗　押灰韵辛勤长在学，一室少曾开。时忆暮山寺，独登衰草台。名期五字立，迹愧九年来。此意今聊写，还希君子哀。"
+                },
+                {
+                    "time": "840年",
+                    "activity": "进士及第。"
+                },
+                {
+                    "time": "842年",
+                    "activity": "回长安，校书郎任上。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.032626,
+            "Longitude": 119.916604,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330522",
+            "Title": "长兴",
+            "Detail": [
+                {
+                    "time": "843-845年",
+                    "activity": "长城县令。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.548828,
+            "Longitude": 119.984002,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330521",
+            "Title": "德清",
+            "Detail": [
+                {
+                    "time": "846-847年",
+                    "activity": "德清县令。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.899015,
+            "Longitude": 120.094566,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3305",
+            "Title": "湖州",
+            "Detail": [
+                {
+                    "time": "848-849年",
+                    "activity": "乌程县令。"
+                },
+                {
+                    "time": "850年",
+                    "activity": "乌程县令，卒于任，方干有《哭喻凫先辈》"
+                }
+            ]
+        }
+    ]
+}

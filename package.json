@@ -1,0 +1,41 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "cypher-stream": "^1.1.0",
+    "d3": "^5.7.0",
+    "d3-force": "^2.0.0",
+    "hdsp": "0.0.27",
+    "less": "^3.9.0",
+    "mobx": "^5.8.0",
+    "mobx-react": "^5.4.3",
+    "neo4j": "^2.0.0-RC2",
+    "nivo": "^0.31.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-graph-vis": "^1.0.2",
+    "react-scripts": "2.1.1",
+    "react-vis": "^1.11.5",
+    "semantic-ui-react": "^0.84.0",
+    "tsne": "^1.0.1",
+    "vis": "^4.21.0",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:8000",
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

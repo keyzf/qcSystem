@@ -1,0 +1,208 @@
+{
+    "lines": [
+        {
+            "Latitude": 30.576279,
+            "Longitude": 104.071216,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN5101",
+            "Title": "成都 (出生地)",
+            "Detail": [
+                {
+                    "time": "1062年",
+                    "activity": "出身蜀中富家。"
+                },
+                {
+                    "time": "1063-1079年",
+                    "activity": "在蜀中。"
+                },
+                {
+                    "time": "1080年",
+                    "activity": "慷慨使财，出手阔绰，磊落任气，流落市井。"
+                },
+                {
+                    "time": "1086年",
+                    "activity": "匿于邻郡为园丁，因技痒难忍，题诗于亭壁，主人擅识人，认为他非此中人，赠金遣去。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.802941,
+            "Longitude": 114.313904,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4102",
+            "Title": "开封",
+            "Detail": [
+                {
+                    "time": "1081年",
+                    "activity": "折节读书，以成都第二名荐送。"
+                },
+                {
+                    "time": "1107年",
+                    "activity": "因告发张怀素案而立功，授供备库副使。"
+                },
+                {
+                    "time": "1108年",
+                    "activity": "任供备库副使。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.036519,
+            "Longitude": 120.586673,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3306",
+            "Title": "绍兴",
+            "Detail": [
+                {
+                    "time": "1096年",
+                    "activity": "易容乔装为方外士，投越州知府翟思，翟思爱其书法精绝即留之。"
+                },
+                {
+                    "time": "1097年",
+                    "activity": "翟思之子翟汝文见他面相清炯，眸子锐烁，定非常人，又得知他习《易》、《书》，出题试之，果然经学高妙通脱，遂敬待之。"
+                },
+                {
+                    "time": "1098年",
+                    "activity": "翟氏归镇江，范寥安置在州学，并给其师钱百千急需，并嘱咐老师不要一次全部给他，以免他胡乱使钱。"
+                },
+                {
+                    "time": "1099年",
+                    "activity": "范寥离州学出游。翟思得教授书云:“自范之留，一学之士为之不宁，已付百千与之去，不知所之矣。”"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.064735,
+            "Longitude": 118.802891,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3201",
+            "Title": "南京",
+            "Detail": [
+                {
+                    "time": "1103年",
+                    "activity": "客居建康。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.195688,
+            "Longitude": 119.431494,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3211",
+            "Title": "镇江",
+            "Detail": [
+                {
+                    "time": "1104年",
+                    "activity": "翟思死。范寥突然造访，嚎哭大坳于灵前，翟家为其诚意所感，厚待之。明日夙兴，范寥悄然携卷灵前黄白器皿倏逝，携之前往宜州。"
+                },
+                {
+                    "time": "1106年",
+                    "activity": "无路费，至镇江府学内舍生汤东野家中，汤母给钱一万，范寥顺利到开封。"
+                }
+            ]
+        },
+        {
+            "Latitude": 24.491021,
+            "Longitude": 108.64309,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN451281",
+            "Title": "宜州",
+            "Detail": [
+                {
+                    "time": "1105年3月14日",
+                    "activity": "溯大江，历谧浦，舍舟于洞庭，取道荆湘，以趋八桂，至乙酉三月十四日，始达宜州，访黄庭坚。"
+                },
+                {
+                    "time": "1105年5月7日",
+                    "activity": "范寥与黄庭坚一起搬到宜州城楼上居住，终日陪侍在黄庭坚左右。作品：从庭坚城南晚望诗。从庭坚城南晚望（宋·范寥）此邦虽在牂牁南，更远不离天地间。人生随处皆可乐，为报中原秪如昨。注：录自《京口耆旧传》。"
+                },
+                {
+                    "time": "1105年6月16日",
+                    "activity": "黄庭坚与范寥等人有龙隐洞之游。"
+                },
+                {
+                    "time": "1105年9月30日",
+                    "activity": "黄庭坚病逝，范寥独自为之办理后事。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.951147,
+            "Longitude": 119.175072,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN321183",
+            "Title": "句容",
+            "Detail": [
+                {
+                    "time": "1106年",
+                    "activity": "又往茅山，投靠道人张怀素。"
+                },
+                {
+                    "time": "1106年",
+                    "activity": "张怀素与吴储、吴侔进行谋逆计划，范寥决计至京师告发张怀素。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.041737,
+            "Longitude": 113.858804,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN411",
+            "Title": "许昌",
+            "Detail": [
+                {
+                    "time": "1109-1110年",
+                    "activity": "任颍昌府兵马钤辖。"
+                }
+            ]
+        },
+        {
+            "Latitude": 35.239435,
+            "Longitude": 115.487696,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3717",
+            "Title": "菏泽",
+            "Detail": [
+                {
+                    "time": "1111年",
+                    "activity": "政和年间，还曾在曹州为官，吕本中有诗《次韵答曹州同官兼简范寥信中》"
+                },
+                {
+                    "time": "1112-1116年",
+                    "activity": "或在曹州为官。"
+                },
+                {
+                    "time": "1117-1118年",
+                    "activity": "不详。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.801003,
+            "Longitude": 119.322475,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3211 茅山",
+            "Title": "茅山"
+        }
+    ]
+}

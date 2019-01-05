@@ -1,0 +1,104 @@
+{
+    "lines": [
+        {
+            "Latitude": 25.866307,
+            "Longitude": 115.01832,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN360721",
+            "Title": "赣县 (出生地)",
+            "Detail": [
+                {
+                    "time": "1084年",
+                    "activity": "出生。"
+                },
+                {
+                    "time": "1085-1102年",
+                    "activity": "居乡赣县。"
+                },
+                {
+                    "time": "1103年",
+                    "activity": "居乡赣县。以兄弼恩荫授将仕郎。"
+                },
+                {
+                    "time": "1121-1123年",
+                    "activity": "居乡赣县，丁内艰。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.802941,
+            "Longitude": 114.313904,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4102",
+            "Title": "开封",
+            "Detail": [
+                {
+                    "time": "1104-1109年",
+                    "activity": "在开封。"
+                },
+                {
+                    "time": "1110年",
+                    "activity": "在开封。大观年间铨试礼部。"
+                },
+                {
+                    "time": "1111-1114年",
+                    "activity": "在开封。"
+                },
+                {
+                    "time": "1115年",
+                    "activity": "在开封，赐上舍出身。为宣义郎。"
+                },
+                {
+                    "time": "1116年",
+                    "activity": "在开封，入秘书为校书郎。"
+                },
+                {
+                    "time": "1117年",
+                    "activity": "在开封，林灵素作《神霄录》，朝士争趋之，曾几与李纲、傅崧卿称疾不往视，曾几出为应天少尹。"
+                },
+                {
+                    "time": "1124年",
+                    "activity": "在开封，丁内艰服除，主管内外宗室财用。"
+                },
+                {
+                    "time": "1125年",
+                    "activity": "在开封，主管内外宗室财用。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.064735,
+            "Longitude": 118.802891,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3201",
+            "Title": "南京",
+            "Detail": [
+                {
+                    "time": "1118-1120年",
+                    "activity": "在应天少尹任。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.39986,
+            "Longitude": 119.419107,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN321",
+            "Title": "扬州",
+            "Detail": [
+                {
+                    "time": "1126-1127年",
+                    "activity": "在扬州。提举淮东路茶盐公事。"
+                }
+            ]
+        }
+    ]
+}

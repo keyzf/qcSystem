@@ -1,0 +1,460 @@
+{
+    "lines": [
+        {
+            "Latitude": 28.968047,
+            "Longitude": 117.135438,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN360281",
+            "Title": "乐平 (出生地)",
+            "Detail": [
+                {
+                    "time": "1088年",
+                    "activity": "出生。"
+                },
+                {
+                    "time": "1089-1113年",
+                    "activity": "居乡？"
+                },
+                {
+                    "time": "1114年",
+                    "activity": "以诸生待廷试京师，王黼请婚，却之。伯父给事公曲为平章，卒却之。"
+                },
+                {
+                    "time": "1115年",
+                    "activity": "登何㮚榜进士第。"
+                },
+                {
+                    "time": "1115年",
+                    "activity": "朱勔请婚，复却之。"
+                },
+                {
+                    "time": "1115年",
+                    "activity": "娶沈氏。太学博士沈松年之女弟。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.294384,
+            "Longitude": 121.436043,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330226",
+            "Title": "宁海",
+            "Detail": [
+                {
+                    "time": "1116年",
+                    "activity": "官台州宁海县主簿。"
+                },
+                {
+                    "time": "1117年",
+                    "activity": "官宁海主簿。作三瑞堂、交翠亭。"
+                },
+                {
+                    "time": "1117年",
+                    "activity": "秋，长子洪适生。"
+                },
+                {
+                    "time": "1117年",
+                    "activity": "摄宁海县令。"
+                },
+                {
+                    "time": "1118-1120年",
+                    "activity": "官宁海。"
+                },
+                {
+                    "time": "1120年",
+                    "activity": "除南京国子博士，未就职。"
+                },
+                {
+                    "time": "1120年",
+                    "activity": "次子洪遵生。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.750912,
+            "Longitude": 120.762045,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3304",
+            "Title": "嘉兴",
+            "Detail": [
+                {
+                    "time": "1121年",
+                    "activity": "迁宣教郎，为秀州司录事。"
+                },
+                {
+                    "time": "1122-1123年",
+                    "activity": "官秀州。"
+                },
+                {
+                    "time": "1123年",
+                    "activity": "三子洪迈生。"
+                },
+                {
+                    "time": "1124年",
+                    "activity": "官秀州。"
+                },
+                {
+                    "time": "1124年",
+                    "activity": "秋大水，以荒政自任，所活九万五千余人，人呼为洪佛子。"
+                },
+                {
+                    "time": "1125-1127年",
+                    "activity": "官秀州。"
+                },
+                {
+                    "time": "1127年",
+                    "activity": "官秀州司录。"
+                },
+                {
+                    "time": "1128年",
+                    "activity": "官秀州司录。累官朝散郎。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.011281,
+            "Longitude": 116.709997,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN361128",
+            "Title": "鄱阳",
+            "Detail": [
+                {
+                    "time": "1128年",
+                    "activity": "丁父秦国公忧，奔丧归饶州。"
+                },
+                {
+                    "time": "1129年4月",
+                    "activity": "自饶州还，至秀州。"
+                },
+                {
+                    "time": "1143年9月",
+                    "activity": "数忤秦桧，桧风李文会论劾，出知饶州。"
+                },
+                {
+                    "time": "1144年",
+                    "activity": "在饶州。"
+                },
+                {
+                    "time": "1145年",
+                    "activity": "在饶州，营葬秦国公、秦国太夫人于滃潭。"
+                },
+                {
+                    "time": "1146年",
+                    "activity": "在饶州。"
+                },
+                {
+                    "time": "1155年11月",
+                    "activity": "诏复敷文阁直学士。"
+                },
+                {
+                    "time": "1155年",
+                    "activity": "复徽猷阁直学士。"
+                },
+                {
+                    "time": "1155年",
+                    "activity": "诏赠四官至大夫，爵至鄱阳郡开国侯食邑至一千一百户，赐谥忠宣。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1129年",
+                    "activity": "高宗移跸建康，皓适过临安，疏谏不纳。"
+                },
+                {
+                    "time": "1129年5月",
+                    "activity": "得旨召对。起复为徽猷阁待制，假礼部尚书充大金通问使。"
+                },
+                {
+                    "time": "1129年",
+                    "activity": "兼淮南京东等路抚谕使。"
+                },
+                {
+                    "time": "1143年8月",
+                    "activity": "八月戊戌，至自燕。"
+                },
+                {
+                    "time": "1143年",
+                    "activity": "入见，高宗眷甚厚。奏事毕，力求乡郡养母，不许。"
+                },
+                {
+                    "time": "1143年",
+                    "activity": "皇太后召见，彻帘问劳。"
+                },
+                {
+                    "time": "1143年",
+                    "activity": "除徽猷阁直学士，提举万寿观，兼权直学士院。"
+                }
+            ]
+        },
+        {
+            "Latitude": 37.876885,
+            "Longitude": 112.55706,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN1401",
+            "Title": "太原",
+            "Detail": [
+                {
+                    "time": "1130年",
+                    "activity": "在太原。"
+                }
+            ]
+        },
+        {
+            "Latitude": 40.082539,
+            "Longitude": 113.306446,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN1402",
+            "Title": "大同",
+            "Detail": [
+                {
+                    "time": "1130年12月",
+                    "activity": "徙云中。"
+                },
+                {
+                    "time": "1131年",
+                    "activity": "在云中。时徽钦二帝徙居五国城，皓遣人奏书并献胡桃、梨条、粟面诸物。"
+                },
+                {
+                    "time": "1131年",
+                    "activity": "金人迫使仕刘豫，不从。"
+                }
+            ]
+        },
+        {
+            "Latitude": 44.937862,
+            "Longitude": 127.173986,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN230184",
+            "Title": "五常",
+            "Detail": [
+                {
+                    "time": "1131年5月",
+                    "activity": "徙冷山。"
+                },
+                {
+                    "time": "1131年",
+                    "activity": "完颜希尹命其八子受学。"
+                },
+                {
+                    "time": "1132年",
+                    "activity": "在冷山。"
+                },
+                {
+                    "time": "1132年",
+                    "activity": "王伦自金还，言皓奉使不屈，诏下秀州存问家属，赐银二百。"
+                },
+                {
+                    "time": "1133-1134年",
+                    "activity": "在冷山。"
+                },
+                {
+                    "time": "1135年4月",
+                    "activity": "在冷山。是年，永祐陵讳闻，皓北向泣血，遣使臣沈珍往燕山开泰寺建道场，为文祭之。作品：永祐陵祭文。（北京图书馆藏珍本年谱丛刊第22册，第229-383页。）"
+                },
+                {
+                    "time": "1136-1137年",
+                    "activity": "在冷山。"
+                },
+                {
+                    "time": "1137年2月",
+                    "activity": "诏存恤家属。"
+                },
+                {
+                    "time": "1138年",
+                    "activity": "在冷山。"
+                },
+                {
+                    "time": "1138年11月",
+                    "activity": "夫人沈氏薨于秀州。"
+                },
+                {
+                    "time": "1139年",
+                    "activity": "在冷山。"
+                }
+            ]
+        },
+        {
+            "Latitude": 39.911013,
+            "Longitude": 116.413554,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN11",
+            "Title": "北京",
+            "Detail": [
+                {
+                    "time": "1140年",
+                    "activity": "自冷山徙燕。"
+                },
+                {
+                    "time": "1140年8月",
+                    "activity": "至燕。"
+                },
+                {
+                    "time": "1140年",
+                    "activity": "书机事数万言，藏故絮中，遣赵德归上之。"
+                },
+                {
+                    "time": "1140年11月",
+                    "activity": "有上母书。作品：上母书。（北京图书馆藏珍本年谱丛刊第22册，第229-393页。）"
+                },
+                {
+                    "time": "1141年",
+                    "activity": "在燕。"
+                },
+                {
+                    "time": "1141年",
+                    "activity": "夏，求得皇太后书，遣李微归上之。"
+                },
+                {
+                    "time": "1141年",
+                    "activity": "冬，复以书奏上，并献六朝御容、徽宗御书。"
+                },
+                {
+                    "time": "1141年",
+                    "activity": "上金相韩昉书，誓以死不就职，遂令校云中进士试，使者监上道，至云中，以疾闻，复回燕。"
+                },
+                {
+                    "time": "1142年",
+                    "activity": "在燕。"
+                },
+                {
+                    "time": "1142年",
+                    "activity": "何铸、曹勋使至燕，请归皇太后，金人许诺，皓遣人先报。"
+                },
+                {
+                    "time": "1142年",
+                    "activity": "皇太后归过燕，皓冒禁朝于燕。"
+                },
+                {
+                    "time": "1142年",
+                    "activity": "万俟卨等使至燕，特持赐金帛。"
+                },
+                {
+                    "time": "1142年",
+                    "activity": "宴张总侍御家，归赋《江梅引》四阕。作品：江梅引。（北京图书馆藏珍本年谱丛刊第22册，第229-402页。）"
+                },
+                {
+                    "time": "1143年6月",
+                    "activity": "和议成，六月庚戌，皓与张邵、朱弁使还。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.711328,
+            "Longitude": 116.007993,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3604",
+            "Title": "九江",
+            "Detail": [
+                {
+                    "time": "1144年6月",
+                    "activity": "詹大方迎秦桧意论之，谪提举江州太平观。"
+                },
+                {
+                    "time": "1147年",
+                    "activity": "服除，复提举江州太平观。"
+                }
+            ]
+        },
+        {
+            "Latitude": 24.191959,
+            "Longitude": 113.421493,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN441881",
+            "Title": "英德",
+            "Detail": [
+                {
+                    "time": "1147年5月",
+                    "activity": "谪濠州团练副使，英州安置。"
+                },
+                {
+                    "time": "1147年",
+                    "activity": "至英州，居法林寺。"
+                },
+                {
+                    "time": "1148-1149年",
+                    "activity": "在英州。"
+                },
+                {
+                    "time": "1149年",
+                    "activity": "瘴作，十八日未食。"
+                },
+                {
+                    "time": "1149年",
+                    "activity": "口占秀州救灾事，授诸子。呼天请命。"
+                },
+                {
+                    "time": "1150年",
+                    "activity": "在英州。"
+                },
+                {
+                    "time": "1151年",
+                    "activity": "在英州。患风淫疾。"
+                },
+                {
+                    "time": "1151年",
+                    "activity": "是年，方滋为广南东路经略使，待皓尽礼。"
+                },
+                {
+                    "time": "1152-1153年",
+                    "activity": "在英州。"
+                },
+                {
+                    "time": "1153年",
+                    "activity": "是年春，长子适得冯氏故宅，作爽堂。"
+                },
+                {
+                    "time": "1154年",
+                    "activity": "在英州。"
+                },
+                {
+                    "time": "1155年",
+                    "activity": "复左朝奉郎，主台州崇道观，袁州居住。"
+                }
+            ]
+        },
+        {
+            "Latitude": 25.125335,
+            "Longitude": 114.317421,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN440282",
+            "Title": "南雄",
+            "Detail": [
+                {
+                    "time": "1155年10月20日",
+                    "activity": "未逾岭，疾革，薨于南雄。"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,169 @@
+{
+    "lines": [
+        {
+            "Latitude": 29.880177,
+            "Longitude": 121.556686,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3302",
+            "Title": "宁波 (出生地)",
+            "Detail": [
+                {
+                    "time": "1139-1161年",
+                    "activity": "居乡。"
+                },
+                {
+                    "time": "1162年",
+                    "activity": "乡举第二。"
+                },
+                {
+                    "time": "1171-1176年",
+                    "activity": "闲居家乡。作品：《净慈寺记》"
+                },
+                {
+                    "time": "1177年",
+                    "activity": "调扬州教授，未赴；游明招山。"
+                },
+                {
+                    "time": "1178-1180年",
+                    "activity": "闲居家乡。"
+                },
+                {
+                    "time": "1182年",
+                    "activity": "父沈铢卒，丁忧。"
+                },
+                {
+                    "time": "1182年",
+                    "activity": "丁父忧。"
+                },
+                {
+                    "time": "1183年",
+                    "activity": "吕祖俭官明州仓监，讲学竹洲。"
+                },
+                {
+                    "time": "1184年",
+                    "activity": "朱熹《答沈叔晦书》，讲学竹洲。"
+                },
+                {
+                    "time": "1185年",
+                    "activity": "讲学竹洲。"
+                },
+                {
+                    "time": "1191年12月23日",
+                    "activity": "葬于家乡。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1163年",
+                    "activity": "监补第一。"
+                },
+                {
+                    "time": "1164-1168年",
+                    "activity": "求学太学。"
+                },
+                {
+                    "time": "1181年",
+                    "activity": "除太学录。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.04129,
+            "Longitude": 120.869394,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330604",
+            "Title": "上虞",
+            "Detail": [
+                {
+                    "time": "1169年",
+                    "activity": "进士第二，任上虞县尉。作品：《孙介行状》、《张处士墓志》"
+                },
+                {
+                    "time": "1169-1170年",
+                    "activity": "任上虞尉。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.786776,
+            "Longitude": 119.462193,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN321084",
+            "Title": "高邮",
+            "Detail": [
+                {
+                    "time": "1181年",
+                    "activity": "高邮州教授。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.036519,
+            "Longitude": 120.586673,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3306",
+            "Title": "绍兴",
+            "Detail": [
+                {
+                    "time": "1186-1187年",
+                    "activity": "除从政郎、浙东安抚司干办公事。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.25405,
+            "Longitude": 117.868365,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN361130",
+            "Title": "婺源",
+            "Detail": [
+                {
+                    "time": "1188年",
+                    "activity": "除宣教郎、知婺源县。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.636726,
+            "Longitude": 116.587941,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN340824",
+            "Title": "潜山",
+            "Detail": [
+                {
+                    "time": "1188-1189年",
+                    "activity": "迁通判舒州。作品：《承奉郎孙介行状》"
+                },
+                {
+                    "time": "1190年",
+                    "activity": "举行义田；作诗箴其友。作品：残句：“为学未能识肩背，读书万卷空亡羊。”"
+                },
+                {
+                    "time": "1191年4月1日",
+                    "activity": "卒于寓舍。"
+                }
+            ]
+        }
+    ]
+}

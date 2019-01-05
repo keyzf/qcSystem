@@ -1,0 +1,185 @@
+{
+    "lines": [
+        {
+            "Latitude": 33.652034,
+            "Longitude": 116.970454,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3413",
+            "Title": "宿州 (出生地)",
+            "Detail": [
+                {
+                    "time": "777年",
+                    "activity": "出生。"
+                },
+                {
+                    "time": "778-790年",
+                    "activity": "故乡家居。"
+                },
+                {
+                    "time": "791年",
+                    "activity": "与其兄弟张复及贾餗、贾竦兄弟、白居易均住符离，且住同一里巷，时相过访。"
+                },
+                {
+                    "time": "792-795年",
+                    "activity": "故乡家居。"
+                },
+                {
+                    "time": "798年",
+                    "activity": "避乱罢职。"
+                },
+                {
+                    "time": "802年3月",
+                    "activity": "春夏间，下第东归与韩愈相别，赠诗，韩愈作《答张彻》；白居易有《邓鲂张彻落第》"
+                },
+                {
+                    "time": "803-805年",
+                    "activity": "家居读书。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.802941,
+            "Longitude": 114.313904,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4102",
+            "Title": "开封",
+            "Detail": [
+                {
+                    "time": "796-797年",
+                    "activity": "宣武节度使从事，兼监察御史。"
+                },
+                {
+                    "time": "798年",
+                    "activity": "宣武节度使从事，兼监察御史从韩愈学于汴州，愈妻之从女。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.210143,
+            "Longitude": 117.29235,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3203",
+            "Title": "徐州",
+            "Detail": [
+                {
+                    "time": "798年8月",
+                    "activity": "赴州试，为乡贡进士。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.347436,
+            "Longitude": 108.946306,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN6101",
+            "Title": "西安",
+            "Detail": [
+                {
+                    "time": "798年10月",
+                    "activity": "赴京省试。"
+                },
+                {
+                    "time": "799-802年",
+                    "activity": "在京省试。"
+                },
+                {
+                    "time": "806年",
+                    "activity": "赴京省试与韩愈、孟郊、张籍会合于长安，三人作《会合联句》韩愈又有《喜侯喜至赠张籍张彻》"
+                },
+                {
+                    "time": "807-808年",
+                    "activity": "在京省试。"
+                },
+                {
+                    "time": "809年2月",
+                    "activity": "春，进士及第复登制科，为敕头座主张弘靖以中书舍人权知贡举。"
+                },
+                {
+                    "time": "810年",
+                    "activity": "初授京官任秘书省校书郎。"
+                },
+                {
+                    "time": "811-813年",
+                    "activity": "秘书省校书郎。"
+                }
+            ]
+        },
+        {
+            "Latitude": 36.201585,
+            "Longitude": 113.123046,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN1404",
+            "Title": "长治",
+            "Detail": [
+                {
+                    "time": "814年",
+                    "activity": "昭义军节度使掌书记。李贺有《潞州张大宅病酒遇江使寄上十四兄》、《酒罢张大彻索赠诗》"
+                },
+                {
+                    "time": "815-817年",
+                    "activity": "昭义军节度使掌书记。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.733923,
+            "Longitude": 112.796072,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN410381",
+            "Title": "偃师",
+            "Detail": [
+                {
+                    "time": "818-819年",
+                    "activity": "任河南缑氏县主簿。"
+                },
+                {
+                    "time": "819年7月",
+                    "activity": "七月，上尊号，朝贺礼毕，东归缑氏。张籍有《送从弟彻东归》"
+                },
+                {
+                    "time": "820-821年",
+                    "activity": "河南缑氏县主簿。"
+                }
+            ]
+        },
+        {
+            "Latitude": 39.864896,
+            "Longitude": 116.292562,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN110106",
+            "Title": "丰台",
+            "Detail": [
+                {
+                    "time": "821年3月",
+                    "activity": "幽州卢龙节度使判官、兼监察御史。张弘靖为检校司空、同平章事、兼幽州大都督府长史，充幽州卢龙节度使。"
+                },
+                {
+                    "time": "821年5月",
+                    "activity": "御史中丞牛僧儒表奏为监察御史。"
+                },
+                {
+                    "time": "821年6月",
+                    "activity": "张弘靖密奏乞留，诏改殿中侍御史，半道还之，仍为判官。时幽州节度使张弘靖治州无方，放纵下属，激起军变，被执。张彻初至，得不杀、亦被监禁帅府。后有京中官至，张彻欲见、不得，以为军士反叛，大骂曰：“汝何敢反！前日吴元济斩东市，李师道斩军中，同恶者，父母妻子肉饱狗鼠鸱鸦。”众怒，击杀之。"
+                },
+                {
+                    "time": "821年7月10日",
+                    "activity": "其友侯云长，请于其帅天平军节度使马总，又得张彻生前相知张恭、李元实者，使以币请之幽州，幽州人义而归之。以闻，诏所在给船輂，传归其家，赐钱物以葬。其后，韩愈有《祭张给事文》，又有《故幽州节度判官赠给事中清河张君墓志铭》"
+                }
+            ]
+        }
+    ]
+}

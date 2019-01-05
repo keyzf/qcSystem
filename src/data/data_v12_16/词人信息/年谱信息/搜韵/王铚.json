@@ -1,0 +1,359 @@
+{
+    "lines": [
+        {
+            "Latitude": 32.895879,
+            "Longitude": 115.821389,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3412",
+            "Title": "阜阳 (出生地)",
+            "Detail": [
+                {
+                    "time": "1092年",
+                    "activity": "疑本年生于家乡颍州汝阴，本表所标年岁均为虚拟数，非实数。"
+                },
+                {
+                    "time": "1093-1106年",
+                    "activity": "疑在家乡汝阴家居。"
+                },
+                {
+                    "time": "1110年",
+                    "activity": "与颍上知县洪炎游，著《侍女小名录》"
+                },
+                {
+                    "time": "1114年",
+                    "activity": "在故乡汝阴家居。"
+                },
+                {
+                    "time": "1115-1119年",
+                    "activity": "疑在故乡汝阴家居。"
+                },
+                {
+                    "time": "1120年",
+                    "activity": "在故乡汝阴家居，与知府周邦彦相知。"
+                },
+                {
+                    "time": "1121年",
+                    "activity": "在故乡汝阴家居，收到周邦彦所寄《瑞鹤仙》词。"
+                },
+                {
+                    "time": "1122年7月",
+                    "activity": "疑在故乡汝阴家居。七月，著《四六话》成，自为序。作品：四六话。（《四六话》为二卷。）"
+                },
+                {
+                    "time": "1123年",
+                    "activity": "疑在故乡汝阴家居。"
+                },
+                {
+                    "time": "1126年",
+                    "activity": "回到家乡颍州，与郭寿翁相见，遇金人之骑兵占领颍州。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.711328,
+            "Longitude": 116.007993,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3604",
+            "Title": "九江",
+            "Detail": [
+                {
+                    "time": "1107年",
+                    "activity": "其父王莘知江州，同往。"
+                },
+                {
+                    "time": "1107年",
+                    "activity": "秋，于庐山僧祖可、善权以及李彭等结诗社。"
+                },
+                {
+                    "time": "1108-1110年",
+                    "activity": "与父王莘生活在江州。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.195688,
+            "Longitude": 119.431494,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3211",
+            "Title": "镇江",
+            "Detail": [
+                {
+                    "time": "1107年",
+                    "activity": "受父命，从九江前往京口拜访曾布。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.802941,
+            "Longitude": 114.313904,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4102",
+            "Title": "开封",
+            "Detail": [
+                {
+                    "time": "1111年",
+                    "activity": "与张元干、娄寅亮相识于太学。"
+                },
+                {
+                    "time": "1112年",
+                    "activity": "在太学读书。"
+                },
+                {
+                    "time": "1113年",
+                    "activity": "在太学读书，与表兄高荷相见，有诗。作品：次韵国香诗。次韵国香诗（宋·王铚）百花零落悲春晚，不复林园门可款。待花结实春已归，到头只有东家①管。楚宫女子春华敷，为云为雨②皆有馀。亲逢一顾倾国色，不解迎人（小集本作入）专城居。目成未到投梭处，后会③难凭人已去。可怜天壤擅诗声，不如崔护桃花句。坐令永抱埋玉悲，游手（小集本作子）那知京兆眉。难堪别④鹤分飞后，犹是惊鸿初见时。新欢密爱应长久，暂向华筵赏宾友。舞尽春风力不禁，困里腰肢一涡（小集本作树）柳。座上何人赠翠翘，蜀中（小集本作州）风调尤情饶。欢浓酒晕上玉颊，香暖红酥疑欲销。佳人薄命古相似，先后乃逢天下士。但惜盈盈一水时，当年不寄相思字。宜州遗恨君能详，瘴云万里空悲凉。无限风流等閒别，几人赏鉴⑤得黄香。按：①小集本、李本作风　②小集本作为雨为云　③小集本作会后　④原作白，据小集本改　⑤小集本作鉴赏"
+                },
+                {
+                    "time": "1125年2月",
+                    "activity": "居京城。二月，为张元干所辑先祖手泽作跋。作品：跋张元干辑先祖手泽。"
+                },
+                {
+                    "time": "1125年",
+                    "activity": "春，与江端友至相蓝算命。"
+                },
+                {
+                    "time": "1125年",
+                    "activity": "与王伦交往，离开京城。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.575549,
+            "Longitude": 118.504404,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN340521",
+            "Title": "当涂",
+            "Detail": [
+                {
+                    "time": "1114年",
+                    "activity": "从汝阴前往宣城，途径当涂，以《欧阳修别集》示李之仪。"
+                }
+            ]
+        },
+        {
+            "Latitude": 34.420378,
+            "Longitude": 115.662798,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4114",
+            "Title": "商丘",
+            "Detail": [
+                {
+                    "time": "1124年",
+                    "activity": "秋，在睢阳结识晁说之。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.996701,
+            "Longitude": 112.535009,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN4113",
+            "Title": "南阳",
+            "Detail": [
+                {
+                    "time": "1126年",
+                    "activity": "入西道总管王襄幕府，为草檄文。作品：靖康讨虏檄文。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.39986,
+            "Longitude": 119.419107,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN321",
+            "Title": "扬州",
+            "Detail": [
+                {
+                    "time": "1127年",
+                    "activity": "举家迁至扬州。秋，曾往真州访晁说之。"
+                }
+            ]
+        },
+        {
+            "Latitude": 32.4612,
+            "Longitude": 119.932115,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3212",
+            "Title": "泰州",
+            "Detail": [
+                {
+                    "time": "1128年",
+                    "activity": "南迁途中，在海陵拜访晁说之。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1129年",
+                    "activity": "入浙西康允之幕府，有文。作品：与浙西帅康允之书。（建炎三年升杭州为临安府。）"
+                },
+                {
+                    "time": "1129年11月",
+                    "activity": "十一月，跋范宗尹丞相家藏《兰亭贴》作品：跋范丞相家藏兰亭贴。"
+                },
+                {
+                    "time": "1130年7月",
+                    "activity": "七月，始著《祖宗兵制》"
+                },
+                {
+                    "time": "1130年10月",
+                    "activity": "十月，楚州镇抚使守城战死，高宗命王铚著《赵立传》"
+                },
+                {
+                    "time": "1130年",
+                    "activity": "作《嵊县修学碑》"
+                },
+                {
+                    "time": "1131年11月",
+                    "activity": "得娄寅亮赠《上高宗皇帝书》"
+                },
+                {
+                    "time": "1133年",
+                    "activity": "在临安为官。"
+                },
+                {
+                    "time": "1134年3月",
+                    "activity": "三月，朝廷欲用为太府寺丞，被言者谏止。"
+                },
+                {
+                    "time": "1135年",
+                    "activity": "主管庐山太平观，作隐居浙东之计。有诗。作品：送郭寿翁还庐陵。送郭寿翁还庐陵（宋·王铚）　　七言律诗　押庚韵共遭胡①骑汝阴城，十载相逢尚甲兵。万里鹓鸿自鶱举，九关虎豹任纵横。雨昏山远行人恨，日暮草长幽鸟声。只有别离心似旧，乱来难得是交情。按：①原作敌，据初本改"
+                },
+                {
+                    "time": "1136年",
+                    "activity": "朱敦儒、徐度来访，命次子王明清出拜二公。"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.014847,
+            "Longitude": 120.639402,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN320509",
+            "Title": "吴江",
+            "Detail": [
+                {
+                    "time": "1132年1月",
+                    "activity": "正月，游平江包山禅寺，有文。作品：包山禅院记。（政和三年升苏州为平江府。）"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.594696,
+            "Longitude": 120.828141,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330683",
+            "Title": "嵊州",
+            "Detail": [
+                {
+                    "time": "1137年",
+                    "activity": "避居剡溪，有文。作品：游东山记。（绍兴元年升越州为绍兴府。）"
+                },
+                {
+                    "time": "1138年",
+                    "activity": "因修《国朝史述》，被诏奉祠，主管台州崇道观。"
+                },
+                {
+                    "time": "1139年1月",
+                    "activity": "正月，因上《七朝国史》，特迁一官。"
+                },
+                {
+                    "time": "1139年2月",
+                    "activity": "二月，言秦桧所拟徽宗陵名“永固”为后周皇后陵名。"
+                },
+                {
+                    "time": "1140年",
+                    "activity": "闲居山阴。"
+                },
+                {
+                    "time": "1141年",
+                    "activity": "曾为陆游讲王安石欲与司马光卜邻事。"
+                },
+                {
+                    "time": "1142年2月",
+                    "activity": "二月，跋谢文靖《东山图》"
+                },
+                {
+                    "time": "1142年6月",
+                    "activity": "六月，为浙东所刻《两汉记》作后序。"
+                },
+                {
+                    "time": "1143年8月",
+                    "activity": "七八月间，因献《太玄经讲义》，被赐白金三百两。"
+                },
+                {
+                    "time": "1143年",
+                    "activity": "冬，作《题五老图》"
+                },
+                {
+                    "time": "1144年3月",
+                    "activity": "三月，因献《祖宗八朝圣学通纪论》，诏迁一官。"
+                },
+                {
+                    "time": "1144年",
+                    "activity": "春，为判绍兴府孟忠厚筹作不伤时忌对札。"
+                },
+                {
+                    "time": "1144年",
+                    "activity": "夏，卒于绍兴家中。"
+                }
+            ]
+        },
+        {
+            "Latitude": 29.560618,
+            "Longitude": 115.989402,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3604 庐山",
+            "Title": "庐山"
+        },
+        {
+            "Latitude": 31.659391,
+            "Longitude": 118.468363,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3405 采石矶",
+            "Title": "采石矶"
+        },
+        {
+            "Latitude": 29.605607,
+            "Longitude": 120.842762,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3306 剡溪",
+            "Title": "剡溪"
+        }
+    ]
+}

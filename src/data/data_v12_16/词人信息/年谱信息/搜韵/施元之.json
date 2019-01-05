@@ -1,0 +1,175 @@
+{
+    "lines": [
+        {
+            "Latitude": 31.032626,
+            "Longitude": 119.916604,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN330522",
+            "Title": "长兴 (出生地)",
+            "Detail": [
+                {
+                    "time": "1102年",
+                    "activity": "施元之约生于此时。"
+                },
+                {
+                    "time": "1164年6月17日",
+                    "activity": "施元之子施宿生。"
+                },
+                {
+                    "time": "1174年",
+                    "activity": "施元之被辛弃疾弹劾，遂予奉祠归长兴。"
+                },
+                {
+                    "time": "1174年",
+                    "activity": "施元之因病去世，卒年七十有余。"
+                }
+            ]
+        },
+        {
+            "Latitude": 30.280059,
+            "Longitude": 120.161693,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3301",
+            "Title": "杭州",
+            "Detail": [
+                {
+                    "time": "1165年",
+                    "activity": "施元之任命为左文林郎，主管尚书户部架阁文字。"
+                },
+                {
+                    "time": "1165年",
+                    "activity": "洪适除翰林学士，举施元之代之。"
+                },
+                {
+                    "time": "1166年2月",
+                    "activity": "施元之任命为秘书省正字。"
+                },
+                {
+                    "time": "1166年3月",
+                    "activity": "施元之罢免秘书省正字，任枢密院编修官。"
+                },
+                {
+                    "time": "1167年",
+                    "activity": "朱熹代替施元之任枢密院编修官。"
+                },
+                {
+                    "time": "1168年",
+                    "activity": "施元之赠洪适《岩訢碑》"
+                },
+                {
+                    "time": "1169年5月",
+                    "activity": "施元之因磨勘改官，别行注受。"
+                },
+                {
+                    "time": "1169年",
+                    "activity": "任秘书省著作左郎。"
+                },
+                {
+                    "time": "1169年",
+                    "activity": "撰《北蜡》七曲。"
+                },
+                {
+                    "time": "1169年10月",
+                    "activity": "施元之任起居舍人。"
+                },
+                {
+                    "time": "1169年11月",
+                    "activity": "兼国史院编修官。"
+                },
+                {
+                    "time": "1169年11月",
+                    "activity": "施元之任左司谏官。"
+                },
+                {
+                    "time": "1170年",
+                    "activity": "施元之罢左司谏官，未几，复任。"
+                }
+            ]
+        },
+        {
+            "Latitude": 28.941661,
+            "Longitude": 118.880768,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3308",
+            "Title": "衢州",
+            "Detail": [
+                {
+                    "time": "1170年9月",
+                    "activity": "以左宣教郎权发遣衢州军州，主管学事并管内劝农事。"
+                },
+                {
+                    "time": "1170年",
+                    "activity": "在衢州建超览室，又为亭命名月坡。"
+                },
+                {
+                    "time": "1170年",
+                    "activity": "在城西边立屋两柱，命名为风亭。"
+                },
+                {
+                    "time": "1170年",
+                    "activity": "施元之刻《学易集》"
+                },
+                {
+                    "time": "1171年",
+                    "activity": "施元之在衢州校刻王浦《五代会要》，范质《五代通》于郡斋。"
+                },
+                {
+                    "time": "1171年",
+                    "activity": "施元之作伫舟亭于西溪上。"
+                },
+                {
+                    "time": "1171年",
+                    "activity": "龙游张祖顺来谒，尝其刚果，特荐之。"
+                },
+                {
+                    "time": "1171年7月",
+                    "activity": "江西饥荒，玉山大旱，输衢粮以济之。"
+                },
+                {
+                    "time": "1172年9月",
+                    "activity": "施元之在衢州校刻苏颂《新义向法要三卷》"
+                }
+            ]
+        },
+        {
+            "Latitude": 31.304566,
+            "Longitude": 120.589613,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3205",
+            "Title": "苏州",
+            "Detail": [
+                {
+                    "time": "1172年",
+                    "activity": "施元之受命为浙西提刑官。"
+                },
+                {
+                    "time": "1173年",
+                    "activity": "施元之任浙西为提刑官。"
+                }
+            ]
+        },
+        {
+            "Latitude": 25.837179,
+            "Longitude": 114.94126,
+            "OffsetLeft": 0,
+            "OffsetTop": 0,
+            "Invisible": false,
+            "RegionId": "CN3607",
+            "Title": "赣州",
+            "Detail": [
+                {
+                    "time": "1174年",
+                    "activity": "施元之以浙西提刑除赣州军州事。"
+                }
+            ]
+        }
+    ]
+}
