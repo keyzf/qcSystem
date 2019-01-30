@@ -78,6 +78,10 @@ class DataGetter{
     getPersonalTimeLineByName(person_name){
         return dataStore.time_line[person_name]
     }
+    getPersonalTimeLineByIdFromCBDB(person_id){
+        // console.log(person_id, dataStore.time_line_cbdb)
+        return dataStore.time_line_cbdb[person_id]
+    }
 }
 
 const propety_name2db_propety_name = {
