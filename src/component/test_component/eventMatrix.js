@@ -15,7 +15,6 @@ class EventMatrix extends Component {
             main_matrix: [],
             time_len: 5,
             addr_len: 20,
-            // person_len: 10,
             center_padding: 0.5,
             person_len_y: 5,
             person_len_x: 10,
@@ -54,11 +53,23 @@ class EventMatrix extends Component {
         let matrix_texts = main_matrix.matrix_texts
         let persons = main_matrix.persons
         let addrs = main_matrix.addrs
+        let event2marks = main_matrix.event2marks
 
         let hint_value = this.state.hint_value
         let show_events = hint_value&&hint_value.events.sort((a,b)=> a.time_range[0]-b.time_range[0])
+        let need_link_marks = []
+        if (show_events) {
+            show_events.forEach(event=>{
+                let marks = event2marks[event.id]
+                need_link_marks.push(marks)
+                // marks.forEach(mark=>{
+                //     need_link_marks.push([hint_value, mark])
+                // })
+            })
+        }
+
         
-        console.log(hint_value, show_events)
+        console.log(hint_value, show_events, need_link_marks)
         
         // console.log(matrix_lines, matrix_texts, attr_mark_datas)
         return (
@@ -68,7 +79,7 @@ class EventMatrix extends Component {
         // yDomain={[(-center_padding-person_len)*1.1,(center_padding+time_len)*1.1]}
         // xDomain={[(-center_padding-person_len)*1.1,(center_padding+addr_len)*1.1]}
         onMouseLeave={()=> this.setState({hint_value:undefined})}
-        animation>
+        >
             {
                 matrix_lines.map((data,index)=> 
                     <LineSeriesCanvas
@@ -100,9 +111,9 @@ class EventMatrix extends Component {
                 rotation = {45}
                 data={matrix_texts} />
             {
-            show_events &&             
+            show_events &&          
             <Hint value={hint_value}>
-                <div style={{ fontSize: 10,background: 'black', padding: '10px'}}>
+                <div style={{ fontSize: 10,background: 'black', padding: '10px', opacity: '0.5'}}>
                     {
                         show_events.map((show_event,index)=>
                                 <div key={index+'show_event_event_matrix'}>
@@ -121,7 +132,17 @@ class EventMatrix extends Component {
                 </div>
             </Hint>
             }
-
+            {
+                show_events && need_link_marks.map((data,index)=>
+                    <MarkSeries
+                    data={data}
+                    key={'事件间连线'+index}
+                    // color='#e0dfdf'
+                    sizeRange={[5, 10]}
+                    opacity={0.5}
+                    animation = {false}/>  
+                )
+            }
             {/* <YAxis/>
             <XAxis/> */}
         </XYPlot>
@@ -199,12 +220,10 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
     
     // person_array = person_array.slice(0,10)
 
-    console.log(person_array)
     person_array = person_array.sort((a,b)=> a.id-b.id)
     person_array.forEach((person,index)=>{
         person2matrix_id[person.id] = index
     })
-    console.log(person2matrix_id)
 
     let addr_array = []
     for(let addr_id in addrs){
@@ -237,9 +256,7 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
             return null
         }
     }
-    // while(true){
 
-    // }
     let personScaleY = person => {
         if (person2matrix_id[person.id] || person2matrix_id[person.id]===0) {
             return -(person2matrix_id[person.id]*person_unit_y + person_unit_y/2 + center_padding)  + start_y
@@ -342,6 +359,7 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
     }
     attr_mark_datas = attr_mark_datas.filter(data=> data[0].length>0)
 
+
     // 重叠的点需要合并
     let mark_dict = {}
     let personal_mark_dict = {}
@@ -379,6 +397,19 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
     attr_mark_datas = new_attr_mark_datas
     attr_mark_datas = attr_mark_datas.filter(data=> data[0].length>0)
 
+    // 为之后连线做准备
+    let event2marks = {}
+    attr_mark_datas.forEach(attr_mark_data=>{
+        attr_mark_data[0].forEach(mark_data=>{
+            let events = mark_data.events
+            events.forEach(event=>{
+                let id = event.id
+                event2marks[id] = event2marks[id] || []
+                event2marks[id].push(mark_data)
+            })
+        })
+    })
+    // console.log(event2marks)
     // 画格子线
     let matrix_lines = []
     // eslint-disable-next-line no-lone-blocks
@@ -639,6 +670,7 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
         matrix_texts: matrix_texts,
         persons: persons,
         addrs: addrs,
+        event2marks:  event2marks
         // events:events
     }
 }
