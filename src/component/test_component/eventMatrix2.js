@@ -96,6 +96,7 @@ class EventMatrix extends Component {
                     <LineSeries
                     data={data}
                     key={'事件范围线'+index}
+                    strokeWidth = {0.1}
                     onSeriesClick = { (event)=> this.setState({hint_value:data[0]}) }
                     color='gray'/>  
                 )
@@ -196,7 +197,7 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
     if (temp_time_range) {
         total_time_range = temp_time_range
     }
-    // total_time_range = [1083,1156]   //暂用于给李清照强行赋值
+    total_time_range = [1069,1080]   //暂用于给李清照强行赋值
     console.log(total_time_range)
 
 
@@ -284,10 +285,15 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
         let event = events[event_id]
         
         let event_mark_data = []
-        let event_addr = event.addr&&addrs[event.addr]
+        // console.log(event_addr)
+        let event_addrs = event.addr.map(addr_id=>addrs[addr_id])
+        // console.log(event_addr, event.addr)
         let event_persons = event.roles.map(elm=> persons[elm.person])
         let event_time_ranges = event.time_range
 
+        if (event_addrs.length===2) {
+            console.log(event)
+        }
         // 判断是否是中心人物参与的事件
         let is_in = false
         event.roles.forEach(elm=>{
@@ -320,8 +326,8 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
             }else{
                 let start_year = event_time_ranges[0]>total_time_range[0]? event_time_ranges[0] : total_time_range[0]
                 let end_year = event_time_ranges[1]<total_time_range[1]? event_time_ranges[1] : total_time_range[1]
-                let x = personScaleX(person)
-                if (x) {
+                let x = personScaleX(person)-person_unit_x/2*(Math.random()-0.5)
+                if(start_year<total_time_range[1] && end_year>total_time_range[0] &&  personScaleX(person)){
                     let event_line_data = [
                         {
                             x: x,
@@ -345,9 +351,10 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
             }
             
             // 人 X 地点
-            if (event_addr) {
+            event_addrs.forEach(addr=>{
+                // console.log(event_addr)
                 let new_point = {
-                    x: addrScale(event_addr),
+                    x: addrScale(addr),
                     y: personScaleY(person),
                     opacity: 0.8,
                     quadrant: '地点-人',
@@ -355,7 +362,7 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
                     size: 1
                 }
                 event_mark_data.push(new_point)
-            }
+            })
 
             // 人 X 人
             event_persons.forEach(person2=>{
@@ -374,42 +381,50 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
             })
         })
         // 地点X时间
-        if ( event_addr && event_time_ranges[0]===event_time_ranges[1] && event_time_ranges[0]!==-9999) {
+        if (event_addrs.length!==0 && event_time_ranges[0]===event_time_ranges[1] && event_time_ranges[0]!==-9999) {
             let mark_year = event_time_ranges[0]
             if (mark_year>total_time_range[0] && mark_year<total_time_range[1]) {
-                let new_point = {
-                    x: addrScale(event_addr)+start_x,
-                    y: timeScale(mark_year)+start_y,
-                    opacity: 0.8,
-                    quadrant: '地点-时间',
-                    events: [event],
-                    size: 1
-                }
-                event_mark_data.push(new_point)                    
+                event_addrs.forEach(addr=>{
+                    let new_point = {
+                        x: addrScale(addr)+start_x,
+                        y: timeScale(mark_year)+start_y,
+                        opacity: 0.8,
+                        quadrant: '地点-时间',
+                        events: [event],
+                        size: 1
+                    }
+                    event_mark_data.push(new_point)                          
+                })
+              
             }
-        }else if(event_addr){
+        }else if(event_addrs.length!==0){
             let start_year = event_time_ranges[0]>total_time_range[0]? event_time_ranges[0] : total_time_range[0]
             let end_year = event_time_ranges[1]<total_time_range[1]? event_time_ranges[1] : total_time_range[1]
-            let x = addrScale(event_addr)+start_x
-            let event_line_data = [
-                {
-                    x: x,
-                    y: timeScale(start_year),
-                    opacity: 0.8,
-                    quadrant: '时间-人',
-                    events: [event],
-                    size: 1
-                },
-                {
-                    x: x,
-                    y: timeScale(end_year),
-                    opacity: 0.8,
-                    quadrant: '时间-人',
-                    events: [event],
-                    size: 1
-                }
-            ]
-            event_line_datas.push(event_line_data)                    
+            event_addrs.forEach(addr=>{
+                // 为了方便看清设了个值以后要改
+                let x = addrScale(addr)-addr_unit/2*(Math.random()-0.5)
+                if(start_year<total_time_range[1] && end_year>total_time_range[0] && x){
+                    let event_line_data = [
+                        {
+                            x: x,
+                            y: timeScale(start_year),
+                            opacity: 0.8,
+                            quadrant: '时间-人',
+                            events: [event],
+                            size: 1
+                        },
+                        {
+                            x: x,
+                            y: timeScale(end_year),
+                            opacity: 0.8,
+                            quadrant: '时间-人',
+                            events: [event],
+                            size: 1
+                        }
+                    ]
+                    event_line_datas.push(event_line_data)                 
+                }                
+            })
         }
 
         let color = '#cd3b54'

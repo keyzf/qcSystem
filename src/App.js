@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 // import EventNumPerYear from './component/test_component/eventNumPerYear'
 // import EventHappenOverview from './component/test_component/eventHappenOverview'
 // import PoetryCiteTreeMap from './component/test_component/poetryCitePart'
-import EventMatrix from './component/test_component/eventMatrix'
+import EventMatrix from './component/test_component/eventMatrix2'
 class App extends Component {
   // constructor(){
   //   super()
