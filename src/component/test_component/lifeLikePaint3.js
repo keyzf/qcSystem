@@ -180,7 +180,7 @@ class LifeLikePaint extends Component{
             // console.log(this_events_num)
             line_data2.push({
                 x: parseInt(year),
-                y: total_score/events_num,
+                y: total_score/events_num*Math.log(events_num+1),
                 size: this_events_num,
                 events: event_array
             })
@@ -222,19 +222,19 @@ class LifeLikePaint extends Component{
                     curve={'curveMonotoneX'}
                     onValueClick={showEventValue}
                 /> */}
-                {/* <LineMarkSeries
+                <LineMarkSeries
                     sizeRange = {[1,10]}
                     data={this.state.line_data2}
                     curve={'curveMonotoneX'}
                     onValueClick={showEventValue}
-                /> */}
+                />
                 {/* <LineMarkSeries
                     sizeRange = {[1,10]}
                     data={this.state.line_data3}
                     curve={'curveMonotoneX'}
                     onValueClick={showEventValue}
                 /> */}
-                {
+                {/* {
                     Object.keys(this.state.line_datas1).map(type=>{
                         return  <LineMarkSeries
                                 sizeRange = {[3,13]}
@@ -243,7 +243,7 @@ class LifeLikePaint extends Component{
                                 onValueClick={showEventValue}
                                 />
                     })
-                }
+                } */}
                 {
                 this.state.value&&                
                 <Hint value={this.state.value}>

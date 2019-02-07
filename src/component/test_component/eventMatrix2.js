@@ -96,7 +96,7 @@ class EventMatrix extends Component {
                     <LineSeries
                     data={data}
                     key={'事件范围线'+index}
-                    strokeWidth = {0.1}
+                    strokeWidth = {0.2}
                     onSeriesClick = { (event)=> this.setState({hint_value:data[0]}) }
                     color='gray'/>  
                 )
@@ -125,7 +125,7 @@ class EventMatrix extends Component {
             {
             show_events &&          
             <Hint value={hint_value}>
-                <div style={{ fontSize: 10,background: 'black', padding: '10px', opacity: '0.5'}}>
+                <div style={{ fontSize: 10,background: 'black', padding: '10px', opacity: '0.5', width: 500}}>
                     {
                         show_events.map((show_event,index)=>
                                 <div key={index+'show_event_event_matrix'}>
@@ -175,12 +175,14 @@ let isValidRange = time_range=>{
 function initOneMatrix(selected_person_id, data, start_x, start_y, center_padding, time_len, addr_len, person_len_x, person_len_y, temp_time_range=undefined){
     let persons = data.persons,
         events = data.events,
-        addrs = data.addr
+        addrs = data.addr,
+        triggers = data.triggers
 
     let total_time_range = [9999,-9999]
 
     for(let event_id in events){
         let event = events[event_id]
+        event.trigger = triggers[event.trigger]
         let time_range = event.time_range
         if (isValidRange(time_range)) {
             if (time_range[0]<total_time_range[0]) 
@@ -701,7 +703,7 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
             matrix_texts.push({
                 x: x,
                 y: start_y,
-                label: person.name
+                label: person.name + '(' + person.id + ')'
             })
             // 人物平行于Y轴
             let y = personScaleY(person)
