@@ -19,8 +19,70 @@ import poet_year from '../data/data_v12_30/词人信息/基本信息/词人_年�
 import 'whatwg-fetch'
 import { totalmem } from 'os';
 
+class NewDataStore{
+  getObject(id){
 
+  }
 
+}
+class Manager {
+  constructor(){
+    this.id_set = new Set()
+    this.id2object = {}
+  }
+  s_equal(p1, p2){
+    return p1.id === p2.id
+  }
+  d_equal(p1, p2){
+    for(let key in p1){
+        if(p1['key']!==p2['key']){
+          return false
+        }
+    }
+    return true
+  }
+  get(id){
+    return this.id2object[id]
+  }
+}
+class PersonManager extends Manager{
+  // 对接受的数据进行处理
+  wrap(_object){
+
+  }
+}
+class AddrManager extends Manager{
+  wrap(_object){
+    
+  }
+}
+class EventManager extends Manager{
+  wrap(_object){
+    
+  }
+}
+
+// 直接给json值加操作好了
+// class Event{
+//   constructor(_object){
+//     // {this.id, this.addrs, this.roles} = _object
+//   }
+//   isEqual(another){
+//     return another.id === this.id
+//   }
+// }
+// class Person{
+//   isEqual(another){
+//     return another.id === this.id
+//   }
+// }
+// class Addr{
+//   isEqual(another){
+//     return another.id === this.id
+//   }
+// }
+
+// 这破玩意也没法用了
 class DataStore {
     constructor(){
       // console.log(total)
@@ -153,5 +215,10 @@ class DataStore {
     }
 }
 
-var dataStore = new DataStore
+var personManager = new PersonManager
+var addrManager = new AddrManager
+var eventManager = new EventManager
+
+var dataStore = new NewDataStore
+
 export default dataStore

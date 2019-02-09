@@ -1,7 +1,8 @@
 //负责与互联网的交互
-import dataStore from './dataStore'
+import dataStore from './dataStore2'
 import * as neo4j from 'neo4j'
 
+// 这破玩意已经没法用了
 class DataGetter{
     constructor(){
         // var neo4j = require('neo4j');
@@ -84,9 +85,10 @@ class DataGetter{
     }
 }
 
-const propety_name2db_propety_name = {
-    'person_name': 'c_name_chn'
+class newDataGetter{
+
 }
 
-var dataGetter = new DataGetter
+
+var dataGetter = new newDataGetter
 export default dataGetter

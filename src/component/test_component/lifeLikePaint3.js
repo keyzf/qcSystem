@@ -6,31 +6,23 @@ import {
     XYPlot,
     XAxis,
     YAxis,
-    VerticalGridLines,
-    HorizontalGridLines,
-    VerticalBarSeries,
-    VerticalBarSeriesCanvas,
-    DiscreteColorLegend,
     Hint,
-    AreaSeries,
     LineMarkSeries,
-    LineSeries
   } from 'react-vis';
 
 // 暂用于加载数据
 // import SuShiLife from '../../data/temp_data/苏轼事件人物.json'
 import SuShi from '../../data/temp_data/苏轼.json'
-import xAxis from 'react-vis/dist/plot/axis/x-axis';
 // import eventType2json from '../../data/temp_data/event2vec.json'
 // import contourSeries from 'react-vis/dist/plot/series/contour-series';
 import event2score from '../../data/temp_data/event2score.json'
-import { print } from 'util';
 
 // 2019/1/21 绘制像山水感觉的事件图
 class LifeLikePaint extends Component{
     constructor(){
         super()
-        console.log('Construct')
+        // console.log(SuShi)
+        // console.log('Construct')
         // 暂用于补足
         event2score['担任'] = {
             "type": "政治",
@@ -54,8 +46,8 @@ class LifeLikePaint extends Component{
         }
 
         // console.log(eventType2json)
-        console.log(event2score)
-        console.log(SuShiLife)
+        // console.log(event2score)
+        // console.log(SuShiLife)
 
         let min_time = 900
         let max_time = 300 
@@ -82,7 +74,7 @@ class LifeLikePaint extends Component{
             // console.log(events)
             let this_events_num =  Math.log(events.length)
             let max = 0
-            console.log(events)
+            // console.log(events)
             events.forEach(event=>{
                 // console.log(event,event.trigger)
                 let event_type = event.trigger.name
@@ -122,7 +114,7 @@ class LifeLikePaint extends Component{
             for(let year=middle-range; year<=middle+range; year++){
                 let events = SuShiLife[year.toString()]
                 events = events?events:[]
-                console.log(events)
+                // console.log(events)
                 // eslint-disable-next-line no-loop-func
                 events.forEach(event=>{
                     let event_type = event.trigger.name
@@ -132,7 +124,7 @@ class LifeLikePaint extends Component{
                         events_num++
                         
                         let type = score.parent_type.toString()
-                        console.log(event_type, type)
+                        // console.log(event_type, type)
                         score = parseFloat(score.score)
                         // console.log(type, score)
                         type_score[type] = type_score[type] || 0
@@ -151,13 +143,13 @@ class LifeLikePaint extends Component{
                     }
                 })
             }
-            console.log(type_event)
+            // console.log(type_event)
 
             for(let type in type_score){
                 if (!type_event[type]) {
                     continue
                 }
-                console.log(type_event[type])
+                // console.log(type_event[type])
                 line_datas1[type] = line_datas1[type] || []
                 line_datas1[type].push({
                     x: parseInt(year),
@@ -195,14 +187,16 @@ class LifeLikePaint extends Component{
         }
     }
     
+
     static get defaultProps() {
         return {
-          width: 1600,
-          height: 1200,
+          width: 800,
+          height: 600,
         };
     }
 
     render(){
+        console.log('render lifeLikePaint3')
         // let line_data = this.state.line_data
         let showEventValue = (value)=>{
             console.log(value)

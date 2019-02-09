@@ -10,7 +10,7 @@ import jsonFormat from 'json-format'
 class EventMatrix extends Component {
     constructor(){
         super()
-        console.log(data)
+        // console.log(data)
         this.state = {
             main_matrix: [],
             time_len: 5,
@@ -200,7 +200,7 @@ function initOneMatrix(selected_person_id, data, start_x, start_y, center_paddin
         total_time_range = temp_time_range
     }
     total_time_range = [1069,1080]   //暂用于给李清照强行赋值
-    console.log(total_time_range)
+    // console.log(total_time_range)
 
 
     // 给人物分配一个新的id
