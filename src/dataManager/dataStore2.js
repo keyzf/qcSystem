@@ -5,6 +5,11 @@ import event2score from '../data/temp_data/event2score.json'   //事件打分
 import all_place from '../data/temp_data/宋朝地点.json'
 import stateManager from './stateManager'
 import 'whatwg-fetch'
+import net_work from './netWork'
+import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
+import { set } from 'mobx';
+import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
+
 // import { totalmem } from 'os';
 // import { set } from 'mobx';
 // import {observable, action} from 'mobx';
@@ -13,30 +18,27 @@ class DataStore{
   constructor(){
     // 初始化数据
     console.log('初始化数据')
-    fetch('http://localhost:8000/init',{
-      method:'GET',
-      headers:{
-          'Content-Type':'application/json;charset=UTF-8'
-      },
-      cache:'default'
-    })
-    .then(res =>res.json())
-    .then((data) => {
-        this.processInitData(data)
-        stateManager.is_ready = true
-        console.log('初始化完成')
-    })
 
+    net_work.require('init')
+    .then(data=>{
+      this.processInitData(data)
+      stateManager.is_ready = true
+      console.log('初始化完成')
+    })
   }
 
   processInitData(data){
     let {people, addrs, triggers} = data
+    let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
 
     for(let person_id in people){
-      let person =  people[person_id]
-      personManager.create(person)
+      let person = people[person_id]
+      person = personManager.create(person)
+      if(person.certain_event_num>10)
+        can_selected_list.add(person.id)
     }
+    stateManager.setShowPeopleList([...can_selected_list])
 
     for(let addr_id in addrs){
       let addr =  addrs[addr_id]
@@ -56,11 +58,15 @@ class DataStore{
     for(let trigger_id in triggers){
       triggerManager.create(triggers[trigger_id])
     }
+
+    triggerManager.countTypes()
   }
 
   // 将对象处理，连接
   processResults(results){
+    // console.log(triggerManager.id2object, this.dict2array(eventManager.id2object).filter(event=>!event.trigger))
     let {events, addrs, people} = results
+    results.triggers = {}
     // console.log(results)
     // 注意包含son parents没弄
     for(let addr_id in addrs){
@@ -73,19 +79,31 @@ class DataStore{
 
     for(let event_id in events){
       let event = eventManager.get(event_id)
+      // console.log(event)
       if (!event) {
         event = eventManager.create(events[event_id])
-        event.addrs.forEach(addr => {
-          addrs[addr.id] = addr
-        });
-        event.roles.forEach(role => {
-          let person = role['person']
-          people[person.id] = person
-        });
       }
+      event.addrs.forEach(addr => {
+        addrs[addr.id] = addr
+      });
+      event.roles.forEach(role => {
+        let person = role['person']
+        people[person.id] = person
+      });
+      // console.log(event)
+      
+      results.triggers[event.trigger.id] = event.trigger
       events[event_id] = event
     }
     return results
+  }
+
+  dict2array(dict){
+    let array = []
+    for(let key in dict){
+      array.push(dict[key])
+    }
+    return array
   }
 }
 
@@ -161,6 +179,36 @@ class TriggerManager extends Manager{
     super()
     this._object = Trigger
   }
+  countTypes(){
+    this.names = new Set()
+    this.types = new Set()
+    this.parent_types = new Set()
+    this.parent2types = {}
+    for(let id in this.id2object){
+      let elm = this.id2object[id]
+      this.names.add(elm.name)
+      this.types.add(elm.type)
+      this.parent_types.add(elm.parent_type)
+      this.parent2types[elm.parent_type] = this.parent2types[elm.parent_type] || {}
+      this.parent2types[elm.parent_type][elm.type] = this.parent2types[elm.parent_type][elm.type] || new Set()
+      this.parent2types[elm.parent_type][elm.type].add(elm.name)
+    }
+    // console.log(this.types, this.parent2types, this.parent_types, this.names)
+  }
+  ownCountType(event_array){
+    let triggers = new Set()
+    event_array.forEach(event=>{
+      triggers.add(event.trigger)
+    })
+    triggers = [...triggers]
+    let parent2types = {}
+    triggers.forEach(elm=>{
+      parent2types[elm.parent_type] = parent2types[elm.parent_type] || {}
+      parent2types[elm.parent_type][elm.type] = parent2types[elm.parent_type][elm.type] || new Set()
+      parent2types[elm.parent_type][elm.type].add(elm.name)
+    })
+    return parent2types
+  }
 }
 
 class EventManager extends Manager{
@@ -177,10 +225,26 @@ class EventManager extends Manager{
     }
 
     this._object = Event
+
+    this.pingji = ['正一品','从一品','正二品','从二品','正三品','从三品','正四品上','正四品','正四品下','从四品上', '从四品', '从四品下','正五品上','正五品', '正五品下','从五品上', '从五品','从五品下','正六品上','正六品','正六品下','从六品上', '从六品', '从六品下','正七品上', '正七品', '正七品下', '从七品上', '从七品', '从七品下', '正八品上','正八品', '正八品下','从八品上','从八品', '从八品下', '正九品下', '正九品', '正九品下','从九品上', '从九品', '从九品下']
+    this.pingji = this.pingji.reverse()
+    this.guanzhi2pingji = guanzhi_pingji
   }
 
   // 评分有重大问题呀，没有角色
-  getScore(trigger, role){
+  getScore(event, role){
+    let trigger = event.trigger
+    if (trigger.name === '担任') {
+      let guanzhi = event.detail
+      // console.log(guanzhi)
+      if (!this.guanzhi2pingji[guanzhi]) {
+        return 0
+      }
+      let pingji = this.guanzhi2pingji[guanzhi]['品级']
+      // 好像还有缺的，如 主管尚书省户部架阁文字
+      return this.pingji.findIndex(elm => pingji===elm)*(10/this.pingji.length)
+    }
+
     if (role==='主角') {
       trigger = trigger || {name:'不存在'}
       let trigger_with_role = trigger.name //  + ' ' + role
@@ -205,6 +269,9 @@ class Event{
     this.id = _object.id
     this.addrs = _object.addrs.map(item_id=> addrManager.get(item_id))
     this.trigger =  triggerManager.get(_object.trigger)
+    this.trigger ||  console.log(this.trigger, _object)
+    this.detail = _object.detail
+
     this.roles = _object.roles.map(item=> {
       let person = personManager.get(item.person)
       person || console.warn(person, '没找到')
@@ -213,7 +280,7 @@ class Event{
         person: person,
         role: item.role,
         // score: eventManager.getScore(this.trigger, item.role),
-        tag: this.trigger? '不存在trigger': this.trigger.name + ' ' + item.role
+        tag: this.trigger? this.trigger.name + ' ' + item.role:'不存在trigger'
       }
     })
     this.time_range = _object.time_range
@@ -223,23 +290,38 @@ class Event{
     for (let index = 0; index < this.roles.length; index++) {
       const role = this.roles[index];
       if (role['person']===person) {
-        return eventManager.getScore(this.trigger, role['role'])
+        return eventManager.getScore(this, role['role'])
       }
     }
     console.warn(person, '根本没参与算个鬼的score')
     return 0
   }
 
-  // 两个还没用到
-  addAddr(addr){
-    if (!this.addrs.includes(addr)) {
-      this.addrs.push(addr)
+  toDict(){
+    return {
+      id: this.id,
+      addrs: this.addrs.map(addr=> addr.name),
+      roles: this.roles.map(role=>{
+        return {
+        person:role.person.name, 
+        role:role.role 
+        } 
+      }),
+      trigger: this.trigger.name,
+      time_range: this.time_range,
+      detail: this.detail
     }
   }
-  addPerson(person, role){
-    let has = this.roles.find((item)=> person===item.person&&role===item.role)
-
-  }
+  
+  // 两个还没用到
+  // addAddr(addr){
+  //   if (!this.addrs.includes(addr)) {
+  //     this.addrs.push(addr)
+  //   }
+  // }
+  // addPerson(person, role){
+  //   let has = this.roles.find((item)=> person===item.person&&role===item.role)
+  // }
 }
 
 
@@ -249,6 +331,10 @@ class Person{
   constructor(_object){
     this.id = _object.id
     this.name = _object.name
+
+    this.certain_event_num = parseInt(_object.certain_events_num)
+    this.event_num = parseInt(_object.events_num)
+
     this.birth_year = parseInt(_object.birth_year)
     this.death_year = parseInt(_object.death_year)
     this.events = []
@@ -273,6 +359,19 @@ class Person{
       }
     })
     return year2events
+  }
+
+  toText(){
+    let text = '(' + this.id + ')' + this.name
+    text += '['
+    if (isValidYear(this.birth_year))
+      text += this.birth_year
+    text += ','
+    if (isValidYear(this.death_year))
+      text += this.death_year
+    text += ']  '
+    text += this.certain_event_num + '/' + this.event_num
+    return text
   }
 
   getCertainEvents(){

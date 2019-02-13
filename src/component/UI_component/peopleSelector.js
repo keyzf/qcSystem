@@ -4,13 +4,15 @@ import { hidden } from 'ansi-colors';
 // import dataGetter from '../../dataManager/dataGetter2'
 import stateManager from '../../dataManager/stateManager'
 import {observer} from 'mobx-react';
+import {observable, action, autorun} from 'mobx';
 // 选择人物
 @observer
 class PeopleSelector extends Component{
     constructor(){
         super()
         this.state = {
-            show_people_list: []
+            show_people_list: [],
+            all_people_list: []
         }
     }
 
@@ -21,8 +23,17 @@ class PeopleSelector extends Component{
         };
     }
 
+    _changeShowPeople = autorun(()=>{
+        console.log('_changeShowPeople')
+        if (stateManager.is_ready) {
+            let show_people_list = stateManager.show_people_list
+            this.setState({all_people_list: show_people_list})            
+        }
+    })
+
     handlePersonClick = (e, {person}) => {
-        this.setState({ select_person: person})
+        stateManager.addSelectedPeople(person)
+        // this.setState({ select_person: person})
         // console.log(person)
     }
 
@@ -38,8 +49,7 @@ class PeopleSelector extends Component{
 
     render(){
         console.log('render peopleSelector')
-        let {all_people_list} = this.props
-        let {show_people_list} = this.state
+        let {show_people_list, all_people_list} = this.state
         show_people_list = show_people_list.length!==0? show_people_list:all_people_list
         // console.log(all_people_list, show_people_list)
         return (
@@ -53,7 +63,7 @@ class PeopleSelector extends Component{
                     onKeyPress={(e)=>{
                         let value = e.target.value
                         console.log(value)
-                        if(e.key === 'Enter'){
+                        if(e.key === 'Enter' || true){ 
                             let show_people_list = all_people_list.map(person => {
                                 let text = this.generateText(person)
                                 if(text.indexOf(value)!==-1){
@@ -88,10 +98,10 @@ class PeopleSelector extends Component{
                             active={show_people_list.includes(person)}
                             position = 'left'
                             color = 'grey'
-                            // onClick={this.handlePersonClick}
+                            onClick={this.handlePersonClick}
                             >
-                              {this.generateText(person)}  
-                              <Checkbox person={person} onChange={this.handleCheckBoxChange}/>
+                              { person.toText() }
+                              {/* <Checkbox person={person} onChange={this.handleCheckBoxChange}/> */}
                             </Menu.Item>)
                       }        
                     </Menu>                 
