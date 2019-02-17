@@ -36,8 +36,8 @@ class App extends Component {
         <PeopleSelector/>
 
         {/* 人生轨迹 */}
-        <div style={{position:"absolute", top:20, left:300}}>
-          <LifeLikePaint width={1200}/>
+        <div style={{position:"absolute", top:20, left:250}}>
+          <LifeLikePaint width={1400}/>
         </div>
 
         {/* <div style={{position:"absolute", top:500, left:500}}>

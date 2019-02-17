@@ -50,7 +50,7 @@ class StateManager{
     selected_event_id = observable.box('216572')
     @action setSelectedEvent(event){
         // console.log(event, this.selected_uncertainty_event_id)
-        this.selected_event_id.set(event.id)
+        event && this.selected_event_id.set(event.id)
     }
 }
 

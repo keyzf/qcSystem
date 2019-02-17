@@ -45,14 +45,14 @@ class LifeLineMethod  extends Component {
                         <List.Header>事件类型</List.Header>
                         <List.List  as='ul'>
                         {
-                            data && Object.keys(data).map(parent_type=>{
+                            data && Object.keys(data).sort().map(parent_type=>{
                                 let types = data[parent_type]
                                 return (
                                 <List.Item as='li' key={parent_type+'check_box'}>
                                     <List.Header><Checkbox label={parent_type}  my_type='parent_type' onChange={onChange}/></List.Header>
                                     <List.List as='ul'>
                                         {
-                                            true?Object.keys(types).map(type=>{
+                                            true?Object.keys(types).sort().map(type=>{
                                                 let triggers = types[type]
                                                 return (
                                                     <List.Item  as='li' key={type+'check_box'}>
@@ -60,7 +60,7 @@ class LifeLineMethod  extends Component {
                                                         <List.List as='ul'>
                                                             {
                                                                 // console.log(triggers)
-                                                                false?[...triggers].map(trigger=>{
+                                                                true?[...triggers].sort().map(trigger=>{
                                                                     return (
                                                                     <List.Item key={trigger+'check_box'} as='li'>
                                                                         <Checkbox label={trigger}  my_type='trigger' onChange={onChange}/>

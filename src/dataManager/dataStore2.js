@@ -28,9 +28,11 @@ class DataStore{
   }
 
   processInitData(data){
-    let {people, addrs, triggers} = data
+    let {people, addrs, triggers, trigger_imp} = data
     let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
+    // console.log(trigger_imp, people)
+    this.trigger_imp = trigger_imp
 
     for(let person_id in people){
       let person = people[person_id]
@@ -255,7 +257,7 @@ class EventManager extends Manager{
       // 不是主角先瞎写一个
       let trigger_with_role = trigger.name //  + ' ' + role
       if(event2score[trigger_with_role]){
-        return event2score[trigger_with_role].score/2
+        return event2score[trigger_with_role].score/5
       }
     }
     // console.warn('ERROR: 有不存在评分的', trigger_with_role)
@@ -286,15 +288,48 @@ class Event{
     this.time_range = _object.time_range
   }
 
-  getScore(person){
+  getRole(person){
     for (let index = 0; index < this.roles.length; index++) {
       const role = this.roles[index];
       if (role['person']===person) {
-        return eventManager.getScore(this, role['role'])
+        return role['role']
       }
     }
-    console.warn(person, '根本没参与算个鬼的score')
-    return 0
+    return '未参与'
+  }
+
+  //计算事件的重要程度
+  getImp(person){
+    let role = this.getRole(person)
+    let trigger_id = this.trigger.name + ' ' + role
+    let trigger_imp = dataStore.trigger_imp
+    if (trigger_imp[trigger_id]) {
+      trigger_imp = trigger_imp[trigger_id]
+    }else{
+      trigger_imp = 0.0001
+      console.log(trigger_id, '没有重要度')
+    }
+
+    let ops_person = person
+    this.roles.forEach(elm=>{
+      if (elm['person']!=person) {
+        ops_person = elm['person']
+      }
+    })
+    // console.log(trigger_imp*ops_person.page_rank)
+    return trigger_imp*ops_person.page_rank
+  }
+
+  getScore(person){
+    // for (let index = 0; index < this.roles.length; index++) {
+    //   const role = this.roles[index];
+    //   if (role['person']===person) {
+    //     return eventManager.getScore(this, role['role'])
+    //   }
+    // }
+    return eventManager.getScore(this, this.getRole(person))
+    // console.warn(person, '根本没参与算个鬼的score')
+    // return 0
   }
 
   toDict(){
@@ -329,6 +364,7 @@ class Event{
 // 还没有处理 isNaN()的情况
 class Person{
   constructor(_object){
+    // console.log(_object)
     this.id = _object.id
     this.name = _object.name
 
@@ -337,6 +373,8 @@ class Person{
 
     this.birth_year = parseInt(_object.birth_year)
     this.death_year = parseInt(_object.death_year)
+
+    this.page_rank = parseFloat(_object.page_rank)
     this.events = []
   }
 

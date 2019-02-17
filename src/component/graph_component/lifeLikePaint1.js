@@ -33,6 +33,7 @@ class LifeLikePaint extends Component{
         '平均数 * log(事件数)',
         '众数',
         '中位数',
+        '加权平均'
         // 'LSI': undefined,
         // 'LDA': undefined,
     ]
@@ -88,13 +89,30 @@ class LifeLikePaint extends Component{
     }
 
     calculateScore(year2events, year, events, method, selected_person){
-        // 还要加个filter
+        // 加一个窗口 windows
+        let windows_size = 5
+        for (let this_year = year-windows_size; this_year < year; this_year++) {
+            if (year2events[this_year]) {
+                events = [...events, ...year2events[this_year]]
+            }
+        }
+        // events = [...new Set(events)]
 
-        events = this.events_filter(events)
+        // events = this.events_filter(events)
         if (events.length==0) {
             return -9999
         }
-        let scores = events.map(event=> event.getScore(selected_person))
+        let total_imp = events.reduce((total, event) => {
+            // console.log(event)
+            let imp = event.getImp(selected_person)
+            return total+imp
+        }, 0)
+        let scores = events.map(event=> {
+            // let imp = event.getImp(selected_person)
+            // let score = event.getScore(selected_person) * imp/total_imp
+            console.log(Math.exp(-(year-event.time_range[0])/windows_size))
+            return event.getScore(selected_person) * Math.exp(-(year-event.time_range[0])/windows_size)
+        })
         let total_score = scores.reduce((total, score) => {
             return total+score
         }, 0)
@@ -126,6 +144,12 @@ class LifeLikePaint extends Component{
             var l = scores.length-1;
             var n = Math.floor(l/2);
             return (scores[n]+scores[l-n])/2;
+        }else if(method==='加权平均'){
+            return events.reduce((total,event)=> {
+                let imp = event.getImp(selected_person)
+                let score = event.getScore(selected_person) * imp/total_imp
+                return total + score
+            }, 0)
         }
 
         return total_score/events.length * Math.log(events.length+1)
@@ -133,7 +157,7 @@ class LifeLikePaint extends Component{
 
     yearScale = year=> parseInt(year)
     scoreScale = score => parseFloat(score)
-    eventNumScale = num => Math.log(num)
+    eventNumScale = num => Math.log(num+1)
 
     loadInferMarkData(data, infer){
         // console.log(data, infer)
@@ -171,6 +195,7 @@ class LifeLikePaint extends Component{
     }
 
     loadLifeLineData(selected_person){
+        console.log('loadLifeLineData', selected_person, this.state.chosed_calculate_method)
         let line_datas = []
 
         // console.log(data)
@@ -186,20 +211,24 @@ class LifeLikePaint extends Component{
 
         let {yearScale, scoreScale, eventNumScale} = this
 
+        for(let year in year2events){
+            year2events[year] = this.events_filter(year2events[year])
+        }
         //暂时只画一个
         let line_data = years.map(year=>{
             let events = year2events[year]
             let score = this.calculateScore(year2events, year, events, this.state.chosed_calculate_method, selected_person)
+            console.log(events)
             return {
                 x: yearScale(year),
                 y: scoreScale(score),
                 size: eventNumScale(events.length),
-                events: this.events_filter(events)
+                events: events, //this.events_filter(events)
             }
         }).filter(elm=> elm.y!==scoreScale(-9999))
 
         line_datas.push({
-            type:  '平均乘log(数量)',
+            type:  this.chosed_calculate_method,
             person: selected_person,
             line_data: line_data
         })
@@ -217,13 +246,13 @@ class LifeLikePaint extends Component{
         line_datas.map(elm=>                
             <LineMarkSeries
                 key = {elm.person.id + '_' + elm.type}
-                sizeRange = {[1,10]}
+                sizeRange = {[3,10]}
                 data={elm.line_data}
                 curve={'curveMonotoneX'}
                 onValueClick={this.handleEventMarkClick}
             />
         )
-    rednerProbEventMark = prob_mark_datas=>
+    renderProbEventMark = prob_mark_datas=>
         prob_mark_datas.map(elm=>
             <MarkSeries
                 key={elm[0].events[0].id + '_prob_marks'}
@@ -240,11 +269,12 @@ class LifeLikePaint extends Component{
     }
 
     handleSelectBarChange = (event, {checked, my_type, label})=>{
-        // console.log(event, checked, my_type, label, this)
+        console.log(event, checked, my_type, label, this)
         if (my_type === 'method') {
             if (checked) {
                 if (stateManager.is_ready) {
                     this.setState({chosed_calculate_method: label})       
+                    this.state.chosed_calculate_method = label
                 }
             }
         }else{
@@ -257,6 +287,7 @@ class LifeLikePaint extends Component{
                     if (!selected_event_types.includes(trigger_name)) {
                         selected_event_types.push(trigger_name)
                         this.setState({selected_event_types: selected_event_types})
+                        this.state.selected_event_types = selected_event_types
                     }     
                 }else{
                     let index = selected_event_types.findIndex(elm=> elm===trigger_name)
@@ -264,6 +295,7 @@ class LifeLikePaint extends Component{
                     if (index!==-1) {
                         selected_event_types.splice(index,1)
                         this.setState({selected_event_types: selected_event_types})
+                        this.state.selected_event_types = selected_event_types
                     }
                 }
                 // console.log(selected_event_types)
@@ -278,6 +310,7 @@ class LifeLikePaint extends Component{
     render(){
         console.log('render lifeLikePaint 主视图')
         let {line_datas, showEventMark, prob_mark_datas, events} = this.state
+        // events 有问题，以前存过的都会被保存
         let ownCountType = triggerManager.ownCountType(events)
 
         // console.log(line_datas, this.state.line_datas)
@@ -303,9 +336,10 @@ class LifeLikePaint extends Component{
                 <div style={{left:select_bar_width+5, top:0,position:'absolute'}}>
                     <XYPlot
                     width={this.props.width-select_bar_width}
-                    height={this.props.height}
+                    height={this.props.height/1}
                     onMouseLeave = {()=> this.setState({showEventMark: undefined})}
                     // xDomain={[1036,1200]}
+                    yDomain={[0,12]}
                     >
                     {
                         this.randerLifeLine(line_datas)
@@ -313,7 +347,7 @@ class LifeLikePaint extends Component{
                     <XAxis/>
                     <YAxis/>
                     {
-                        this.rednerProbEventMark(prob_mark_datas)
+                        this.renderProbEventMark(prob_mark_datas)
                     }
                     {
                         this.state.showEventMark&&
