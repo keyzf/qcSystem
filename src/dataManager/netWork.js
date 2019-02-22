@@ -24,6 +24,7 @@ class NetWork {
         })
         .then(res =>res.json())
     }
+
 }
 
 var net_work = new NetWork()

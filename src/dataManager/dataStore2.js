@@ -2,12 +2,12 @@
 
 // 静态数据
 import event2score from '../data/temp_data/event2score.json'   //事件打分
-import all_place from '../data/temp_data/宋朝地点.json'
+// import all_place from '../data/temp_data/宋朝地点.json'
 import stateManager from './stateManager'
 import 'whatwg-fetch'
 import net_work from './netWork'
 import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
-import { set } from 'mobx';
+import { set, _isComputingDerivation } from 'mobx';
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
 
 // import { totalmem } from 'os';
@@ -28,12 +28,15 @@ class DataStore{
   }
 
   processInitData(data){
-    let {people, addrs, triggers, trigger_imp} = data
+    console.log(data)
+    let {people, addrs, triggers, trigger_imp, trigger2vec} = data
     let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
     // console.log(trigger_imp, people)
     this.trigger_imp = trigger_imp
+    this.trigger2vec = trigger2vec
 
+    console.log(trigger_imp)
     for(let person_id in people){
       let person = people[person_id]
       person = personManager.create(person)
@@ -164,16 +167,16 @@ class AddrManager extends Manager{
   constructor(){
     super()
     this._object = Addr
-    this.loadAllPlace()
+    // this.loadAllPlace()
   }
-  loadAllPlace(){
-    for(let addr_id in all_place){
-      let data = all_place[addr_id]
-      let addr = this.create(data)
-      addr.parents = data.parents.map(item_id=> this.create(all_place[item_id]))
-      addr.sons = data.sons.map(item_id=> this.create(all_place[item_id]))
-    }
-  }
+  // loadAllPlace(){
+  //   for(let addr_id in all_place){
+  //     let data = all_place[addr_id]
+  //     let addr = this.create(data)
+  //     addr.parents = data.parents.map(item_id=> this.create(all_place[item_id]))
+  //     addr.sons = data.sons.map(item_id=> this.create(all_place[item_id]))
+  //   }
+  // }
 }
 
 class TriggerManager extends Manager{
@@ -195,6 +198,9 @@ class TriggerManager extends Manager{
       this.parent2types[elm.parent_type][elm.type] = this.parent2types[elm.parent_type][elm.type] || new Set()
       this.parent2types[elm.parent_type][elm.type].add(elm.name)
     }
+    this.parent_types = [...this.parent_types].sort()
+    this.types = [...this.types].sort()
+    this.names = [...this.names].sort()
     // console.log(this.types, this.parent2types, this.parent_types, this.names)
   }
   ownCountType(event_array){
@@ -317,6 +323,7 @@ class Event{
       }
     })
     // console.log(trigger_imp*ops_person.page_rank)
+    // console.log(this, trigger_imp, ops_person.page_rank, trigger_imp*ops_person.page_rank)
     return trigger_imp*ops_person.page_rank
   }
 
@@ -330,6 +337,10 @@ class Event{
     return eventManager.getScore(this, this.getRole(person))
     // console.warn(person, '根本没参与算个鬼的score')
     // return 0
+  }
+
+  isCertain(){
+    return isCertainTimeRange(this.time_range)
   }
 
   toDict(){
@@ -373,6 +384,7 @@ class Person{
 
     this.birth_year = parseInt(_object.birth_year)
     this.death_year = parseInt(_object.death_year)
+    this.year2vec = _object.year2vec
 
     this.page_rank = parseFloat(_object.page_rank)
     this.events = []
@@ -427,6 +439,7 @@ class Addr{
     this.x = parseFloat(_object.x)
     this.y = parseFloat(_object.y)
 
+    this.vec = _object.vec
     // 从属关系构造之后再连接
     this.parents = []
     this.sons = []

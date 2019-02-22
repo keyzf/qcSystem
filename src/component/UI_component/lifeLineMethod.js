@@ -10,7 +10,7 @@ class LifeLineMethod  extends Component {
     constructor(){
         super()
         this.state = { 
-            method: '平均数 * log(事件数)'
+            method: '加权平均'
         }
     }
 
