@@ -27,19 +27,30 @@ import {
 import stateManager from '../../dataManager/stateManager'
 // import { red } from 'ansi-colors';
 
-// 2019/2/25 线换成area，但是计算似乎出现了巨大的问题
+// 2019/2/8 可以选择人物
+// @observer 
 class LifeLikePaint extends Component{
     selected_person = undefined
-    selected_event_types = []
-    all_events = []
+    calculate_methods = [
+        // '平均数',
+        // '平均数 * log(事件数)',
+        // '众数',
+        // '中位数',
+        '加权平均'
+        // 'LSI': undefined,
+        // 'LDA': undefined,
+    ]
     // event_type = 
     constructor(){
         super()
        
         this.state = {
-            area_datas: [],
+            line_datas: [],
             showEventMark: undefined,
             prob_mark_datas: [],
+            chosed_calculate_method:  this.calculate_methods[0],
+            events: new Set(),
+            selected_event_types: []
         }
     }
 
@@ -49,23 +60,21 @@ class LifeLikePaint extends Component{
         net_work.require('getPersonEvents', {person_id:selected_person.id})
         .then(data=>{
             data = dataStore.processResults(data)
-            this.all_events = dataStore.dict2array(data.events)
             // console.log(data)
             this.loadLifeLineData(selected_person)
         })
         // 推测的那几个圆
-        net_work.require('infer_person', {person_id:selected_person.id})
-        .then(data=>{
-            console.log(data)
-            let infer = data.infer
-            data = data.data
-            data = dataStore.processResults(data)
-            this.loadInferMarkData(data, infer)
-        })   
+        // net_work.require('infer_person', {person_id:selected_person.id})
+        // .then(data=>{
+        //     let infer = data.infer
+        //     data = data.data
+        //     data = dataStore.processResults(data)
+        //     this.loadInferMarkData(data, infer)
+        // })   
     }
 
     events_filter = (events)=>{
-        let event_types = this.selected_event_types
+        let event_types = this.state.selected_event_types
         if (event_types.length==0) {
             return events
         }else{
@@ -178,7 +187,8 @@ class LifeLikePaint extends Component{
         }
         this.setState({
             prob_mark_datas: mark_datas, 
-            showEventMark:undefined, 
+            showEventMark:undefined, events: 
+            new Set([...this.state.events, ...event_array])
         })
     }
 
@@ -212,13 +222,13 @@ class LifeLikePaint extends Component{
             year2events[year] = this.events_filter(year2events[year])
         }
 
-        // let area_datas = []
-        let type2area_datas = {}
-        type2area_datas['总'] = []
+        // let line_datas = []
+        let type2line_datas = {}
+        type2line_datas['总'] = []
         parent_types.forEach(type=>{
-            type2area_datas[type] = []
+            type2line_datas[type] = []
         })
-        // parent_types = Object.keys(type2area_datas).sort()
+        // parent_types = Object.keys(type2line_datas).sort()
 
         years.forEach(year=>{
             let events = year2events[year]
@@ -227,38 +237,36 @@ class LifeLikePaint extends Component{
             let stack_y = 0
             parent_types.forEach(type=>{
                 let this_events = events.filter(event => event.trigger.parent_type===type)
-
-                if (scores[type] || scores[type]===0) {
+                if (scores[type]) {
+                    stack_y += scoreScale(scores[type])
                     // console.log(scoreScale(scores[type]), stack_y)
-                    type2area_datas[type].push({
+                    type2line_datas[type].push({
                         x: yearScale(year),
-                        y: stack_y + scoreScale(scores[type]) ,
-                        y0: stack_y,
+                        y: stack_y,
                         size: eventNumScale(this_events.length),
                         events: this_events, //this.events_filter(events)
                         color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
-                    })
-                    stack_y += scoreScale(scores[type])   
+                    })               
                 }
             })
-            // if (scores['总'] || scores['总]===0){
-            //     type2area_datas['总'].push({
-            //         x: yearScale(year),
-            //         y: scoreScale(scores['总']),
-            //         size: eventNumScale(events.length),
-            //         events: events,
-            //         color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
-            //     })   
-            // }
+            if (scores['总']){
+                type2line_datas['总'].push({
+                    x: yearScale(year),
+                    y: scoreScale(scores['总']),
+                    size: eventNumScale(events.length),
+                    events: events,
+                    color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
+                })   
+            }
 
         })
 
-        let area_datas = []
-        for(let type in type2area_datas){
-            area_datas.push({
+        let line_datas = []
+        for(let type in type2line_datas){
+            line_datas.push({
                 type: calcualte_method+ '-' + selected_person.name + '-' + type,
                 person: selected_person,
-                line_data: type2area_datas[type],
+                line_data: type2line_datas[type],
                 event_graph_datas: [],  //记录笔画表示事件的数据
                 x_domain: [
                     birth_event?birth_event.time_range[0]:min_year, 
@@ -266,11 +274,11 @@ class LifeLikePaint extends Component{
                 ] 
             })
         }
-        area_datas = area_datas.filter(line_data=> area_datas.length>0)
-        // console.log(area_datas)
+        line_datas = line_datas.filter(line_data=> line_datas.length>0)
+        // console.log(line_datas)
 
         // 在line data上用area来编码事件
-        area_datas.forEach(elm=>{
+        line_datas.forEach(elm=>{
             let {line_data, person} = elm
             
             line_data.forEach(point => {
@@ -329,7 +337,7 @@ class LifeLikePaint extends Component{
             })
         })
 
-        this.setState({area_datas: area_datas})
+        this.setState({line_datas: line_datas, events: new Set([...events, ...this.state.events])})
     }
 
     
@@ -340,16 +348,15 @@ class LifeLikePaint extends Component{
         };
     }
 
-    randerLifeLine = (area_datas) => 
-        area_datas.map(elm=> [
-            <AreaSeries
+    randerLifeLine = (line_datas) => 
+        line_datas.map(elm=> [
+            <LineMarkSeries
                 key = {elm.person.id + '_' + elm.type}
                 sizeRange = {[0,10]}
                 data={elm.line_data}
                 curve='curveMonotoneX' //{d3.curveCardinal}
                 onValueClick={this.handleEventMarkClick}
                 colorType= "literal"
-                opacity='0.2'
                 // stroke={elm.type.search("2")!==-1? 'black': 'gray' }
             />,
             elm.event_graph_datas.map(graph_data=>{
@@ -385,38 +392,50 @@ class LifeLikePaint extends Component{
     }
 
     handleSelectBarChange = (event, {checked, my_type, label})=>{
-        const {selected_person} = this.props
         // console.log(event, checked, my_type, label, this)
-        if (stateManager.is_ready) {
-            let {selected_event_types} = this
-            let trigger_name = label
-            // console.log(checked)
-            if (checked) {
-                if (!selected_event_types.includes(trigger_name)) {
-                    selected_event_types.push(trigger_name)
-                }     
-            }else{
-                this.selected_event_types = selected_event_types.filter(elm=> elm!==trigger_name)
-            }
-            // console.log(selected_event_types)
+            // 这个写法肯定有问题，暂用
+            if (stateManager.is_ready) {
+                let selected_event_types = this.state.selected_event_types
+                let trigger_name = label
+                // console.log(checked)
+                if (checked) {
+                    if (!selected_event_types.includes(trigger_name)) {
+                        selected_event_types.push(trigger_name)
+                        this.setState({selected_event_types: selected_event_types})
+                        this.state.selected_event_types = selected_event_types
+                    }     
+                }else{
+                    let index = selected_event_types.findIndex(elm=> elm===trigger_name)
+                    // console.log(index)
+                    if (index!==-1) {
+                        selected_event_types.splice(index,1)
+                        this.setState({selected_event_types: selected_event_types})
+                        this.state.selected_event_types = selected_event_types
+                    }
+                }
+                // console.log(selected_event_types)
         }
+        // 现在只显示了一个人    
+        let selectedPeople = stateManager.selected_people
+        let selected_person = selectedPeople[0] || personManager.get('3767')
         this.loadLifeLineData(selected_person)         
     }
 
     render(){
+        console.log('render lifeLikePaint 主视图')
         const padding_bottom = 20
         const {height, width, selected_person} = this.props
-        console.log('render lifeLikePaint 主视图', selected_person)
-        let {area_datas, showEventMark, prob_mark_datas} = this.state
 
-        let ownCountType = triggerManager.ownCountType(this.all_events)
+        let {line_datas, showEventMark, prob_mark_datas, events} = this.state
+        // events 有问题，以前存过的都会被保存
+        let ownCountType = triggerManager.ownCountType(events)
 
         let x_domain = [
-            Math.min(...area_datas.map(data=> data.x_domain[0]).filter(elm=>elm)),
-            Math.max(...area_datas.map(data=> data.x_domain[1]).filter(elm=>elm))
+            Math.min(...line_datas.map(data=> data.x_domain[0]).filter(elm=>elm)),
+            Math.max(...line_datas.map(data=> data.x_domain[1]).filter(elm=>elm))
         ]
-
-        // console.log(area_datas.map(data=> data.x_domain[0]).filter(elm=>elm),x_domain)
+        // console.log(line_datas)
+        // console.log(line_datas.map(data=> data.x_domain[0]).filter(elm=>elm),x_domain)
         let select_bar_width = 325
         return (
             <div style={{position:'absolute', height: height, width:width, paddingRight:10}}>
@@ -448,7 +467,7 @@ class LifeLikePaint extends Component{
                     <XAxis/>
                     <YAxis/>
                     {
-                        this.randerLifeLine(area_datas)
+                        this.randerLifeLine(line_datas)
                     }
                     {
                         this.renderProbEventMark(prob_mark_datas)

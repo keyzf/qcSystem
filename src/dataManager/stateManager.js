@@ -7,23 +7,16 @@ class StateManager{
     
     @observable test_count = 0
 
-    // 只影响主视图
+    // 只影响主视图,现在估计没用了
     // 存储id,对象忒麻烦了
-    @observable selected_people_id = []
+    @observable selected_people_id = ['15072']
     @action addSelectedPeople = (person) => {
         this.selected_people_id.clear()
         this.selected_people_id.push(person.id)
         return
-        // 暂时别用了
-        // eslint-disable-next-line no-unreachable
-        let index = this.selected_people_id.find(id=>id===person.id)
-        // console.log(this.selected_people, index)
-        if (!index) {
-            this.selected_people_id.push(person.id)
-            // console.log(this.selected_people)
-            // this.test_count++
-        }
-        console.log(person.id)
+    }
+    @action setSelectedPeople = (person_ids) => {
+        this.selected_people_id.replace(person_ids)
     }
     @action deleteSelectedPeople = (person) => {
         return
@@ -36,6 +29,7 @@ class StateManager{
         return this.selected_people_id.map(id=> personManager.get(id))
     }
     
+    
     // 左侧可以选的人的名单
     @observable show_people_id_list = []
     @action setShowPeopleList = (list) =>{
@@ -47,6 +41,7 @@ class StateManager{
         return this.show_people_id_list.map(id=> personManager.get(id))
     }
 
+    // 存储推测的事件
     selected_event_id = observable.box('216572')
     @action setSelectedEvent(event){
         // console.log(event, this.selected_uncertainty_event_id)

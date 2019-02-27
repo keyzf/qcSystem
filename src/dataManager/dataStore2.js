@@ -2,13 +2,14 @@
 
 // 静态数据
 import event2score from '../data/temp_data/event2score.json'   //事件打分
-import all_place from '../data/temp_data/宋朝地点.json'
+// import all_place from '../data/temp_data/宋朝地点.json'
 import stateManager from './stateManager'
 import 'whatwg-fetch'
 import net_work from './netWork'
 import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
-import { set } from 'mobx';
+import { set, _isComputingDerivation } from 'mobx';
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
+import jsonFormat from 'json-format'
 
 // import { totalmem } from 'os';
 // import { set } from 'mobx';
@@ -28,16 +29,19 @@ class DataStore{
   }
 
   processInitData(data){
-    let {people, addrs, triggers, trigger_imp} = data
+    console.log(data)
+    let {people, addrs, triggers, trigger_imp, trigger2vec} = data
     let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
     // console.log(trigger_imp, people)
     this.trigger_imp = trigger_imp
+    this.trigger2vec = trigger2vec
 
+    // console.log(trigger_imp)
     for(let person_id in people){
       let person = people[person_id]
       person = personManager.create(person)
-      if(person.certain_event_num>10)
+      if(person.certain_event_num>10 && person.dy===15)
         can_selected_list.add(person.id)
     }
     stateManager.setShowPeopleList([...can_selected_list])
@@ -164,16 +168,16 @@ class AddrManager extends Manager{
   constructor(){
     super()
     this._object = Addr
-    this.loadAllPlace()
+    // this.loadAllPlace()
   }
-  loadAllPlace(){
-    for(let addr_id in all_place){
-      let data = all_place[addr_id]
-      let addr = this.create(data)
-      addr.parents = data.parents.map(item_id=> this.create(all_place[item_id]))
-      addr.sons = data.sons.map(item_id=> this.create(all_place[item_id]))
-    }
-  }
+  // loadAllPlace(){
+  //   for(let addr_id in all_place){
+  //     let data = all_place[addr_id]
+  //     let addr = this.create(data)
+  //     addr.parents = data.parents.map(item_id=> this.create(all_place[item_id]))
+  //     addr.sons = data.sons.map(item_id=> this.create(all_place[item_id]))
+  //   }
+  // }
 }
 
 class TriggerManager extends Manager{
@@ -195,8 +199,13 @@ class TriggerManager extends Manager{
       this.parent2types[elm.parent_type][elm.type] = this.parent2types[elm.parent_type][elm.type] || new Set()
       this.parent2types[elm.parent_type][elm.type].add(elm.name)
     }
+    this.parent_types = [...this.parent_types].sort()
+    this.types = [...this.types].sort()
+    this.names = [...this.names].sort()
     // console.log(this.types, this.parent2types, this.parent_types, this.names)
   }
+
+  // 提取事件组内的trigger关系
   ownCountType(event_array){
     let triggers = new Set()
     event_array.forEach(event=>{
@@ -288,6 +297,10 @@ class Event{
     this.time_range = _object.time_range
   }
 
+  getPeople(){
+    return this.roles.map(elm=>elm.person)
+  }
+  
   getRole(person){
     for (let index = 0; index < this.roles.length; index++) {
       const role = this.roles[index];
@@ -295,7 +308,7 @@ class Event{
         return role['role']
       }
     }
-    return '未参与'
+    return undefined
   }
 
   //计算事件的重要程度
@@ -317,6 +330,7 @@ class Event{
       }
     })
     // console.log(trigger_imp*ops_person.page_rank)
+    // console.log(this, trigger_imp, ops_person.page_rank, trigger_imp*ops_person.page_rank)
     return trigger_imp*ops_person.page_rank
   }
 
@@ -330,6 +344,39 @@ class Event{
     return eventManager.getScore(this, this.getRole(person))
     // console.warn(person, '根本没参与算个鬼的score')
     // return 0
+  }
+
+  isCertain(){
+    return isCertainTimeRange(this.time_range)
+  }
+
+  // 要有个严格替换的机制
+  toText(){
+    const {addrs, roles, time_range, trigger} = this
+    const time_text = '[' + time_range[0] + ',' + time_range[1] + ']'
+    const addr_text = addrs.map(addr=> addr.name).join(',')
+    let main_person = '未知人物', second_person = '未知人物', third_roles = []
+    roles.forEach(elm=>{
+      const person = elm.person
+      // console.log(elm, person)
+      const role = elm.role
+      if (role==='主角') {
+        main_person = person.name
+      }else if(role==='对象'){
+        second_person = person.name
+      }else{
+        third_roles.push(role + ' ' + person.name)
+      }
+    })
+    
+    let person_text = main_person
+    if(trigger.name.indexOf('Y')!==-1){
+      person_text += trigger.name.replace('Y', second_person)
+    }else{
+      person_text += trigger.name + (second_person==='未知人物'?'':second_person)
+    }
+    return time_text + ' ' + addr_text + ' ' + person_text
+    // return jsonFormat(this.toDict())
   }
 
   toDict(){
@@ -373,15 +420,30 @@ class Person{
 
     this.birth_year = parseInt(_object.birth_year)
     this.death_year = parseInt(_object.death_year)
+    this.year2vec = _object.year2vec
 
     this.page_rank = parseFloat(_object.page_rank)
     this.events = []
+
+    this.dy = parseInt(_object.dy)
+  }
+
+  getRelatedPeople(){
+    let people = []
+    this.events.forEach(event=>{
+      people = [...people, ...event.getPeople()]
+    })
+    return [...new Set(people)]
   }
 
   bindEvent(_event){
     if (!this.events.includes(_event)) {
       this.events.push(_event)
     }
+  }
+
+  isIn(event){
+    return this.events.includes(event)
   }
 
   year2events(){
@@ -399,16 +461,17 @@ class Person{
     return year2events
   }
 
+
   toText(){
     let text = '(' + this.id + ')' + this.name
-    text += '['
-    if (isValidYear(this.birth_year))
-      text += this.birth_year
-    text += ','
-    if (isValidYear(this.death_year))
-      text += this.death_year
-    text += ']  '
-    text += this.certain_event_num + '/' + this.event_num
+    // text += '['
+    // if (isValidYear(this.birth_year))
+    //   text += this.birth_year
+    // text += ','
+    // if (isValidYear(this.death_year))
+    //   text += this.death_year
+    // text += ']  '
+    // text += this.certain_event_num + '/' + this.event_num
     return text
   }
 
@@ -427,6 +490,7 @@ class Addr{
     this.x = parseFloat(_object.x)
     this.y = parseFloat(_object.y)
 
+    this.vec = _object.vec
     // 从属关系构造之后再连接
     this.parents = []
     this.sons = []
@@ -449,6 +513,10 @@ class Trigger{
     this.name = _object.name
     this.type = _object.type
     this.parent_type = _object.parent_type
+  }
+
+  equal(value){
+    return value===this.name || this.parent_type===value || this.type===value
   }
 }
 
