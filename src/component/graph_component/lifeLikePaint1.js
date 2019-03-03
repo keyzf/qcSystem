@@ -370,12 +370,13 @@ class LifeLikePaint extends Component{
         )
     renderProbEventMark = (prob_mark_datas)=>
         prob_mark_datas.map(elm=>
-            <MarkSeries
-                key={elm[0].events[0].id + '_prob_marks'}
-                sizeRange = {[1,10]}
-                data={elm}
-                onValueClick={this.handleEventMarkClick}
-            />
+            undefined
+            // <MarkSeries
+            //     key={elm[0].events[0].id + '_prob_marks'}
+            //     sizeRange = {[1,10]}
+            //     data={elm}
+            //     onValueClick={this.handleEventMarkClick}
+            // />
         )
 
     handleEventMarkClick = (value) => {

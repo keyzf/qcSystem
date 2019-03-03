@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 // import MainGraph from './component/test_component/mianGraph7'
 import LifeLikePaint from './component/graph_component/lifeLikePaint1'
 import InferContour from './component/graph_component/inferContour1'
-import RelationMatrix from './component/test_component/relationMatrix'
+import RelationMatrix from './component/graph_component/relationMatrix2'
 // import TestLifeLikePaint from './component/test_component/lifeLikePaint3'
 // import EventNumPerYear from './component/test_component/eventNumPerYear'
 // import EventHappenOverview from './component/test_component/eventHappenOverview'

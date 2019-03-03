@@ -60,7 +60,7 @@ class UpContainer extends Component {
     
     height = height - 20
 
-    selected_people = selected_people.length>=1 ? selected_people : [personManager.get('3767')]  //苏轼 
+    selected_people = selected_people.length>=1 ? selected_people : [personManager.get('person_3767')]  //苏轼 
     selected_people.filter(person=>person)
 
     let lifeLikePaint_height = height/selected_people.length
