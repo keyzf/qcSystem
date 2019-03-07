@@ -55,7 +55,7 @@ class InferContour extends React.Component {
         event_array.forEach(event=>{
             let event_id = event.id
             let event_vec = []
-            if(event.isCertain()){
+            if(event.isTimeCertain()){
                 let event_year = event.time_range[0]
                 // console.log(event_year)
                 let time_vec = Array(DIM)
@@ -160,7 +160,7 @@ class InferContour extends React.Component {
         // 相同时间的事件
         let sim_year_events = {}, sim_addr_events = {}, sim_person_events = {}, sim_trigger_events = {}
         event_array.forEach(event=>{
-            if (event.isCertain()) {
+            if (event.isTimeCertain()) {
                 let year = event.time_range[0]
                 sim_year_events[year] = sim_year_events[year] || []
                 sim_year_events[year].push(event)

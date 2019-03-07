@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, range_genrator } from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator } from '../../dataManager/dataStore2'
 import {XYPlot, LineSeriesCanvas, MarkSeries, XAxis, YAxis, Highlight, AreaSeries} from 'react-vis';
 
 class MyBrush extends React.Component{
@@ -53,7 +53,7 @@ class MyBrush extends React.Component{
             ])
         })
         freque_line_datas = freque_line_datas.map(elm =>{
-            elm[1].y = elm[1].y/max_num
+            elm[1].y = Math.sqrt(elm[1].y/max_num)
             return elm
         })
         // console.log(freque_line_datas)

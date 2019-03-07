@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import LifeLikePaint from '../graph_component/lifeLikePaint1'
 // import InferContour from './component/test_component/inferContour1'
 import stateManager from '../../dataManager/stateManager'
-import dataStore, { eventManager, addrManager, personManager, isValidYear } from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, filtEvents} from '../../dataManager/dataStore2'
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 import { Dropdown, Input } from 'semantic-ui-react'
+import EventFilter from './EventFilter'
+
 // import { values } from 'mobx';
 
 // 界面的上半部分
@@ -23,7 +25,7 @@ class UpContainer extends Component {
       calcualte_method: this.calcualte_method_option[0].value
     }
   }
-  
+
   _changeShowPeople = autorun(()=>{
     if (stateManager.is_ready) {
         let people_list = stateManager.show_people_list
@@ -68,7 +70,7 @@ class UpContainer extends Component {
     return (
       <div className="up-conainer"  style={{width:width, height:height, position:'absolute'}}>
         {/* 选择人物 */}
-        <div style={{top:0, left:10, position:"relative", width:left_part_width}}>
+        <div style={{top:0, left:10, position:'absolute', width:left_part_width}}>
           <Dropdown 
             fluid multiple search selection 
             placeholder='选择人物' 
@@ -81,11 +83,15 @@ class UpContainer extends Component {
           />
         </div>
 
-        <div style={{left:10, position:"relative", width:left_part_width}}>
+        <div style={{left:10, position:'absolute', top:50 ,width:left_part_width}}>
           <Dropdown 
           placeholder='选择分数计算方法' 
           fluid selection 
           options={calcualte_method_option} defaultValue= {calcualte_method_option[0].value} />
+        </div>
+        
+        <div style={{top: 100,  left:10, position:"relative", width:left_part_width, height: height-100, overflowY:'scroll'}}>
+            <EventFilter/>
         </div>
 
         <div style={{top:0, left:280, position:"absolute",overflowY:'scroll', height:height, width: lifeLikePaint_width}}>

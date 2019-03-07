@@ -16,18 +16,17 @@ import RelationMatrix from './component/graph_component/relationMatrix2'
 // import people_list from './data/temp_data/all_persons.json'
 import PeopleSelector from './component/UI_component/peopleSelector'
 import UpContainer from './component/UI_component/upContainer'
+import AddrSunBursts from './component/graph_component/addrSunbursts'
 
 import { Header, Icon, Image, Menu, Segment, Sidebar, Container, Checkbox, Input, Grid, Label, Table, List} from 'semantic-ui-react'
 // import { values } from 'mobx';
 
 
 class App extends Component {
-  center_control_bar_top =  500
+  center_control_bar_top =  600
   constructor(){
     super()
     this.state = {
-      // temp_center_control_bar_top: 500,   //拖动时的暂时数据
-      center_bar_is_move: false
     }
   }
   
@@ -75,8 +74,8 @@ class App extends Component {
   render() {
     console.log('render App')
     const { width, height} = this.props
-    let {center_bar_is_move, temp_center_control_bar_top} = this.state
     let center_control_bar_top = this.center_control_bar_top
+    const left_between_relation_infer = 800
     return (
       <div className="App" style={{width:width, height:height, background:'#f0f0f3'}}>
         {/* 上半部分 */}
@@ -99,13 +98,18 @@ class App extends Component {
         
 
         {/* 新的推理视图 */}
-        <div style={{position:"absolute", top: center_control_bar_top+20, left:760}}>
+        <div style={{position:"absolute", top: center_control_bar_top+20, left:left_between_relation_infer+60}}>
             <InferContour width={1100} height={height-center_control_bar_top-30}/>
         </div>
 
         <div style={{position:"absolute", top: center_control_bar_top+20, left:50}}>
-            <RelationMatrix width={700} height={height-center_control_bar_top-30}/>
+            <AddrSunBursts width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
         </div>
+
+        {/* <div style={{position:"absolute", top: center_control_bar_top+20, left:50}}>
+            <RelationMatrix width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
+        </div> */}
+
       </div>
     );
   }

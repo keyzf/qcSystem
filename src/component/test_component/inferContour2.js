@@ -60,7 +60,7 @@ class InferContour extends React.Component {
             let event_id = event.id
             event2vec[event.id] = []
             let event_vec = []
-            if(event.isCertain()){
+            if(event.isTimeCertain()){
                 let event_year = event.time_range[0]
                 // console.log(event_year)
                 let time_vec = Array(DIM)

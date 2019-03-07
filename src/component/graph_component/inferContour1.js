@@ -8,19 +8,35 @@ import * as d3 from 'd3'
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
-import dataStore, { eventManager, addrManager, personManager, isValidYear } from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, filtEvents} from '../../dataManager/dataStore2'
 import tsnejs from '../../dataManager/tsne'
-import { Divider, Container, Header, Table} from 'semantic-ui-react'
+import { Divider, Container, Header, Table, Checkbox, Dropdown} from 'semantic-ui-react'
 import cos_dist from 'compute-cosine-distance'
 
-
+// 3/5 对新的embedding方法做帮助
 class InferContour extends React.Component {
-    time_p = 0.5
-    addr_p = 0.5
-    person_p = 0.5
-    trigger_p = 0.5
-    events = []
-    center_event = []  //目前正在推的事件
+    
+    center_event = undefined  //目前正在推的事件
+
+    // 开始用于存所有的人物，地点，事件类型
+    all_people = []
+    all_addrs = []
+    all_years = []
+    all_triggers = []
+    all_events = []
+
+    //各维度的权重
+    time_p = 1
+    addr_p = 1
+    person_p = 1
+    trigger_p = 1
+
+    range_lock = 0  //检测需要更新的是否是当前这个
+
+    selected_addrs = []
+    selected_triggers = []
+    selected_people = []
+    selected_years = []
 
     constructor(){
         super()
@@ -30,156 +46,214 @@ class InferContour extends React.Component {
             hint_value: undefined,
             selected_event : undefined,
             selected_area : undefined,
-            uncertain_event_line: [],
-            highlighting: false
+            uncertain_event_mark_data: [],
+            highlighting: false,
+
         }
     }
+
+    _onEventFilterChange = autorun(()=>{
+        if (stateManager.is_ready) {
+            console.log('更新事件筛选')
+            let used_types = stateManager.used_types
+            // this.loadMatrix()
+            this.calcualteEventMark()
+        }
+    })
 
     _loadData =  autorun(()=>{
         if (stateManager.is_ready) {
             console.log('加载基于contour推理试图数据')
             let event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:event_id, depth:3, trigger_num:50, event_num:2000})
+            net_work.require('getAllRelatedEvents', {event_id:event_id, depth:3, event_num:3000})
             .then(data=>{
                 console.log(data)
-                let graph_data = dataStore.processResults(data.data)
-                let {events, addrs, people} = graph_data
+                data = dataStore.processResults(data.data)
+                let {events} = data
+                // console.log(center_event, people, event_id)
                 let center_event = eventManager.get(event_id)
-                // console.log()
-                this.events = dataStore.dict2array(events)
-                if (!this.events.includes(center_event)) {
-                    this.events.push(center_event)
+
+                this.all_events = dataStore.dict2array(events)
+                if (!this.all_events.includes(center_event)) {
+                    this.all_events.push(center_event)
                 }
                 this.center_event = center_event
                 this.calcualteEventMark()
             })
-            // net_work.require('getRelatedEvents', {event_id:event_id})
-            // .then(data=>{
-            //     console.log(data)
-            //     let graph_data = dataStore.processResults(data.data)
-            //     let {events, addrs, people} = graph_data
-            //     let center_event = eventManager.get(event_id)
-            //     this.calcualteEventMark(events, center_event)
-            //     // console.log(events)
-            // })
         }
     })
 
+
     calcualteEventMark = ()=>{
-        let {events, center_event, trigger_p, addr_p, time_p, person_p} = this
+        let {all_events, center_event} = this
+        all_events = filtEvents(all_events)
+        
 
+        let all_triggers = all_events.map(event=> event.trigger)
+        let all_addrs = [], all_people = [], all_years = []
+        let {trigger_p, addr_p, time_p, person_p} = this
+
+        all_events.forEach(event =>{
+            all_addrs = [...all_addrs, ...event.addrs]
+            all_people = [...all_people, ...event.getPeople()]
+            if (event.isTimeCertain()) {
+                all_years = [...all_years, ...event.time_range]
+            }
+        })
+        all_years = all_years.filter(year=> isValidYear(year))
+        this.all_addrs = [...new Set(all_addrs)].sort((a,b)=> a.id-b.id)
+        this.all_people = [...new Set(all_people)].sort((a,b)=> a.page_rank-b.page_rank)
+        this.all_triggers = [...new Set(all_triggers)].sort((a,b)=> a.id-b.id)
+        this.all_years = [...new Set(all_years)].sort((a,b)=> a-b)
+
+        all_events = this.filtEvents(all_events)
+
+        if (!center_event) {
+            console.warn('center_event不存在')
+            return
+        }
         console.log('推断', center_event.toText())
-        let event2vec = {}
-        const DIM = 20
 
-        let max_time = Math.max(...events.map(event=>{
+        let max_time = Math.max(...all_events.map(event=>{
             let time_range = event.time_range
             return time_range[1]
         }).filter(year => isValidYear(year)))
 
-        let min_time = Math.min(...events.map(event=>{
+        let min_time = Math.min(...all_events.map(event=>{
             let time_range = event.time_range
             return time_range[0]
         }).filter(year => isValidYear(year)))
-        // console.log(max_time, min_time)
+        
+        // prob表示的该点对应的可能性
+        let index2prob = {}, index = 0, vecs = []
+        const vec_length = all_events[0].toVec().length
+        all_events.forEach(event=>{
+            // || event===center_event
+            // if (event.isTimeCertain()) {
+            //     const event_vec = event.toVec()
+            //     vecs.push(event_vec)
+            //     index2prob[index] = {
+            //         event_id: event.id,
+            //         year: event.time_range[0],
+            //         addr_id: event.addrs.map(addr=> addr.id),  //这里之后要改呀
+            //         people_id: event.getPeople().map(person=> person.id),
+            //     }
+            //     index++
+            // }
 
-        events.forEach(event=>{
-            if (event.isCertain() || event===center_event) {
-                let vec_dicts = event.toVecs(min_time, max_time)
-                // console.log(vec_dicts)
-                // if (!event.isCertain()) {
-                //     console.log(vec_dicts.length)
-                // }
-                event2vec[event.id] = vec_dicts.map(elm=>{
-                    let {time_vec, person_vec1, trigger_vec1, person_vec2, trigger_vec2, addr_vec, addr, year} = elm
-                    // console.log(time_vec, person_vec1, trigger_vec1, person_vec2, trigger_vec2, addr_vec, addr, year)
-                    return {
-                        vec: [
-                            ...time_vec.map(value=> (value-min_time)/(max_time-min_time) *time_p),
-                            ...person_vec1.map(value=> value*person_p), 
-                            ...trigger_vec1.map(value=> value*trigger_p), 
-                            ...person_vec2.map(value=> value*person_p), 
-                            ...trigger_vec2.map(value=> value*trigger_p), 
-                            ...addr_vec.map(value=> value*addr_p)
-                        ],
-                        year: year,
-                        addr: addr,
-                        event: event
+            // 现在只做了时间
+            if (event.isTimeCertain() || event===center_event) {
+                const {time_range, addrs, trigger} = event
+                const people = event.getPeople()
+                let people_vec = people.map(person=> person.toVec().map(elm => person_p * elm)), 
+                    trigger_vec = trigger.toVec().map(elm => trigger_p * elm),
+                    event_vec = event.toVec(),
+                    addr_vecs = addrs.map(addrs=> addrs.toVec().map(elm => addr_p * elm))  //暂时不管地点不确定性推断
+                
+                const start_year = isValidYear(time_range[0])?time_range[0]:min_time, end_year = isValidYear(time_range[1])?time_range[1]:max_time
+                // 穷尽所有可能的点
+                for(let time = start_year; time <= end_year; time++) {
+                    let time_vec = new Array(vec_length).fill(time).map(elm=> (elm-min_time)/(max_time-min_time+1)*time_p)
+
+                    let all_event_vecs = [time_vec, ...addr_vecs, ...people_vec, trigger_vec, event_vec] 
+                    let mean_vec = all_event_vecs.reduce((total, vec)=>{
+                        // // console.log(vec.si)
+                        // if (vec.length!==vec_length) {
+                        //     console.warn(event, vec, '存在vec没有对齐')
+                        // }
+                        return total.map((elm, index)=> elm+vec[index])
+                    }, new Array(vec_length).fill(0))
+                    mean_vec = mean_vec.map(elm => elm/(time_p + addrs.length*addr_p + people.length*person_p + trigger_p))
+                    vecs.push(mean_vec)
+                    index2prob[index] = {
+                        event_id: event.id,
+                        year: time,
+                        addr_id: addrs.map(addr=> addr.id),  //这里之后要改呀
+                        people_id: people.map(person=> person.id),
+                        trigger: trigger.id,
+                        uncertainty_value: event.getUncertaintyValue()
                     }
-                })
-                if (event===center_event) {
-                    console.log(vec_dicts)
-                }
+                    index++
+                }                
             }
         })
 
-        
-        // console.log(event2vec)
-        let index2event2vec = {}
-        let vecs = []
-        let index = 0
-        for(let event_id in event2vec){
-            // eslint-disable-next-line no-loop-func
-            event2vec[event_id].forEach(vec=>{
-                vecs.push(vec.vec)
-                index2event2vec[index] = event_id
-                index++
-            })
-        }
-
         const opt = {
-            epsilon: 10,  // epsilon is learning rate (10 = default)
-            perplexity: 30, // roughly how many neighbors each point influences (30 = default)
+            epsilon: 30,  // epsilon is learning rate (10 = default)
+            perplexity: 10, // roughly how many neighbors each point influences (30 = default)
             dim: 2 // dimensionality of the embedding (2 = default)
         }
         let tsne = new tsnejs.tSNE(opt); // create a tSNE instance
-        console.log('开始计算TSNE', vecs.length)
-        tsne.initDataRaw(vecs);  //这里用dist会出问题
-        for(var k = 0; k <100; k++) {
-            tsne.step(); // every time you call this, solution gets better
+        if (vecs.length===0) {
+            this.setState({
+                event_mark_data: [],
+                uncertain_event_mark_data: []
+            })
+            return 
         }
-          
-        let new_vecs = tsne.getSolution(); // Y is an array of 2-D points that you can plot
-        // console.log(vecs, new_vecs)
-        let event_mark_data = [], uncertain_event_line= []
-        let main_people = center_event.roles.map(elm=> elm.person)
-        new_vecs.forEach((vec,index)=>{
-            let event_id = index2event2vec[index]
-            let event = eventManager.get(event_id)
-            let x = vec[0]
-            let y = vec[1]
-            let imp = event.roles.reduce((total, role)=>{
-                return total + event.getImp(role['person']) 
-            },0)/event.roles.length
+        tsne.initDataRaw(vecs);  //这里用dist会出问题
 
-            let main_people_num = main_people.reduce((total,person)=>{
-                // return Math.ceil(Math.random()*10)
-                return person.isIn(event)? 1:0
-            }, 0)
-            const color = d3.rgb(30, 30, 30).brighter()
-            // console.log(color, main_people_num, color.darker([main_people_num]), main_people)
-            let point = {
-                x: x, 
-                y: y,
-                year: vec.year,
-                addr:vec.addr,
-                event_id: event.id,
-                size: imp,
-                vec: vecs[index],
-                color: color.darker([main_people_num])
+        const refresh = ()=>{
+            console.log('开始计算TSNE', vecs.length)
+            for(var k = 0; k <25; k++) {
+                tsne.step();
             }
-            if (event===center_event) {
-                uncertain_event_line.push(point)
-            }else{
+
+            let new_vecs =  tsne.getSolution();
+            // console.log(vecs, new_vecs)
+            let event_mark_data = [], uncertain_event_mark_data= []
+            let main_people = center_event.getPeople()
+            new_vecs.forEach((new_vec,index)=>{
+                let prob = index2prob[index]
+                let event = eventManager.get(prob.event_id)
+                let x = new_vec[0]
+                let y = new_vec[1]
+                let imp = event.roles.reduce((total, role)=>{
+                    return total + event.getImp(role.person) 
+                },0)/event.roles.length
+
+                let main_people_num = main_people.reduce((total,person)=>{
+                    return person.isIn(event)? 1:0
+                }, 0)
+                
+                // console.log(color, main_people_num, color.darker([main_people_num]), main_people)
+                let point = {
+                    x: x, 
+                    y: y,
+                    year: prob.year,
+                    addr:prob.addr_id,
+                    event_id: prob.event_id,
+                    size: imp,
+                    vec: vecs[index],
+                }
+
+                if (event===center_event){
+                    point.color = 'red'
+                    // uncertain_event_mark_data.push(point)
+                }else{
+                    const color = d3.rgb(30, 30, 30).brighter()
+                    point.color = color.darker([main_people_num])
+                }
                 event_mark_data.push(point)
+            })
+            if (event_mark_data.length===1) {
+                event_mark_data[0].x = 0
+                event_mark_data[0].y = 0
             }
-        })
+            // uncertain_event_mark_data = uncertain_event_mark_data.sort((a,b)=>a.year-b.year)
+            this.setState({
+                event_mark_data: event_mark_data,
+                uncertain_event_mark_data: uncertain_event_mark_data
+            })
+        }
 
-        uncertain_event_line = uncertain_event_line.sort((a,b)=>a.year-b.year)
-        this.setState({
-            event_mark_data: event_mark_data,
-            uncertain_event_line: uncertain_event_line
-        })
+        // let func_arr = new Array(5).fill(()=> setTimeout(refresh, 1000))
+        // func_arr.reduce(function(cur, next) {
+        //     return cur.then(next);
+        // }, Promise.resolve()).then(function() {
+        //     console.log('job finished');
+        // });
+        refresh()
     }
 
     static get defaultProps() {
@@ -187,6 +261,30 @@ class InferContour extends React.Component {
           width: 800,
           height: 600,
         };
+    }
+
+
+    filtEvents = (events)=>{
+        const {selected_addrs, selected_triggers, selected_people, selected_years} =  this
+        const oneInAnother = (arr1, arr2)=>{
+            let is_in = false
+            arr1.forEach(elm1=>{
+                if (is_in) {
+                    return
+                }
+                if (arr2.includes(elm1)) {
+                    is_in = true
+                }
+            })
+            return is_in
+        }
+        return events.filter(event=> 
+            oneInAnother(event.getPeople(), selected_people) || 
+            oneInAnother(event.addrs, selected_addrs) || 
+            selected_triggers.includes(event.trigger) ||
+            selected_years.includes(event.time_range[0]) ||
+            (selected_addrs.length===0 && selected_people.length===0 && selected_people.length===0 && selected_years.length===0)
+        )
     }
 
     findSimilaerEvents = (show_event_mark_data, num)=>{
@@ -199,33 +297,29 @@ class InferContour extends React.Component {
     render(){
         console.log('render 基于contour的推理试图')
         let {width, height} = this.props
-        let {event_mark_data, hint_value, highlighting, selected_event, selected_area, uncertain_event_line} = this.state
-        // console.log(event_mark_data)
-        // let sim_addr_links = [], sim_year_links = [], sim_person_links = []
+        let {event_mark_data, highlighting, selected_event, selected_area, uncertain_event_mark_data, hint_value} = this.state
+        const {center_event, all_people, all_addrs, all_triggers, all_years} = this
+        let {trigger_p, addr_p, time_p, person_p} = this
+
         let show_event_mark_data = [] 
+        let hint_values = []
+        let neighbor_marks = []
         if (selected_event) {
             event_mark_data = event_mark_data.map(data=>{
-                let event = eventManager.get(data.event_id)
-                let temp_data = {
-                    x: data.x, 
-                    y: data.y,
-                    year: data.year,
-                    addr:data.addr,
-                    event_id: event.id,
-                    size: data.size,
-                    color: data.color,
-                    vec : data.vec
+                let temp_data = {}
+                for(let key in data){
+                    temp_data[key] = data[key]
                 }
-                if (event===selected_event) {
-                    // temp_data.color = temp_data.color.brighter([5])
-                    temp_data.color = 'red'
+                if (data.event_id===selected_event.id) {
+                    temp_data.color = 'blue'
                     temp_data.size = temp_data.size+2
-                    hint_value = temp_data
+                    hint_values.push(temp_data)
                 }
                 return temp_data
             })
 
-            show_event_mark_data = this.findSimilaerEvents(event_mark_data, 20)
+            show_event_mark_data = event_mark_data
+            // neighbor_marks = this.findSimilaerEvents(event_mark_data, 20)   //这里有问题呀
         }else{
             show_event_mark_data = event_mark_data
         }
@@ -236,158 +330,132 @@ class InferContour extends React.Component {
                 let {right, left, bottom, top} = area
                 return x<=right && x>=left && y<=top && y>=bottom
             }
-
+            let temp_hint_values =  hint_values.filter(mark_data=>is_in(mark_data, selected_area))
             let temp_show_event_mark_data = show_event_mark_data.filter(mark_data=>is_in(mark_data, selected_area))
-            let temp_uncertain_event_line = uncertain_event_line.filter(mark_data=>is_in(mark_data, selected_area))
-            if (temp_show_event_mark_data.length>1 || temp_uncertain_event_line.length>1) {
+            let temp_uncertain_event_mark_data = uncertain_event_mark_data.filter(mark_data=>is_in(mark_data, selected_area))
+            if (temp_show_event_mark_data.length>1 || temp_uncertain_event_mark_data.length>1 || temp_hint_values.length>1) {
                 show_event_mark_data = temp_show_event_mark_data
-                uncertain_event_line = temp_uncertain_event_line
+                uncertain_event_mark_data = temp_uncertain_event_mark_data
+                hint_values = temp_hint_values
             }
-    
         }
-        // 还要算个基于range的值不然很有可能小于1
-        const o_dist = (mark1, mark2) => 
-            Math.sqrt(
-                (mark1.x-mark2.x)*(mark1.x-mark2.x) +  
-                (mark1.y-mark2.y)*(mark1.y-mark2.y) 
-            )
         
-        const right_bar_width = 300, range_height = 150, range_left = 50
+        const right_bar_width = 300, range_height = 90, range_left = 50
+        let show_table_events = neighbor_marks.length!==0? neighbor_marks.map(elm=> eventManager.get(elm.event_id)) : show_event_mark_data.map(elm=> eventManager.get(elm.event_id))
+        show_table_events = [...new Set(show_table_events)]
+
         const onRangeChange = event=>{
             this.time_p = this.refs.time_p.value
             this.addr_p = this.refs.addr_p.value
             this.person_p = this.refs.person_p.value
             this.trigger_p = this.refs.trigger_p.value
-            this.calcualteEventMark()
-        }
-        const handleRowChange = ()=>{
-            console.log(this)
-        }
 
-        const updateFilter = area => {
-            // console.log(area)
-            if (area) {
-                this.setState({selected_area: area})
-            } else {
-                console.warn('no area!')
-            }
-        };
-
-        let show_table_events = show_event_mark_data.map(elm=> eventManager.get(elm.event_id))
-        show_table_events = [...new Set(show_table_events)]
-        // console.log(show_table_events)
-        // console.log(hint_value, highlighting)
-        console.log(uncertain_event_line)
+            this.range_lock++
+            let now_range_lock = this.range_lock
+            setTimeout(()=>{
+                if (this.range_lock===now_range_lock) {
+                    this.calcualteEventMark()
+                    this.range_lock = 0
+                }
+            }, 300)
+        }
         return(
         <div className='InferContour' style={{width:width, height:height}} 
             onMouseLeave={
                 ()=>this.setState(
                     {hint_value:undefined, selected_event:undefined, selected_area: undefined}
                 )}>
-            {/* 调节权重 */}
             <div style={{
                 left: width-right_bar_width+20, 
                 width:right_bar_width, 
-                height: range_height, 
-                background:'white', 
-                top:10, 
+                top:0, 
                 position:'absolute'}}>
-                <input type='range' ref='time_p' max={1} min={0}  step={0.1} onChange={onRangeChange} value={this.time_p} style={{top: range_height/5, left:range_left, position:'absolute'}}/>
-                <input type='range' ref='addr_p' max={1} min={0} step={0.1} onChange={onRangeChange} value={this.addr_p} style={{top: range_height/5*2, left:range_left, position:'absolute'}}/>
-                <input type='range' ref='person_p' max={1} min={0} step={0.1} onChange={onRangeChange} value={this.person_p} style={{top: range_height/5*3, left:range_left, position:'absolute'}}/>
-                <input type='range' ref='trigger_p' max={1} min={0} step={0.1} onChange={onRangeChange} value={this.trigger_p} style={{top: range_height/5*4, left:range_left, position:'absolute'}}/>
+                {center_event && center_event.toText()}
             </div>
-            {/* 显示其中的所有事件 */}
-            <div style={{
-                left: width-right_bar_width+20, 
-                width:right_bar_width, 
-                height:height-range_height-10, 
-                background:'white', 
-                top:10+range_height, 
-                position:'absolute', 
-                overflowY:'scroll'}}>
-                <Container className="lallalall" fluid >
-                    <Table celled size='small' striped compact singleLine collapsing sortable selectable>
-                    <Table.Header>
-                        <Table.Row>
-                        <Table.HeaderCell width={3}>起始年份</Table.HeaderCell>
-                        <Table.HeaderCell width={3}>结束年份</Table.HeaderCell>
-                        <Table.HeaderCell width={3}>事件类型</Table.HeaderCell>
-                        <Table.HeaderCell width={5}>人物/角色</Table.HeaderCell>
-                        <Table.HeaderCell width={3}>地点</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
+            {/* 调节权重 */}
+            <div style={{left: width-right_bar_width+20, width:right_bar_width, top:30, position:'relative'}}>
+                <div style={{top: 0,  width: right_bar_width}}>
+                    <div>时间:</div>
+                    <input type='range' ref='time_p' max={10} min={0}  step={1} onChange={onRangeChange} defaultValue={time_p}/>
+                    <Dropdown 
+                        fluid multiple search selection 
+                        placeholder='时间' 
+                        options={all_years.map(year=>{ return {'key': year, 'text': year, 'value':year}})}
+                        onChange={(event,{value})=>{
+                            this.selected_years = value.map(year=> parseInt(year))
+                            this.calcualteEventMark()
+                        }}/>
+                </div>
+                <div style={{top: 0,  width: right_bar_width}}>
+                    <div>地点:</div>
+                    <input type='range' ref='addr_p' max={10} min={0}  step={1} onChange={onRangeChange} defaultValue={addr_p}/>
+                    <Dropdown 
+                        fluid multiple search selection 
+                        placeholder='地点' 
+                        options={all_addrs.map(addr=>{ return {'key': addr.id, 'text': addr.name, 'value':addr.id}})}
+                        onChange={(event,{value})=>{
+                            const addrs = value.map(id=> addrManager.get(id))
+                            this.selected_addrs = addrs
+                            this.calcualteEventMark()
+                        }}/>
+                </div>
+                <div style={{top: 0,  width: right_bar_width}}>
+                    <div>人物:</div>
+                    <input type='range' ref='person_p' max={10} min={0}  step={1} onChange={onRangeChange} defaultValue={person_p}/>
+                    <Dropdown 
+                        fluid multiple search selection 
+                        placeholder='人物' 
+                        options={all_people.map(person=>{ return {'key': person.id, 'text': person.name, 'value':person.id}})}
+                        onChange={(event,{value})=>{
+                            const people = value.map(id=> personManager.get(id))
+                            this.selected_people = people
+                            this.calcualteEventMark()
+                        }}/>
+                </div>
+                <div style={{top: 0,  width: right_bar_width}}>
+                    <div>事件类型:</div>
+                    <input type='range' ref='trigger_p' max={10} min={0}  step={1} onChange={onRangeChange} defaultValue={trigger_p}/>
+                    <Dropdown 
+                        fluid multiple search selection 
+                        placeholder='事件类型' 
+                        options={all_triggers.map(trigger=>{ return {'key': trigger.id, 'text': trigger.name, 'value':trigger.id, 'object': trigger}})}
+                        onChange={(event,{value})=>{
+                            const triggers = value.map(id=> personManager.get(id))
+                            this.selected_triggers = triggers
+                            this.calcualteEventMark()
+                        }}/>
+                </div>
+            </div> 
 
-                    <Table.Body>
-                        {
-                        show_table_events.map(event=>{
-                            // const event = eventManager.get(data.event_id)
-                            // const text = event.toText()
-                            return(
-                                <Table.Row key={'table_row' + event.id} onClick={()=> this.setState({selected_event: event, hint_value:undefined})}>
-                                    <Table.Cell>{event.time_range[0]}</Table.Cell>
-                                    <Table.Cell>{event.time_range[1]}</Table.Cell>
-                                    <Table.Cell>{event.trigger.name}</Table.Cell>
-                                    <Table.Cell singleLine>
-                                        {
-                                            event.roles.map(elm=>{
-                                                return elm.person.name + '/' + elm.role
-                                            }).join(' ')
-                                        }
-                                    </Table.Cell>
-                                    <Table.Cell>{event.addrs.map(addr=>addr.name).join(',')}</Table.Cell>
-                                </Table.Row>
-                            ) 
-                        })
-                        }
-                    </Table.Body>
-                    </Table>                        
+            {/* 显示其中的所有事件 375*/}
+            <div style={{left: width-right_bar_width+20, width:right_bar_width, height:height-range_height-10, background:'white', top:375, position:'absolute', overflowY:'scorll', overflowX:'hidden'}}>
+                <Container fluid >
+                {
+                    event_mark_data.map(data=>{
+                        const event = eventManager.get(data.event_id)
+                        const text = event.toText()
+                        return(
+                            <Container key={'text_hahahaha'+event.id} fluid text textAlign='justified'>
+                                {text}
+                                <Divider />
+                            </Container>
+                        )          
+                    })
+                }                      
                 </Container>
             </div>
             <div style={{height:height, top:0, position:'absolute'}}>
                 <XYPlot
                 width={width-right_bar_width}
                 height={height}
-                animation
                 onMouseLeave={event=> this.setState({hint_value:undefined})}>  
 
-                    {/* <ContourSeries
-                        style={{
-                        // stroke: '#125C77',
-                        // strokeLinejoin: 'round'
-                        opacity: 0.5
-                        }}
-                        colorRange={[
-                        '#ffffff',
-                        '#f0f0f3',
-                        '#f0f0f3',
-                        '#f0f0f3',
-                        '#f0f0f3',
-                        '#f0f0f3',
-                        ]}
-                        data={uncertain_event_line}/> */}
-                    {/* {sim_addr_links.map((data,index)=> <LineSeries key={'sim_addr_link'+index} data={data} color='blue'/>)}
-                    {sim_person_links.map((data,index)=> <LineSeries key={'sim_person_link'+index} data={data} color='yellow'/>)} */}
-                    
-                    {
-                        // sim_year_links.map((data,index)=> 
-                        // <LineSeries 
-                        // key={'sim_year_link'+index}
-                        // opacity={1/o_dist(data[0], data[1])} 
-                        // data={data} 
-                        // color='gray'
-                        // />)
-                    }
-
                     <Highlight
-                        // onBrush={updateFilter}
                         onBrushEnd={area => this.setState({highlighting: false,selected_area: area})}
-                        // onDragEnd={area => this.setState({highlighting: false,selected_area: area})}
                         onBrushStart={area => this.setState({highlighting: true})}
-                        // drag
                     />
-                    <LineSeries
-                        data={uncertain_event_line}
+                    <LineMarkSeries
+                        data={uncertain_event_mark_data}
                         curve='curveMonotoneX'
                         color='#dcdcf1'
                         style={{
@@ -396,27 +464,45 @@ class InferContour extends React.Component {
                         }}
                     />
                     <MarkSeries
+                        animation
                         sizeRange={[2, 5]}
                         onValueClick={ value => {
-                            this.setState({hint_value:value, selected_event: undefined})
-                            // console.log(jsonFormat(value.event.toDict()))
+                            console.log(value)
+                            const event = eventManager.get(value.event_id)
+                            this.setState({selected_event: event})
                         }}
+                        // onValueMouseOver={value=> {
+                        //     if(!hint_value || (hint_value.x!==value.x && hint_value.y!==value.y)){
+                        //         this.setState({hint_value: value})
+                        //     }
+                        // }}
                         data={show_event_mark_data}
                         colorType= "literal"
                         opaceity={0.8}
                         style={{pointerEvents: highlighting ? 'none' : ''}}
                     />
                     {
-                        hint_value && 
-                        <Hint
+                        hint_values[0] && 
+                        hint_values.map(hint_value=>
+                            <Hint 
+                            value={hint_value}
+                            key={hint_value.x + '_' + hint_value.y}>
+                                <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
+                                    {eventManager.get(hint_value.event_id).toText()}
+                                </div>
+                            </Hint>
+                        )
+                    }
+                    {
+                        hint_value &&
+                        <Hint 
                         value={hint_value}
-                        >
+                        key={hint_value.x + '_' + hint_value.y}>
                             <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
                                 {eventManager.get(hint_value.event_id).toText()}
                             </div>
                         </Hint>
                     }
-
                     {/* <XAxis/>
                     <YAxis/> */}
                 </XYPlot>  
