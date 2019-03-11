@@ -14,12 +14,14 @@ import {
     // VerticalBarSeries,
     // VerticalBarSeriesCanvas,
     // DiscreteColorLegend,
+    Treemap,
     Hint,
     AreaSeries,
     LineMarkSeries,
     MarkSeries,
     LineSeries,
-    Highlight
+    Highlight,
+    LabelSeries
   } from 'react-vis';
 
 // import {observer, inject} from 'mobx-react';
@@ -34,9 +36,7 @@ class LifeLikePaint extends Component{
     selected_event_types = []
     all_events = []
 
-    socre_range = [-1,12]
-
-    infer = {}  //推断的事件对应年份
+    socre_range = [-1,35]
 
     constructor(){
         super()
@@ -46,7 +46,11 @@ class LifeLikePaint extends Component{
             showEventMark: undefined,
             prob_mark_data: [],
             prob_layout_data: [],
-            selected_prob_year: undefined
+            selected_prob_year: undefined,
+            event_tree_data: {
+                title: ''
+            },
+            trigger_label_data: []
         }
     }
 
@@ -67,21 +71,15 @@ class LifeLikePaint extends Component{
             this.all_events = dataStore.dict2array(data.events)
             // console.log(data)
             this.loadLifeLineData()
-        })
-        // 推测的那几个圆
-        net_work.require('infer_person', {person_id:selected_person.id})
-        .then(data=>{
-            // console.log(data)
-            this.infer = data.infer
-            data = dataStore.processResults(data.data)
             this.loadInferMarkData()
-        })   
+        })
     }
 
-    calculateScore(year2events, year, events, method, selected_person, types){
+    calculateScore(year2events, year, method, selected_person, types){
         // 加一个窗口 windows
         const windows_size = 5
-        for (let this_year = year-windows_size; this_year < year; this_year++) {
+        let events = []
+        for (let this_year = year-windows_size; this_year <= year; this_year++) {
             if (year2events[this_year]) {
                 events = [...events, ...year2events[this_year]]
             }
@@ -97,7 +95,6 @@ class LifeLikePaint extends Component{
         // console.log(type2events)
         let total_imp = events.reduce((total, event) => {
             let imp = event.getImp(selected_person) * Math.exp(-(year-event.time_range[0])/windows_size)
-            // console.log(imp, event.getImp(selected_person), event, Math.exp(-(year-event.time_range[0])/windows_size))
             return total+imp
         }, 0)
         // console.log(total_imp)
@@ -152,17 +149,30 @@ class LifeLikePaint extends Component{
     eventNumScale = num => Math.log(num+1)
 
     loadInferMarkData(){
-        const {yearScale, eventNumScale, infer, socre_range} = this
+        const {yearScale, eventNumScale, socre_range} = this
 
+        let {all_events} = this
+        all_events = all_events.filter(event=> !event.isTimeCertain())
+        // console.log(all_events)
         let year2events = {}
-        for(let event_id in infer){
-            let event = eventManager.get(event_id)
-            for(let year in infer[event_id]){
+        all_events.forEach(event=>{
+            let {prob_year} = event
+            // console.log(prob_year, event)
+            let max_prob = 0
+            let max_year = -9999
+            for(let year in prob_year){
                 year = parseInt(year)
-                year2events[year] = year2events[year] || []
-                year2events[year].push(event)
+                let prob = prob_year[year]
+                if (prob>max_prob) {
+                    max_prob = prob
+                    max_year = year
+                }
             }
-        }
+            if (max_year!==-9999) {
+                year2events[max_year] = year2events[max_year] || []
+                year2events[max_year].push(event)                
+            }
+        })
 
         let prob_layout_data = Object.keys(year2events).map(year=>{
             year = parseInt(year)
@@ -181,13 +191,14 @@ class LifeLikePaint extends Component{
             const events = year2events[year];
             // eslint-disable-next-line no-loop-func
             let mark_datas = events.map((event,index)=>{
-                let prob = parseFloat(infer[event.id][year])
+                let {prob_year} = event 
+                let prob = parseFloat(prob_year[year])
                 year = parseInt(year)
                 return {
                     x: yearScale(year),
                     y: index,
                     year: year,
-                    size: prob,
+                    size: prob*3,
                     opacity: prob,
                     prob: prob,
                     event_id: event.id
@@ -255,10 +266,10 @@ class LifeLikePaint extends Component{
             type2area_datas[type] = []
         })
         // parent_types = Object.keys(type2area_datas).sort()
-
-        years.forEach(year=>{
-            let events = year2events[year]
-            let scores = this.calculateScore(year2events, year, events, calcualte_method, selected_person, [...parent_types, '总'])
+        
+        for (let year = min_year; year <= max_year; year++){
+            let events = year2events[year] || []
+            let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
             // console.log(scores)
             let stack_y = 0
             // parent_types.forEach(type=>{
@@ -287,8 +298,7 @@ class LifeLikePaint extends Component{
                     color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
                 })   
             }
-
-        })
+        }
 
         let area_datas = []
         for(let type in type2area_datas){
@@ -306,67 +316,68 @@ class LifeLikePaint extends Component{
         area_datas = area_datas.filter(line_data=> area_datas.length>0)
         // console.log(area_datas)
 
-        // // 在line data上用area来编码事件
-        // area_datas.forEach(elm=>{
-        //     let {line_data, person} = elm
-            
-        //     line_data.forEach(point => {
-        //         let {events, x, y} = point
-        //         let this_graph_datas = {}
+        let all_events = selected_person.events
+        all_events = filtEvents(all_events)
+        parent_types = [...new Set(all_events.map(event=> event.trigger.parent_type))]
+        let tree_data = {
+            title: "",
+            color: Math.random(), 
+            children: parent_types.map(parent_type=>{
+                // let events = all_events.filtEvents(event=> event.trigger.parent_type===parent_type)
+                let types = [...new Set(all_events.map(event=> event.trigger.type))]
+                let events = all_events.filter(event=> event.trigger.parent_type===parent_type)
+                return {
+                    title: parent_type + '(' + events.length + ')',
+                    color: Math.random(), 
+                    size: events.length,
+                    // children: types.map(type=>{
+                    //     let triggers = [...new Set(all_events.map(event=> event.trigger.name))]
+                    //     let events = all_events.filter(event=> event.trigger.type===type)
+                    //     return {
+                    //         title: type,
+                    //         size: events.length,
+                    //         color: Math.random(), 
+                    //         // children: triggers.map(trigger=>{
+                    //         //     let events = all_events.filter(event=> event.trigger.name===trigger)
+                    //         //     return {
+                    //         //         title: trigger,
+                    //         //         size: events.length
+                    //         //     }
+                    //         // })
+                    //     }
+                    // })
+                }
+            })
+        }
+        
+        // 加载上面的词云
+        let all_triggers = all_events.map(event=> event.trigger)
+        all_triggers = [...new Set(all_triggers)]
 
-        //         events.forEach(event =>{
-        //             const max_left_angle = 90
-        //             const max_right_angle = 90
-        //             const score2angle = score =>{
-        //                 if (score<0) {
-        //                     return score/10*Math.abs(max_left_angle)/360*Math.PI
-        //                 }else{
-        //                     return score/10*Math.abs(max_right_angle)/360*Math.PI
-        //                 }
-        //             }
-        //             const area_width = 0.3
-        //             const area_height = 0.1
+        let trigger_label_data = []
+        all_triggers.forEach(trigger=>{
+            let events = all_events.filter(event=> event.trigger===trigger)
+            let certain_events = events.filter(event=> event.isTimeCertain())
+            if (certain_events.length===0) {
+                return
+            }
+            const name = trigger.getName()
+            let size = events.length
+            let x = certain_events.reduce((total, event)=> total+event.time_range[0], 0)/certain_events.length
+            let y = Math.random()*6+6  //需要改进，去重叠
 
-        //             let score = event.getScore(selected_person)
-        //             let angle = score2angle(score)
+            trigger_label_data.push({
+                x:x,
+                y:y,
+                label: name,
+                style: {fontSize: Math.log(Math.log(size+1)+1)*10},
+                event_ids: events.map(event=> event.id),
+                trigger_id: trigger.id
+            })
+        })
 
-        //             let x2 = Math.sin(angle) * area_width * 10 + x //10是因为比例导致的，之后要修改
-        //             let y2 = -Math.cos(angle) * area_width + y
 
-        //             this_graph_datas[x2] = this_graph_datas[x2] || {}
-        //             this_graph_datas[x2][y2] = this_graph_datas[x2][y2] || []
-
-        //             this_graph_datas[x2][y2].push({
-        //                 event: event,
-        //                 importance: Math.log( event.getImp(person) * 10000+1),
-        //                 data: [
-        //                     { x: x, y:y, y0:y-area_height},
-        //                     { x: x2, y:y2, y0:y2-area_height},
-        //                 ]
-        //             })
-        //             // console.log(event.getImp(person))
-        //         })
-        //         // 去除重叠
-        //         const margin_y = 0.1
-        //         let this_graph_data_array = []
-        //         for(let x in this_graph_datas){
-        //             for(let y in this_graph_datas[x]){
-        //                 let stack_graph_datas = this_graph_datas[x][y].map((data, index)=>{
-        //                     data.data = data.data.map(point=>{
-        //                         point.y -= margin_y  *index
-        //                         return point
-        //                     })
-        //                     return data
-        //                 })
-        //                 this_graph_data_array = [...this_graph_data_array, ...stack_graph_datas]
-        //             }
-        //         }
-
-        //         elm.event_graph_datas = [...elm.event_graph_datas, ...this_graph_data_array]
-        //     })
-        // })
-
-        this.setState({area_datas: area_datas})
+        this.setState({area_datas: area_datas, event_tree_data: tree_data, trigger_label_data: trigger_label_data})
     }
 
     
@@ -418,7 +429,6 @@ class LifeLikePaint extends Component{
         if (stateManager.is_ready) {
             let {selected_event_types} = this
             let trigger_name = label
-            // console.log(checked)
             if (checked) {
                 if (!selected_event_types.includes(trigger_name)) {
                     selected_event_types.push(trigger_name)
@@ -426,7 +436,6 @@ class LifeLikePaint extends Component{
             }else{
                 this.selected_event_types = selected_event_types.filter(elm=> elm!==trigger_name)
             }
-            // console.log(selected_event_types)
         }
         this.loadLifeLineData(selected_person)         
     }
@@ -435,7 +444,7 @@ class LifeLikePaint extends Component{
         const padding_bottom = 20
         const {height, width, selected_person} = this.props
         console.log('render lifeLikePaint 主视图', selected_person)
-        let {area_datas, showEventMark, prob_mark_data, prob_layout_data, selected_prob_year} = this.state
+        let {area_datas, showEventMark, prob_mark_data, prob_layout_data, selected_prob_year, event_tree_data,  trigger_label_data, selected_trigger} = this.state
 
         let x_domain = [
             Math.min(...area_datas.map(data=> data.x_domain[0]).filter(elm=>elm)),
@@ -443,12 +452,10 @@ class LifeLikePaint extends Component{
         ]
         let select_bar_width = 325
 
-        // 弹出推测时间
-        // console.log(selected_prob_year)
-        prob_mark_data = prob_mark_data.filter(data=> selected_prob_year && data.year===selected_prob_year)
+
+        prob_mark_data = prob_mark_data.filter(data=> selected_prob_year && data.year===selected_prob_year).filter(elm=> elm)
         prob_mark_data = prob_mark_data || []
         // console.log(prob_mark_data)
-        // console.log(prob_layout_data)
         return (
             <div style={{position:'absolute', height: height, width:width, paddingRight:10}}>
                 <div style={{
@@ -460,6 +467,12 @@ class LifeLikePaint extends Component{
                     overflowY:'scroll',
                 }}> 
                     <div>{selected_person.toText()}</div>
+                    <div>
+                        <Treemap
+                        width={select_bar_width-10}
+                        height={select_bar_width-10}
+                        data={event_tree_data}/>
+                    </div>
                 </div>
                 
                 <div style={{left:select_bar_width+5, top:0,position:'absolute'}}>
@@ -472,7 +485,41 @@ class LifeLikePaint extends Component{
                     yDomain={this.socre_range}
                     >
                     <XAxis/>
-                    <YAxis/>
+                    {/* <YAxis/> */}
+                    {
+                        selected_trigger && 
+                        area_datas.map(data=>{
+                            let type = data.type
+                            return data.line_data.map((point_data, index)=>{
+                                let events = point_data.events.map(id=> eventManager.get(id))
+                                events = events.filter(event=> event.trigger===selected_trigger)
+                                if (events.length>0) {
+                                    return (
+                                        <Hint value={point_data} key={type+ index + 'hint'}>
+                                        <div style={{ fontSize: 8,background: 'black', padding: '10px'}}>
+                                            {
+                                                events.map((event, index)=> 
+                                                    <div key={index+'hint_div'}>
+                                                        <span>{event.toText()}</span>  
+                                                    </div>  )
+                                            }
+                                        </div>
+                                        </Hint>   
+                                    )                                    
+                                }else{
+                                    return undefined
+                                }
+                            })
+                        })
+                    }
+                    {
+                        this.state.showEventMark&&
+                        <Hint value={showEventMark}>
+                            <div style={{ fontSize: 8,background: 'black', padding: '10px'}}>
+                                { eventManager.get(showEventMark.event_id) && eventManager.get(showEventMark.event_id).toText()}
+                            </div>
+                        </Hint>            
+                    }
                     {
                         this.randerLifeLine(area_datas)
                     }
@@ -486,28 +533,17 @@ class LifeLikePaint extends Component{
                         key='prob_marks_data'
                         sizeRange = {[1,10]}
                         data={prob_mark_data}
-                        animation
                         onNearestXY = {value => this.setState({showEventMark: value})}
                         onValueClick = {this.handleEventMarkClick}
                     />
-                    {
-                        this.state.showEventMark&&
-                        <Hint value={showEventMark}>
-                            <div style={{ fontSize: 8,background: 'black', padding: '10px'}}>
-                                {
-                                    // console.log(eventManager.get(showEventMark.event_id).toText())
-                                    eventManager.get(showEventMark.event_id).toText()
-                                }
-                                {/* {
-                                    showEventMark.events.map((show_event,index)=>
-                                        <div key={index+'show_event_event_matrix'}>
-                                            <span>{jsonFormat(show_event.toDict())}</span>  
-                                        </div>                               
-                                    )
-                                } */}
-                            </div>
-                        </Hint>            
-                    }
+                    <LabelSeries
+                        labelAnchorX = 'middle'
+                        labelAnchorY = 'middle'
+                        data={trigger_label_data}
+                        allowOffsetToBeReversed
+                        onValueMouseOut={value=> this.setState({selected_trigger: undefined})}
+                        onValueMouseOver={value=> this.setState({selected_trigger: triggerManager.get(value.trigger_id)})}
+                    />
                     </XYPlot>   
                 </div>             
             </div>

@@ -89,27 +89,26 @@ class App extends Component {
           style={{
             top: this.center_control_bar_top, 
             width:width, height:'10px', background:'gray', cursor:'s-resize', position:'absolute', left:0, zIndex:31}}
-            onMouseUp={ this.onCenterBarMouseUp}
-            onMouseDown={ this.onCenterBarMouseDown }
+            // onMouseUp={ this.onCenterBarMouseUp}
+            // onMouseDown={ this.onCenterBarMouseDown }
         >
         </div>
         {/* 加载的缓冲页面（未完成） */}
         <div ref='loading_div' className='loading_div' style={{ display:'none',width:width, height:height, position:"absolute", background:'white', opacity:0.5, zIndex:30 }}/>
-        
+      
+
+        <div style={{position:"absolute", top: center_control_bar_top+20, left:20}}>
+            <AddrSunBursts width={height-center_control_bar_top-30}/>
+        </div>
+
+        <div style={{position:"absolute", top: center_control_bar_top+20, left:height-center_control_bar_top-30+20}}>
+            <RelationMatrix width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
+        </div>
 
         {/* 新的推理视图 */}
-        <div style={{position:"absolute", top: center_control_bar_top+20, left:left_between_relation_infer+60}}>
-            <InferContour width={1100} height={height-center_control_bar_top-30}/>
+        <div style={{position:"absolute", top: center_control_bar_top+20, left:1200}}>
+            <InferContour width={1000} height={height-center_control_bar_top-30}/>
         </div>
-
-        <div style={{position:"absolute", top: center_control_bar_top+20, left:50}}>
-            <AddrSunBursts width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
-        </div>
-
-        {/* <div style={{position:"absolute", top: center_control_bar_top+20, left:50}}>
-            <RelationMatrix width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
-        </div> */}
-
       </div>
     );
   }

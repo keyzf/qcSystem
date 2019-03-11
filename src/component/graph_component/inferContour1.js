@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import {XYPlot,ContourSeries, YAxis, LineMarkSeries, MarkSeriesCanvas, LineSeriesCanvas, MarkSeries, LineSeries, Hint, XAxis, Highlight} from 'react-vis';
 import * as d3 from 'd3'
-import {autorun} from 'mobx';
+import {autorun, keys} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
 import dataStore, { eventManager, addrManager, personManager, isValidYear, filtEvents} from '../../dataManager/dataStore2'
@@ -65,7 +65,7 @@ class InferContour extends React.Component {
         if (stateManager.is_ready) {
             console.log('加载基于contour推理试图数据')
             let event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:event_id, depth:3, event_num:3000})
+            net_work.require('getAllRelatedEvents', {event_id:event_id, depth:3, event_num:1000})
             .then(data=>{
                 console.log(data)
                 data = dataStore.processResults(data.data)
@@ -128,19 +128,6 @@ class InferContour extends React.Component {
         let index2prob = {}, index = 0, vecs = []
         const vec_length = all_events[0].toVec().length
         all_events.forEach(event=>{
-            // || event===center_event
-            // if (event.isTimeCertain()) {
-            //     const event_vec = event.toVec()
-            //     vecs.push(event_vec)
-            //     index2prob[index] = {
-            //         event_id: event.id,
-            //         year: event.time_range[0],
-            //         addr_id: event.addrs.map(addr=> addr.id),  //这里之后要改呀
-            //         people_id: event.getPeople().map(person=> person.id),
-            //     }
-            //     index++
-            // }
-
             // 现在只做了时间
             if (event.isTimeCertain() || event===center_event) {
                 const {time_range, addrs, trigger} = event
@@ -150,17 +137,17 @@ class InferContour extends React.Component {
                     event_vec = event.toVec(),
                     addr_vecs = addrs.map(addrs=> addrs.toVec().map(elm => addr_p * elm))  //暂时不管地点不确定性推断
                 
-                const start_year = isValidYear(time_range[0])?time_range[0]:min_time, end_year = isValidYear(time_range[1])?time_range[1]:max_time
-                // 穷尽所有可能的点
-                for(let time = start_year; time <= end_year; time++) {
+                let years = [time_range[0]]
+                if (event===center_event) {
+                    years = Object.keys(event.prob_year).map(year=> parseInt(year))
+                    console.log(years, event)
+                }
+                years.forEach(year=>{
+                    let time = year
                     let time_vec = new Array(vec_length).fill(time).map(elm=> (elm-min_time)/(max_time-min_time+1)*time_p)
 
                     let all_event_vecs = [time_vec, ...addr_vecs, ...people_vec, trigger_vec, event_vec] 
                     let mean_vec = all_event_vecs.reduce((total, vec)=>{
-                        // // console.log(vec.si)
-                        // if (vec.length!==vec_length) {
-                        //     console.warn(event, vec, '存在vec没有对齐')
-                        // }
                         return total.map((elm, index)=> elm+vec[index])
                     }, new Array(vec_length).fill(0))
                     mean_vec = mean_vec.map(elm => elm/(time_p + addrs.length*addr_p + people.length*person_p + trigger_p))
@@ -173,8 +160,8 @@ class InferContour extends React.Component {
                         trigger: trigger.id,
                         uncertainty_value: event.getUncertaintyValue()
                     }
-                    index++
-                }                
+                    index++                    
+                })       
             }
         })
 
@@ -195,7 +182,7 @@ class InferContour extends React.Component {
 
         const refresh = ()=>{
             console.log('开始计算TSNE', vecs.length)
-            for(var k = 0; k <25; k++) {
+            for(var k = 0; k <50; k++) {
                 tsne.step();
             }
 
@@ -229,12 +216,12 @@ class InferContour extends React.Component {
 
                 if (event===center_event){
                     point.color = 'red'
-                    // uncertain_event_mark_data.push(point)
+                    uncertain_event_mark_data.push(point)
                 }else{
                     const color = d3.rgb(30, 30, 30).brighter()
                     point.color = color.darker([main_people_num])
+                    event_mark_data.push(point)
                 }
-                event_mark_data.push(point)
             })
             if (event_mark_data.length===1) {
                 event_mark_data[0].x = 0
@@ -245,6 +232,7 @@ class InferContour extends React.Component {
                 event_mark_data: event_mark_data,
                 uncertain_event_mark_data: uncertain_event_mark_data
             })
+            // console.log(uncertain_event_mark_data)
         }
 
         // let func_arr = new Array(5).fill(()=> setTimeout(refresh, 1000))
@@ -341,7 +329,8 @@ class InferContour extends React.Component {
         }
         
         const right_bar_width = 300, range_height = 90, range_left = 50
-        let show_table_events = neighbor_marks.length!==0? neighbor_marks.map(elm=> eventManager.get(elm.event_id)) : show_event_mark_data.map(elm=> eventManager.get(elm.event_id))
+        let show_table_events = show_event_mark_data.map(data=> eventManager.get(data.event_id))
+        // neighbor_marks.length!==0? neighbor_marks.map(elm=> eventManager.get(elm.event_id)) : show_event_mark_data.map(elm=> eventManager.get(elm.event_id))
         show_table_events = [...new Set(show_table_events)]
 
         const onRangeChange = event=>{
@@ -431,11 +420,10 @@ class InferContour extends React.Component {
             <div style={{left: width-right_bar_width+20, width:right_bar_width, height:height-range_height-10, background:'white', top:375, position:'absolute', overflowY:'scorll', overflowX:'hidden'}}>
                 <Container fluid >
                 {
-                    event_mark_data.map(data=>{
-                        const event = eventManager.get(data.event_id)
+                    show_table_events.map(event=>{
                         const text = event.toText()
                         return(
-                            <Container key={'text_hahahaha'+event.id} fluid text textAlign='justified'>
+                            <Container key={'text_'+event.id} fluid text textAlign='justified'>
                                 {text}
                                 <Divider />
                             </Container>
@@ -454,17 +442,8 @@ class InferContour extends React.Component {
                         onBrushEnd={area => this.setState({highlighting: false,selected_area: area})}
                         onBrushStart={area => this.setState({highlighting: true})}
                     />
-                    <LineMarkSeries
-                        data={uncertain_event_mark_data}
-                        curve='curveMonotoneX'
-                        color='#dcdcf1'
-                        style={{
-                            pointerEvents: highlighting ? 'none' : '',
-                            lineerEvents: highlighting ? 'none' : ''
-                        }}
-                    />
                     <MarkSeries
-                        animation
+                        // animation
                         sizeRange={[2, 5]}
                         onValueClick={ value => {
                             console.log(value)
@@ -480,6 +459,16 @@ class InferContour extends React.Component {
                         colorType= "literal"
                         opaceity={0.8}
                         style={{pointerEvents: highlighting ? 'none' : ''}}
+                    />
+                    <LineMarkSeries
+                        data={uncertain_event_mark_data}
+                        curve='curveMonotoneX'
+                        color='red'
+                        sizeRange={[2, 5]}
+                        style={{
+                            pointerEvents: highlighting ? 'none' : '',
+                            lineerEvents: highlighting ? 'none' : ''
+                        }}
                     />
                     {
                         hint_values[0] && 

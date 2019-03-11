@@ -380,7 +380,7 @@ class RealtionMatrix extends React.Component{
             },{
                 x: x, y: people_array.length*rect_width, x0: x0, y0: y //Y方向
             }]
-            console.log(hint_point_rect)
+            // console.log(hint_point_rect)
             hint_value.x = (x+x0)/2
             hint_value.y = (y+y0)/2
             if (personX && personY) {
@@ -397,7 +397,7 @@ class RealtionMatrix extends React.Component{
                     <XYPlot
                     width={svg_width}
                     height={svg_height}
-                    animation
+                    // animation
                     onMouseLeave={event => this.setState({hint_value: undefined})}
                     // xDomain={[0,people_array.length+6]}
                     // yDomain={[-2,people_array.length]}

@@ -9,125 +9,177 @@ import * as d3 from 'd3'
 import {observable, action, autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
-import dataStore, { eventManager, addrManager, personManager, isValidYear } from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, rangeGenrator } from '../../dataManager/dataStore2'
 import tsnejs from '../../dataManager/tsne'
 import { link } from 'fs';
 import { Header, Divider, Icon, Image, Menu, Segment, Sidebar, Container, Checkbox, Input, Grid, Label, Table, List, Button} from 'semantic-ui-react'
 
 
 const PI = Math.PI;
-
-function updateData() {
-  const divider = Math.floor(Math.random() * 8 + 3);
-  const newData = [...new Array(5)].map((row, index) => {
-    return {
-      color: index,
-      radius0: Math.random() > 0.8 ? Math.random() + 1 : 0,
-      radius: Math.random() * 3 + 1,
-      angle: ((index + 1) * PI) / divider,
-      angle0: (index * PI) / divider
-    };
-  });
-  return newData.concat([
-    {angle0: 0, angle: PI * 2 * Math.random(), radius: 1.1, radius0: 0.8}
-  ]);
-}
-
-function updateLittleData() {
-  const portion = Math.random();
-  return [
-    {
-      angle0: 0,
-      angle: portion * PI * 2,
-      radius0: 0,
-      radius: 10,
-    },
-    {
-      angle0: portion * PI * 2,
-      angle: 2 * PI,
-      radius0: 0,
-      radius: 10,
-    }
-  ];
-}
-
 class AddrSunBursts extends React.Component {
-  state = {
-    data: updateData(),
-    littleData: updateLittleData(),
-    value: false
-  };
+  addr2level = {}
+  addr2node = {}
+  nodes = []
+  level2num = {}
+  all_addrs = new Set()
+
+
+  show_level = 3 //默认显示的level
+
+  leaf_node_angle = PI/1000
+
+  center_addr = undefined
+
+  constructor(){
+    super()
+    this.state = {
+      // data: updateData(),
+      // littleData: updateLittleData(),
+      // value: false,
+      hint_value: undefined,
+      addr_arc_data: [],
+    };
+
+  }
+
+  _load_data = autorun(()=>{
+    if (stateManager.is_ready) {
+      this.center_addr = addrManager.get('addr_10989')
+      this.refresh()
+    }
+  })
+
+  // level2angle = (level)=>{
+  //   return Math.PI*2/Math.pow(2, level)
+  // }
+
+  addNode(addr, level, radius0, start_angle, end_angle){
+    let {addr2level, addr2node, nodes, all_addrs, leaf_node_angle} = this
+    if (all_addrs.has(addr)) {
+      console.warn(addr, '成环了')
+      return
+    }
+
+    const radius = radius0 + 10
+    addr2level[addr.id] = level
+    let node = {
+      angle0: start_angle,
+      angle: end_angle,
+      radius0: radius0,
+      radius: radius,
+      level: level,
+      color: level,
+      addr_id: addr.id
+    }
+    addr2node[addr.id] = node
+    nodes.push(node)
+
+    if (level===this.show_level-1) {
+      return
+    }
+    addr.sons.forEach( (son,index) => {
+      let leaf_addrs = son.getLeafAddrs()
+      let angle = start_angle + leaf_node_angle * leaf_addrs.length
+      this.addNode(son, level+1, radius+1, start_angle, angle)
+      start_angle = angle
+    });
+  }
+
+  refresh(){
+    let {show_level, center_addr} = this
+    this.all_addrs = new Set()
+    this.addr2level = {}
+    this.addr2node = {}
+    this.nodes = []
+    this.level2num = {}
+
+    if (!center_addr) {
+      console.warn('中心事件不存在')
+      return
+    }
+    console.log('更新地点', center_addr)
+
+    let leaf_addrs_num = center_addr.getLeafAddrs().length
+    this.leaf_node_angle = 2*PI/leaf_addrs_num
+    console.log(this.leaf_node_angle)
+
+    this.addNode(center_addr, 0, 0, 0, 2*PI)
+    let {addr2level, addr2node, nodes, all_addrs} = this
+
+    // 统计各个level的数量
+    let level2num = {}
+    let levels = dataStore.dict2array(addr2level)
+    let max_level = Math.max(...levels)
+    rangeGenrator(0,max_level).forEach(level=>{
+      level2num[level] = levels.filter(elm=> elm===level).length
+    })
+    this.level2num = level2num
+
+    this.setState({addr_arc_data: nodes})
+  }
+
+  componentWillMount(){
+
+  }
+
+  static get defaultProps() {
+    return {
+      width: 800,
+    };
+  }
+
+
   render() {
+    console.log('render 地点结构树')
+    let {addr_arc_data, hint_value} = this.state
+    let {width} = this.props
+
+    // console.log(addr_arc_data)
     return (
       <div>
-        <Button
-          onClick={() =>
-            this.setState({
-              data: updateData(),
-              littleData: updateLittleData()
-            })
-          }
-          buttonContent={'UPDATE'}
-        />
-        <XYPlot xDomain={[-5, 5]} yDomain={[-5, 5]} width={300} height={300}>
-          <XAxis />
-          <YAxis />
+        <XYPlot width={width} height={width} 
+        onMouseLeave={()=>{
+          this.center_addr=addrManager.get('addr_10989');
+          this.refresh()
+        }}>
+          {/* <XAxis />
+          <YAxis /> */}
           <ArcSeries
-            animation
-            radiusDomain={[0, 4]}
-            data={this.state.data.map(row => {
-              if (this.state.value && this.state.value.color === row.color) {
-                return {...row, style: {stroke: 'black', strokeWidth: '5px'}};
+            // animation
+            // radiusType={'literal'}
+            data={addr_arc_data}
+            center={{x: 0, y: 0}}
+            stroke='white'
+            style={{strokeWidth: 1}}
+            onValueClick={value=>{
+              const addr = addrManager.get(value.addr_id)
+              this.center_addr = addr
+              this.refresh()
+            }}
+            onNearestXY={
+              value=>{
+                this.setState({hint_value: value})
               }
-              return row;
-            })}
-            onValueMouseOver={row => this.setState({value: row})}
-            onSeriesMouseOut={() => this.setState({value: false})}
-            colorType={'category'}
+            }
           />
-          <ArcSeries
-            animation
-            radiusType={'literal'}
-            center={{x: -2, y: 2}}
-            data={this.state.littleData}
-            colorType={'literal'}
-          />
+          {
+            hint_value && 
+            <Hint value={hint_value}>
+                <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
+                    {
+                      (()=>{
+                        const addr = addrManager.get(hint_value.addr_id)
+                        return addr.getName()
+                      })()
+                    }
+                </div>
+            </Hint>
+          }
         </XYPlot>
       </div>
     );
   }
 }
 
-// class AddrSunBursts extends React.Component{
-//     render(){
-//         const PI = Math.PI
-//         const myData = [
-//             {angle0: 0, angle: Math.PI / 4, opacity: 0.2, radius: 2, radius0: 1},
-//             {angle0: PI / 4, angle: 2 * PI / 4, radius: 3, radius0: 0},
-//             {angle0: 2 * PI / 4, angle: 3 * PI / 4, radius: 2, radius0: 0},
-//             {angle0: 3 * PI / 4, angle: 4 * PI / 4, radius: 2, radius0: 0},
-//             {angle0: 4 * PI / 4, angle: 5 * PI / 4, radius: 2, radius0: 0},
-//             {angle0: 0, angle: 5 * PI / 4, radius: 1.1, radius0: 0.8}
-//           ]
-//         return (
-//             <div className='addr_sun_bursts'>
-//                 <XYPlot
-//                 xDomain={[-5, 5]}
-//                 yDomain={[-5, 5]}
-//                 width={300}
-//                 height={300}>
-//                     <ArcSeries
-//                         animation
-//                         radiusType={'literal'}
-//                         center={{x: 0, y: 0}}
-//                         data={myData}
-//                         colorType={'literal'}/>
-//                     <XAxis/>
-//                     <YAxis/>
-//                 </XYPlot>                
-//             </div>
-//         )
-//     }
-// }
 
 export default AddrSunBursts

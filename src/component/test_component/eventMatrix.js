@@ -115,7 +115,7 @@ class EventMatrix extends Component {
             }
 
             <LabelSeries
-                animation
+                // animation
                 allowOffsetToBeReversed
                 labelAnchorX ='middle'
                 labelAnchorY = 'middle'
