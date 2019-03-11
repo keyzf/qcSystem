@@ -15,21 +15,47 @@ import RelationMatrix from './component/test_component/relationMatrix'
 // import EventMatrix from './component/graph_component/eventMatrix1'
 // import people_list from './data/temp_data/all_persons.json'
 import PeopleSelector from './component/UI_component/peopleSelector'
-import UpContainer from './component/UI_component/upContainer'
-
-import { Header, Icon, Image, Menu, Segment, Sidebar, Container, Checkbox, Input, Grid, Label, Table, List} from 'semantic-ui-react'
+import MainPanel from './component/UI_component/mainPanel'
+import Map from './component/graph_component/mapChart'
+import { Dropdown, Input } from 'semantic-ui-react';
+import stateManager from './dataManager/stateManager';
+import {autorun} from 'mobx';
+import LifeLineMethod from './component/UI_component/lifeLineMethod';
+import { triggerManager,personManager } from './dataManager/dataStore2'
 // import { values } from 'mobx';
+import './main.scss';
 
 
 class App extends Component {
-  center_control_bar_top =  500
+  center_control_bar_top =  500;
+  calcualte_method_option = [
+    { key: '加权平均', text: '加权平均', value: '加权平均' },
+  ]
   constructor(){
-    super()
+    super();
     this.state = {
       // temp_center_control_bar_top: 500,   //拖动时的暂时数据
-      center_bar_is_move: false
+      center_bar_is_move: false,
+      person_options: [],
+      selected_people:[],
+      calcualte_method: this.calcualte_method_option[0].value
     }
   }
+    
+  _changeShowPeople = autorun(()=>{
+    if (stateManager.is_ready) {
+        let people_list = stateManager.show_people_list
+        let person_options = people_list.sort((a, b)=> b.page_rank-a.page_rank).map(person=> {
+          return {
+              'key': person.id,
+              'text': person.toText(),
+              'value': person.id,
+              'person': person
+          }
+        })
+        this.setState({person_options: person_options})            
+    }
+  })
   
   componentWillUpdate() {
     // document.onmousemove = null
@@ -73,19 +99,50 @@ class App extends Component {
   }
 
   render() {
-    console.log('render App')
+    console.log('render App');
+    let {person_options, selected_people, calcualte_method} = this.state
+    let calcualte_method_option = this.calcualte_method_option;
+    let relation=triggerManager.countTypes();
     const { width, height} = this.props
     let {center_bar_is_move, temp_center_control_bar_top} = this.state
     let center_control_bar_top = this.center_control_bar_top
     return (
-      <div className="App" style={{width:width, height:height, background:'#f0f0f3'}}>
+      <div id="wrap" style={{width:width, height:height}}>
         {/* 上半部分 */}
-        <div style={{position:"absolute", top:50, left:0}}>
-          <UpContainer width={width} height={center_control_bar_top-40}/>
+        <div id="selectview">
+          {/* 选择人物 */}
+          <div className="leftPanel">
+            <div className="title"></div>
+            <div className="container">
+            <label>筛选人物</label>
+              <Dropdown 
+                fluid multiple search selection 
+                placeholder='选择人物' 
+                options={person_options}
+                onChange={(event,{value})=>{
+                  stateManager.setSelectedPeople(value)
+                  this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
+                }}
+                // loading   //可以在之后添加
+              />
+              <label>计算方式（下拉选择）</label>
+              <Dropdown 
+              placeholder='选择分数计算方法' 
+              fluid selection 
+              options={calcualte_method_option} defaultValue= {calcualte_method_option[0].value} />
+              <LifeLineMethod
+                  data={relation} 
+                  // methods={this.calculate_methods}
+                  height={height}
+                  onChange={this.handleSelectBarChange}
+              />
+            </div>
+          </div>
+          <MainPanel height={700} calcualte_method={this.state.calcualte_method} selected_people={this.state.selected_people}/>
         </div>
 
         {/* 中间那根用于调整的杆子(要研究下为什么卡顿) */}
-        <div 
+        {/* <div 
           ref='center_control_bar'
           style={{
             top: this.center_control_bar_top, 
@@ -93,18 +150,26 @@ class App extends Component {
             onMouseUp={ this.onCenterBarMouseUp}
             onMouseDown={ this.onCenterBarMouseDown }
         >
-        </div>
+        </div> */}
         {/* 加载的缓冲页面（未完成） */}
-        <div ref='loading_div' className='loading_div' style={{ display:'none',width:width, height:height, position:"absolute", background:'white', opacity:0.5, zIndex:30 }}/>
+        {/* <div ref='loading_div' className='loading_div' style={{ display:'none',width:width, height:height, position:"absolute", background:'white', opacity:0.5, zIndex:30 }}/> */}
         
 
         {/* 新的推理视图 */}
-        <div style={{position:"absolute", top: center_control_bar_top+20, left:760}}>
-            <InferContour width={1100} height={height-center_control_bar_top-30}/>
-        </div>
+        <div id="footer">
+          <div id="mapview">
+            <header>Inference Tree Map</header>
+            <Map selected_people={this.state.selected_people}/>
+          </div>
+          <div id="matrixview">
+            <header>Inference Tree Map</header>
+            <RelationMatrix/>
+          </div>
 
-        <div style={{position:"absolute", top: center_control_bar_top+20, left:50}}>
-            <RelationMatrix width={700} height={height-center_control_bar_top-30}/>
+          <div id="relationview">
+            <header>Inference Tree Map</header>
+            <InferContour height={300}/>
+          </div>
         </div>
       </div>
     );

@@ -202,7 +202,8 @@ class TriggerManager extends Manager{
     this.parent_types = [...this.parent_types].sort()
     this.types = [...this.types].sort()
     this.names = [...this.names].sort()
-    // console.log(this.types, this.parent2types, this.parent_types, this.names)
+    console.log(this.types, this.parent2types, this.parent_types, this.names)
+    return this.parent2types;
   }
 
   // 提取事件组内的trigger关系

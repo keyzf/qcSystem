@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import '../node_modules/semantic-ui-css/semantic.min.css'
+import '../node_modules/semantic-ui-css/semantic.min.css';
+import applyDecoratedDescriptor from '@babel/runtime/helpers/esm/applyDecoratedDescriptor';
+import initializerDefineProperty from '@babel/runtime/helpers/esm/initializerDefineProperty';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

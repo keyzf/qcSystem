@@ -9,14 +9,17 @@ class StateManager{
 
     // 只影响主视图,现在估计没用了
     // 存储id,对象忒麻烦了
-    @observable selected_people_id = ['15072']
+    selected_people_id = observable({
+        id:['15072']
+    })
+    // @observable selected_people_id = ['15072']
     @action addSelectedPeople = (person) => {
-        this.selected_people_id.clear()
-        this.selected_people_id.push(person.id)
+        this.selected_people_id.id.clear()
+        this.selected_people_id.id.push(person.id)
         return
     }
     @action setSelectedPeople = (person_ids) => {
-        this.selected_people_id.replace(person_ids)
+        this.selected_people_id.id.replace(person_ids)
     }
     @action deleteSelectedPeople = (person) => {
         return
@@ -26,7 +29,7 @@ class StateManager{
         }   
     }
     @computed get selected_people(){
-        return this.selected_people_id.map(id=> personManager.get(id))
+        return this.selected_people_id.id.map(id=> personManager.get(id))
     }
     
     

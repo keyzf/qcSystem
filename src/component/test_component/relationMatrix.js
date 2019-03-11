@@ -179,7 +179,8 @@ class RealtionMatrix extends React.Component{
         console.log('render 关系矩阵')
         let { width, height} = this.props
         const left_part_width = 250
-        let svg_width = width-left_part_width>height?height:width-left_part_width
+        // let svg_width = width-left_part_width>height?height:width-left_part_width
+        let svg_width=width-80;
         let svg_height = svg_width
         let people_array = this.people_array
         let types = triggerManager.ownCountType(this.all_events)
@@ -234,13 +235,13 @@ class RealtionMatrix extends React.Component{
                     />
                     </XYPlot>
                 </div>
-                {/* 选择显示的类型 */}
+                {/* 选择显示的类型
                 <div style={{top: 0, left:svg_width+10, position:"absolute", height:height-50, width:left_part_width, overflowY:'scroll'}}>
                     <LifeLineMethod                         
                     data={types} 
                     onChange={this.handleSelectTypeChange}
                     />
-                </div>
+                </div> */}
 
             </div>
         )

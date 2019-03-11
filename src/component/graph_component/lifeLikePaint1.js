@@ -2,29 +2,33 @@
 import dataStore, { personManager, triggerManager } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
-import jsonFormat from 'json-format'
 import net_work from '../../dataManager/netWork'
-import LifeLineMethod  from '../UI_component/lifeLineMethod'
-import {
-    XYPlot,
-    XAxis,
-    YAxis,
-    // VerticalGridLines,
-    // HorizontalGridLines,
-    // VerticalBarSeries,
-    // VerticalBarSeriesCanvas,
-    // DiscreteColorLegend,
-    Hint,
-    AreaSeries,
-    LineMarkSeries,
-    MarkSeries,
-    LineSeries,
-    Highlight
-  } from 'react-vis';
+// import LifeLineMethod  from '../UI_component/lifeLineMethod'
+// import {
+//     XYPlot,
+//     // XAxis,
+//     YAxis,
+//     // VerticalGridLines,
+//     // HorizontalGridLines,
+//     // VerticalBarSeries,
+//     // VerticalBarSeriesCanvas,
+//     // DiscreteColorLegend,
+//     Hint,
+//     AreaSeries,
+//     // BarSeries,
+//     LineMarkSeries,
+//     MarkSeries,
+//     LineSeries,
+//     Highlight
+//   } from 'react-vis';
 
 // import {observer, inject} from 'mobx-react';
 // import {observable, action, autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
+import Axis from './Axis';
+import AreaLineChart from './AreaLineChart';
+import BubbleChart from './BubbleChart';
+import EventChart from './EventChart';
 // import { red } from 'ansi-colors';
 
 // 2019/2/25 线换成area，但是计算似乎出现了巨大的问题
@@ -32,15 +36,23 @@ class LifeLikePaint extends Component{
     selected_person = undefined
     selected_event_types = []
     all_events = []
+    xscale=d3.scaleLinear();
+    yscale=d3.scaleLinear();
+    uncertainHeight= 100;
+    maxy=0;
+    maxy_sum=0;
     // event_type = 
     constructor(){
         super()
        
         this.state = {
+            checked:false,
             area_datas: [],
             showEventMark: undefined,
             prob_mark_datas: [],
         }
+        this.handleEventMarkClick = this.handleEventMarkClick.bind(this);
+        this.changeViewType=this.changeViewType.bind(this);
     }
 
     componentWillMount(){
@@ -50,7 +62,7 @@ class LifeLikePaint extends Component{
         .then(data=>{
             data = dataStore.processResults(data)
             this.all_events = dataStore.dict2array(data.events)
-            // console.log(data)
+            console.log('eventdata',this.all_events)
             this.loadLifeLineData(selected_person)
         })
         // 推测的那几个圆
@@ -149,14 +161,14 @@ class LifeLikePaint extends Component{
     eventNumScale = num => Math.log(num+1)
 
     loadInferMarkData(data, infer){
-        // console.log(data, infer)
+        console.log('mark',data, infer)
         let {yearScale, scoreScale, eventNumScale} = this
         let id2event = data.events
         let mark_datas = []
         let event_array = []
-        let temp_index = 0
         for (let event_id in infer) {
             let mark_data = []
+            let tmp_data={}
             let event = id2event[event_id]
             event_array.push(event)
 
@@ -165,16 +177,13 @@ class LifeLikePaint extends Component{
                 year = parseInt(year)
                 mark_data.push({
                     x: yearScale(year),
-                    y: temp_index*(10/Object.keys(infer).length),  //0
-                    size: prob,
-                    opacity: prob,
-                    events: [event]
+                    // y: 0, // temp_index*(10/Object.keys(infer).length),  //0
+                    prob:prob
                 })
             }
-            mark_data = mark_data.sort((a,b)=>a.x-b.x)
-            mark_datas.push(mark_data)
-
-            temp_index++
+            tmp_data.events = mark_data.sort((a,b)=>a.x-b.x)
+            tmp_data.eventdata=event;
+            mark_datas.push(tmp_data);
         }
         this.setState({
             prob_mark_datas: mark_datas, 
@@ -190,6 +199,7 @@ class LifeLikePaint extends Component{
 
         let year2events = selected_person.year2events()
         let events = selected_person.getCertainEvents()
+        console.log(year2events,events);
         // 找到出生和死亡
         let birth_event = undefined, death_event = undefined
         events.forEach(event=>{
@@ -220,6 +230,8 @@ class LifeLikePaint extends Component{
         })
         // parent_types = Object.keys(type2area_datas).sort()
 
+        let maxy_sum=0;
+        let maxy=0;
         years.forEach(year=>{
             let events = year2events[year]
             let scores = this.calculateScore(year2events, year, events, calcualte_method, selected_person, [...parent_types, '总'])
@@ -227,7 +239,6 @@ class LifeLikePaint extends Component{
             let stack_y = 0
             parent_types.forEach(type=>{
                 let this_events = events.filter(event => event.trigger.parent_type===type)
-
                 if (scores[type] || scores[type]===0) {
                     // console.log(scoreScale(scores[type]), stack_y)
                     type2area_datas[type].push({
@@ -240,19 +251,25 @@ class LifeLikePaint extends Component{
                     })
                     stack_y += scoreScale(scores[type])   
                 }
+                if(maxy<stack_y){maxy=stack_y};
             })
-            // if (scores['总'] || scores['总]===0){
-            //     type2area_datas['总'].push({
-            //         x: yearScale(year),
-            //         y: scoreScale(scores['总']),
-            //         size: eventNumScale(events.length),
-            //         events: events,
-            //         color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
-            //     })   
-            // }
-
+            if (scores['总'] || scores['总']===0){
+                type2area_datas['总'].push({
+                    x: yearScale(year),
+                    y: scoreScale(scores['总']),
+                    y0: 0,
+                    size: eventNumScale(events.length),
+                    events: events,
+                    color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
+                })   
+            }
+            if(maxy_sum<scoreScale(scores['总'])){
+                maxy_sum=scoreScale(scores['总']);
+            }
         })
-
+        this.maxy=maxy;
+        this.maxy_sum=maxy_sum;
+        console.log('type',type2area_datas);
         let area_datas = []
         for(let type in type2area_datas){
             area_datas.push({
@@ -263,11 +280,11 @@ class LifeLikePaint extends Component{
                 x_domain: [
                     birth_event?birth_event.time_range[0]:min_year, 
                     death_event?death_event.time_range[0]:max_year
-                ] 
+                ],
             })
         }
         area_datas = area_datas.filter(line_data=> area_datas.length>0)
-        // console.log(area_datas)
+        console.log('area',area_datas)
 
         // 在line data上用area来编码事件
         area_datas.forEach(elm=>{
@@ -302,10 +319,9 @@ class LifeLikePaint extends Component{
                     this_graph_datas[x2][y2].push({
                         event: event,
                         importance: Math.log( event.getImp(person) * 10000+1),
-                        data: [
-                            { x: x, y:y, y0:y-area_height},
-                            { x: x2, y:y2, y0:y2-area_height},
-                        ]
+                        data: { x: x, y:y}
+                            // { x: x, y:y, y0:y-area_height},
+                            // { x: x2, y:y2, y0:y2-area_height},
                     })
                     // console.log(event.getImp(person))
                 })
@@ -315,16 +331,15 @@ class LifeLikePaint extends Component{
                 for(let x in this_graph_datas){
                     for(let y in this_graph_datas[x]){
                         let stack_graph_datas = this_graph_datas[x][y].map((data, index)=>{
-                            data.data = data.data.map(point=>{
-                                point.y -= margin_y  *index
-                                return point
-                            })
+                            // data.data = data.data.map(point=>{
+                            //     // point.y -= margin_y  *index
+                            //     return point
+                            // })
                             return data
                         })
                         this_graph_data_array = [...this_graph_data_array, ...stack_graph_datas]
                     }
                 }
-
                 elm.event_graph_datas = [...elm.event_graph_datas, ...this_graph_data_array]
             })
         })
@@ -335,53 +350,53 @@ class LifeLikePaint extends Component{
     
     static get defaultProps() {
         return {
-          width: 800,
+          width: 1000,
           height: 600,
         };
     }
 
-    randerLifeLine = (area_datas) => 
-        area_datas.map(elm=> [
-            <AreaSeries
-                key = {elm.person.id + '_' + elm.type}
-                sizeRange = {[0,10]}
-                data={elm.line_data}
-                curve='curveMonotoneX' //{d3.curveCardinal}
-                onValueClick={this.handleEventMarkClick}
-                colorType= "literal"
-                opacity='0.2'
-                // stroke={elm.type.search("2")!==-1? 'black': 'gray' }
-            />,
-            elm.event_graph_datas.map(graph_data=>{
-                // console.log(graph_data)
-                return (
-                    <LineSeries 
-                    data={graph_data.data} 
-                    curve={'curveMonotoneX'} 
-                    strokeWidth={graph_data.importance}
-                    color='gray' 
-                    onValueClick = { value=> console.log(value)}
-                    opacity='0.1'/> //                    
-                )
+    // randerLifeLine = (area_datas) => 
+    //     area_datas.map(elm=> [
+    //         <AreaSeries
+    //             key = {elm.person.id + '_' + elm.type}
+    //             sizeRange = {[0,10]}
+    //             data={elm.line_data}
+    //             // curve='curveMonotoneX' //{d3.curveCardinal}
+    //             // onValueClick={this.handleEventMarkClick}
+    //             // colorType= "literal"
+    //             opacity='0.2'
+    //             // stroke={elm.type.search("2")!==-1? 'black': 'gray' }
+    //         />,
+    //         // elm.event_graph_datas.map(graph_data=>{
+    //         //     // console.log(graph_data)
+    //         //     return (
+    //         //         <LineSeries 
+    //         //         data={graph_data.data} 
+    //         //         curve={'curveMonotoneX'} 
+    //         //         strokeWidth={graph_data.importance}
+    //         //         color='gray' 
+    //         //         onValueClick = { value=> console.log(value)}
+    //         //         opacity='0.1'/> //                    
+    //         //     )
 
-            })
-        ]
+    //         // })
+    //     ]
 
-        )
-    renderProbEventMark = (prob_mark_datas)=>
-        prob_mark_datas.map(elm=>
-            <MarkSeries
-                key={elm[0].events[0].id + '_prob_marks'}
-                sizeRange = {[1,10]}
-                data={elm}
-                onValueClick={this.handleEventMarkClick}
-            />
-        )
+    //     )
+    // renderProbEventMark = (prob_mark_datas)=>
+    //     prob_mark_datas.map(elm=>
+    //         <MarkSeries
+    //             key={elm[0].events[0].id + '_prob_marks'}
+    //             sizeRange = {[1,10]}
+    //             data={elm}
+    //             onValueClick={this.handleEventMarkClick}
+    //         />
+    //     )
 
     handleEventMarkClick = (value) => {
         console.log(value)
         this.setState({showEventMark:value})
-        stateManager.setSelectedEvent(value.events[0])
+        stateManager.setSelectedEvent(value.eventdata)
     }
 
     handleSelectBarChange = (event, {checked, my_type, label})=>{
@@ -403,27 +418,61 @@ class LifeLikePaint extends Component{
         this.loadLifeLineData(selected_person)         
     }
 
+    changeViewType=()=>{
+        this.setState({
+            checked: !this.state.checked
+        });
+    }
+
+    static get defaultProps() {
+        return {
+            padding:{
+                right: 50,
+                left: 50,
+                top:10,
+                bottom:10
+            }
+        };
+    }
+
     render(){
         const padding_bottom = 20
-        const {height, width, selected_person} = this.props
+        const {height, width, padding, selected_person} = this.props
         console.log('render lifeLikePaint 主视图', selected_person)
-        let {area_datas, showEventMark, prob_mark_datas} = this.state
-
-        let ownCountType = triggerManager.ownCountType(this.all_events)
-
+        let {area_datas, showEventMark, prob_mark_datas} = this.state;
+        console.log('prob',prob_mark_datas);
+        let svgWidth=width-padding.left-padding.right;
+        let svgHeight=height-padding.top-padding.bottom;
+        // let ownCountType = triggerManager.ownCountType(this.all_events)
         let x_domain = [
             Math.min(...area_datas.map(data=> data.x_domain[0]).filter(elm=>elm)),
             Math.max(...area_datas.map(data=> data.x_domain[1]).filter(elm=>elm))
         ]
 
+        this.xscale.domain(x_domain)
+                   .range([0,svgWidth]);
+        this.yscale.domain([0,this.maxy_sum])
+                   .range([svgHeight-this.uncertainHeight,0]);
+
         // console.log(area_datas.map(data=> data.x_domain[0]).filter(elm=>elm),x_domain)
         let select_bar_width = 325
+        console.log('state',area_datas)
         return (
-            <div style={{position:'absolute', height: height, width:width, paddingRight:10}}>
-                <div style={{
+            <div className="lifeMountain" style={{ height: height, width:width}}>
+                <div className="ui toggle checkbox">
+                    <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
+                    <label>分类视图</label>
+                </div>
+                <svg width={svgWidth} height={svgHeight} transform={`translate(${padding.left},${padding.top})`}>
+                    <Axis xscale={this.xscale} translate={`translate(0, ${svgHeight-this.uncertainHeight})`}></Axis>
+                    <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={this.xscale} yscale={this.yscale} translate={`translate(0, ${height-this.uncertainHeight})`} viewType={this.state.checked}></AreaLineChart>
+                    <EventChart data={area_datas.map((d)=>d.event_graph_datas)} xscale={this.xscale} yscale={this.yscale} translate={`translate(0, ${height-this.uncertainHeight})`} viewType={this.state.checked}></EventChart>
+                    <BubbleChart data={prob_mark_datas} areaHeight={svgHeight-this.uncertainHeight} translate={`translate(0, ${svgHeight-this.uncertainHeight+20})`} xscale={this.xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
+                </svg>
+                
+                {/* <div style={{
                     left:0, 
                     top:0,
-                    position:'absolute',
                     width:select_bar_width, 
                     height: height-padding_bottom,
                     overflowY:'scroll',
@@ -435,11 +484,11 @@ class LifeLikePaint extends Component{
                         height={height}
                         onChange={this.handleSelectBarChange}
                     />
-                </div>
-                
-                <div style={{left:select_bar_width+5, top:0,position:'absolute'}}>
+                </div> */}
+           
+                {/* <div>
                     <XYPlot
-                    width={width-select_bar_width}
+                    width={width*0.9}
                     height={(height-padding_bottom)/1}
                     onMouseLeave = {()=> this.setState({showEventMark: undefined})}
                     xDomain={x_domain}
@@ -468,7 +517,7 @@ class LifeLikePaint extends Component{
                         </Hint>            
                     }
                     </XYPlot>   
-                </div>             
+                </div>          */}
             </div>
 
         )

@@ -14,7 +14,7 @@ import dataStore, { eventManager, addrManager, personManager, isValidYear } from
 import tsnejs from '../../dataManager/tsne'
 import { link } from 'fs';
 import { Header, Divider, Icon, Image, Menu, Segment, Sidebar, Container, Checkbox, Input, Grid, Label, Table, List} from 'semantic-ui-react'
-
+import './inferContour.scss';
 class InferContour extends React.Component {
     constructor(){
         super()
@@ -179,8 +179,8 @@ class InferContour extends React.Component {
 
     static get defaultProps() {
         return {
-          width: 800,
-          height: 600,
+          width: 1000,
+          height: 340,
         };
     }
 
@@ -226,31 +226,8 @@ class InferContour extends React.Component {
         
             const right_bar_width = 300
         return(
-        <div className='InferContour' style={{width:width, height:height}}>
-            {/* 显示其中的所有事件 */}
-            <div style={{
-                left: width-right_bar_width+20, 
-                width:right_bar_width, 
-                height:height, 
-                background:'white', 
-                top:0, 
-                position:'absolute', 
-                overflowY:'scroll'}}>
-                {   
-
-                    event_mark_data.map(data=>{
-                        const event = data.event
-                        const text = event.toText()
-                        return(
-                            <Container key={'text_hahahaha'+event.id} fluid text textAlign='justified'>
-                                {text}
-                                <Divider />
-                            </Container>
-                        )          
-                    })
-                }
-            </div>
-            <div style={{height:height, top:0, position:'absolute'}}>
+        <div className='infercontour' style={{width:width, height:height}}>
+            <div className="relationPlot">
                 <XYPlot
                 width={width-right_bar_width}
                 height={height}
@@ -302,7 +279,25 @@ class InferContour extends React.Component {
                     <YAxis/>
                 </XYPlot>  
             </div>
+            {/* 显示其中的所有事件 */}
+            <div className="eventtable" style={{
+                left: width-right_bar_width, 
+                width:right_bar_width-12, 
+                height:height}}>
+                {   
 
+                    event_mark_data.map(data=>{
+                        const event = data.event
+                        const text = event.toText()
+                        return(
+                            <Container key={'text_hahahaha'+event.id} fluid text textAlign='justified'>
+                                {text}
+                                <Divider />
+                            </Container>
+                        )          
+                    })
+                }
+            </div>
         </div>
         )
     }

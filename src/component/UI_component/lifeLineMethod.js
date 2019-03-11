@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Checkbox, List} from 'semantic-ui-react'
+import './lifeLineMethod.scss';
 
 class LifeLineMethod  extends Component {
 
     render() {
         let {data, onChange} = this.props
         return (
-            <div>
+            <div id={'listTable'}>
                 <List bulleted>
                     <List.Item  as='li'>
                         <List.Header>事件类型</List.Header>
@@ -19,7 +20,7 @@ class LifeLineMethod  extends Component {
                                     <List.Header><Checkbox label={parent_type}  my_type='parent_type' onChange={onChange}/></List.Header>
                                     <List.List as='ul'>
                                         {
-                                            false?Object.keys(types).sort().map(type=>{
+                                            true?Object.keys(types).sort().map(type=>{
                                                 let triggers = types[type]
                                                 return (
                                                     <List.Item  as='li' key={type+'check_box'}>

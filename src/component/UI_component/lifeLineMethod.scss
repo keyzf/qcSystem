@@ -1,0 +1,10 @@
+#listTable{
+  overflow-y: scroll;
+  height:82%;
+  .ui.bulleted.list{
+    margin-left: 0;
+  }
+  ul{
+    padding-left: 12px;
+  }
+}
