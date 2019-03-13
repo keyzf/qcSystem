@@ -28,6 +28,7 @@ class EventMatrix extends Component {
             console.log('_changeSelectedEevnt')
             net_work.require('getRelatedEvents', {event_id:event_id})
             .then(data=>{
+                console.log(data)
                 let graph_data = dataStore.processResults(data.data)
                 let {events, addrs, people} = graph_data
                 // console.log(events, addrs, people)

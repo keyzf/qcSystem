@@ -6,14 +6,16 @@ import event2score from '../data/temp_data/event2score.json'   //事件打分
 import stateManager from './stateManager'
 import 'whatwg-fetch'
 import net_work from './netWork'
-import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
-import { set, _isComputingDerivation } from 'mobx';
+// import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
+// import { set, _isComputingDerivation } from 'mobx';
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
-import jsonFormat from 'json-format'
+import { set } from 'mobx';
+// import jsonFormat from 'json-format'
 
-// import { totalmem } from 'os';
-// import { set } from 'mobx';
 // import {observable, action} from 'mobx';
+
+// 显示中文还是英文
+var IS_EN = true
 
 class DataStore{
   constructor(){
@@ -29,20 +31,19 @@ class DataStore{
   }
 
   processInitData(data){
-    console.log(data)
-    let {people, addrs, triggers, trigger_imp, trigger2vec} = data
+    // console.log(data)
+    let {people, addrs, triggers, trigger_imp} = data
     let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
     // console.log(trigger_imp, people)
     this.trigger_imp = trigger_imp
-    this.trigger2vec = trigger2vec
 
     // console.log(trigger_imp)
     for(let person_id in people){
       let person = people[person_id]
       person = personManager.create(person)
       if(person.certain_event_num>10 && person.dy===15)
-        can_selected_list.add(person.id)
+        can_selected_list.add(person)
     }
     stateManager.setShowPeopleList([...can_selected_list])
 
@@ -70,13 +71,19 @@ class DataStore{
 
   // 将对象处理，连接
   processResults(results){
-    // console.log(triggerManager.id2object, this.dict2array(eventManager.id2object).filter(event=>!event.trigger))
     let {events, addrs, people} = results
     results.triggers = {}
-    // console.log(results)
-    // 注意包含son parents没弄
+
     for(let addr_id in addrs){
       addrs[addr_id] = addrManager.create(addrs[addr_id])
+    }
+    for(let addr_id in addrs){
+      let addr = addrManager.get(addr_id)
+      let {sons, parents} = addrs[addr_id]
+      // eslint-disable-next-line no-loop-func
+      sons.forEach(son_id=> addr.addSon(addrManager.get(son_id)))
+      // eslint-disable-next-line no-loop-func
+      parents.forEach(parent_id=> addr.addParent(addrManager.get(parent_id)))
     }
 
     for(let person_id in people){
@@ -84,11 +91,19 @@ class DataStore{
     }
 
     for(let event_id in events){
+      const _object = events[event_id]
       let event = eventManager.get(event_id)
       // console.log(event)
       if (!event) {
         event = eventManager.create(events[event_id])
       }
+      
+      if (Object.keys(event.prob_addr).length>0) {
+        event.prob_addr = _object.prob_addr
+        event.prob_person = _object.prob_person
+        event.prob_year = _object.prob_year
+      }
+
       event.addrs.forEach(addr => {
         addrs[addr.id] = addr
       });
@@ -96,8 +111,7 @@ class DataStore{
         let person = role['person']
         people[person.id] = person
       });
-      // console.log(event)
-      
+
       results.triggers[event.trigger.id] = event.trigger
       events[event_id] = event
     }
@@ -141,6 +155,10 @@ class Manager {
     }else{
       return this.create(_object) 
     }
+  }
+
+  getByName(_name){
+    return this.id_set.filter(elm=> elm.name && elm.name===_name)
   }
 
   create(_object){
@@ -202,8 +220,20 @@ class TriggerManager extends Manager{
     this.parent_types = [...this.parent_types].sort()
     this.types = [...this.types].sort()
     this.names = [...this.names].sort()
-    console.log(this.types, this.parent2types, this.parent_types, this.names)
-    return this.parent2types;
+    return this.parent2types
+    // console.log(this.types, this.parent2types, this.parent_types, this.names)
+  }
+
+  getAlltypes(){
+    this.names = new Set()
+    this.types = new Set()
+    this.parent_types = new Set()
+    for(let id in this.id2object){
+      let elm = this.id2object[id]
+      this.names.add(elm.name)
+      this.types.add(elm.type)
+    }
+    return [...this.names, ...this.types, this.parent_types]
   }
 
   // 提取事件组内的trigger关系
@@ -233,6 +263,7 @@ class EventManager extends Manager{
       "score": 9
     }
     for(let trigger in this.event2score){
+      // 暂时用于使其为正
       this.event2score[trigger].score = parseInt(this.event2score[trigger].score)
     }
 
@@ -241,6 +272,16 @@ class EventManager extends Manager{
     this.pingji = ['正一品','从一品','正二品','从二品','正三品','从三品','正四品上','正四品','正四品下','从四品上', '从四品', '从四品下','正五品上','正五品', '正五品下','从五品上', '从五品','从五品下','正六品上','正六品','正六品下','从六品上', '从六品', '从六品下','正七品上', '正七品', '正七品下', '从七品上', '从七品', '从七品下', '正八品上','正八品', '正八品下','从八品上','从八品', '从八品下', '正九品下', '正九品', '正九品下','从九品上', '从九品', '从九品下']
     this.pingji = this.pingji.reverse()
     this.guanzhi2pingji = guanzhi_pingji
+  }
+
+  array2year2events(events){
+    let year2events = {}
+    events.forEach(event=>{
+      let year = isValidYear(event.time_range[0])?event.time_range[0]:event.time_range[1]
+      year2events[year] = year2events[year] || []
+      year2events[year].push(event)
+    })
+    return year2events
   }
 
   // 评分有重大问题呀，没有角色
@@ -296,6 +337,14 @@ class Event{
       }
     })
     this.time_range = _object.time_range
+
+    this.vec = _object.vec
+
+
+    this.prob_year = _object.prob_year
+    this.prob_addr = _object.prob_addr
+    this.prob_person = _object.prob_person
+    // console.log(this.prob_year, this.prob_addr, this.prob_person, _object)
   }
 
   getPeople(){
@@ -335,19 +384,29 @@ class Event{
     return trigger_imp*ops_person.page_rank
   }
 
-  getScore(person){
-    // for (let index = 0; index < this.roles.length; index++) {
-    //   const role = this.roles[index];
-    //   if (role['person']===person) {
-    //     return eventManager.getScore(this, role['role'])
-    //   }
-    // }
-    return eventManager.getScore(this, this.getRole(person))
-    // console.warn(person, '根本没参与算个鬼的score')
-    // return 0
+  // 返回一个计算不确定度的度量
+  getUncertaintyValue(){
+    const {time_range, addrs, trigger} = this
+    const people = this.getPeople()
+    let uncertainty_value = 1, 
+        time_uncertainty = time_range[1]-time_range[0], 
+        addr_uncertainty = addrs.length==1? 0: Math.abs(addrs.length-1),
+        trigger_uncertainty = 0,
+        people_uncertainty = 0 //定义不确定度
+    return uncertainty_value /= (time_uncertainty+addr_uncertainty+trigger_uncertainty+people_uncertainty+1)
   }
 
-  isCertain(){
+  toVec(){
+    return this.vec
+    // return [...this.vec]
+  }
+  
+  getScore(person){
+    const role = this.getRole(person), role2score = this.trigger.role2score
+    return role2score[role] || 0
+  }
+
+  isTimeCertain(){
     return isCertainTimeRange(this.time_range)
   }
 
@@ -355,31 +414,35 @@ class Event{
   toText(){
     const {addrs, roles, time_range, trigger} = this
     const time_text = '[' + time_range[0] + ',' + time_range[1] + ']'
-    const addr_text = addrs.map(addr=> addr.name).join(',')
+    let  addr_text = addrs.map(addr=> addr.name).join(',')
+    addr_text = addr_text!==''? '于' + addr_text : addr_text
     let main_person = '未知人物', second_person = '未知人物', third_roles = []
     roles.forEach(elm=>{
       const person = elm.person
+      const name = person.getName()
       // console.log(elm, person)
       const role = elm.role
       if (role==='主角') {
-        main_person = person.name
+        main_person = name
       }else if(role==='对象'){
-        second_person = person.name
+        second_person = name
       }else{
-        third_roles.push(role + ' ' + person.name)
+        third_roles.push(role + ' ' + name)
       }
     })
     
     let person_text = main_person
-    if(trigger.name.indexOf('Y')!==-1){
-      person_text += trigger.name.replace('Y', second_person)
+    let trigger_name = trigger.getName()
+    // console.log(trigger)
+    if(trigger_name.indexOf('Y')!==-1){
+      person_text += trigger_name.replace('Y', second_person)
     }else{
-      person_text += trigger.name + (second_person==='未知人物'?'':second_person)
+      person_text += trigger_name + (second_person==='未知人物'?'':second_person)
     }
-    return time_text + ' ' + addr_text + ' ' + person_text
-    // return jsonFormat(this.toDict())
+    
+    return (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
   }
-
+  
   toDict(){
     return {
       id: this.id,
@@ -414,21 +477,30 @@ class Person{
   constructor(_object){
     // console.log(_object)
     this.id = _object.id
+
     this.name = _object.name
+    this.en_name = _object.en_name
 
     this.certain_event_num = parseInt(_object.certain_events_num)
     this.event_num = parseInt(_object.events_num)
 
     this.birth_year = parseInt(_object.birth_year)
     this.death_year = parseInt(_object.death_year)
+
+    // 这个似乎可以去掉了
     this.year2vec = _object.year2vec
 
     this.page_rank = parseFloat(_object.page_rank)
     this.events = []
-
     this.dy = parseInt(_object.dy)
+
+    this.vec = _object.vec
   }
 
+  toVec(){
+    return this.vec
+    // return [...this.vec]
+  }
   getRelatedPeople(){
     let people = []
     this.events.forEach(event=>{
@@ -464,7 +536,7 @@ class Person{
 
 
   toText(){
-    let text = '(' + this.id + ')' + this.name
+    let text = '(' + this.id + ')' + this.getName()
     // text += '['
     // if (isValidYear(this.birth_year))
     //   text += this.birth_year
@@ -476,6 +548,13 @@ class Person{
     return text
   }
 
+  getName(){
+    if (IS_EN)
+      return ' ' + this.en_name + ' '
+    else
+      return this.name
+  }
+
   getCertainEvents(){
     return this.events.filter(event=> isCertainTimeRange(event.time_range))
   }
@@ -485,6 +564,7 @@ class Addr{
   constructor(_object){
     this.id = _object.id
     this.name = _object.name
+    this.en_name = _object.en_name
     this.alt_names = _object.alt_names
     this.first_year = parseInt(_object.first_year)
     this.last_year = parseInt(_object.last_year)
@@ -495,16 +575,68 @@ class Addr{
     // 从属关系构造之后再连接
     this.parents = []
     this.sons = []
+
+    this.all_sons = undefined
+  }
+
+  getName(){
+    if (IS_EN)
+      return ' ' + this.en_name + ' '
+    else
+      return this.name
+  }
+
+  toVec(){
+    return this.vec
+    // return [...this.vec]
+  }
+
+  getAllSons(limit_depth=4){
+    let all_sons = new Set()
+    let son2depth = {}
+    const getAllSons = (addr, depth) => {
+      if (all_sons.has(addr)) {
+        return
+      }
+      all_sons.add(addr)
+      if (depth===limit_depth-1) {
+        return
+      }
+      addr.sons.forEach(son=>{
+        getAllSons(son, depth)
+      })
+    }
+
+    getAllSons(this, 0)
+    return [...all_sons]
+  }
+
+  getLeafAddrs(){
+    return this.getAllSons().filter(addr=> addr.sons.length===0)
   }
 
   // 初始化的时候没有用
-  addParents(_addr){
+  addParent(_addr){
+    if (!_addr) {
+      console.warn('_addr不存在')
+      return
+    }
     if(!this.parents.includes(_addr))
       this.parents.push(_addr)
+    if (!_addr.sons.includes(this)) {
+      _addr.sons.push(_addr)
+    }
   }
-  addSons(_addr){
+  addSon(_addr){
+    if (!_addr) {
+      console.warn('_addr不存在')
+      return
+    }
     if(!this.sons.includes(_addr))
       this.sons.push(_addr)
+      if (!_addr.parents.includes(this)) {
+        _addr.parents.push(_addr)
+      }
   }
 }
 
@@ -512,12 +644,32 @@ class Trigger{
   constructor(_object){
     this.id = _object.id
     this.name = _object.name
+    this.en_name = _object.en_name
     this.type = _object.type
     this.parent_type = _object.parent_type
+
+    this.vec = _object.vec
+    this.role2score = _object.role2score
+
+    this.pair_trigger = _object.pair_trigger
   }
 
+  getPairTrigger(){
+    let pair_trigger = triggerManager.get(this.pair_trigger)
+    return pair_trigger
+  }
+  toVec(){
+    return this.vec
+    // return [...this.vec]
+  }
   equal(value){
     return value===this.name || this.parent_type===value || this.type===value
+  }
+  getName(){
+    if (IS_EN)
+      return ' ' + this.en_name.toLowerCase() + ' '
+    else
+      return this.name
   }
 }
 
@@ -532,5 +684,18 @@ var isValidYear = (year)=>{
 var isCertainTimeRange = (time_range)=>{
   return time_range[0]===time_range[1] && isValidYear(time_range[0])
 }
-export {personManager, addrManager, eventManager, triggerManager, isValidYear}
+const rangeGenrator  = (start, end) => new Array(end - start).fill(start).map((el, i) => start + i);
+
+const filtEvents = (events)=>{
+  let used_types = stateManager.used_types
+  // console.log(used_types)
+  // let isIn = 
+  // console.log( used_types, events,  events.filter(event=> 
+  //   used_types.includes(event.trigger.name) || 
+  //   used_types.includes(event.trigger.parent_type) || 
+  //   used_types.includes(event.trigger.parent_type) )
+  // )
+  return events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
+}
+export {personManager, addrManager, eventManager, triggerManager, isValidYear, rangeGenrator, filtEvents}
 export default dataStore

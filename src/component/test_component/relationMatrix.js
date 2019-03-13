@@ -9,7 +9,7 @@ import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
 import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager } from '../../dataManager/dataStore2'
 import tsnejs from '../../dataManager/tsne'
-import { link } from 'fs';
+import { link, linkSync } from 'fs';
 import { renderReporter } from 'mobx-react';
 import LifeLineMethod from '../UI_component/lifeLineMethod'
 class RealtionMatrix extends React.Component{
@@ -70,9 +70,7 @@ class RealtionMatrix extends React.Component{
     })
 
     loadMatrix(){
-        
         let {selected_trigger_types, selected_people, personScale, rect_width} = this
-        
         
         let event_array = this.all_events
         event_array = event_array.filter(event=> {
@@ -121,38 +119,65 @@ class RealtionMatrix extends React.Component{
                 })
             })
         })
+  
 
-        
-
+        let people_num = people_array.length
+        let links = []
         for(let person_id1 in person2person){
             const p1 = personManager.get(person_id1)
-            // console.log(p1.name)
             for(let person_id2 in person2person[person_id1]){
                 const p2 = personManager.get(person_id2)
                 const events = person2person[person_id1][person_id2].events
-                // console.log(events)
-                if (events.length===0) {
-                    continue
+                if (events.length>0) {
+                    const index2 = people_array.findIndex(elm=>elm===p1)
+                    const index1 = people_array.findIndex(elm=>elm===p2)
+                    if (index1>index2) {
+                        links.push( index1 + '-' + index2)
+                    }  
                 }
-                const center_x = personScale(p1), center_y = personScale(p2)
-                // if (center_y<center_x) {
-                //     continue
-                // }
-                const color = d3.rgb(255, 255, 255)
-                let rect_data = {
-                    x: center_x - rect_width/2-rect_width,  //为啥要平移一格呀
-                    y: center_y - rect_width/2,
-                    x0: center_x + rect_width/2-rect_width,
-                    y0: center_y + rect_width/2,
-                    color: color.darker([events.length+1]),
-                    events: events.map(event=>event.toText())
-                }
-                // console.log(rect_data,p1.name, p2.name, selected_trigger_types)
-                relation_rect_data.push(rect_data)
             }
         }
-        // console.log(relation_rect_data)
-        this.setState({matrix_rect_data: relation_rect_data})
+        net_work.require('getCommunity', {num:people_num, links: links.join(',') })
+        .then(data=>{
+            let community_data = data.data
+            let temp_people_array = [...people_array]
+            people_array = people_array.sort((p1,p2)=>{
+                const index2 = temp_people_array.findIndex(elm=>elm===p1)
+                const index1 = temp_people_array.findIndex(elm=>elm===p2)
+                return community_data[index1]-community_data[index2]
+            })
+            this.people_array = people_array
+
+            for(let person_id1 in person2person){
+                const p1 = personManager.get(person_id1)
+                // console.log(p1.name)
+                for(let person_id2 in person2person[person_id1]){
+                    const p2 = personManager.get(person_id2)
+                    const events = person2person[person_id1][person_id2].events
+                    // console.log(events)
+                    if (events.length===0) {
+                        continue
+                    }
+                    const center_x = personScale(p1), center_y = personScale(p2)
+                    // if (center_y<center_x) {
+                    //     continue
+                    // }
+                    const color = d3.rgb(255, 255, 255)
+                    let rect_data = {
+                        x: center_x - rect_width/2-rect_width,  //为啥要平移一格呀
+                        y: center_y - rect_width/2,
+                        x0: center_x + rect_width/2-rect_width,
+                        y0: center_y + rect_width/2,
+                        color: color.darker([events.length+1]),
+                        events: events.map(event=>event.toText())
+                    }
+                    // console.log(rect_data,p1.name, p2.name, selected_trigger_types)
+                    relation_rect_data.push(rect_data)
+                }
+            }
+            // console.log(relation_rect_data)
+            this.setState({matrix_rect_data: relation_rect_data})
+        })
     }
 
     static get defaultProps() {

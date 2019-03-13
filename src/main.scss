@@ -1,10 +1,22 @@
 $downHeight: 380px;
 $borderWidth: 2px;
+@font-face{
+  font-family: 'DFPSongW9';
+  src : url('./DFPSongW9-GB5.ttf');
+}
 #wrap {
   margin:20px;
   display: grid;
   border: 1px solid #bababa;
   grid-template-rows: 700px 380px;
+  header{
+    font-family: 'DFPSongW9';
+    font-size:18px;
+    color:#626262;
+    letter-spacing:-0.5px;
+    text-align:justify;
+    line-height:25px;
+  }
   #selectview {
       // position: absolute;
     top:50;
@@ -59,6 +71,14 @@ $borderWidth: 2px;
           }
           div::selection{
             border-color:#905551;
+          }
+        }
+        .typeFilter{
+          .ui.bulleted.list{
+            margin-left: 0;
+          }
+          ul{
+            padding-left: 12px;
           }
         }
       }

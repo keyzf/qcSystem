@@ -28,7 +28,7 @@ class LifeLineMethod  extends Component {
                                                         <List.List as='ul'>
                                                             {
                                                                 // console.log(triggers)
-                                                                true?[...triggers].sort().map(trigger=>{
+                                                                false?[...triggers].sort().map(trigger=>{
                                                                     return (
                                                                     <List.Item key={trigger+'check_box'} as='li'>
                                                                         <Checkbox label={trigger}  my_type='trigger' onChange={onChange}/>

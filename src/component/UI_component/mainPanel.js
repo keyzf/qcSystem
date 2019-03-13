@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import LifeLikePaint from '../graph_component/lifeLikePaint1'
+import LifeLikePaint from '../graph_component/lifeLikePaint'
 // import InferContour from './component/test_component/inferContour1'
 import dataStore, { eventManager, personManager, isValidYear } from '../../dataManager/dataStore2'
 // import { values } from 'mobx';
-import './mainPanel.scss'
+import './mainPanel.scss';
+import {autorun} from 'mobx';
+import stateManager from '../../dataManager/stateManager'
 
 // 界面的上半部分
 // @observer
@@ -12,9 +14,10 @@ class MainPanel extends Component {
 
   constructor(){
     super()
-    
+    this.state={
+      selected_people:[]
+    }
   }
-
 
   componentWillUpdate() {
     // document.onmousemove = null
@@ -52,32 +55,30 @@ class MainPanel extends Component {
     let { width, height, selected_people, calcualte_method} = this.props
     // const padding_botton = 20, padding_right = 10
     const left_part_width = 250, lifeLikePaint_width = 1350
-    selected_people = selected_people.length>=1 ? selected_people : [personManager.get('3767')]  //苏轼 
-    selected_people.filter(person=>person)
     console.log(selected_people);
     let lifeLikePaint_height = (height-50)/selected_people.length
     lifeLikePaint_height = lifeLikePaint_height>250?lifeLikePaint_height:250
     return (
-        <div className="mainPanel" style={{height:height, width: lifeLikePaint_width}}>
-          <header>Life Mountain View</header>
-            <div className="lineChart" style={{height:height-50}}>
-            {
-              selected_people.map((person, index)=>
-                person &&
-                <div 
-                  style={{top:index*(lifeLikePaint_height+20)}} 
-                  key={'life_link_paint'+person.id}
-                  className={'life_like_paint'+person.id}>
-                  <LifeLikePaint 
-                    width={lifeLikePaint_width}
-                    height={lifeLikePaint_height} 
-                    selected_person={person} 
-                    calcualte_method={calcualte_method}/>
-                </div>
-              )
-            }
-            </div>
-        </div>
+      <div className="mainPanel" style={{height:height, width: lifeLikePaint_width}}>
+        <header>Life Mountain View</header>
+          <div className="lineChart" style={{height:height-50}}>
+          {
+            selected_people.map((person, index)=>
+              person &&
+              <div 
+                style={{top:index*(lifeLikePaint_height+20)}} 
+                key={'life_link_paint'+person.id}
+                className={'life_like_paint'+person.id}>
+                <LifeLikePaint 
+                  width={lifeLikePaint_width}
+                  height={lifeLikePaint_height} 
+                  selected_person={person} 
+                  calcualte_method={calcualte_method}/>
+              </div>
+            )
+          }
+          </div>
+      </div>
     );
   }
 }

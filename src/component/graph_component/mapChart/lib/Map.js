@@ -74,8 +74,6 @@ class Map extends React.Component {
   }
   render () {
     let {width,height,selected_people}= this.props;
-    selected_people = selected_people&&selected_people.length>=1 ? selected_people : [personManager.get('3767')]  //苏轼 
-    selected_people.filter(person=>person)
     console.log(selected_people)
     return (
       <div className='geomap'>

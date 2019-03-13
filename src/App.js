@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 // import MainGraph from './component/test_component/mianGraph7'
 import LifeLikePaint from './component/graph_component/lifeLikePaint1'
 import InferContour from './component/graph_component/inferContour1'
-import RelationMatrix from './component/test_component/relationMatrix'
+import RelationMatrix from './component/graph_component/relationMatrix2'
 // import TestLifeLikePaint from './component/test_component/lifeLikePaint3'
 // import EventNumPerYear from './component/test_component/eventNumPerYear'
 // import EventHappenOverview from './component/test_component/eventHappenOverview'
@@ -23,6 +23,7 @@ import {autorun} from 'mobx';
 import LifeLineMethod from './component/UI_component/lifeLineMethod';
 import { triggerManager,personManager } from './dataManager/dataStore2'
 // import { values } from 'mobx';
+import EventFilter from './component/UI_component/EventFilter';
 import './main.scss';
 
 
@@ -40,7 +41,18 @@ class App extends Component {
       selected_people:[],
       calcualte_method: this.calcualte_method_option[0].value
     }
+    this.changeSelectPeople=this.changeSelectPeople.bind(this);
   }
+
+  _loadData = autorun(()=>{
+    if (stateManager.is_ready) {
+      console.log('加载苏轼数据');
+      this.defaultPerson = personManager.get('person_3767');
+      this.setState({
+        selected_people:[this.defaultPerson]
+      })
+    }
+  })
     
   _changeShowPeople = autorun(()=>{
     if (stateManager.is_ready) {
@@ -53,7 +65,7 @@ class App extends Component {
               'person': person
           }
         })
-        this.setState({person_options: person_options})            
+        this.setState({person_options: person_options});
     }
   })
   
@@ -66,6 +78,19 @@ class App extends Component {
       width: 1920,
       height: 1080,
     };
+  }
+
+  changeSelectPeople=(event,{value})=>{
+    event.preventDefault();
+    console.log(value);
+    if(value.length!==0){
+      this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
+    }
+    else{
+      this.setState({
+        selected_people:[this.defaultPerson]
+      })
+    }
   }
   onCenterBarMouseUp = event=> {
     // let {temp_center_control_bar_top} = this.state
@@ -104,8 +129,9 @@ class App extends Component {
     let calcualte_method_option = this.calcualte_method_option;
     let relation=triggerManager.countTypes();
     const { width, height} = this.props
-    let {center_bar_is_move, temp_center_control_bar_top} = this.state
     let center_control_bar_top = this.center_control_bar_top
+    const left_between_relation_infer = 800;
+    console.log(selected_people)
     return (
       <div id="wrap" style={{width:width, height:height}}>
         {/* 上半部分 */}
@@ -115,30 +141,24 @@ class App extends Component {
             <div className="title"></div>
             <div className="container">
             <label>筛选人物</label>
-              <Dropdown 
-                fluid multiple search selection 
-                placeholder='选择人物' 
-                options={person_options}
-                onChange={(event,{value})=>{
-                  stateManager.setSelectedPeople(value)
-                  this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
-                }}
-                // loading   //可以在之后添加
-              />
-              <label>计算方式（下拉选择）</label>
-              <Dropdown 
-              placeholder='选择分数计算方法' 
-              fluid selection 
-              options={calcualte_method_option} defaultValue= {calcualte_method_option[0].value} />
-              <LifeLineMethod
-                  data={relation} 
-                  // methods={this.calculate_methods}
-                  height={height}
-                  onChange={this.handleSelectBarChange}
-              />
+            <Dropdown 
+              fluid multiple search selection 
+              placeholder='选择人物' 
+              options={person_options}
+              onChange={this.changeSelectPeople}
+              // loading   //可以在之后添加
+            />
+            <label>计算方式（下拉选择）</label>
+            <Dropdown 
+            placeholder='选择分数计算方法' 
+            fluid selection 
+            options={calcualte_method_option} defaultValue= {calcualte_method_option[0].value} />
+            <div className={'filter'} style={{ height:'82%', overflowY:'scroll'}}>
+              <EventFilter/>
+            </div>
             </div>
           </div>
-          <MainPanel height={700} calcualte_method={this.state.calcualte_method} selected_people={this.state.selected_people}/>
+          <MainPanel height={700} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
         </div>
 
         {/* 中间那根用于调整的杆子(要研究下为什么卡顿) */}
@@ -147,8 +167,8 @@ class App extends Component {
           style={{
             top: this.center_control_bar_top, 
             width:width, height:'10px', background:'gray', cursor:'s-resize', position:'absolute', left:0, zIndex:31}}
-            onMouseUp={ this.onCenterBarMouseUp}
-            onMouseDown={ this.onCenterBarMouseDown }
+            // onMouseUp={ this.onCenterBarMouseUp}
+            // onMouseDown={ this.onCenterBarMouseDown }
         >
         </div> */}
         {/* 加载的缓冲页面（未完成） */}
@@ -163,7 +183,7 @@ class App extends Component {
           </div>
           <div id="matrixview">
             <header>Inference Tree Map</header>
-            <RelationMatrix/>
+            {/* <RelationMatrix/> */}
           </div>
 
           <div id="relationview">

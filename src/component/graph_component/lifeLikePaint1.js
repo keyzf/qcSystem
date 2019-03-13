@@ -1,4 +1,3 @@
-// import dataGetter from '../../dataManager/dataGetter2'
 import dataStore, { personManager, triggerManager } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
@@ -449,6 +448,7 @@ class LifeLikePaint extends Component{
             Math.max(...area_datas.map(data=> data.x_domain[1]).filter(elm=>elm))
         ]
 
+        console.log(x_domain);
         this.xscale.domain(x_domain)
                    .range([0,svgWidth]);
         this.yscale.domain([0,this.maxy_sum])
