@@ -1,7 +1,7 @@
 // 存储获取的数据和状态
 
 // 静态数据
-import event2score from '../data/temp_data/event2score.json'   //事件打分
+// import event2score from '../data/temp_data/event2score.json'   //事件打分
 // import all_place from '../data/temp_data/宋朝地点.json'
 import stateManager from './stateManager'
 import 'whatwg-fetch'
@@ -9,13 +9,12 @@ import net_work from './netWork'
 // import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
 // import { set, _isComputingDerivation } from 'mobx';
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
-import { set } from 'mobx';
 // import jsonFormat from 'json-format'
 
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = true
+var IS_EN = false
 
 class DataStore{
   constructor(){
@@ -32,12 +31,16 @@ class DataStore{
 
   processInitData(data){
     // console.log(data)
-    let {people, addrs, triggers, trigger_imp} = data
+    let {people, addrs, triggers, trigger_imp, year2vec} = data
     let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
     // console.log(trigger_imp, people)
     this.trigger_imp = trigger_imp
 
+    for(let year in year2vec){
+      // console.log(year)
+      timeManager.create(year, year2vec[year])
+    }
     // console.log(trigger_imp)
     for(let person_id in people){
       let person = people[person_id]
@@ -145,9 +148,16 @@ class Manager {
     }
     return true
   }
+  
+  getAllObjects(){
+    return dataStore.dict2array(this.id2object)
+  }
 
   // 使用的时候注意判断是否找到了
   get(_object){
+    if (typeof(_object)=='number') {
+      _object = _object.toString()
+    }
     if(typeof(_object)=='string'){
       let item = this.id2object[_object]
       // item || console.warn(_object, '找不到了！！')
@@ -182,20 +192,30 @@ class PersonManager extends Manager{
   }
 }
 
+class TimeManager extends Manager{
+  constructor(){
+    super()
+    this._object = Time
+  }
+  create(year, vec){
+    if (typeof(year)=='number') {
+      year = year.toString()
+    }
+    if (this.id_set.has(year)) {
+      return this.get(year)
+    }else{
+      this.id_set.add(year)
+      this.id2object[year] = new Time(year, vec)
+      return this.id2object[year]
+    }
+  }
+}
+
 class AddrManager extends Manager{
   constructor(){
     super()
     this._object = Addr
-    // this.loadAllPlace()
   }
-  // loadAllPlace(){
-  //   for(let addr_id in all_place){
-  //     let data = all_place[addr_id]
-  //     let addr = this.create(data)
-  //     addr.parents = data.parents.map(item_id=> this.create(all_place[item_id]))
-  //     addr.sons = data.sons.map(item_id=> this.create(all_place[item_id]))
-  //   }
-  // }
 }
 
 class TriggerManager extends Manager{
@@ -222,6 +242,14 @@ class TriggerManager extends Manager{
     this.names = [...this.names].sort()
     return this.parent2types
     // console.log(this.types, this.parent2types, this.parent_types, this.names)
+  }
+  getParentTypes(){
+    this.parent_types = new Set()
+    for(let id in this.id2object){
+      let elm = this.id2object[id]
+      this.parent_types.add(elm.parent_type)
+    }
+    return this.parent_types = [...this.parent_types].sort()
   }
 
   getAlltypes(){
@@ -256,17 +284,6 @@ class TriggerManager extends Manager{
 class EventManager extends Manager{
   constructor(){
     super()
-    this.event2score = event2score
-    this.event2score['担任'] = {
-      "type": "政治",
-      "parent_type": "政治",
-      "score": 9
-    }
-    for(let trigger in this.event2score){
-      // 暂时用于使其为正
-      this.event2score[trigger].score = parseInt(this.event2score[trigger].score)
-    }
-
     this._object = Event
 
     this.pingji = ['正一品','从一品','正二品','从二品','正三品','从三品','正四品上','正四品','正四品下','从四品上', '从四品', '从四品下','正五品上','正五品', '正五品下','从五品上', '从五品','从五品下','正六品上','正六品','正六品下','从六品上', '从六品', '从六品下','正七品上', '正七品', '正七品下', '从七品上', '从七品', '从七品下', '正八品上','正八品', '正八品下','从八品上','从八品', '从八品下', '正九品下', '正九品', '正九品下','从九品上', '从九品', '从九品下']
@@ -284,42 +301,52 @@ class EventManager extends Manager{
     return year2events
   }
 
-  // 评分有重大问题呀，没有角色
-  getScore(event, role){
-    let trigger = event.trigger
-    if (trigger.name === '担任') {
-      let guanzhi = event.detail
-      // console.log(guanzhi)
-      if (!this.guanzhi2pingji[guanzhi]) {
-        return 0
-      }
-      let pingji = this.guanzhi2pingji[guanzhi]['品级']
-      // 好像还有缺的，如 主管尚书省户部架阁文字
-      return this.pingji.findIndex(elm => pingji===elm)*(10/this.pingji.length)
-    }
+}
 
-    if (role==='主角') {
-      trigger = trigger || {name:'不存在'}
-      let trigger_with_role = trigger.name //  + ' ' + role
-      if(event2score[trigger_with_role]){
-        return event2score[trigger_with_role].score
-      }
-    }else{
-      // 不是主角先瞎写一个
-      let trigger_with_role = trigger.name //  + ' ' + role
-      if(event2score[trigger_with_role]){
-        return event2score[trigger_with_role].score/5
-      }
+
+class _object{
+  constructor(_object){
+    this.id = _object.id
+    this.name = _object.name
+    this.vec = _object.vec
+    if (!_object.en_name)
+      this.en_name = _object.name
+    else
+      this.en_name = _object.en_name
+  }
+
+  toVec(){
+    return this.vec
+  }
+  
+  getName(){
+    if (IS_EN)
+      return ' ' + this.en_name + ' '
+    else
+      return this.name
+  }
+
+  toText(){
+    return '('+ this.id + ')' + this.getName()
+  }
+}
+
+class Time extends _object{
+  static _type = 'time'
+  constructor(year, vec){
+    let _object = {
+      name: year,
+      id: year,
+      vec: vec,
     }
-    // console.warn('ERROR: 有不存在评分的', trigger_with_role)
-    return 0
+    super(_object)
   }
 }
 
 // 直接给json值加操作好了
-class Event{
+class Event extends _object{
   constructor(_object){
-    this.id = _object.id
+    super(_object)
     this.addrs = _object.addrs.map(item_id=> addrManager.get(item_id))
     this.trigger =  triggerManager.get(_object.trigger)
     this.trigger ||  console.log(this.trigger, _object)
@@ -332,14 +359,10 @@ class Event{
       return {
         person: person,
         role: item.role,
-        // score: eventManager.getScore(this.trigger, item.role),
         tag: this.trigger? this.trigger.name + ' ' + item.role:'不存在trigger'
       }
     })
     this.time_range = _object.time_range
-
-    this.vec = _object.vec
-
 
     this.prob_year = _object.prob_year
     this.prob_addr = _object.prob_addr
@@ -370,7 +393,7 @@ class Event{
       trigger_imp = trigger_imp[trigger_id]
     }else{
       trigger_imp = 0.0001
-      console.log(trigger_id, '没有重要度')
+      console.warn(trigger_id, '没有重要度')
     }
 
     let ops_person = person
@@ -381,7 +404,9 @@ class Event{
     })
     // console.log(trigger_imp*ops_person.page_rank)
     // console.log(this, trigger_imp, ops_person.page_rank, trigger_imp*ops_person.page_rank)
-    return trigger_imp*ops_person.page_rank
+
+    // 这个log是瞎放的
+    return Math.log(trigger_imp*ops_person.page_rank+1)
   }
 
   // 返回一个计算不确定度的度量
@@ -395,13 +420,19 @@ class Event{
         people_uncertainty = 0 //定义不确定度
     return uncertainty_value /= (time_uncertainty+addr_uncertainty+trigger_uncertainty+people_uncertainty+1)
   }
-
-  toVec(){
-    return this.vec
-    // return [...this.vec]
-  }
   
   getScore(person){
+    let trigger = this.trigger
+    if (trigger.name === '担任') {
+      let guanzhi = this.detail
+      const guanzhi2pingji = eventManager.guanzhi2pingji
+      if (!guanzhi2pingji[guanzhi]) {
+        return 0
+      }
+      let pingji = guanzhi2pingji[guanzhi]['品级']
+      return eventManager.pingji.findIndex(elm => pingji===elm)*(10/eventManager.pingji.length)
+    }
+
     const role = this.getRole(person), role2score = this.trigger.role2score
     return role2score[role] || 0
   }
@@ -473,13 +504,10 @@ class Event{
 
 
 // 还没有处理 isNaN()的情况
-class Person{
+class Person extends _object{
+  static _type = 'person'
   constructor(_object){
-    // console.log(_object)
-    this.id = _object.id
-
-    this.name = _object.name
-    this.en_name = _object.en_name
+    super(_object)
 
     this.certain_event_num = parseInt(_object.certain_events_num)
     this.event_num = parseInt(_object.events_num)
@@ -497,10 +525,6 @@ class Person{
     this.vec = _object.vec
   }
 
-  toVec(){
-    return this.vec
-    // return [...this.vec]
-  }
   getRelatedPeople(){
     let people = []
     this.events.forEach(event=>{
@@ -560,11 +584,11 @@ class Person{
   }
 }
 
-class Addr{
+class Addr extends _object{
+  static _type = 'person'
+
   constructor(_object){
-    this.id = _object.id
-    this.name = _object.name
-    this.en_name = _object.en_name
+    super(_object)
     this.alt_names = _object.alt_names
     this.first_year = parseInt(_object.first_year)
     this.last_year = parseInt(_object.last_year)
@@ -577,18 +601,6 @@ class Addr{
     this.sons = []
 
     this.all_sons = undefined
-  }
-
-  getName(){
-    if (IS_EN)
-      return ' ' + this.en_name + ' '
-    else
-      return this.name
-  }
-
-  toVec(){
-    return this.vec
-    // return [...this.vec]
   }
 
   getAllSons(limit_depth=4){
@@ -640,11 +652,11 @@ class Addr{
   }
 }
 
-class Trigger{
+class Trigger extends _object{
+  static _type = 'person'
+
   constructor(_object){
-    this.id = _object.id
-    this.name = _object.name
-    this.en_name = _object.en_name
+    super(_object)
     this.type = _object.type
     this.parent_type = _object.parent_type
 
@@ -657,10 +669,6 @@ class Trigger{
   getPairTrigger(){
     let pair_trigger = triggerManager.get(this.pair_trigger)
     return pair_trigger
-  }
-  toVec(){
-    return this.vec
-    // return [...this.vec]
   }
   equal(value){
     return value===this.name || this.parent_type===value || this.type===value
@@ -678,6 +686,8 @@ var addrManager = new AddrManager()
 var eventManager = new EventManager()
 var triggerManager = new TriggerManager()
 var dataStore = new DataStore()
+var timeManager = new TimeManager()
+
 var isValidYear = (year)=>{
   return year && !isNaN(year) && year!==-9999 && year!==9999
 }
@@ -686,16 +696,64 @@ var isCertainTimeRange = (time_range)=>{
 }
 const rangeGenrator  = (start, end) => new Array(end - start).fill(start).map((el, i) => start + i);
 
+//为了添加规则而加的过滤器 
+const roleFilter = (events)=>{
+  const rule_filer = stateManager.rule_filer
+  if (!rule_filer | rule_filer.length===0) {
+    return events
+  }
+  
+  return events.filter(event=>{
+    const {trigger} = event
+    return rule_filer.includes(trigger) 
+  })
+}
+
 const filtEvents = (events)=>{
   let used_types = stateManager.used_types
-  // console.log(used_types)
-  // let isIn = 
-  // console.log( used_types, events,  events.filter(event=> 
-  //   used_types.includes(event.trigger.name) || 
-  //   used_types.includes(event.trigger.parent_type) || 
-  //   used_types.includes(event.trigger.parent_type) )
-  // )
-  return events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
+
+  events = events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
+  return roleFilter(events)
 }
-export {personManager, addrManager, eventManager, triggerManager, isValidYear, rangeGenrator, filtEvents}
+
+const eucDist = (vec1, vec2)=>{
+  if (vec1.length!==vec2.length) {
+    console.error(vec1, vec2,'长度不相等')
+  }
+  let total = 0
+  for (let index = 0; index < vec1.length; index++) {
+    const e1 = vec1[index], e2 = vec2[index]
+    total += (e1-e2)*(e1-e2)
+  }
+  return Math.sqrt(total)
+}
+
+const arrayAdd = (arr1, arr2)=> {
+  if (arr1.length!=arr2.length) {
+    console.warn(arr1, arr2, '没有对齐')
+  }
+  return arr1.map((elm,index)=> elm+arr2[index])
+}
+
+// const getStrLength = (str) =>{
+//   var i, len, code;
+//   if (str == null || str == "") return 0;
+//   len = str.length;
+//   for (i = 0; i < str.length; i++) {
+//     code = str.charCodeAt(i);
+//     // if (code > 255)
+//       // len += 1
+//   }
+//   return len;
+// }
+
+const simplStr = (str, num)=>{
+  // console.log(getStrLength(str), str, num)
+  if (str.length>num) {
+      return str.substr(0,num) + '...'
+  }else{
+    return str
+  }
+}
+export {personManager, addrManager, eventManager, triggerManager, isValidYear, rangeGenrator, filtEvents, timeManager, eucDist, arrayAdd, simplStr}
 export default dataStore

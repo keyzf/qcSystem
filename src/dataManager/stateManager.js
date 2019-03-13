@@ -1,10 +1,12 @@
 // 管理当前的状态
 import {observable, action, computed, autorun} from 'mobx';
 import {personManager, triggerManager, eventManager} from '../dataManager/dataStore2'
+import cos_dist from 'compute-cosine-distance'
 
 class StateManager{
     @observable is_ready = false  //还没有用，初始化缓存用的
-    
+    @observable need_refresh = 0 
+
     is_ready_without_notice = false
     notice_ready = autorun(()=>{
         this.is_ready_with_out_notice = this.is_ready
@@ -43,7 +45,8 @@ class StateManager{
         event && this.selected_event_id.set(event.id)
     }
     @computed get selected_event(){
-        return eventManager.get(this.selected_event_id)
+        // console.log(this.selected_event_id)
+        return eventManager.get(this.selected_event_id.get())
     }
 
     @observable used_types_set = []
@@ -61,7 +64,20 @@ class StateManager{
             // console.log(used_types)
             return used_types
         }
-    } 
+    }
+
+    @observable rule_filter_set = []
+    @action setRuleFilter(rules){
+        // console.log(rules)
+        this.rule_filter_set.replace(rules.map(elm => elm.object.id))
+        this.need_refresh++
+    }
+    @computed get rule_filer(){
+        // console.log( this.rule_filter_set)
+        let triggers = this.rule_filter_set.map(elm => triggerManager.get(elm))
+        // console.log(triggers)
+        return triggers
+    }
 }
 
 var stateManager = new StateManager()

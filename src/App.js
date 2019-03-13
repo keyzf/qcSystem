@@ -17,13 +17,14 @@ import RelationMatrix from './component/graph_component/relationMatrix2'
 import PeopleSelector from './component/UI_component/peopleSelector'
 import UpContainer from './component/UI_component/upContainer'
 import AddrSunBursts from './component/graph_component/addrSunbursts'
+import TriggerSunBurst from './component/graph_component/triggerSunBurst'
 
 import { Header, Icon, Image, Menu, Segment, Sidebar, Container, Checkbox, Input, Grid, Label, Table, List} from 'semantic-ui-react'
 // import { values } from 'mobx';
 
 
 class App extends Component {
-  center_control_bar_top =  600
+  center_control_bar_top =  400
   constructor(){
     super()
     this.state = {
@@ -75,7 +76,7 @@ class App extends Component {
     console.log('render App')
     const { width, height} = this.props
     let center_control_bar_top = this.center_control_bar_top
-    const left_between_relation_infer = 800
+    const left_between_relation_infer = 900
     return (
       <div className="App" style={{width:width, height:height, background:'#f0f0f3'}}>
         {/* 上半部分 */}
@@ -97,12 +98,13 @@ class App extends Component {
         <div ref='loading_div' className='loading_div' style={{ display:'none',width:width, height:height, position:"absolute", background:'white', opacity:0.5, zIndex:30 }}/>
       
 
-        <div style={{position:"absolute", top: center_control_bar_top+20, left:20}}>
+        {/* <div style={{position:"absolute", top: center_control_bar_top+20, left:20}}>
             <AddrSunBursts width={height-center_control_bar_top-30}/>
-        </div>
+        </div> */}
 
-        <div style={{position:"absolute", top: center_control_bar_top+20, left:height-center_control_bar_top-30+20}}>
-            <RelationMatrix width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
+        <div style={{position:"absolute", top: center_control_bar_top+20, left:0}}>
+            {/* <RelationMatrix width={left_between_relation_infer} height={height-center_control_bar_top-30}/> */}
+            <TriggerSunBurst width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
         </div>
 
         {/* 新的推理视图 */}

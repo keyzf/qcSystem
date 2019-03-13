@@ -3,7 +3,6 @@ import { Checkbox, List} from 'semantic-ui-react'
 import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager } from '../../dataManager/dataStore2'
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
-import { EMLINK } from 'constants';
 
 class EventFilter  extends Component {
     constructor(){
@@ -17,7 +16,7 @@ class EventFilter  extends Component {
     _loadData =  autorun(()=>{
         if (stateManager.is_ready) {
             let data =  triggerManager.countTypes()
-            console.log(data)
+            // console.log(data)
             const check_box2checked = this.state.check_box2checked
             for(let parent_type in data){
                 let elm = data[parent_type]

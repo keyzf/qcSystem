@@ -2,9 +2,9 @@
 import dataStore, { personManager, triggerManager, filtEvents, eventManager } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
-import jsonFormat from 'json-format'
+// import jsonFormat from 'json-format'
 import net_work from '../../dataManager/netWork'
-import LifeLineMethod  from '../UI_component/lifeLineMethod'
+// import LifeLineMethod  from '../UI_component/lifeLineMethod'
 import {
     XYPlot,
     XAxis,
@@ -36,7 +36,7 @@ class LifeLikePaint extends Component{
     selected_event_types = []
     all_events = []
 
-    socre_range = [-1,35]
+    socre_range = [-1,20]
 
     constructor(){
         super()
@@ -57,6 +57,7 @@ class LifeLikePaint extends Component{
     _onEventFilterChange = autorun(()=>{
         if (stateManager.is_ready) {
             console.log('更新事件筛选')
+            let need_refresh = stateManager.need_refresh
             let used_types = stateManager.used_types
             this.loadLifeLineData()
         }
@@ -233,7 +234,7 @@ class LifeLikePaint extends Component{
             console.warn('没有calcualte_method')
             return
         }
-        let parent_types = [...triggerManager.parent_types].sort()  //分类
+        let parent_types = [...triggerManager.getParentTypes()].sort()  //分类
 
         let year2events = selected_person.year2events()
         let events = selected_person.getCertainEvents()
@@ -271,10 +272,10 @@ class LifeLikePaint extends Component{
             let events = year2events[year] || []
             let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
             // console.log(scores)
-            let stack_y = 0
+            // let stack_y = 0
+            // eslint-disable-next-line no-loop-func
             // parent_types.forEach(type=>{
             //     let this_events = events.filter(event => event.trigger.parent_type===type)
-
             //     if (scores[type] || scores[type]===0) {
             //         // console.log(scoreScale(scores[type]), stack_y)
             //         type2area_datas[type].push({
@@ -288,6 +289,7 @@ class LifeLikePaint extends Component{
             //         stack_y += scoreScale(scores[type])   
             //     }
             // })
+            // console.log(type2area_datas)
             if (scores['总'] || scores['总']===0){
                 type2area_datas['总'].push({
                     x: yearScale(year),
@@ -372,10 +374,15 @@ class LifeLikePaint extends Component{
                 label: name,
                 style: {fontSize: Math.log(Math.log(size+1)+1)*10},
                 event_ids: events.map(event=> event.id),
-                trigger_id: trigger.id
+                trigger_id: trigger.id,
+                rotation: 90
             })
         })
-
+        trigger_label_data = trigger_label_data.sort((a,b)=>a.x-b.x)
+        trigger_label_data = trigger_label_data.map((elm,index)=>{
+            elm.cx = index
+            return elm
+        })
 
         this.setState({area_datas: area_datas, event_tree_data: tree_data, trigger_label_data: trigger_label_data})
     }
@@ -388,38 +395,90 @@ class LifeLikePaint extends Component{
         };
     }
 
-    randerLifeLine = (area_datas) => 
-        area_datas.map(elm=> [
+    randerLifeLine = (area_datas) => {
+        let trigger_id_set = [...triggerManager.getParentTypes()]
+        var linear = d3.scaleLinear().domain([0, trigger_id_set.length]).range([0, 1]);
+        var palegreen = d3.rgb(66,251,75);	//浅绿
+        var darkgreen = d3.rgb(2,100,7);		//深绿
+        var color = d3.interpolate(palegreen,darkgreen);		//颜色插值函数
+
+        return area_datas.map(elm=> {
+            let line_data = elm.line_data
+            let mark_datas = []
+            line_data.forEach(data=>{
+                let event_ids = data.events
+                let temp_mark_data = []
+                event_ids.forEach(id=>{
+                    let event = eventManager.get(id)
+                    let trigger_id = event.trigger.parent_type
+                    let color_type = trigger_id_set.findIndex(id=> id===trigger_id)
+                    temp_mark_data.push({
+                        x: data.x,
+                        y: data.y,
+                        event_id: id,
+                        size: 1,
+                        trigger_id: trigger_id,
+                        color: color(linear(color_type))
+                    })                    
+                })
+                temp_mark_data = temp_mark_data.sort((a,b)=>a.trigger_id-b.trigger_id)
+                temp_mark_data = temp_mark_data.map((elm, index)=>{
+                    elm.y = index
+                    return elm
+                })
+                mark_datas = [...mark_datas, ...temp_mark_data]
+            })
+            // console.log(mark_datas)
+            return [
             <AreaSeries
-                key = {elm.person.id + '_' + elm.type}
+                key = {elm.person.id + '_' + elm.type + '_area'}
+                data={elm.line_data}
+                curve='curveMonotoneX' //{d3.curveCardinal}
+                colorType= "literal"
+                opacity='0.2'
+                // stroke={elm.type.search("2")!==-1? 'black': 'gray' }
+            />,
+            <LineMarkSeries
+                key = {elm.person.id + '_' + elm.type + '_line'}
                 sizeRange = {[0,10]}
                 data={elm.line_data}
                 curve='curveMonotoneX' //{d3.curveCardinal}
                 onValueClick={this.handleEventMarkClick}
                 colorType= "literal"
-                opacity='0.2'
+                opacity='0.8'
                 // stroke={elm.type.search("2")!==-1? 'black': 'gray' }
             />,
-            elm.event_graph_datas.map(graph_data=>{
-                // console.log(graph_data)
-                return (
-                    <LineSeries 
-                    data={graph_data.data} 
-                    curve={'curveMonotoneX'} 
-                    strokeWidth={graph_data.importance}
-                    color='gray' 
-                    onValueClick = { value=> console.log(value)}
-                    opacity='0.1'/> //                    
-                )
+            // <MarkSeries
+            //     key = {elm.person.id + '_' + elm.type + '_event'}
+            //     sizeRange = {[3,10]}
+            //     data={mark_datas}
+            //     colorType= "literal"
+            //     opacity='0.8'
+            //     // stroke={elm.type.search("2")!==-1? 'black': 'gray' }
+            // />,
+            // elm.event_graph_datas.map(graph_data=>{
+            //     // console.log(graph_data)
+            //     return (
+            //         <LineSeries 
+            //         data={graph_data.data} 
+            //         curve={'curveMonotoneX'} 
+            //         strokeWidth={graph_data.importance}
+            //         color='gray' 
+            //         onValueClick = { value=> console.log(value)}
+            //         opacity='0.1'/> //                    
+            //     )
 
-            })
-        ]
+            // })
+        ]})
+    }
 
-        )
 
     handleEventMarkClick = value => {
+        console.log(value)
+        // let events = value.events
+        // console.log(events.map(event_id=> eventManager.get(event_id).toText()))
         const event = eventManager.get(value.event_id)
-        console.log(value, event)
+        // console.log(value, event)
         stateManager.setSelectedEvent(event)
     }
 
@@ -456,6 +515,7 @@ class LifeLikePaint extends Component{
         prob_mark_data = prob_mark_data.filter(data=> selected_prob_year && data.year===selected_prob_year).filter(elm=> elm)
         prob_mark_data = prob_mark_data || []
         // console.log(prob_mark_data)
+        // console.log(showEventMark)
         return (
             <div style={{position:'absolute', height: height, width:width, paddingRight:10}}>
                 <div style={{
@@ -482,7 +542,7 @@ class LifeLikePaint extends Component{
                     onMouseLeave = {()=> this.setState({showEventMark: undefined, selected_prob_year: undefined})}
                     xDomain={x_domain}
                     // animation
-                    yDomain={this.socre_range}
+                    // yDomain={this.socre_range}
                     >
                     <XAxis/>
                     {/* <YAxis/> */}
@@ -533,7 +593,7 @@ class LifeLikePaint extends Component{
                         key='prob_marks_data'
                         sizeRange = {[1,10]}
                         data={prob_mark_data}
-                        onNearestXY = {value => this.setState({showEventMark: value})}
+                        onValueMouseOut = {value => this.setState({showEventMark: value})}
                         onValueClick = {this.handleEventMarkClick}
                     />
                     <LabelSeries
