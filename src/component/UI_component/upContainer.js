@@ -6,7 +6,7 @@ import dataStore, { eventManager, addrManager, personManager, isValidYear, filtE
 import {observer} from 'mobx-react';
 import {autorun} from 'mobx';
 import { Dropdown, Input } from 'semantic-ui-react'
-import EventFilter from './EventFilter'
+import EventFilter from './EventFilter2'
 
 // import { values } from 'mobx';
 
@@ -41,6 +41,12 @@ class UpContainer extends Component {
     }
   })
 
+  _changeShowPeople = autorun(()=>{
+    if (stateManager.is_ready) {
+      let selected_people = stateManager.selected_people
+      this.setState({selected_people: selected_people})            
+    }
+  })
   componentWillUpdate() {
     // document.onmousemove = null
   }
@@ -63,7 +69,7 @@ class UpContainer extends Component {
     height = height - 20
 
     selected_people = selected_people.length>=1 ? selected_people : [personManager.get('person_3767')]  //苏轼 
-    selected_people.filter(person=>person)
+    selected_people = selected_people.filter(person=>person)
 
     let lifeLikePaint_height = height/selected_people.length
     lifeLikePaint_height = lifeLikePaint_height>200?lifeLikePaint_height:200
@@ -76,9 +82,11 @@ class UpContainer extends Component {
             placeholder='选择人物' 
             options={person_options}
             onChange={(event,{value})=>{
+              console.log('change people')
               stateManager.setSelectedPeople(value)
-              this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
+              // this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
             }}
+            value={selected_people.map(elm=> elm.id)}
             // loading   //可以在之后添加
           />
         </div>

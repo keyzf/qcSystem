@@ -9,6 +9,9 @@ import net_work from './netWork'
 // import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
 // import { set, _isComputingDerivation } from 'mobx';
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
+import pqsort from 'pqsort'
+import cos_dist from 'compute-cosine-distance'
+
 // import jsonFormat from 'json-format'
 
 // import {observable, action} from 'mobx';
@@ -168,7 +171,7 @@ class Manager {
   }
 
   getByName(_name){
-    return this.id_set.filter(elm=> elm.name && elm.name===_name)
+    return this.getAllObjects().filter(elm=> elm.name && elm.name===_name)
   }
 
   create(_object){
@@ -182,6 +185,20 @@ class Manager {
       this.id_set.add(_object.id)
       return new_object
     }
+  }
+}
+
+class ObjectManager{
+  get(id){
+    let managers = [triggerManager, timeManager, addrManager, personManager]
+    for (let index = 0; index < managers.length; index++) {
+      const manager = managers[index];
+      const elm = manager.get(id)
+      if (elm) {
+        return elm
+      }
+    }
+    return undefined
   }
 }
 
@@ -413,12 +430,27 @@ class Event extends _object{
   getUncertaintyValue(){
     const {time_range, addrs, trigger} = this
     const people = this.getPeople()
-    let uncertainty_value = 1, 
-        time_uncertainty = time_range[1]-time_range[0], 
-        addr_uncertainty = addrs.length==1? 0: Math.abs(addrs.length-1),
-        trigger_uncertainty = 0,
-        people_uncertainty = 0 //定义不确定度
-    return uncertainty_value /= (time_uncertainty+addr_uncertainty+trigger_uncertainty+people_uncertainty+1)
+    // let uncertainty_value = 1, 
+    //     time_uncertainty = time_range[1]-time_range[0], 
+    //     addr_uncertainty = addrs.length===1? 0: Math.abs(addrs.length-1),
+    //     trigger_uncertainty = 0,
+    //     people_uncertainty = 0 //定义不确定度
+    // return uncertainty_value /= (time_uncertainty+addr_uncertainty+trigger_uncertainty+people_uncertainty+1)
+
+    let uncertainty_value = 0
+    if (!this.isTimeCertain()) {
+      uncertainty_value++
+    }
+    if(this.addrs.length==0){
+      uncertainty_value++
+    }
+    if (this.trigger.name=='未详') {
+      uncertainty_value++
+    }
+    if (this.getPeople().includes(personManager.getByName('未详')[0])) {
+      uncertainty_value++
+    }
+    return 4-uncertainty_value
   }
   
   getScore(person){
@@ -471,7 +503,7 @@ class Event extends _object{
       person_text += trigger_name + (second_person==='未知人物'?'':second_person)
     }
     
-    return (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
+    return '【' + this.id + '】' + (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
   }
   
   toDict(){
@@ -687,6 +719,7 @@ var eventManager = new EventManager()
 var triggerManager = new TriggerManager()
 var dataStore = new DataStore()
 var timeManager = new TimeManager()
+var objectManager = new ObjectManager()
 
 var isValidYear = (year)=>{
   return year && !isNaN(year) && year!==-9999 && year!==9999
@@ -697,23 +730,56 @@ var isCertainTimeRange = (time_range)=>{
 const rangeGenrator  = (start, end) => new Array(end - start).fill(start).map((el, i) => start + i);
 
 //为了添加规则而加的过滤器 
-const roleFilter = (events)=>{
-  const rule_filer = stateManager.rule_filer
-  if (!rule_filer | rule_filer.length===0) {
-    return events
-  }
-  
-  return events.filter(event=>{
-    const {trigger} = event
-    return rule_filer.includes(trigger) 
-  })
+const yearFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_years.length===0 || (elm.isTimeCertain && show_years.includes(elm.time_range)))
+}
+const addrFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_addrs.length===0 || hasSimElmIn(elm.addrs, show_addrs))
+}
+const peopleFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_people.length===0 || hasSimElmIn(elm.getPeople(), show_people))
+}
+const triggerFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_triggers.length===0 || show_triggers.includes(elm.trigger))
 }
 
+const ruleFilterWith = (events, used_filter)=>{
+  if(used_filter.includes('t'))
+    events = triggerFilter(events)
+  if(used_filter.includes('a'))
+    events = addrFilter(events)
+  if(used_filter.includes('p'))
+    events = peopleFilter(events)
+  if(used_filter.includes('y'))
+    events = yearFilter(events)
+  // console.log(events)
+  return events
+}
 const filtEvents = (events)=>{
   let used_types = stateManager.used_types
 
   events = events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
-  return roleFilter(events)
+  return events
 }
 
 const eucDist = (vec1, vec2)=>{
@@ -729,23 +795,27 @@ const eucDist = (vec1, vec2)=>{
 }
 
 const arrayAdd = (arr1, arr2)=> {
+  if (!arr1) {
+    return arr2 
+  }
+  if (!arr2) {
+    return arr1
+  }
   if (arr1.length!=arr2.length) {
     console.warn(arr1, arr2, '没有对齐')
   }
   return arr1.map((elm,index)=> elm+arr2[index])
 }
 
-// const getStrLength = (str) =>{
-//   var i, len, code;
-//   if (str == null || str == "") return 0;
-//   len = str.length;
-//   for (i = 0; i < str.length; i++) {
-//     code = str.charCodeAt(i);
-//     // if (code > 255)
-//       // len += 1
-//   }
-//   return len;
-// }
+const hasSimElmIn = (objects1, objects2)=>{
+  for (let index = 0; index < objects1.length; index++) {
+    let elm = objects1[index]
+    if (objects2.includes(elm)) {
+      return true
+    }
+  }
+  return false
+}
 
 const simplStr = (str, num)=>{
   // console.log(getStrLength(str), str, num)
@@ -755,5 +825,70 @@ const simplStr = (str, num)=>{
     return str
   }
 }
-export {personManager, addrManager, eventManager, triggerManager, isValidYear, rangeGenrator, filtEvents, timeManager, eucDist, arrayAdd, simplStr}
+
+const dictCopy = (elm)=>{
+  let copy = {}
+  for(let key in elm){
+    let value = elm[key]
+    copy[key] = value
+  }
+  return copy
+}
+
+// 部分排序, 什么垃圾库，有问题
+// const mypqsort = (array, top_n, func)=>{
+//   let wrap_array= array.map((elm,index)=>{
+//     return {
+//       value: func(elm),
+//       data: elm
+//     }
+//   })
+//   function transform (arr) {
+//     return arr.map(function (v, index) { return {value: v, data: index} })
+//   }
+//   wrap_array = transform([5, 7, 4, 2, 8, 6, 1, 9, 0, 3])
+
+//   console.log(wrap_array, pqsort(wrap_array), top_n)
+
+  
+//   wrap_array = pqsort(wrap_array, top_n).slice(0, top_n)
+//   return wrap_array.map(elm=> elm.data)
+// }
+
+const sortBySimilar = (objects, positive=[], negative=[], top_n=20)=>{
+  let total_dist = {}
+  objects.forEach(object=>{
+    const positive_dist = positive.reduce((total, elm)=>{
+      return total + cos_dist(elm.vec, object.vec)
+    }, 0)
+    const negative_dist = negative.reduce((total, elm)=>{
+      return total + cos_dist(elm.vec, object.vec)
+    }, 0)
+    total_dist[object.id] = positive_dist -negative_dist
+  })
+  objects = objects.sort((a,b)=> total_dist[a.id]-total_dist[b.id]).slice(0, top_n)
+  return objects
+}
+
+export {
+  personManager, addrManager, eventManager, triggerManager, timeManager, objectManager,
+
+  isValidYear, 
+  rangeGenrator, 
+  eucDist, 
+  arrayAdd, 
+  simplStr,
+  hasSimElmIn,
+  // mypqsort,
+
+  filtEvents, 
+  addrFilter,
+  yearFilter,
+  peopleFilter,
+  triggerFilter,
+  ruleFilterWith,
+
+  dictCopy,
+  sortBySimilar,
+}
 export default dataStore

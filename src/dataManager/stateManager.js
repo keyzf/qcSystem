@@ -1,6 +1,6 @@
 // 管理当前的状态
 import {observable, action, computed, autorun} from 'mobx';
-import {personManager, triggerManager, eventManager} from '../dataManager/dataStore2'
+import {personManager, triggerManager, eventManager, addrManager} from '../dataManager/dataStore2'
 import cos_dist from 'compute-cosine-distance'
 
 class StateManager{
@@ -18,13 +18,25 @@ class StateManager{
     // 存储id,对象忒麻烦了
     @observable selected_people_id = ['person_3767']
     @action setSelectedPeople = (person_ids) => {
+        if (person_ids.length===0) {
+            this.selected_people_id.replace(['person_3767'])
+            return
+        }
         this.selected_people_id.replace(person_ids)
     }
     @computed get selected_people(){
         // console.log(this.selected_people_id)
-        return this.selected_people_id.map(id=> personManager.get(id))
+        console.log(this.selected_people_id.slice(), this.selected_people_id.slice().map(id=> personManager.get(id)))
+        return this.selected_people_id.slice().map(id=> personManager.get(id))
     }
-    
+    @action addSelectedPeople = (person_id)=>{
+        let selected_people_id = this.selected_people_id.slice()
+        // console.log(selected_people_id, person_id)
+        if (!selected_people_id.includes(person_id)) {
+            selected_people_id.push(person_id)
+            this.selected_people_id.replace(selected_people_id)
+        }
+    }
     
     // 左侧可以选的人的名单
     @observable show_people_id_list = []
@@ -39,7 +51,7 @@ class StateManager{
     }
 
     // 存储正在推测的事件
-    selected_event_id = observable.box('event_216572')
+    selected_event_id = observable.box('event_218347')
     @action setSelectedEvent(event){
         // console.log(event, this.selected_uncertainty_event_id)
         event && this.selected_event_id.set(event.id)
@@ -51,7 +63,7 @@ class StateManager{
 
     @observable used_types_set = []
     @action setUsedTypes(types){
-        console.log(types)
+        // console.log(types)
         types = [...new Set(types)]
         this.used_types_set.replace(types)
     }
@@ -66,17 +78,41 @@ class StateManager{
         }
     }
 
-    @observable rule_filter_set = []
-    @action setRuleFilter(rules){
-        // console.log(rules)
-        this.rule_filter_set.replace(rules.map(elm => elm.object.id))
+    @observable show_triggers_id = []
+    @observable show_people_id = []
+    @observable show_years_id = []
+    @observable show_addrs_id = []
+    @action setShowTriggers(ids){
         this.need_refresh++
+        this.show_triggers_id.replace(ids)
+    } 
+    @action setShowAddrs(ids){
+        this.need_refresh++
+        this.show_addrs_id.replace(ids)
     }
-    @computed get rule_filer(){
-        // console.log( this.rule_filter_set)
-        let triggers = this.rule_filter_set.map(elm => triggerManager.get(elm))
-        // console.log(triggers)
-        return triggers
+    @action setShowYears(ids){
+        this.need_refresh++
+        this.show_years_id.replace(ids)
+    } 
+    @action setShowPeople(ids){
+        this.need_refresh++
+        this.show_people_id.replace(ids)
+    }
+
+    @computed get show_triggers(){
+        let show_triggers_id = this.show_triggers_id.slice()
+        return show_triggers_id.map(id=> triggerManager.get(id))
+    }
+    @computed get show_addrs(){
+        let show_addrs_id = this.show_addrs_id.slice()
+        return show_addrs_id.map(id=> addrManager.get(id))
+    }
+    @computed get show_people(){
+        let show_people_id = this.show_people_id.slice()
+        return show_people_id.map(id=> personManager.get(id))
+    }
+    @computed get show_years(){
+        return this.show_years_id.slice()
     }
 }
 

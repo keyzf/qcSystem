@@ -8,7 +8,7 @@ import * as d3 from 'd3'
 import {autorun, keys} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, filtEvents} from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, filtEvents, triggerFilter, timeManager, dictCopy} from '../../dataManager/dataStore2'
 import tsnejs from '../../dataManager/tsne'
 import { Divider, Container, Header, Table, Checkbox, Dropdown} from 'semantic-ui-react'
 import cos_dist from 'compute-cosine-distance'
@@ -65,7 +65,7 @@ class InferContour extends React.Component {
         if (stateManager.is_ready) {
             console.log('加载基于contour推理试图数据')
             let event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:event_id, depth:3, event_num:1000})
+            net_work.require('getAllRelatedEvents', {event_id:event_id, depth:3, event_num:2000})
             .then(data=>{
                 console.log(data)
                 data = dataStore.processResults(data.data)
@@ -87,7 +87,7 @@ class InferContour extends React.Component {
     calcualteEventMark = ()=>{
         let {all_events, center_event} = this
         all_events = filtEvents(all_events)
-        
+        all_events = triggerFilter(all_events)
 
         let all_triggers = all_events.map(event=> event.trigger)
         let all_addrs = [], all_people = [], all_years = []
@@ -140,11 +140,12 @@ class InferContour extends React.Component {
                 let years = [time_range[0]]
                 if (event===center_event) {
                     years = Object.keys(event.prob_year).map(year=> parseInt(year))
-                    console.log(years, event)
+                    // console.log(years, event)
                 }
                 years.forEach(year=>{
                     let time = year
-                    let time_vec = new Array(vec_length).fill(time).map(elm=> (elm-min_time)/(max_time-min_time+1)*time_p)
+                    let time_vec = timeManager.get(year).vec
+                    // new Array(vec_length).fill(time).map(elm=> (elm-min_time)/(max_time-min_time+1)*time_p)
 
                     let all_event_vecs = [time_vec, ...addr_vecs, ...people_vec, trigger_vec, event_vec] 
                     let mean_vec = all_event_vecs.reduce((total, vec)=>{
@@ -216,6 +217,12 @@ class InferContour extends React.Component {
 
                 if (event===center_event){
                     point.color = 'red'
+                    let copy = dictCopy(point)
+                    let {year, event_id} = copy
+                    let event = eventManager.get(event_id)
+                    let prob = event.prob_year[year]
+                    prob = prob || 0.2
+                    copy.size = prob
                     uncertain_event_mark_data.push(point)
                 }else{
                     const color = d3.rgb(30, 30, 30).brighter()
@@ -439,6 +446,13 @@ class InferContour extends React.Component {
                 onMouseLeave={event=> this.setState({hint_value:undefined})}>  
 
                     <Highlight
+                        drag
+                        style={{
+                            '.rv-highlight':{
+                                fill: 'white',
+                                stroke: 'None'
+                            },
+                        }}
                         onBrushEnd={area => this.setState({highlighting: false,selected_area: area})}
                         onBrushStart={area => this.setState({highlighting: true})}
                     />
@@ -464,7 +478,7 @@ class InferContour extends React.Component {
                         data={uncertain_event_mark_data}
                         curve='curveMonotoneX'
                         color='red'
-                        sizeRange={[2, 5]}
+                        sizeRange={[1, 10]}
                         style={{
                             pointerEvents: highlighting ? 'none' : '',
                             lineerEvents: highlighting ? 'none' : ''

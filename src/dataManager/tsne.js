@@ -29,7 +29,7 @@ var tsnejs = tsnejs || { REVISION: 'ALPHA' };
     var u = 2*Math.random()-1;
     var v = 2*Math.random()-1;
     var r = u*u + v*v;
-    if(r == 0 || r > 1) return gaussRandom();
+    if(r === 0 || r > 1) return gaussRandom();
     var c = Math.sqrt(-2*Math.log(r)/r);
     v_val = v*c; // cache this for next function call for efficiency
     return_v = true;

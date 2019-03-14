@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import "react-vis/dist/style.css";
 // import { Container } from 'semantic-ui-react'
 // import PoetRelationships from './component/test_component/poetRelationships'
 // import PersonalTimeLine from './component/test_component/personalTimeLine'
 // import PoetryCiteSankey from './component/test_component/poetryCiteSankey5'
 // import MainGraph from './component/test_component/mianGraph7'
-import LifeLikePaint from './component/graph_component/lifeLikePaint1'
+// import LifeLikePaint from './component/graph_component/lifeLikePaint1'
 import InferContour from './component/graph_component/inferContour1'
 import RelationMatrix from './component/graph_component/relationMatrix2'
 // import TestLifeLikePaint from './component/test_component/lifeLikePaint3'
@@ -14,10 +15,9 @@ import RelationMatrix from './component/graph_component/relationMatrix2'
 // import EventMatrix2 from './component/test_component/eventMatrix2'
 // import EventMatrix from './component/graph_component/eventMatrix1'
 // import people_list from './data/temp_data/all_persons.json'
-import PeopleSelector from './component/UI_component/peopleSelector'
 import UpContainer from './component/UI_component/upContainer'
-import AddrSunBursts from './component/graph_component/addrSunbursts'
-import TriggerSunBurst from './component/graph_component/triggerSunBurst'
+// import AddrSunBursts from './component/graph_component/addrSunbursts'
+import InferSunBurst from './component/graph_component/inferSunBurst'
 
 import { Header, Icon, Image, Menu, Segment, Sidebar, Container, Checkbox, Input, Grid, Label, Table, List} from 'semantic-ui-react'
 // import { values } from 'mobx';
@@ -103,8 +103,11 @@ class App extends Component {
         </div> */}
 
         <div style={{position:"absolute", top: center_control_bar_top+20, left:0}}>
-            {/* <RelationMatrix width={left_between_relation_infer} height={height-center_control_bar_top-30}/> */}
-            <TriggerSunBurst width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
+            <RelationMatrix width={left_between_relation_infer} height={height-center_control_bar_top-30}/>
+        </div>
+
+        <div style={{position:"absolute", top: height, left:0}}>
+            <InferSunBurst width={left_between_relation_infer*1.5} height={left_between_relation_infer}/>
         </div>
 
         {/* 新的推理视图 */}
