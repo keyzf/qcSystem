@@ -156,6 +156,7 @@
   "devDependencies": {
     "babel-preset-react-native-stage-0": "^1.0.1",
     "babel-preset-stage-2": "^6.24.1",
-    "node-sass": "^4.11.0"
+    "node-sass": "^4.11.0",
+    "pqsort": "^1.0.4"
   }
 }

@@ -2,12 +2,12 @@
 
 import React from 'react';
 // import jsonFormat from 'json-format'
-import {XYPlot,VerticalRectSeries,ContourSeries, VerticalRectSeriesCanvas, Hint, YAxis, LabelSeries, MarkSeriesCanvas, LineSeriesCanvas, MarkSeries, LineSeries,  XAxis, AreaSeries} from 'react-vis';
+import {XYPlot,VerticalRectSeries,ContourSeries, VerticalRectSeriesCanvas, Hint, YAxis, VerticalBarSeries, LabelSeries, MarkSeriesCanvas, LineSeriesCanvas, MarkSeries, LineSeries,  XAxis, AreaSeries} from 'react-vis';
 import * as d3 from 'd3'
 import {autorun, set} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents } from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy } from '../../dataManager/dataStore2'
 import {MyBrush} from '../UI_component/myUIComponents'
 
 class RealtionMatrix extends React.Component{
@@ -44,6 +44,7 @@ class RealtionMatrix extends React.Component{
         if (stateManager.is_ready) {
             console.log('更新事件筛选')
             let used_types = stateManager.used_types
+            let need_refresh = stateManager.need_refresh
             // this.loadMatrix()
             this.loadMatrix()
         }
@@ -118,8 +119,10 @@ class RealtionMatrix extends React.Component{
     loadMatrix(){
         let {selected_people, personScale, rect_width, all_events} = this
         
-        let event_array = this.all_events
+        let event_array = all_events
+        event_array = event_array.filter(elm=> elm.getPeople().length!==1)
         event_array = filtEvents(event_array)
+        event_array = triggerFilter(event_array)
 
         let people_array = []
         event_array.forEach(event=>{
@@ -140,10 +143,10 @@ class RealtionMatrix extends React.Component{
         })
         event_array.forEach(event=>{
             let people = event.getPeople()
-            // if (people.length===1) {
-            //     // 是否要放进图中
-            //     return
-            // }
+            if (people.length===1) {
+                // 是否要放进图中
+                return
+            }
             people.forEach(p1=>{
                 people.forEach(p2=>{
                     // if (p1===p2) {
@@ -240,6 +243,9 @@ class RealtionMatrix extends React.Component{
                     continue
                 }
                 for(let person_id2 in person2person[person_id1]){
+                    if (person_id2===person_id1) {
+                        continue
+                    }
                     const p2 = personManager.get(person_id2)
                     if (!people_array.includes(p2)) {
                         continue
@@ -347,7 +353,8 @@ class RealtionMatrix extends React.Component{
         console.log('render 关系矩阵')
         let { width, height} = this.props
         const right_part_width = 250
-        let svg_width = width-right_part_width>height?height:width-right_part_width
+        // let svg_width = width-right_part_width>height?height:width-right_part_width
+        let svg_width = width;
         let svg_height = svg_width
         let people_array = this.people_array
         let selected_people = this.selected_people
@@ -367,11 +374,13 @@ class RealtionMatrix extends React.Component{
 
         let {events_rect_data, trigger_rect_data, hint_value} = this.state
         let hint_point_rect = [], personX, personY, label_datas
+
         if (hint_value) {
+            hint_value = dictCopy(hint_value)
             const {rect_width} = this
             const {x ,x0, y, y0} = hint_value
-            personX  = this.scalePerson((x+x0)/2)
-            personY = this.scalePerson((y+y0)/2)
+            personY = this.scalePerson((x+x0)/2)
+            personX = this.scalePerson((y+y0)/2)
             // console.log(hint_value)
 
             // x: people_array.length*rect_width, y: y, x0: x+rect_width , y0: y0 //X方向
@@ -386,42 +395,48 @@ class RealtionMatrix extends React.Component{
             if (personX && personY) {
                 label_datas = [
                     { x: 0, y: (y+y0)/2, label: personX.name},
-                    { x: (x+x0)/2, y: people_array.length*rect_width, label: personY.name}
+                    { x: (x+x0)/2+rect_width, y: people_array.length*rect_width, label: personY.name}
                 ]                
             }
         }
-        
+
+        const people_num = people_array.length
+        const padding_e = people_num<=3?2:1.1
         return (
-            <div style={{width:width, height:height, position:"absolute", }}>
-                <div style={{width:svg_width, height:height, top: 0, left:10, position:"absolute"}}>
+            <div style={{width:width, height:height }}>
+                <div style={{width:svg_width, height:height, top: 0, left:10}}>
                     <XYPlot
                     width={svg_width}
                     height={svg_height}
                     // animation
                     onMouseLeave={event => this.setState({hint_value: undefined})}
-                    // xDomain={[0,people_array.length+6]}
-                    // yDomain={[-2,people_array.length]}
+                    xDomain={[-people_num*(padding_e-1), people_num*padding_e]}
+                    yDomain={[-people_num*(padding_e-1), people_num*padding_e]}
                     // margin={{left: 10, right: 10, top: 10, bottom: 10}}
                     >
                     {
-                        hint_value && 
-                        <VerticalRectSeries
-                            data = {hint_point_rect}
-                        />
-                        
+                        // hint_value && 
+                        // <VerticalRectSeries
+                        //     data = {hint_point_rect}
+                        // />                 
                     }
                     <VerticalRectSeries
                         data={events_rect_data} 
                         colorType= "literal"
                         stroke='black'
                         style={{strokeWidth: 0.001}}
-                        onNearestXY={value=>this.setState({hint_value: value})}
+                        onValueMouseOver={value=>this.setState({hint_value: value})}
                     />
                     {
                         hint_value &&
                         <Hint value={hint_value}>
                             <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
-                                {hint_value.events_id.map(id => eventManager.get(id).toText())}
+                                {hint_value.events_id.map(id => 
+                                    <div key={id}>
+                                        {eventManager.get(id).toText()}
+                                    </div>
+                                )
+                                }
                             </div>
                         </Hint>
                     }
@@ -488,7 +503,7 @@ class RealtionMatrix extends React.Component{
                 </div> */}
 
                 {/* 这个范围应该是会变的 */}
-                <div style={{left:svg_width+50, position:"absolute", height:50, top:0, width:right_part_width}}>
+                <div style={{left:250,height:50, top:-330, width:right_part_width, position:'relative'}}>
                     <MyBrush 
                     range={[this.min_person_relation_num, this.max_person_relation_num] }
                     input_list={this.relation_num_list}

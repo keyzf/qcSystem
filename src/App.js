@@ -23,7 +23,8 @@ import {autorun} from 'mobx';
 import LifeLineMethod from './component/UI_component/lifeLineMethod';
 import { triggerManager,personManager } from './dataManager/dataStore2'
 // import { values } from 'mobx';
-import EventFilter from './component/UI_component/EventFilter';
+import EventFilter from './component/UI_component/EventFilter2';
+import InferSunBurst from './component/graph_component/inferSunBurst';
 import './main.scss';
 
 
@@ -85,6 +86,7 @@ class App extends Component {
     console.log(value);
     if(value.length!==0){
       this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
+      stateManager.setSelectedPeople(value)
     }
     else{
       this.setState({
@@ -144,6 +146,7 @@ class App extends Component {
             <Dropdown 
               fluid multiple search selection 
               placeholder='选择人物' 
+              className="selection_person"
               options={person_options}
               onChange={this.changeSelectPeople}
               // loading   //可以在之后添加
@@ -153,12 +156,12 @@ class App extends Component {
             placeholder='选择分数计算方法' 
             fluid selection 
             options={calcualte_method_option} defaultValue= {calcualte_method_option[0].value} />
-            <div className={'filter'} style={{ height:'82%', overflowY:'scroll'}}>
+            <div className={'filter'} style={{ height:'83%', overflowY:'scroll'}}>
               <EventFilter/>
             </div>
             </div>
           </div>
-          <MainPanel height={700} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
+          <MainPanel height={650} width={1350} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
         </div>
 
         {/* 中间那根用于调整的杆子(要研究下为什么卡顿) */}
@@ -183,14 +186,15 @@ class App extends Component {
           </div>
           <div id="matrixview">
             <header>Inference Tree Map</header>
-            {/* <RelationMatrix/> */}
+            <RelationMatrix />
           </div>
 
           <div id="relationview">
             <header>Inference Tree Map</header>
-            <InferContour height={300}/>
+            <InferSunBurst height={500} />
           </div>
         </div>
+        <InferContour/>
       </div>
     );
   }

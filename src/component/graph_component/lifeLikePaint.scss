@@ -3,3 +3,22 @@
     
   }
 }
+
+.axis{
+  path{
+    display: none;
+  }
+  g{
+    line{
+      display: none;
+    }
+    text{
+      font-family:STKaitiTC-Regular;
+      font-size:14.71px;
+      color:#000000;
+      letter-spacing:-0.41px;
+      text-align:justify;
+      line-height:22.99px;
+    }
+  }
+}

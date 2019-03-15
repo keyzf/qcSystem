@@ -1,7 +1,7 @@
 // 存储获取的数据和状态
 
 // 静态数据
-import event2score from '../data/temp_data/event2score.json'   //事件打分
+// import event2score from '../data/temp_data/event2score.json'   //事件打分
 // import all_place from '../data/temp_data/宋朝地点.json'
 import stateManager from './stateManager'
 import 'whatwg-fetch'
@@ -9,13 +9,15 @@ import net_work from './netWork'
 // import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
 // import { set, _isComputingDerivation } from 'mobx';
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
-import { set } from 'mobx';
+import pqsort from 'pqsort'
+import cos_dist from 'compute-cosine-distance'
+
 // import jsonFormat from 'json-format'
 
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = true
+var IS_EN = false
 
 class DataStore{
   constructor(){
@@ -32,12 +34,16 @@ class DataStore{
 
   processInitData(data){
     // console.log(data)
-    let {people, addrs, triggers, trigger_imp} = data
+    let {people, addrs, triggers, trigger_imp, year2vec} = data
     let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
     // console.log(trigger_imp, people)
     this.trigger_imp = trigger_imp
 
+    for(let year in year2vec){
+      // console.log(year)
+      timeManager.create(year, year2vec[year])
+    }
     // console.log(trigger_imp)
     for(let person_id in people){
       let person = people[person_id]
@@ -145,9 +151,16 @@ class Manager {
     }
     return true
   }
+  
+  getAllObjects(){
+    return dataStore.dict2array(this.id2object)
+  }
 
   // 使用的时候注意判断是否找到了
   get(_object){
+    if (typeof(_object)=='number') {
+      _object = _object.toString()
+    }
     if(typeof(_object)=='string'){
       let item = this.id2object[_object]
       // item || console.warn(_object, '找不到了！！')
@@ -158,7 +171,7 @@ class Manager {
   }
 
   getByName(_name){
-    return this.id_set.filter(elm=> elm.name && elm.name===_name)
+    return this.getAllObjects().filter(elm=> elm.name && elm.name===_name)
   }
 
   create(_object){
@@ -175,6 +188,20 @@ class Manager {
   }
 }
 
+class ObjectManager{
+  get(id){
+    let managers = [triggerManager, timeManager, addrManager, personManager]
+    for (let index = 0; index < managers.length; index++) {
+      const manager = managers[index];
+      const elm = manager.get(id)
+      if (elm) {
+        return elm
+      }
+    }
+    return undefined
+  }
+}
+
 class PersonManager extends Manager{
   constructor(){
     super()
@@ -182,20 +209,30 @@ class PersonManager extends Manager{
   }
 }
 
+class TimeManager extends Manager{
+  constructor(){
+    super()
+    this._object = Time
+  }
+  create(year, vec){
+    if (typeof(year)=='number') {
+      year = year.toString()
+    }
+    if (this.id_set.has(year)) {
+      return this.get(year)
+    }else{
+      this.id_set.add(year)
+      this.id2object[year] = new Time(year, vec)
+      return this.id2object[year]
+    }
+  }
+}
+
 class AddrManager extends Manager{
   constructor(){
     super()
     this._object = Addr
-    // this.loadAllPlace()
   }
-  // loadAllPlace(){
-  //   for(let addr_id in all_place){
-  //     let data = all_place[addr_id]
-  //     let addr = this.create(data)
-  //     addr.parents = data.parents.map(item_id=> this.create(all_place[item_id]))
-  //     addr.sons = data.sons.map(item_id=> this.create(all_place[item_id]))
-  //   }
-  // }
 }
 
 class TriggerManager extends Manager{
@@ -222,6 +259,14 @@ class TriggerManager extends Manager{
     this.names = [...this.names].sort()
     return this.parent2types
     // console.log(this.types, this.parent2types, this.parent_types, this.names)
+  }
+  getParentTypes(){
+    this.parent_types = new Set()
+    for(let id in this.id2object){
+      let elm = this.id2object[id]
+      this.parent_types.add(elm.parent_type)
+    }
+    return this.parent_types = [...this.parent_types].sort()
   }
 
   getAlltypes(){
@@ -256,17 +301,6 @@ class TriggerManager extends Manager{
 class EventManager extends Manager{
   constructor(){
     super()
-    this.event2score = event2score
-    this.event2score['担任'] = {
-      "type": "政治",
-      "parent_type": "政治",
-      "score": 9
-    }
-    for(let trigger in this.event2score){
-      // 暂时用于使其为正
-      this.event2score[trigger].score = parseInt(this.event2score[trigger].score)
-    }
-
     this._object = Event
 
     this.pingji = ['正一品','从一品','正二品','从二品','正三品','从三品','正四品上','正四品','正四品下','从四品上', '从四品', '从四品下','正五品上','正五品', '正五品下','从五品上', '从五品','从五品下','正六品上','正六品','正六品下','从六品上', '从六品', '从六品下','正七品上', '正七品', '正七品下', '从七品上', '从七品', '从七品下', '正八品上','正八品', '正八品下','从八品上','从八品', '从八品下', '正九品下', '正九品', '正九品下','从九品上', '从九品', '从九品下']
@@ -284,42 +318,52 @@ class EventManager extends Manager{
     return year2events
   }
 
-  // 评分有重大问题呀，没有角色
-  getScore(event, role){
-    let trigger = event.trigger
-    if (trigger.name === '担任') {
-      let guanzhi = event.detail
-      // console.log(guanzhi)
-      if (!this.guanzhi2pingji[guanzhi]) {
-        return 0
-      }
-      let pingji = this.guanzhi2pingji[guanzhi]['品级']
-      // 好像还有缺的，如 主管尚书省户部架阁文字
-      return this.pingji.findIndex(elm => pingji===elm)*(10/this.pingji.length)
-    }
+}
 
-    if (role==='主角') {
-      trigger = trigger || {name:'不存在'}
-      let trigger_with_role = trigger.name //  + ' ' + role
-      if(event2score[trigger_with_role]){
-        return event2score[trigger_with_role].score
-      }
-    }else{
-      // 不是主角先瞎写一个
-      let trigger_with_role = trigger.name //  + ' ' + role
-      if(event2score[trigger_with_role]){
-        return event2score[trigger_with_role].score/5
-      }
+
+class _object{
+  constructor(_object){
+    this.id = _object.id
+    this.name = _object.name
+    this.vec = _object.vec
+    if (!_object.en_name)
+      this.en_name = _object.name
+    else
+      this.en_name = _object.en_name
+  }
+
+  toVec(){
+    return this.vec
+  }
+  
+  getName(){
+    if (IS_EN)
+      return ' ' + this.en_name + ' '
+    else
+      return this.name
+  }
+
+  toText(){
+    return '('+ this.id + ')' + this.getName()
+  }
+}
+
+class Time extends _object{
+  static _type = 'time'
+  constructor(year, vec){
+    let _object = {
+      name: year,
+      id: year,
+      vec: vec,
     }
-    // console.warn('ERROR: 有不存在评分的', trigger_with_role)
-    return 0
+    super(_object)
   }
 }
 
 // 直接给json值加操作好了
-class Event{
+class Event extends _object{
   constructor(_object){
-    this.id = _object.id
+    super(_object)
     this.addrs = _object.addrs.map(item_id=> addrManager.get(item_id))
     this.trigger =  triggerManager.get(_object.trigger)
     this.trigger ||  console.log(this.trigger, _object)
@@ -332,14 +376,10 @@ class Event{
       return {
         person: person,
         role: item.role,
-        // score: eventManager.getScore(this.trigger, item.role),
         tag: this.trigger? this.trigger.name + ' ' + item.role:'不存在trigger'
       }
     })
     this.time_range = _object.time_range
-
-    this.vec = _object.vec
-
 
     this.prob_year = _object.prob_year
     this.prob_addr = _object.prob_addr
@@ -370,7 +410,7 @@ class Event{
       trigger_imp = trigger_imp[trigger_id]
     }else{
       trigger_imp = 0.0001
-      console.log(trigger_id, '没有重要度')
+      console.warn(trigger_id, '没有重要度')
     }
 
     let ops_person = person
@@ -381,27 +421,50 @@ class Event{
     })
     // console.log(trigger_imp*ops_person.page_rank)
     // console.log(this, trigger_imp, ops_person.page_rank, trigger_imp*ops_person.page_rank)
-    return trigger_imp*ops_person.page_rank
+
+    // 这个log是瞎放的
+    return Math.log(trigger_imp*ops_person.page_rank+1)
   }
 
   // 返回一个计算不确定度的度量
   getUncertaintyValue(){
     const {time_range, addrs, trigger} = this
     const people = this.getPeople()
-    let uncertainty_value = 1, 
-        time_uncertainty = time_range[1]-time_range[0], 
-        addr_uncertainty = addrs.length==1? 0: Math.abs(addrs.length-1),
-        trigger_uncertainty = 0,
-        people_uncertainty = 0 //定义不确定度
-    return uncertainty_value /= (time_uncertainty+addr_uncertainty+trigger_uncertainty+people_uncertainty+1)
-  }
+    // let uncertainty_value = 1, 
+    //     time_uncertainty = time_range[1]-time_range[0], 
+    //     addr_uncertainty = addrs.length===1? 0: Math.abs(addrs.length-1),
+    //     trigger_uncertainty = 0,
+    //     people_uncertainty = 0 //定义不确定度
+    // return uncertainty_value /= (time_uncertainty+addr_uncertainty+trigger_uncertainty+people_uncertainty+1)
 
-  toVec(){
-    return this.vec
-    // return [...this.vec]
+    let uncertainty_value = 0
+    if (!this.isTimeCertain()) {
+      uncertainty_value++
+    }
+    if(this.addrs.length==0){
+      uncertainty_value++
+    }
+    if (this.trigger.name=='未详') {
+      uncertainty_value++
+    }
+    if (this.getPeople().includes(personManager.getByName('未详')[0])) {
+      uncertainty_value++
+    }
+    return 4-uncertainty_value
   }
   
   getScore(person){
+    let trigger = this.trigger
+    if (trigger.name === '担任') {
+      let guanzhi = this.detail
+      const guanzhi2pingji = eventManager.guanzhi2pingji
+      if (!guanzhi2pingji[guanzhi]) {
+        return 0
+      }
+      let pingji = guanzhi2pingji[guanzhi]['品级']
+      return eventManager.pingji.findIndex(elm => pingji===elm)*(10/eventManager.pingji.length)
+    }
+
     const role = this.getRole(person), role2score = this.trigger.role2score
     return role2score[role] || 0
   }
@@ -440,7 +503,7 @@ class Event{
       person_text += trigger_name + (second_person==='未知人物'?'':second_person)
     }
     
-    return (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
+    return '【' + this.id + '】' + (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
   }
   
   toDict(){
@@ -473,13 +536,10 @@ class Event{
 
 
 // 还没有处理 isNaN()的情况
-class Person{
+class Person extends _object{
+  static _type = 'person'
   constructor(_object){
-    // console.log(_object)
-    this.id = _object.id
-
-    this.name = _object.name
-    this.en_name = _object.en_name
+    super(_object)
 
     this.certain_event_num = parseInt(_object.certain_events_num)
     this.event_num = parseInt(_object.events_num)
@@ -497,10 +557,6 @@ class Person{
     this.vec = _object.vec
   }
 
-  toVec(){
-    return this.vec
-    // return [...this.vec]
-  }
   getRelatedPeople(){
     let people = []
     this.events.forEach(event=>{
@@ -560,11 +616,11 @@ class Person{
   }
 }
 
-class Addr{
+class Addr extends _object{
+  static _type = 'person'
+
   constructor(_object){
-    this.id = _object.id
-    this.name = _object.name
-    this.en_name = _object.en_name
+    super(_object)
     this.alt_names = _object.alt_names
     this.first_year = parseInt(_object.first_year)
     this.last_year = parseInt(_object.last_year)
@@ -577,18 +633,6 @@ class Addr{
     this.sons = []
 
     this.all_sons = undefined
-  }
-
-  getName(){
-    if (IS_EN)
-      return ' ' + this.en_name + ' '
-    else
-      return this.name
-  }
-
-  toVec(){
-    return this.vec
-    // return [...this.vec]
   }
 
   getAllSons(limit_depth=4){
@@ -640,11 +684,11 @@ class Addr{
   }
 }
 
-class Trigger{
+class Trigger extends _object{
+  static _type = 'person'
+
   constructor(_object){
-    this.id = _object.id
-    this.name = _object.name
-    this.en_name = _object.en_name
+    super(_object)
     this.type = _object.type
     this.parent_type = _object.parent_type
 
@@ -657,10 +701,6 @@ class Trigger{
   getPairTrigger(){
     let pair_trigger = triggerManager.get(this.pair_trigger)
     return pair_trigger
-  }
-  toVec(){
-    return this.vec
-    // return [...this.vec]
   }
   equal(value){
     return value===this.name || this.parent_type===value || this.type===value
@@ -678,6 +718,9 @@ var addrManager = new AddrManager()
 var eventManager = new EventManager()
 var triggerManager = new TriggerManager()
 var dataStore = new DataStore()
+var timeManager = new TimeManager()
+var objectManager = new ObjectManager()
+
 var isValidYear = (year)=>{
   return year && !isNaN(year) && year!==-9999 && year!==9999
 }
@@ -686,16 +729,166 @@ var isCertainTimeRange = (time_range)=>{
 }
 const rangeGenrator  = (start, end) => new Array(end - start).fill(start).map((el, i) => start + i);
 
+//为了添加规则而加的过滤器 
+const yearFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_years.length===0 || (elm.isTimeCertain && show_years.includes(elm.time_range)))
+}
+const addrFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_addrs.length===0 || hasSimElmIn(elm.addrs, show_addrs))
+}
+const peopleFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_people.length===0 || hasSimElmIn(elm.getPeople(), show_people))
+}
+const triggerFilter = (events)=>{
+  let show_years = stateManager.show_years_id,
+      show_addrs = stateManager.show_addrs,
+      show_people = stateManager.show_people,
+      show_triggers = stateManager.show_triggers
+
+  return events.filter(elm => show_triggers.length===0 || show_triggers.includes(elm.trigger))
+}
+
+const ruleFilterWith = (events, used_filter)=>{
+  if(used_filter.includes('t'))
+    events = triggerFilter(events)
+  if(used_filter.includes('a'))
+    events = addrFilter(events)
+  if(used_filter.includes('p'))
+    events = peopleFilter(events)
+  if(used_filter.includes('y'))
+    events = yearFilter(events)
+  // console.log(events)
+  return events
+}
 const filtEvents = (events)=>{
   let used_types = stateManager.used_types
-  // console.log(used_types)
-  // let isIn = 
-  // console.log( used_types, events,  events.filter(event=> 
-  //   used_types.includes(event.trigger.name) || 
-  //   used_types.includes(event.trigger.parent_type) || 
-  //   used_types.includes(event.trigger.parent_type) )
-  // )
-  return events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
+
+  events = events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
+  return events
 }
-export {personManager, addrManager, eventManager, triggerManager, isValidYear, rangeGenrator, filtEvents}
+
+const eucDist = (vec1, vec2)=>{
+  if (vec1.length!==vec2.length) {
+    console.error(vec1, vec2,'长度不相等')
+  }
+  let total = 0
+  for (let index = 0; index < vec1.length; index++) {
+    const e1 = vec1[index], e2 = vec2[index]
+    total += (e1-e2)*(e1-e2)
+  }
+  return Math.sqrt(total)
+}
+
+const arrayAdd = (arr1, arr2)=> {
+  if (!arr1) {
+    return arr2 
+  }
+  if (!arr2) {
+    return arr1
+  }
+  if (arr1.length!=arr2.length) {
+    console.warn(arr1, arr2, '没有对齐')
+  }
+  return arr1.map((elm,index)=> elm+arr2[index])
+}
+
+const hasSimElmIn = (objects1, objects2)=>{
+  for (let index = 0; index < objects1.length; index++) {
+    let elm = objects1[index]
+    if (objects2.includes(elm)) {
+      return true
+    }
+  }
+  return false
+}
+
+const simplStr = (str, num)=>{
+  // console.log(getStrLength(str), str, num)
+  if (str.length>num) {
+      return str.substr(0,num) + '...'
+  }else{
+    return str
+  }
+}
+
+const dictCopy = (elm)=>{
+  let copy = {}
+  for(let key in elm){
+    let value = elm[key]
+    copy[key] = value
+  }
+  return copy
+}
+
+// 部分排序, 什么垃圾库，有问题
+// const mypqsort = (array, top_n, func)=>{
+//   let wrap_array= array.map((elm,index)=>{
+//     return {
+//       value: func(elm),
+//       data: elm
+//     }
+//   })
+//   function transform (arr) {
+//     return arr.map(function (v, index) { return {value: v, data: index} })
+//   }
+//   wrap_array = transform([5, 7, 4, 2, 8, 6, 1, 9, 0, 3])
+
+//   console.log(wrap_array, pqsort(wrap_array), top_n)
+
+  
+//   wrap_array = pqsort(wrap_array, top_n).slice(0, top_n)
+//   return wrap_array.map(elm=> elm.data)
+// }
+
+const sortBySimilar = (objects, positive=[], negative=[], top_n=20)=>{
+  let total_dist = {}
+  objects.forEach(object=>{
+    const positive_dist = positive.reduce((total, elm)=>{
+      return total + cos_dist(elm.vec, object.vec)
+    }, 0)
+    const negative_dist = negative.reduce((total, elm)=>{
+      return total + cos_dist(elm.vec, object.vec)
+    }, 0)
+    total_dist[object.id] = positive_dist -negative_dist
+  })
+  objects = objects.sort((a,b)=> total_dist[a.id]-total_dist[b.id]).slice(0, top_n)
+  return objects
+}
+
+export {
+  personManager, addrManager, eventManager, triggerManager, timeManager, objectManager,
+
+  isValidYear, 
+  rangeGenrator, 
+  eucDist, 
+  arrayAdd, 
+  simplStr,
+  hasSimElmIn,
+  // mypqsort,
+
+  filtEvents, 
+  addrFilter,
+  yearFilter,
+  peopleFilter,
+  triggerFilter,
+  ruleFilterWith,
+
+  dictCopy,
+  sortBySimilar,
+}
 export default dataStore

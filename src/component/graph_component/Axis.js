@@ -12,11 +12,15 @@ export default class Axis extends React.Component {
   
     renderAxis() {
       var node  = this.refs.axis;
-      var axis = d3.axisBottom(this.props.xscale);
+      var axis = d3.axisBottom(this.props.xscale)
+                   .tickFormat(d3.format('d'));
       d3.select(node).call(axis);
     }
   
     render() {
-      return <g className="axis" ref="axis" transform={this.props.translate}></g>
+      let {width} = this.props;
+      return (<g className="axis" ref="axis" transform={this.props.translate}>
+        <rect width={width} height={25} x={0} y={0} fill={'#ebebeb'}></rect>
+      </g>);
     }
   }

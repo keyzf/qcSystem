@@ -6,13 +6,13 @@ export default class BubbleChart extends React.Component {
     super();
     this.rscale=d3.scaleLinear()
                   .domain([0,1])
-                  .range([0,8]);
+                  .range([1,10]);
     this.bubbleColor=d3.scaleLinear();
     this.openEvent = new Set();
     this.openEventCircle = -1;
     this.metaballs={
-      blurDeviation: 10,
-      colorMatrix: '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 50 -10',
+      blurDeviation: 8,
+      colorMatrix: '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10',
     };
   }
   componentDidMount() {
@@ -27,9 +27,8 @@ export default class BubbleChart extends React.Component {
   addMetaballs(){
     let node = this.refs.bubbleGraph;
     let bubble = this.refs.bubble;
-    const METABALL_DEF_ID = 'metaballs';
     const defs = d3.select(node).append('defs');
-    const filter = defs.append('filter').attr('id', METABALL_DEF_ID);
+    const filter = defs.append('filter').attr('id', 'metaballs');
 
     filter
         .append('feGaussianBlur')
@@ -49,53 +48,84 @@ export default class BubbleChart extends React.Component {
         .attr('in', 'SourceGraphic')
         .attr('in2', 'contrast');
     
-    d3.select(bubble).style('filter', `url(${METABALL_DEF_ID})`);
+    d3.select(bubble).style('filter', `url(#metaballs)`);
   }
 
   renderBubble() {
+    console.log('rerender bubble')
     let node=this.refs.bubble;
-    let tooltip=this.refs.tooltip;
-    let {data,xscale,areaHeight,onEventClick} =this.props;
+    let bubbleGraph=this.refs.bubbleGraph;
+    let {data,xscale,onEventClick} =this.props;
     let rscale=this.rscale;
-    let bubblesMap= new Map();
     let bubbles=[];
     console.log(data);
     for(let key in data){
-
+      let datum = data[key];
+      let count = datum.length;
+      let interval = 1.0/(count-1);
+      let tmp = 0;
+      datum.forEach((d,i) => {
+        d.max_prob_year =  parseInt(key);
+        if(i%2!==0){
+          tmp= interval * (i/2);
+        }
+        else {
+          tmp = -tmp;
+        }
+        d.x = parseInt(key) + tmp;
+        bubbles.push(d);
+      });
     }
-    // data.forEach(d => {
-    //   d.events.forEach(dd=>{
-    //     if(bubblesMap.has(dd.x)){
-    //       if(bubblesMap.get(dd.x).prob<dd.prob){
-    //         let tmp=bubblesMap.get(dd.x);
-    //         bubblesMap.set(dd.x,{'prob':dd.prob,'count':tmp.count+1});
-    //       }
-    //     }
-    //     else{
-    //       bubblesMap.set(dd.x,{'prob':dd.prob,'count':1});
-    //     }
-    //   })
-    // });
-    // for (let [key, value] of bubblesMap) {
-    //   bubbles.push({'x':key,'prob':value.prob,'count':value.count});
-    // }
-    // let countDomain = d3.extent(bubbles.map(d=>d.count));
-    // console.log(xscale.range());
-    // this.bubbleColor.domain(countDomain).range([0.2,0.8]);
-    // d3.select(node).selectAll('.bubbleWhole')
-    //   .data(bubbles)
-    //   .enter()
-    //   .append('circle')
-    //   .attr('class','bubbleWhole')
-    //   .attr('r',(d)=>{
-    //     return this.rscale(d.prob);
-    //   })
-    //   .attr('cx',d=>{
-    //     console.log(d.x)
-    //     return xscale(parseInt(d.x))
-    //   })
-    //   .attr('cy',10)
-    //   .attr('fill',d=>d3.interpolateReds(this.bubbleColor(d.count)))
+    console.log(xscale.domain());
+    d3.select(node).selectAll('.bubbleWhole').remove()
+    d3.select(node).selectAll('.bubbleWhole')
+      .data(bubbles)
+      .enter()
+      .append('circle')
+      .attr('class','bubbleWhole')
+      .attr('r',(d)=>{
+        if(Object.keys(d.prob_year).length!==0){
+          return rscale(d.prob_year[d.max_prob_year]);
+        }else{
+          return 6;
+        }
+      })
+      .attr('cx',d=>{
+        return xscale(d.x)
+      })
+      .attr('cy',10)
+      .attr('fill','#905551')
+      .attr('fill-opacity',0.5)
+      .on('click',(d)=>{
+        onEventClick(d);
+      })
+      // .on('mouseover',function(d){
+      //   let mousePos = d3.mouse(node);
+      //   d3.select(bubbleGraph)
+      //     .select('rect')
+      //     .attr('visibility','visible')
+      //     .attr('x',mousePos[0]+10)
+      //     .attr('y',mousePos[1]-30)
+      //   let text = d3.select(bubbleGraph)
+      //     .select('text')
+      //     .attr('visibility','visible')
+      //     .attr('x',mousePos[0]+20)
+      //     .attr('y',mousePos[1]-20)
+      //     .attr("font-size", "10px")
+      //     .attr('fill','#ffffff')
+      //     .text(d.trigger.name)
+      //     .attr("dy", "1em")
+      //   d3.select(this)
+      //     .attr('stroke','yellow')
+      // })
+      // .on('mouseout',function(){
+      //   d3.select(bubbleGraph)
+      //    .select('rect').attr('visibility','hidden');
+      //   d3.select(bubbleGraph)
+      //     .select('text').attr('visibility','hidden');
+      //   d3.select(this)
+      //     .attr('stroke',null)
+      // })
     //   .on('click',(d,i)=>{
     //     let data_year=[];
     //     if(this.openEvent.has(i)){
@@ -156,32 +186,42 @@ export default class BubbleChart extends React.Component {
     //         })
     //       }
     //   });
-    // d3.select(node)
-    //   .on('mouseover',()=>{
-    //     let target = d3.select(d3.event.srcElement);
-    //     if(target.attr('class').substr(0,11)==='circleEvent'){
-    //       let mousePos = d3.mouse(node);
-    //       let content='';
-    //       if(target.data()[0]){
-    //         content=target.data()[0].trigger.type;
-    //       }
-    //       d3.select(tooltip)
-    //         .attr('visibility','visible')
-    //         .attr('x',mousePos[0]+10)
-    //         .attr('y',mousePos[1])
-    //         .select('text')
-    //         .text(content)
-    //         .attr('x',mousePos[0]+20)
-    //         .attr('y',mousePos[1])
-    //         .attr("dy", ".35em")
-    //         .attr('stroke','#ffffff')
-    //     } else {
-    //       d3.select(tooltip).attr('visibility','hidden');
-    //     }
-    //   })
-    //   .on('mouseout',()=>{
-    //     d3.select(tooltip).attr('visibility','hidden');
-    //   })
+    d3.select(node)
+      .on('mouseover',()=>{
+        let target = d3.select(d3.event.srcElement);
+        d3.select(node).selectAll('.bubbleWhole')
+          .attr('stroke',null)
+        if(target.attr('class').substr(0,11)==='bubbleWhole'){
+          let mousePos = d3.mouse(node);
+          let content='';
+          if(target.data()[0]){
+            content=target.data()[0].trigger.type;
+          }
+          target.attr('stroke','yellow')
+          d3.select(bubbleGraph)
+            .select('rect')
+            .attr('visibility','visible')
+            .attr('x',mousePos[0]+10)
+            .attr('y',mousePos[1]-30)
+          d3.select(bubbleGraph)
+            .select('text')
+            .attr('visibility','visible')
+            .attr('x',mousePos[0]+20)
+            .attr('y',mousePos[1]-20)
+            .attr("font-size", "10px")
+            .attr('fill','#ffffff')
+            .text(content)
+            .attr("dy", "1em")
+        }
+      })
+      .on('mouseout',function(){
+        d3.select(bubbleGraph)
+        .select('rect').attr('visibility','hidden');
+        d3.select(bubbleGraph)
+         .select('text').attr('visibility','hidden');
+        d3.select(node).selectAll('.bubbleWhole')
+         .attr('stroke',null)
+      })
   }
 
   render() {
@@ -189,10 +229,10 @@ export default class BubbleChart extends React.Component {
     let {data,xscale,translate} = this.props;
     return (
     <g className="bubble" ref="bubbleGraph" transform={translate}>
-      <rect ref="tooltip" width="120" height="180" fill="#303030" rx={10} ry={10}  opacity={0.6} visibility="hidden">
-        <text>hha</text>
+      <rect width="120" height="80" fill="#303030" rx={10} ry={10}  opacity={0.6} visibility="hidden">
       </rect>
-      <g ref="bubble"></g>
+      <text></text>
+      <g ref="bubble" transform={`translate(0,5)`}></g>
       {/* {
         data && data.map((eve)=>{
           return eve.events.map((d,i)=>{

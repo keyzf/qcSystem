@@ -2,7 +2,7 @@ $downHeight: 380px;
 $borderWidth: 2px;
 @font-face{
   font-family: 'DFPSongW9';
-  src : url('./DFPSongW9-GB5.ttf');
+  src : url('./static/DFPSongW9-GB5.ttf');
 }
 #wrap {
   margin:20px;
@@ -16,6 +16,7 @@ $borderWidth: 2px;
     letter-spacing:-0.5px;
     text-align:justify;
     line-height:25px;
+    font-weight: 500;
   }
   #selectview {
       // position: absolute;
@@ -47,11 +48,14 @@ $borderWidth: 2px;
             line-height:25px;
           }
           .dropdown.selection{
+            .text{
+              color: #757575;
+            }
             margin-top:5px;
-            padding: 5px;
+            padding: 2px;
             min-height: 20px;
-            height: 30px;
-            line-height: 20px;
+            height: 32px;
+            line-height: 25px;
             border-radius: 0;
             border-color: #905551;
             color: #905551;
@@ -63,11 +67,25 @@ $borderWidth: 2px;
               border-color: #905551;
             }
             a{
-    
+              height: 26px;
+              margin:0px;
+              padding: 0px;
+              background-color: rgba(0,0,0,0);
+              box-shadow: none;
+              i{
+                margin:0;
+                padding:2px;
+              }
             }
             .menu{
               border-color: #905551;
+              div{
+                padding:2px;
+              }
             }
+          }
+          .selection_person{
+            height: 100px;
           }
           div::selection{
             border-color:#905551;
