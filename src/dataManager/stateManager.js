@@ -53,6 +53,7 @@ class StateManager{
     // 存储正在推测的事件
     selected_event_id = observable.box('event_218347')
     @action setSelectedEvent(event){
+        // console.log('jjjjjjjjj')
         // console.log(event, this.selected_uncertainty_event_id)
         event && this.selected_event_id.set(event.id)
     }

@@ -24,7 +24,7 @@ $borderWidth: 2px;
     left:0;
       display: grid;
       height: 100%;
-      grid-template-columns: 310px 1300px 1fr;
+      grid-template-columns: 310px 1200px 1fr;
       .leftPanel{
         width:330px;
         height: 100%;
@@ -101,13 +101,8 @@ $borderWidth: 2px;
         }
       }
       .rightPanel{
-        header{
-          width:100%;
-          height:40px;
-        }
-        nav{
-          border-left: 2px solid #d1c8c3;
-        }
+        height: 700px;
+        overflow-y: scroll;
       }
   }
   #footer{

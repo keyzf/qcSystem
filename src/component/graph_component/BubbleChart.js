@@ -58,7 +58,6 @@ export default class BubbleChart extends React.Component {
     let {data,xscale,onEventClick} =this.props;
     let rscale=this.rscale;
     let bubbles=[];
-    console.log(data);
     for(let key in data){
       let datum = data[key];
       let count = datum.length;
@@ -76,7 +75,6 @@ export default class BubbleChart extends React.Component {
         bubbles.push(d);
       });
     }
-    console.log(xscale.domain());
     d3.select(node).selectAll('.bubbleWhole').remove()
     d3.select(node).selectAll('.bubbleWhole')
       .data(bubbles)
@@ -84,7 +82,7 @@ export default class BubbleChart extends React.Component {
       .append('circle')
       .attr('class','bubbleWhole')
       .attr('r',(d)=>{
-        if(Object.keys(d.prob_year).length!==0){
+        if(d.prob_year[d.max_prob_year]){
           return rscale(d.prob_year[d.max_prob_year]);
         }else{
           return 6;

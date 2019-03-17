@@ -25,6 +25,7 @@ import { triggerManager,personManager } from './dataManager/dataStore2'
 // import { values } from 'mobx';
 import EventFilter from './component/UI_component/EventFilter2';
 import InferSunBurst from './component/graph_component/inferSunBurst';
+import EventTable from './component/UI_component/EventTable';
 import './main.scss';
 
 
@@ -161,7 +162,10 @@ class App extends Component {
             </div>
             </div>
           </div>
-          <MainPanel height={650} width={1350} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
+          <MainPanel height={650} width={1250} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
+          <div className="rightPanel">
+            <EventTable/>
+          </div>
         </div>
 
         {/* 中间那根用于调整的杆子(要研究下为什么卡顿) */}
@@ -194,7 +198,7 @@ class App extends Component {
             <InferSunBurst height={500} />
           </div>
         </div>
-        <InferContour/>
+        {/* <InferContour/> */}
       </div>
     );
   }

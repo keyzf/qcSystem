@@ -27,7 +27,6 @@ class LifeLikePaint extends Component{
         super(props)
        
         this.state = {
-            checked:false,
             area_datas: [],
             showEventMark: undefined,
             prob_mark_data: [],
@@ -38,8 +37,6 @@ class LifeLikePaint extends Component{
             trigger_label_data: []
         }
         this.handleEventMarkClick = this.handleEventMarkClick.bind(this);
-        this.changeViewType=this.changeViewType.bind(this);
-        let {width,height,padding} = this.props;
     }
 
     _onEventFilterChange = autorun(()=>{
@@ -56,7 +53,6 @@ class LifeLikePaint extends Component{
         console.log(selected_person);
         net_work.require('getPersonEvents', {person_id:selected_person.id})
         .then(data=>{
-            console.log(data);
             if(data){
                 data = dataStore.processResults(data)
                 this.all_events = dataStore.dict2array(data.events)
@@ -194,6 +190,7 @@ class LifeLikePaint extends Component{
         // all_events = peopleFilter(all_events)
         // all_events = addrFilter(all_events)
         // all_events = yearFilter(all_events)
+        console.log(all_events);
 
         let year2events = eventManager.array2year2events(all_events)
         // 找到出生和死亡
@@ -295,7 +292,6 @@ class LifeLikePaint extends Component{
 
     handleEventMarkClick = value => {
         const event = eventManager.get(value.id)
-        console.log(value, event)
         stateManager.setSelectedEvent(event)
     }
 
@@ -316,15 +312,9 @@ class LifeLikePaint extends Component{
         this.loadLifeLineData(selected_person)         
     }
 
-    changeViewType=()=>{
-      this.setState({
-          checked: !this.state.checked
-      });
-    }
-
     render(){
         const padding_bottom = 20
-        const { zoomTransform, xscale, height, width, selected_person, padding, index} = this.props
+        const { checked, zoomTransform, xscale, height, width, selected_person, padding, index} = this.props
         console.log('render lifeLikePaint 主视图', selected_person)
         let {area_datas, showEventMark, prob_mark_data, selected_prob_year, event_tree_data,  trigger_label_data, selected_trigger} = this.state
         // let x_domain = [
@@ -343,21 +333,14 @@ class LifeLikePaint extends Component{
         // prob_mark_data = prob_mark_data || []
         console.log(prob_mark_data)
         return (
-        // <g>
-        //   <div className="lifeMountain" style={{ height: height, width:width}}>
-        //     <div className="ui toggle checkbox">
-        //         <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
-        //         <label>分类视图</label>
-        //     </div>
-        // </div>
             <g ref="svg" width={width} height={height}>
+                <text x={width-50} y={20}>{selected_person.name}</text>
                 {/* <HistoryEvent xscale={xscale} translate={`translate(0, 0)` } zoomTransform={zoomTransform}></HistoryEvent> */}
                 <Axis xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
-                <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} translate={`translate(0, ${height-this.uncertainHeight})`} viewType={this.state.checked}></AreaLineChart>
-                <BubbleChart data={area_datas[0]?area_datas[0].event_graph_datas:[]} xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight+40})`} viewType={this.state.checked}></BubbleChart>
+                <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} translate={`translate(0, ${height-this.uncertainHeight})`} viewType={checked}></AreaLineChart>
+                <BubbleChart data={area_datas[0]?area_datas[0].event_graph_datas:[]} xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart>
                 <BubbleChart data={prob_mark_data} areaHeight={height-this.uncertainHeight} translate={`translate(0, ${height-this.uncertainHeight+20})`} xscale={xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
             </g>
-        // </g>
         )
     }
 }
