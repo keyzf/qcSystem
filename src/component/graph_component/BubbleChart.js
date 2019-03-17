@@ -58,7 +58,7 @@ export default class BubbleChart extends React.Component {
     let {data,xscale,onEventClick} =this.props;
     let rscale=this.rscale;
     let bubbles=[];
-    console.log(data);
+    // console.log(data);
     for(let key in data){
       let datum = data[key];
       let count = datum.length;
@@ -76,7 +76,7 @@ export default class BubbleChart extends React.Component {
         bubbles.push(d);
       });
     }
-    console.log(xscale.domain());
+    // console.log(xscale.domain());
     d3.select(node).selectAll('.bubbleWhole').remove()
     d3.select(node).selectAll('.bubbleWhole')
       .data(bubbles)
@@ -193,9 +193,10 @@ export default class BubbleChart extends React.Component {
           .attr('stroke',null)
         if(target.attr('class').substr(0,11)==='bubbleWhole'){
           let mousePos = d3.mouse(node);
+          console.log(target.data()[0])
           let content='';
           if(target.data()[0]){
-            content=target.data()[0].trigger.type;
+            content=target.data()[0].toText()
           }
           target.attr('stroke','yellow')
           d3.select(bubbleGraph)
@@ -225,11 +226,11 @@ export default class BubbleChart extends React.Component {
   }
 
   render() {
-    console.log('bubble',this.props.data);
+    // console.log('bubble',this.props.data);
     let {data,xscale,translate} = this.props;
     return (
     <g className="bubble" ref="bubbleGraph" transform={translate}>
-      <rect width="120" height="80" fill="#303030" rx={10} ry={10}  opacity={0.6} visibility="hidden">
+      <rect width="300" height="40" fill="#303030" rx={10} ry={10}  opacity={0.6} visibility="hidden">
       </rect>
       <text></text>
       <g ref="bubble" transform={`translate(0,5)`}></g>

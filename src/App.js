@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 // import PersonalTimeLine from './component/test_component/personalTimeLine'
 // import PoetryCiteSankey from './component/test_component/poetryCiteSankey5'
 // import MainGraph from './component/test_component/mianGraph7'
-import LifeLikePaint from './component/graph_component/lifeLikePaint1'
+// import LifeLikePaint from './component/graph_component/lifeLikePaint1'
 import InferContour from './component/graph_component/inferContour1'
 import RelationMatrix from './component/graph_component/relationMatrix2'
 // import TestLifeLikePaint from './component/test_component/lifeLikePaint3'
@@ -14,17 +14,18 @@ import RelationMatrix from './component/graph_component/relationMatrix2'
 // import EventMatrix2 from './component/test_component/eventMatrix2'
 // import EventMatrix from './component/graph_component/eventMatrix1'
 // import people_list from './data/temp_data/all_persons.json'
-import PeopleSelector from './component/UI_component/peopleSelector'
+// import PeopleSelector from './component/UI_component/peopleSelector'
 import MainPanel from './component/UI_component/mainPanel'
 import Map from './component/graph_component/mapChart'
 import { Dropdown, Input } from 'semantic-ui-react';
 import stateManager from './dataManager/stateManager';
 import {autorun} from 'mobx';
-import LifeLineMethod from './component/UI_component/lifeLineMethod';
+// import LifeLineMethod from './component/UI_component/lifeLineMethod';
 import { triggerManager,personManager } from './dataManager/dataStore2'
 // import { values } from 'mobx';
 import EventFilter from './component/UI_component/EventFilter2';
 import InferSunBurst from './component/graph_component/inferSunBurst';
+import InferSunBurst2 from './component/graph_component/inferSunBurst2';
 import './main.scss';
 
 
@@ -83,7 +84,7 @@ class App extends Component {
 
   changeSelectPeople=(event,{value})=>{
     event.preventDefault();
-    console.log(value);
+    // console.log(value);
     if(value.length!==0){
       this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
       stateManager.setSelectedPeople(value)
@@ -92,36 +93,6 @@ class App extends Component {
       this.setState({
         selected_people:[this.defaultPerson]
       })
-    }
-  }
-  onCenterBarMouseUp = event=> {
-    // let {temp_center_control_bar_top} = this.state
-    this.refs.loading_div.style.display = 'none'
-    this.setState({
-      center_bar_is_move: !this.state.center_bar_is_move,
-    })
-    document.onmousemove = null
-  }
-
-  onCenterBarMouseDown = event=> {
-    if(!this.state.center_bar_is_move || true){
-      document.onmousemove = (event) => {
-        event = event || window.event;
-        let y = event.clientY
-        const { height} = this.props
-        if (y>0 && y<=height) {
-          // console.log(this.refs.center_control_bar)
-          this.refs.center_control_bar.style.top = y + 'px'
-          this.center_control_bar_top = y
-          console.log(this.refs.loading_div.display)
-          this.refs.loading_div.style.display = 'block'
-          // let {center_bar_is_move} = this.state
-          // if(!center_bar_is_move)
-          //   this.setState({center_bar_is_move:true})
-        }else{
-          this.onCenterBarMouseUp()
-        }
-      }
     }
   }
 
@@ -164,20 +135,6 @@ class App extends Component {
           <MainPanel height={650} width={1350} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
         </div>
 
-        {/* 中间那根用于调整的杆子(要研究下为什么卡顿) */}
-        {/* <div 
-          ref='center_control_bar'
-          style={{
-            top: this.center_control_bar_top, 
-            width:width, height:'10px', background:'gray', cursor:'s-resize', position:'absolute', left:0, zIndex:31}}
-            // onMouseUp={ this.onCenterBarMouseUp}
-            // onMouseDown={ this.onCenterBarMouseDown }
-        >
-        </div> */}
-        {/* 加载的缓冲页面（未完成） */}
-        {/* <div ref='loading_div' className='loading_div' style={{ display:'none',width:width, height:height, position:"absolute", background:'white', opacity:0.5, zIndex:30 }}/> */}
-        
-
         {/* 新的推理视图 */}
         <div id="footer">
           <div id="mapview">
@@ -191,10 +148,15 @@ class App extends Component {
 
           <div id="relationview">
             <header>Inference Tree Map</header>
-            <InferSunBurst height={500} />
+            <InferSunBurst height={400} width={1000}/>
           </div>
+
         </div>
-        <InferContour/>
+        {/* <InferContour/> */}
+        <div style={{top:1100, left:0, position:'absolute'}} >
+        <InferSunBurst2 height={1000} width={1500}/>
+        </div>
+        
       </div>
     );
   }
