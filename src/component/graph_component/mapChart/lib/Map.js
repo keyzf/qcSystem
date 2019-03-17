@@ -25,6 +25,12 @@ class Map extends React.Component {
                     .projection(this.projection);
       this.colors = d3.scaleOrdinal(d3.schemeAccent);
       this.handleMouseOver = this.handleMouseOver.bind(this);
+      this.rscale = d3.scaleLinear()
+                      .domain([1,10])
+                      .range([3,10])
+      this.zoom = d3.zoom()
+                    .scaleExtent([0.5, 9])
+                    .on("zoom", this.zoomed.bind(this));
   }
   _getSelectedEvent = autorun(()=>{
     if(stateManager.is_ready){
@@ -41,6 +47,18 @@ class Map extends React.Component {
   componentDidMount(){
     this.init();
     this.handleMouseOver();
+    d3.select(this.refs.geomap)
+      .call(this.zoom)
+  }
+
+  componentDidUpdate(){
+    d3.select(this.refs.geomap)
+      .call(this.zoom)
+  }
+  
+  zoomed(){
+    let node = this.refs.map;
+    // d3.select(node).attr('transform',d3.event.transform)
   }
   static get defaultProps() {
     return {
@@ -69,10 +87,10 @@ class Map extends React.Component {
     d3.select(node)
       .on('mouseover',()=>{
         let target = d3.select(d3.event.srcElement);
-        console.log(target.node().tagName)
         if(target.node().tagName==='circle'){
           let targetdata = target.datum();
-          let addr=`地点：${targetdata.addr.name} ${targetdata.event.toText()}`;
+          console.log(targetdata)
+          let addr=`地点：${targetdata.addr.name} ${targetdata.event.map(d=>d.toText())}`;
           let pos = d3.mouse(node);
           d3.select(node).select('foreignObject')
             .attr('visibility','visible')
@@ -96,19 +114,21 @@ class Map extends React.Component {
     return (
       <div className='geomap'>
         <svg width={width} height={height}>
-          <g ref='geomap'>
-          </g>
-          <g ref="places">
-            <foreignObject x="20" y="22" width="120" height="100" visibility="hidden">
-              <div style={{width:120,height:100,position:'absolute',backgroundColor:'rgba(100,100,100,0.4)',borderRadius:'5px'}}>
-                <span></span>
-              </div>
-            </foreignObject >
-            {selected_people.map((person,i)=>{
-              console.log(this.colors(i));
-              return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path}/>
-            })}
+          <g ref="map">
+            <g ref='geomap'>
             </g>
+            <g ref="places">
+              <foreignObject x="20" y="22" width="120" height="100" visibility="hidden">
+                <div style={{width:120,height:100,position:'absolute',backgroundColor:'rgba(100,100,100,0.4)',borderRadius:'5px',overflowY:'scroll'}}>
+                  <span></span>
+                </div>
+              </foreignObject >
+              {selected_people.map((person,i)=>{
+                console.log(this.colors(i));
+                return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale}/>
+              })}
+            </g>
+          </g>
         </svg>
       </div>
     );

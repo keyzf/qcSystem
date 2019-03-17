@@ -9,7 +9,8 @@ export default class Places extends React.Component{
     super();
     this.state={
       places_with_time:[],
-      places_without_time:[]
+      places_without_time:[],
+      places_con:[]
     }
     this.getAddrData = this.getAddrData.bind(this);
     this.renderPlace = this.renderPlace.bind(this);
@@ -46,42 +47,70 @@ export default class Places extends React.Component{
   getAddrData(events){
     let places_with_time=[];
     let places_without_time=[];
+    let places_con = [];
     Object.keys(events).forEach((key,i)=>{
       let d = events[key];
       if(d.addrs.length!==0){
         if(d.time_range[0]===d.time_range[1]){
           d.addrs.forEach((dd)=>{
+            let flag=0;
+            console.log(dd);
+            places_with_time.forEach((place,index)=>{
+              if(place.addr.id===dd.id){
+                places_with_time[index].event.push(d);
+                places_with_time[index].count++;
+                flag=1;
+              }
+            })
             let tmp={};
+            tmp.event=[];
             tmp.addr=dd;
-            tmp.event=d;
-            places_with_time.push(tmp);
+            tmp.count=1;
+            tmp.event.push(d);
+            places_con.push(tmp);
+            if(!flag){
+              places_with_time.push(tmp);
+            }
           })
         }else{
           d.addrs.forEach((dd)=>{
-            let tmp={};
-            tmp.addr=dd;
-            tmp.event=d;
-            places_without_time.push(tmp);
+            let flag=0;
+            places_without_time.forEach((place,index)=>{
+              if(place.addr.id===dd.id){
+                places_without_time[index].event.push(d);
+                places_without_time[index].count++;
+                flag=1;
+              }
+            })
+            if(!flag){
+              let tmp={};
+              tmp.event=[];
+              tmp.addr=dd;
+              tmp.count=1;
+              tmp.event.push(d);
+              places_without_time.push(tmp);
+            }
           })
         }
       }
     })
-    places_with_time.sort((a,b)=>{
-      return a.event.time_range[0]-b.event.time_range[0]
+    places_con.sort((a,b)=>{
+      return a.event[0].time_range[0]-b.event[0].time_range[0]
     })
     this.setState({
       places_with_time:places_with_time,
-      places_without_time:places_without_time
+      places_without_time:places_without_time,
+      places_con:places_con
     })
   }
   renderLines(){
-    let {places_with_time} = this.state;
+    let {places_con} = this.state;
     let {path,color} = this.props;
     let node = this.refs.place;
-    console.log(places_with_time);
+    console.log(places_con);
     let lineData={'type':"LineString"};
     let coordinates=[];
-    places_with_time.forEach((d)=>{
+    places_con.forEach((d)=>{
       let tmp=[
         d.addr.x,
         d.addr.y
@@ -100,7 +129,7 @@ export default class Places extends React.Component{
   }
   renderPlace(){
     let node = this.refs.place;
-    let {projection,color} = this.props;
+    let {projection,color,rscale} = this.props;
     let {places_with_time,places_without_time} = this.state;
     d3.select(node).selectAll('.certain').remove()
     d3.select(node).selectAll(`.certain`)
@@ -108,7 +137,7 @@ export default class Places extends React.Component{
       .enter()
       .append('circle')
       .attr('class','certain')
-      .attr('r',4)
+      .attr('r',d=>rscale(d.count))
       .attr('transform',d=>"translate(" + projection([
         d.addr.x,
         d.addr.y
@@ -121,7 +150,7 @@ export default class Places extends React.Component{
       .enter()
       .append('circle')
       .attr('class','uncertain')
-      .attr('r',4)
+      .attr('r',d=>rscale(d.count))
       .attr('transform',d=>"translate(" + projection([
         d.addr.x,
         d.addr.y
