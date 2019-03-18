@@ -21,7 +21,7 @@ export default class HistoryEvent extends React.Component {
   }
 
   renderEvent() {
-    let {xscale} = this.props;
+    let {xscale,height,uncertainHeight} = this.props;
     let node = this.refs.history;
     this.line.x((d)=>xscale(d.x))
              .y((d)=>d);
@@ -39,9 +39,18 @@ export default class HistoryEvent extends React.Component {
       .attr('r',5)
       .attr('fill','rgba(200,200,200,0.5)')
       .attr('stroke','#454545')
-      .on('mouseover',()=>{
-        d3.select(node).select('path')
-          .attr('d',)
+      .on('mouseover',(d)=>{
+          d3.select(node).selectAll('line')
+            .attr('visibility','visible')
+            .attr('x1',xscale(d.x))
+            .attr('x2',xscale(d.x))
+            .attr('y1',15)
+            .attr('y2',height-uncertainHeight)
+            .attr('style',"stroke:rgb(99,99,99);stroke-width:2;stroke-dasharray:6")
+      })
+      .on('mouseout',(d)=>{
+        d3.select(node).selectAll('line')
+          .attr('visibility','hidden')
       })
   }
 
@@ -50,7 +59,7 @@ export default class HistoryEvent extends React.Component {
     return(
     <g className="historyevents" ref="history" transform={translate}>
       <rect width={width} height={20} x={0} y={0} fill={'#ebebeb'}></rect>
-      <path></path>
+      <line></line>
     </g>
     );
   }

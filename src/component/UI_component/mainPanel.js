@@ -132,6 +132,7 @@ class MainPanel extends Component {
     });
     let chart_width = width - padding.left - padding.right;
     let chart_height = height - padding.top - padding.bottom;
+    let uncertainHeight = 80;
     this.xscale.domain([min,max])
                .range([0,chart_width]);
     this.line=d3.line()
@@ -156,7 +157,6 @@ class MainPanel extends Component {
                     <label>分类视图</label>
                 </div>
               </foreignObject >
-              <HistoryEvent xscale={this.xscale} translate={`translate(${padding.left}, ${padding.top})`} width={width} zoomTransform={zoomTransform}></HistoryEvent>
               <defs>
               <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
                 <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
@@ -249,10 +249,12 @@ class MainPanel extends Component {
                       index = {index}
                       checked={checked}
                       selected_person={person} 
-                      calcualte_method={calcualte_method}/>
+                      calcualte_method={calcualte_method}
+                      uncertainHeight={uncertainHeight}/>
                   </g>
                 )
               }
+              <HistoryEvent xscale={this.xscale} translate={`translate(${padding.left}, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
               {relationLines.map((d,i)=>{
                 console.log(d);
                 return (<path key={i} d={this.line(d.lines)} fill="none" stroke="black"></path>);
