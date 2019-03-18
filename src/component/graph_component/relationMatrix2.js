@@ -7,7 +7,7 @@ import * as d3 from 'd3'
 import {autorun, set} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy } from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy, ruleFilter } from '../../dataManager/dataStore2'
 import {MyBrush} from '../UI_component/myUIComponents'
 
 class RealtionMatrix extends React.Component{
@@ -122,7 +122,8 @@ class RealtionMatrix extends React.Component{
         let event_array = all_events
         event_array = event_array.filter(elm=> elm.getPeople().length!==1)
         event_array = filtEvents(event_array)
-        event_array = triggerFilter(event_array)
+        event_array = ruleFilter(event_array)
+        // event_array = triggerFilter(event_array)
 
         let people_array = []
         event_array.forEach(event=>{
@@ -256,9 +257,9 @@ class RealtionMatrix extends React.Component{
                         continue
                     }
                     const center_x = personScale(p1), center_y = personScale(p2)
-                    if (center_y>center_x) {
-                        continue
-                    }
+                    // if (center_y>center_x) {
+                    //     continue
+                    // }
                     
                     const color = d3.rgb(255, 255, 255)
                     let rect_data = {

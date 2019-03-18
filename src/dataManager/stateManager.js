@@ -7,6 +7,10 @@ class StateManager{
     @observable is_ready = false  //还没有用，初始化缓存用的
     @observable need_refresh = 0 
 
+    @observable refresh(){
+        this.need_refresh++
+    }
+    
     is_ready_without_notice = false
     notice_ready = autorun(()=>{
         this.is_ready_with_out_notice = this.is_ready
@@ -14,6 +18,19 @@ class StateManager{
 
     // 测试用平时用不到的
     @observable test_count = 0
+
+
+    @observable center_person_id = observable.box('person_3767')
+    @observable setCenterPerson = person => {
+        this.center_person_id = person.id
+        this.selected_people_id.replace([person.id])
+    }
+    // @computed center_person = ()=>{
+    //     // const id = this.center_person_id.get()
+    //     // console.log(id)
+    //     return undefined 
+    //     // personManager.get(id) 
+    // }
 
     // 存储id,对象忒麻烦了
     @observable selected_people_id = ['person_3767']
@@ -114,6 +131,14 @@ class StateManager{
     }
     @computed get show_years(){
         return this.show_years_id.slice()
+    }
+
+
+    rules = []  //存新的推理图的rules
+    @action setRules(rules){
+        this.rules = rules
+        console.log(rules)
+        stateManager.need_refresh++
     }
 }
 

@@ -387,6 +387,10 @@ class Event extends _object{
     // console.log(this.prob_year, this.prob_addr, this.prob_person, _object)
   }
 
+  getAllObjects(){
+    return [...this.addrs, this.trigger, this.getPeople(), ...this.time_range.map(year=>timeManager.get(year))]
+  }
+  
   getPeople(){
     return this.roles.map(elm=>elm.person)
   }
@@ -571,6 +575,12 @@ class Person extends _object{
     }
   }
 
+  deleteEvent(_event){
+    if (this.events.includes(_event)) {
+      this.events = this.events.filter(elm=> elm!==_event)
+    }
+  }
+  
   isIn(event){
     return this.events.includes(event)
   }
@@ -775,11 +785,37 @@ const ruleFilterWith = (events, used_filter)=>{
   // console.log(events)
   return events
 }
+
 const filtEvents = (events)=>{
   let used_types = stateManager.used_types
 
   events = events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
   return events
+}
+
+
+const ruleFilter = events=>{
+  console.log(stateManager.rules)
+  return events.filter(event=>{
+    let rules = stateManager.rules
+    if (rules.length===0)
+      return true
+    let objects = event.getAllObjects()
+    let is_ok = false
+    rules.forEach(role=>{
+      if (is_ok)
+        return
+      let related_object = role.getAllObjects()
+      let has_all = true
+      related_object.forEach(elm=>{
+        if (!objects.includes(elm))
+          has_all = false
+      })
+      if (has_all)
+        is_ok = true
+    })
+    return is_ok
+  })
 }
 
 const eucDist = (vec1, vec2)=>{
@@ -826,7 +862,30 @@ const simplStr = (str, num)=>{
   }
 }
 
+const meanVec = (objects)=>{
+  let vec = objects.reduce((total, elm)=>{
+    return arrayAdd(total, elm.vec)
+  }, undefined) 
+  return vec.map(elm=> elm/objects.length)
+}
+const normalizeVec = (vecs)=>{
+  if (vecs.length==0) {
+    return []
+  }
+  let vec_length = vecs[0].length
+  for (let index = 0; index < vec_length; index++) {
+    const max = Math.max(...vecs.map(vec=> vec[index])),
+          min = Math.min(...vecs.map(vec=> vec[index]))
+    vecs.forEach(vec=>{
+      vec[index] = (vec[index]-min)/(max-min)
+    })
+  }
+  return vecs
+}
 const dictCopy = (elm)=>{
+  if (!elm) {
+    return elm
+  }
   let copy = {}
   for(let key in elm){
     let value = elm[key]
@@ -879,6 +938,8 @@ export {
   arrayAdd, 
   simplStr,
   hasSimElmIn,
+  normalizeVec,
+  meanVec,
   // mypqsort,
 
   filtEvents, 
@@ -887,6 +948,7 @@ export {
   peopleFilter,
   triggerFilter,
   ruleFilterWith,
+  ruleFilter,
 
   dictCopy,
   sortBySimilar,
