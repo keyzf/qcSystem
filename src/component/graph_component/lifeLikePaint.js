@@ -335,7 +335,6 @@ class LifeLikePaint extends Component{
         return (
             <g ref="svg" width={width} height={height}>
                 <text x={width-50} y={20}>{selected_person.name}</text>
-                {/* <HistoryEvent xscale={xscale} translate={`translate(0, 0)` } zoomTransform={zoomTransform}></HistoryEvent> */}
                 <Axis xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
                 <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} translate={`translate(0, ${height-this.uncertainHeight})`} viewType={checked}></AreaLineChart>
                 <BubbleChart data={area_datas[0]?area_datas[0].event_graph_datas:[]} xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart>

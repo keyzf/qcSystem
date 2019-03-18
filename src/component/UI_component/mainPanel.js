@@ -8,7 +8,8 @@ import * as d3 from 'd3';
 import logo from './static/mountain.png';
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
-import net_work from '../../dataManager/netWork'
+import net_work from '../../dataManager/netWork';
+import HistoryEvent from '../graph_component/HistoryEvent';
 
 // 界面的上半部分
 // @observer
@@ -149,12 +150,13 @@ class MainPanel extends Component {
         <header><img className='brand' src={logo}></img><span>Life Mountain View</span></header>
           <div className="lineChart" style={{height:height}}>
             <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)}>
-              <foreignObject className="lifeMountain" x="20" y="22" width="120" height="100">
+              <foreignObject className="lifeMountain" x="20" y="30" width="120" height="100">
                 <div className="ui toggle checkbox">
                     <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
                     <label>分类视图</label>
                 </div>
               </foreignObject >
+              <HistoryEvent xscale={this.xscale} translate={`translate(${padding.left}, ${padding.top})`} width={width} zoomTransform={zoomTransform}></HistoryEvent>
               <defs>
               <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
                 <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
@@ -238,7 +240,7 @@ class MainPanel extends Component {
                   <g key={'life_link_paint'+person.id}
                     width={chart_width}
                     className={'life_like_paint'+person.id}
-                    transform={`translate(0,${lifeLikePaint_height*index})`}>
+                    transform={`translate(0,${lifeLikePaint_height*index+15})`}>
                     <LifeLikePaint 
                       zoomTransform={zoomTransform}
                       xscale={this.xscale}
