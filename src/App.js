@@ -26,8 +26,9 @@ import { triggerManager,personManager } from './dataManager/dataStore2'
 import EventFilter from './component/UI_component/EventFilter2';
 import InferSunBurst from './component/graph_component/inferSunBurst';
 import EventTable from './component/UI_component/EventTable';
-import InferSunBurst2 from './component/graph_component/inferSunBurst2';
+import InferSunBurst2 from './component/graph_component/inferSunBurst6';
 import './main.scss';
+import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
 
 
 class App extends Component {
@@ -105,7 +106,7 @@ class App extends Component {
     const { width, height} = this.props
     let center_control_bar_top = this.center_control_bar_top
     const left_between_relation_infer = 800;
-    console.log(selected_people)
+    // console.log(selected_people)
     return (
       <div id="wrap" style={{width:width, height:height}}>
         {/* 上半部分 */}
@@ -140,7 +141,7 @@ class App extends Component {
         </div>
 
         {/* 新的推理视图 */}
-        <div id="footer">
+        {/* <div id="footer">
           <div id="mapview">
             <header>Inference Tree Map</header>
             <Map selected_people={this.state.selected_people}/>
@@ -155,10 +156,11 @@ class App extends Component {
             <InferSunBurst height={400} width={1000}/>
           </div>
 
-        </div>
+        </div> */}
         {/* <InferContour/> */}
         <div style={{top:1100, left:0, position:'absolute'}} >
           <InferSunBurst2 height={2000} width={3000}/>
+          {/* < MergeSunBurstGraph height={500} width={1920}/> */}
         </div>
         
       </div>

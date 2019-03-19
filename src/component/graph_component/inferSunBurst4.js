@@ -1,4 +1,4 @@
-import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec, intersect, union } from '../../dataManager/dataStore2'
+import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
 import net_work from '../../dataManager/netWork'
@@ -37,13 +37,12 @@ class InferSunBurst extends React.Component{
     all_people = []
     all_years = []
 
-    id2ids = {} //记录了上一步
 
     now_click_value = undefined
     former_click_value = undefined
 
     stateStack = []  //回到上一步用的
-    left_events = []
+
 
     constructor(){
         super()
@@ -61,8 +60,7 @@ class InferSunBurst extends React.Component{
             drag_value: undefined,
             filter_values: [],   //一个object对应一个rules
             rules: [],
-            
-            show_event_hint_value: undefined,
+
             mouse_postion: undefined,
         }
     }
@@ -80,7 +78,7 @@ class InferSunBurst extends React.Component{
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
             // let selected_event = eventManager.get(selected_event_id)
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:2000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:8000})
             .then(data=>{
                 console.log(data)
                 data = dataStore.processResults(data.data)
@@ -99,7 +97,6 @@ class InferSunBurst extends React.Component{
     })
 
     loadData(){
-        const show_object_num = 20
         let {all_events, center_event} = this
         if (!center_event) {
             console.warn('center_event 不存在')
@@ -124,7 +121,7 @@ class InferSunBurst extends React.Component{
                 return
             trigger2sim[trigger.id] = cos_dist(trigger.vec, center_event.trigger.vec)
         })
-        all_triggers = all_triggers.sort((a,b)=> trigger2sim[a.id]-trigger2sim[b.id]).slice(0, show_object_num)
+        all_triggers = all_triggers.sort((a,b)=> trigger2sim[a.id]-trigger2sim[b.id]).slice(0, 45)
         all_triggers = all_triggers.sort((a,b)=> a.name-b.name)
 
         let all_people = []
@@ -149,7 +146,7 @@ class InferSunBurst extends React.Component{
         // person_11645
         // console.log(people2sim['person_11645'], people2sim['person_3767'])
 
-        all_people = all_people.sort((a,b)=> people2sim[a.id]-people2sim[b.id]).slice(0, show_object_num)
+        all_people = all_people.sort((a,b)=> people2sim[a.id]-people2sim[b.id]).slice(0, 45)
 
         let all_addrs = []
         ruleFilterWith(all_events, ['y','t','p']).forEach(event=>{
@@ -168,7 +165,7 @@ class InferSunBurst extends React.Component{
                 addr2sim[addr.id] = cos_dist(addr.vec, center_event.vec)
             }
         })
-        all_addrs = all_addrs.sort((a,b)=> addr2sim[a.id]-addr2sim[b.id]).slice(0,show_object_num)
+        all_addrs = all_addrs.sort((a,b)=> addr2sim[a.id]-addr2sim[b.id]).slice(0,45)
 
         let all_years = new Set()
         all_events.forEach(event=>{
@@ -178,7 +175,7 @@ class InferSunBurst extends React.Component{
         all_years = [...all_years].map(year=> timeManager.get(year))
         // Object.keys(prob_year)
         // console.log(all_years, timeManager.id_set)
-        all_years = all_years.sort((a,b)=> parseFloat(prob_year[b])-parseFloat(prob_year[a])).slice(0,show_object_num)
+        all_years = all_years.sort((a,b)=> parseFloat(prob_year[b])-parseFloat(prob_year[a])).slice(0,45)
 
         const center_x = 0, center_y = 0
 
@@ -340,7 +337,6 @@ class InferSunBurst extends React.Component{
         // let new_vecs = myTsne(vecs, 2)
         // new_vecs = normalizeVec(new_vecs)
         // console.log(new_vecs)
-        this.left_events = left_events
 
         event_label_data = left_events.map((event, index)=>{
             const links = event2links[event.id]
@@ -362,7 +358,6 @@ class InferSunBurst extends React.Component{
                 object_id: event.id,
                 opacity: 0.5,
                 links: links,
-                size: 5,
                 style: {
                     // stroke: color,
                     cursor: "pointer",
@@ -372,37 +367,6 @@ class InferSunBurst extends React.Component{
             }
         })
 
-        let id2ids = {}
-        left_events.forEach(event=>{
-            let people = event.getPeople()
-            let addrs = event.addrs
-            let trigger = event.trigger
-            let times = event.time_range.map(elm=> timeManager.get(elm))
-
-            people.forEach(elm=>{
-                id2ids[elm.id] = id2ids[elm.id] || []
-                id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
-            })
-            addrs.forEach(elm=>{
-                id2ids[elm.id] = id2ids[elm.id] || []
-                id2ids[elm.id] = [...id2ids[elm.id], ...people, trigger, ...times, ...addrs]
-            })
-            times.forEach(elm=>{
-                id2ids[elm.id] = id2ids[elm.id] || []
-                id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
-            })
-            id2ids[trigger.id] = id2ids[trigger.id] || []
-            id2ids[trigger.id] = [...id2ids[trigger.id], ...addrs, trigger, ...times, ...people]
-        })
-        for(let key in id2ids){
-            let id2count = {}
-            id2ids[key].forEach(elm=>{
-                id2count[elm.id] = id2count[elm.id] || 0
-                id2count[elm.id]++
-            })
-            id2ids[key] = id2count
-        }
-        this.id2ids = id2ids
 
         event_label_data.forEach((elm,index)=>{
             const {links} = elm
@@ -441,8 +405,8 @@ class InferSunBurst extends React.Component{
         const {center_event, value_equal} = this
         
         let {center_event_label_data, label_data, mouseover_value, event_label_data, rules} = this.state
-        let {isDrag, mouse_postion, isMousePressed, drag_value, filter_values, show_event_hint_value} = this.state
-        let {all_addrs,all_triggers,all_people, all_years, left_events} = this
+        let {isDrag, mouse_postion, isMousePressed, drag_value, filter_values} = this.state
+        let {all_addrs,all_triggers,all_people, all_years} = this
         // console.log(all_years)
         label_data = label_data.map(elm=>{
             if (mouseover_value && elm.x===mouseover_value.x && elm.y===mouseover_value.y) {
@@ -462,7 +426,7 @@ class InferSunBurst extends React.Component{
                 let elms =  event_label.links
                 elms.forEach(elm=>{
                     let {x,y} = elm
-                    if (elm.object_id !== mouseover_value.object_id) {
+                    if (elm.x!==mouseover_value.x && elm.y!==mouseover_value.y) {
                         elm.style.opacity = 1
                         let x_string = x.toString()
                         let random1 = parseFloat(x_string.slice(x_string.length-2,x_string.length-1)),
@@ -486,7 +450,7 @@ class InferSunBurst extends React.Component{
             links_datas = this.links_datas
             show_event_label_data = this.show_event_label_data
         }
-        
+        // console.log(links_datas)
 
         const r = 1.1
         const xDomain = [-r,3], yDomain = [-r,r]
@@ -499,41 +463,9 @@ class InferSunBurst extends React.Component{
         this.all_objects.forEach((elm,index)=>{
             elm._index = index
         })
-
-
-        let object_link_mark_data = []
-        let {id2ids} = this
-        // console.log(id2ids)
-        filter_values.forEach(elm1=>{
-            let id2count = id2ids[elm1.object_id]
-            if (!id2count) {
-                // console.warn(elm1, '有了问题')
-                return
-            }
-            filter_values.forEach(elm2=>{
-                if (elm1===elm2) {
-                    return
-                }
-                // && elm2.y<(2*r-elm1.x)
-                if (id2count[elm2.object_id]) {
-                    let point = {
-                        x: elm1.x,
-                        y: elm2.y,
-                        size: parseFloat(id2count[elm2.object_id]),
-                        elm1: elm1,
-                        elm2: elm2
-                    }
-                    console.log(parseFloat(id2count[elm2.object_id]))
-                    if (point.y<(2.1-point.x)) {
-                        object_link_mark_data.push(point)
-                    }
-                }
-            }) 
-        }) 
-        // console.log(object_link_mark_data, rules, show_event_label_data, rules.map(elm=> elm.getNodeInGraph()))
-        if(mouseover_value){
-            show_event_hint_value = undefined
-        }
+        // console.log(this.state.rules)
+        console.log(rules)
+        rules.forEach(elm=> console.log(elm))
         return (
             <div 
                 className='trigger_sunburst_graph' 
@@ -559,58 +491,37 @@ class InferSunBurst extends React.Component{
                         drag_value.origin_x = drag_value.x
                         drag_value.origin_y = drag_value.y
                     }
-                    // console.log(now_click_value, former_click_value)
-                    if(now_click_value && former_click_value){
-                        if (now_click_value.node_type==='filter_object' && former_click_value.node_type==='filter_object' ) {
-                            let new_rule = ruleManager.create([now_click_value, former_click_value])
-                            this.setState({rules: ruleManager.rules})
-                            this.former_click_value = undefined
-                            this.now_click_value = undefined
-                        }
-
-                        if ( (now_click_value.node_type==='rule' && former_click_value.node_type==='filter_object') || (now_click_value.node_type==='filter_object' && former_click_value.node_type==='rule') ) {
-                            let new_rule = ruleManager.create([now_click_value, former_click_value])
-                            this.setState({rules: ruleManager.rules})
-                            this.former_click_value = undefined
-                            this.now_click_value = undefined
-                        }                        
-                    }
-
                     // console.log(drag_value)
                     this.setState({isMousePressed: true, isDrag: true, drag_value: drag_value})
                 }}
                 onMouseUp = {event=>{
                     console.log('MouseUP', this.state.mouseover_value)
                     let {filter_values} = this.state
-                    if (drag_value) {
-                        // 还需要重新布局优化
-                        if (drag_value.x>r) {
-                            if (drag_value.node_type==='related_object') {
-                                let filter_value = dictCopy(drag_value)
+                    if (drag_value && drag_value.x>1.1) {
+                            // 还需要重新布局优化
+                        if (drag_value.node_type==='related_object') {
+                            let filter_value = dictCopy(drag_value)
+                            drag_value.x = drag_value.origin_x
+                            drag_value.y = drag_value.origin_y
 
+                            filter_value.node_type = 'filter_object'
+                            filter_values.push(filter_value)
 
-                                filter_value.node_type = 'filter_object'
-                                filter_values.push(filter_value)
+                            filter_value.rotation = 0
+                            filter_value.x =  r // + 0.1*filter_values.length
+                            filter_value.y = yDomain[1] - 0.1*(filter_values.length+1)
 
-                                filter_value.rotation = 0
-                                filter_value.x =  r  + 0.1*filter_values.length
-                                filter_value.y = yDomain[1] - 0.1*(filter_values.length+1)
-
-                                let new_rule = ruleManager.create([filter_value])
-                                this.setState({rules: ruleManager.rules})
-                                // console.log(ruleManager.rules)
-                                if (filter_value.object_type==='people') {
-                                    stateManager.addSelectedPeople(filter_value.object_id)
-                                }
-                            }                            
+                            let new_rule = ruleManager.create([filter_value, ruleManager.rules[ruleManager.rules.length-1]])
+                            this.setState({rules: ruleManager.rules})
+                            // console.log(ruleManager.rules)
+                            if (filter_value.object_type==='people') {
+                                stateManager.addSelectedPeople(filter_value.object_id)
+                            }
                         }
-                        drag_value.x = drag_value.origin_x
-                        drag_value.y = drag_value.origin_y
-
-                        // this.former_click_value = undefined
-                        // this.now_click_value = undefined
+                        this.former_click_value = undefined
+                        this.now_click_value = undefined
                     }
-                    // console.log(filter_values)
+                    console.log(filter_values)
                     this.setState({
                         isMousePressed: false, 
                         isDrag: false, 
@@ -622,8 +533,8 @@ class InferSunBurst extends React.Component{
                 >
                     {/* 用来控制拖动 */}
                     <LabelSeries
-                    labelAnchorX = 'middle'
-                    labelAnchorY = 'middle'
+                    labelAnchorX = 'end'
+                    labelAnchorY = 'end'
                     style={{
                         pointerEvents: isDrag ? 'none' : '',
                         lineerEvents: isDrag ? 'none' : ''
@@ -636,9 +547,7 @@ class InferSunBurst extends React.Component{
                             drag_value.x = graph_x
                             drag_value.y = graph_y
                         }
-                        // console.log(isDrag, drag_value)
                         if (isDrag) {
-                            console.log([graph_x, graph_y])
                             this.setState({mouse_postion: [graph_x, graph_y], drag_value: drag_value})
                         }
                         // console.log(layerX, layerY, movementX, movementY, trueX2X(layerX), trueY2Y(layerY))
@@ -685,7 +594,6 @@ class InferSunBurst extends React.Component{
                     <MarkSeries
                     data={rules.map(elm=> elm.getNodeInGraph())}
                     color='#79c7e3'
-                    sizeRange={[2,5]}
                     onValueMouseOver={value=>{
                         value = this.all_objects[value._index]
                         if (!mouseover_value || (!value_equal(value, mouseover_value) && !isDrag && !isMousePressed)) {
@@ -693,16 +601,21 @@ class InferSunBurst extends React.Component{
                         }
                     }}/>
 
+                    {/* {
+                        drag_value &&
+                        <LabelSeries
+                        labelAnchorX = 'end'
+                        labelAnchorY = 'end'
+                        animation
+                        data={[drag_value]}
+                        color='literal'/>
+                    } */}
 
-                    <MarkSeries
-                     sizeRange={[2,5]}
-                    data={object_link_mark_data}
-                    /> 
 
                     {/* 拖出来的实体 */}
                     <LabelSeries
-                    labelAnchorX = 'middle'
-                    labelAnchorY = 'middle'
+                    labelAnchorX = 'end'
+                    labelAnchorY = 'end'
                     animation
                     data={filter_values}
                     onValueMouseOver={value=>{
@@ -717,7 +630,16 @@ class InferSunBurst extends React.Component{
                     color='literal'
                     allowOffsetToBeReversed/>
 
-
+                    {/* 中间那个代表事件的点点 */}
+                    <MarkSeries
+                    data={show_event_label_data}
+                    style={{
+                        pointerEvents: isDrag ? 'none' : '',
+                        lineerEvents: isDrag ? 'none' : ''
+                    }}
+                    onValueClick={value=>{
+                        console.log(value)
+                    }}/>
                     {
                     links_datas.map((elm,index)=>
                         <LineSeries
@@ -731,15 +653,7 @@ class InferSunBurst extends React.Component{
                         curve={d3.curveCatmullRom.alpha(0.1)}/>
                     )
                     }
-                    {/* 中间那个代表事件的点点 */}
-                    <MarkSeries
-                    data={show_event_label_data}
-                    onValueMouseOver={value=> this.setState({show_event_hint_value:value})}
-                    sizeRange={[2,5]}
-                    style={{
-                        pointerEvents: isDrag ? 'none' : '',
-                        lineerEvents: isDrag ? 'none' : ''
-                    }}/>
+
                     <LabelSeries
                     labelAnchorX = 'end'
                     labelAnchorY = 'end'
@@ -762,15 +676,7 @@ class InferSunBurst extends React.Component{
                         pointerEvents: isDrag ? 'none' : '',
                         lineerEvents: isDrag ? 'none' : ''
                     }}/>
-                    {
-                        show_event_hint_value &&
-                        <Hint value={show_event_hint_value}>
-                            <div style={{ fontSize: 8,background: 'black', padding: '10px'}} onClick={event=> console.log('hhhhhh')}>
-                            {show_event_hint_value.label}
-                            </div>
-                        </Hint>
-                        // console.log(show_event_hint_value)
-                    }
+
                     {
                         // mouseover_value&&
                         // <Hint value={mouseover_value}>
@@ -787,45 +693,15 @@ class InferSunBurst extends React.Component{
     }
 }
 
-
 // 生成一个树状结构
 class RuleManager{
     constructor(){
         this.rules = []
     }
     create(related_objects){
-        related_objects.forEach(elm=>{
-            if (elm.node_type==='filter_object') {
-                this.rules = this.rules.filter(rule=>  !(rule.related_objects.length===1 && rule.related_objects[0]===elm))
-            }
-        })
         let new_rule = new Rule(related_objects)
         this.rules.push(new_rule)
         return new_rule
-    }
-    filter(events){
-        // 找到所有顶节点
-        this.rules.forEach(elm=>elm.parents=new Set())
-        this.rules.forEach(elm=>{
-            let sub_rules = elm.getSubRules()
-            sub_rules.forEach(elm2=>{
-                elm2.parents.add(elm)
-            })
-        })
-        this.rules.forEach(elm=>elm.parents=[...elm.parents])
-        let top_nodes = this.rules.filter(elm=> elm.parents.length===0)
-        console.log(top_nodes)
-        let results = top_nodes.map(elm=> elm.filter(events))
-        if (results.length===0) {
-            console.warn('ruleManager', this.rules, '查都没有')
-            return []
-        }
-        let final_result = results[0]
-        for (let index = 1; index < results.length; index++) {
-            const element = results[index];
-            final_result = union(final_result, element)
-        }
-        return final_result
     }
 }
 const ruleManager = new RuleManager()
@@ -833,10 +709,6 @@ const ruleManager = new RuleManager()
 class Rule{
     x = 0
     y = 0
-    size = 5
-    static tyel2color = {'or':'#123', 'and':'567' }
-
-    parents = new Set()
     object_type = 'rule'
     node_type = 'rule'
     constructor(related_objects){
@@ -845,12 +717,6 @@ class Rule{
         this.results = []
 
         this.need_refresh = true
-    }
-    changeType(){
-        this.type= this.type==='and'? 'or':'and'
-    }
-    getSubRules(){
-        return this.related_objects.filter(elm=> elm.node_type==='rule')
     }
     setType(type){
         this.type = type
@@ -863,45 +729,40 @@ class Rule{
         }
         return this.results
     }
-    filter(events){
+    calculateResults(){
         const {type, related_objects} = this
-        let sub_rules = related_objects.filter(elm=> elm.node_type==='rule')
-        let sub_nodes = related_objects.filter(elm=> elm.node_type==='filter_object')
-        let results = []
-        sub_rules.forEach(elm=> results.push(elm.calculateResults(events)))
-        sub_nodes.forEach(elm=> {
-            elm = objectManager.get(elm.object_id)
-            let result = events.filter(event=>{
-                let objects = event.getAllObjects()
-                if (objects.includes(elm)) {
-                    return true
-                }
-                return false
-            })
-            results.push(result)
-        })
 
-        if(results.length===0){
-            console.warn(events, this, '规则么有子节点')
-        }
-        // console.log(results)
-        let final_reuslt = results[0]
-        for (let index = 1; index < results.length; index++) {
-            const element = results[index];
-            final_reuslt = intersect(final_reuslt, element)
-        }
-        return final_reuslt
     }
     getNodeInGraph(){
         const {related_objects} = this
         // console.log(related_objects, sub_rules)
         this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.1 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
         this.y = related_objects.reduce((total, elm)=>  total+elm.y, 0)/related_objects.length
-        // this.color = this.
         return this
     }
 }
 
+// class Rule{
+//     related_values = []
+//     x = 0
+//     y = 0
+//     object_type = 'rule'
+//     node_type = 'rule'
+//     getAllObjects(){
+//         return this.related_values.map(elm=> objectManager.get(elm.object_id))
+//     }
+//     getSelf(){
+//         let {related_values} = this
+//         this.x = related_values.reduce((total, elm)=>  total+elm.x, 0)/related_values.length + 0.1
+//         this.y = related_values.reduce((total, elm)=>  total+elm.y, 0)/related_values.length + 0.1
+//         return this
+//     }
+//     addObject(value){
+//         let {related_values} = this
+//         related_values.push(value)
+//         this.x = related_values.reduce((total, elm)=>  total+elm.x, 0)/related_values.length + 0.1
+//         this.y = related_values.reduce((total, elm)=>  total+elm.y, 0)/related_values.length + 0.1
+//     }
+// }
 
-export {ruleManager} 
 export default InferSunBurst

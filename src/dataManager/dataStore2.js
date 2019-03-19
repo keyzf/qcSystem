@@ -929,6 +929,45 @@ const sortBySimilar = (objects, positive=[], negative=[], top_n=20)=>{
   return objects
 }
 
+function array_remove_repeat(a) { // 去重
+  return [...new Set(a)]
+  // var r = [];
+  // for(var i = 0; i < a.length; i ++) {
+  //     var flag = true;
+  //     var temp = a[i];
+  //     for(var j = 0; j < r.length; j ++) {
+  //         if(temp === r[j]) {
+  //             flag = false;
+  //             break;
+  //         }
+  //     }
+  //     if(flag) {
+  //         r.push(temp);
+  //     }
+  // }
+  // return r;
+}
+
+
+
+var set1 = new Set([1,2,3]);
+var set2 = new Set([2,3,4]);
+
+const union = (a1, a2) => [...new Set([...a1, ...a2])]
+
+const intersect = (a1,a2) => {
+  a2 = new Set(a2)
+  return [...new Set(a1.filter( x => a2.has(x)))]
+ }
+
+const difference = (a1,a2) => {
+  a2 = new Set(a2)
+  return [...new Set(a1.filter(x => !a2.has(x)))]
+}
+
+
+ 
+
 export {
   personManager, addrManager, eventManager, triggerManager, timeManager, objectManager,
 
@@ -949,6 +988,10 @@ export {
   triggerFilter,
   ruleFilterWith,
   ruleFilter,
+
+  union,
+  intersect,
+  difference,
 
   dictCopy,
   sortBySimilar,

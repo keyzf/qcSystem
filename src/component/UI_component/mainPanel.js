@@ -116,7 +116,7 @@ class MainPanel extends Component {
     let { width, height, padding, calcualte_method} = this.props;
     let {zoomTransform,selected_people,relationLines,checked} = this.state;
     // const padding_botton = 20, padding_right = 10
-    console.log(selected_people);
+    // console.log(selected_people);
     let lifeLikePaint_height = height/(selected_people.length===0?1:selected_people.length);
     lifeLikePaint_height = lifeLikePaint_height>210?lifeLikePaint_height:210;
     let min = 9999;

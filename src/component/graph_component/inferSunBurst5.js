@@ -19,23 +19,17 @@ import {
   } from 'react-vis';
 
 import stateManager from '../../dataManager/stateManager'
-import { autorun, values } from 'mobx';
+import { autorun } from 'mobx';
 import cos_dist from 'compute-cosine-distance'
-import { link } from 'fs';
-import hint from 'react-vis/dist/plot/hint';
 
 const PI = Math.PI
 const inner_radius = 0.4 //圆的内轮廓
 
 // 更换的时候this值也应该换！
+// 我觉得这个版本写坏了
 class InferSunBurst extends React.Component{
     all_events = []
     center_event = undefined
-
-    all_addrs = []
-    all_triggers = []
-    all_people = []
-    all_years = []
 
     id2ids = {} //记录了上一步
 
@@ -43,7 +37,6 @@ class InferSunBurst extends React.Component{
     former_click_value = undefined
 
     stateStack = []  //回到上一步用的
-    left_events = []
 
     constructor(){
         super()
@@ -113,8 +106,6 @@ class InferSunBurst extends React.Component{
         this.state.rules.forEach(elm=>{
             filter_objects = [...elm.getAllObjects()]
         })
-        // all_events = ruleFilter(all_events)
-        // all_events = ruleFilterWith(all_events, ['y','t','a', 'p'])
 
         let all_triggers = [...new Set(ruleFilterWith(all_events, ['y','p','a']).map(event=> event.trigger))]
         // console.log(all_triggers)
@@ -215,18 +206,10 @@ class InferSunBurst extends React.Component{
             let min_angle = Math.min(...angles),
                 max_angle = Math.max(...angles)
 
-            // console.log(max_angle, min_angle, angles)
             angles = angles.map(elm=> (elm-min_angle)/(max_angle-min_angle))
 
-            // console.log(new_vecs, vecs)
-            // let center_index = all_objects.findIndex(elm=> elm===center_event.trigger)
+            let dists = vecs.map(elm=> cos_dist(elm, vecs[center_index]))
 
-            // let center_angle = angles[center_index]
-
-            let dists = vecs.map(elm=> cos_dist(elm, vecs[center_index]) )
-            // let max_dist = Math.max(...dists.filter((elm,index)=> index!==center_index)),
-            //     min_dist = Math.min(...dists.filter((elm,index)=> index!==center_index))
-            // dists = dists.map(elm => (elm-min_dist)/(max_dist-min_dist))
             let sort_dists = [...dists].sort((a,b)=> a-b)
             dists = dists.map(dist=> sort_dists.findIndex(elm=> elm===dist)/dists.length)
 
@@ -272,8 +255,7 @@ class InferSunBurst extends React.Component{
         let stack_angle = 0
         let trigger_num = all_triggers.length, addr_num = all_addrs.length,  people_num = all_people.length, year_num = all_years.length
         let angle_per_object = total_angle/(trigger_num+addr_num+people_num+year_num)
-        
-        console.log(center_people)
+    
         let center_people_vec = meanVec(center_people)
 
         let center_addr_vec = center_event.vec
@@ -294,12 +276,6 @@ class InferSunBurst extends React.Component{
         label_data.forEach(elm=>{
             id2label[elm.object_id] = elm
         })
-
-        this.all_triggers = all_triggers
-        this.all_people = all_people
-        this.all_triggers = all_triggers
-        this.all_years = all_years
-        this.all_events = all_events
 
         let center_event_label_data = [{
             x: center_x, y: center_y, label: center_event.toText()
@@ -372,37 +348,66 @@ class InferSunBurst extends React.Component{
             }
         })
 
-        let id2ids = {}
-        left_events.forEach(event=>{
-            let people = event.getPeople()
-            let addrs = event.addrs
-            let trigger = event.trigger
-            let times = event.time_range.map(elm=> timeManager.get(elm))
+        // let id2ids = {}
+        // left_events.forEach(event=>{
+        //     let people = event.getPeople()
+        //     let addrs = event.addrs
+        //     let trigger = event.trigger
+        //     let times = event.time_range.map(elm=> timeManager.get(elm))
 
-            people.forEach(elm=>{
-                id2ids[elm.id] = id2ids[elm.id] || []
-                id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
-            })
-            addrs.forEach(elm=>{
-                id2ids[elm.id] = id2ids[elm.id] || []
-                id2ids[elm.id] = [...id2ids[elm.id], ...people, trigger, ...times, ...addrs]
-            })
-            times.forEach(elm=>{
-                id2ids[elm.id] = id2ids[elm.id] || []
-                id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
-            })
-            id2ids[trigger.id] = id2ids[trigger.id] || []
-            id2ids[trigger.id] = [...id2ids[trigger.id], ...addrs, trigger, ...times, ...people]
-        })
-        for(let key in id2ids){
-            let id2count = {}
-            id2ids[key].forEach(elm=>{
-                id2count[elm.id] = id2count[elm.id] || 0
-                id2count[elm.id]++
-            })
-            id2ids[key] = id2count
-        }
-        this.id2ids = id2ids
+        //     people.forEach(elm=>{
+        //         id2ids[elm.id] = id2ids[elm.id] || []
+        //         id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
+        //     })
+        //     addrs.forEach(elm=>{
+        //         id2ids[elm.id] = id2ids[elm.id] || []
+        //         id2ids[elm.id] = [...id2ids[elm.id], ...people, trigger, ...times, ...addrs]
+        //     })
+        //     times.forEach(elm=>{
+        //         id2ids[elm.id] = id2ids[elm.id] || []
+        //         id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
+        //     })
+        //     id2ids[trigger.id] = id2ids[trigger.id] || []
+        //     id2ids[trigger.id] = [...id2ids[trigger.id], ...addrs, trigger, ...times, ...people]
+        // })
+        // for(let key in id2ids){
+        //     let id2count = {}
+        //     id2ids[key].forEach(elm=>{
+        //         id2count[elm.id] = id2count[elm.id] || 0
+        //         id2count[elm.id]++
+        //     })
+        //     id2ids[key] = id2count
+        // }
+        // this.id2ids = id2ids
+        // let {id2ids} = this
+        // // console.log(id2ids)
+        // let object_link_mark_data = []
+        // this.filter_values.forEach(elm1=>{
+        //     let id2count = id2ids[elm1.object_id]
+        //     if (!id2count) {
+        //         // console.warn(elm1, '有了问题')
+        //         return
+        //     }
+        //     this.filter_values.forEach(elm2=>{
+        //         if (elm1===elm2) {
+        //             return
+        //         }
+        //         // && elm2.y<(2*r-elm1.x)
+        //         if (id2count[elm2.object_id]) {
+        //             let point = {
+        //                 x: elm1.x,
+        //                 y: elm2.y,
+        //                 size: parseFloat(id2count[elm2.object_id]),
+        //                 elm1: elm1,
+        //                 elm2: elm2
+        //             }
+        //             console.log(parseFloat(id2count[elm2.object_id]))
+        //             if (point.y<(2.1-point.x)) {
+        //                 object_link_mark_data.push(point)
+        //             }
+        //         }
+        //     }) 
+        // }) 
 
         event_label_data.forEach((elm,index)=>{
             const {links} = elm
@@ -442,7 +447,7 @@ class InferSunBurst extends React.Component{
         
         let {center_event_label_data, label_data, mouseover_value, event_label_data, rules} = this.state
         let {isDrag, mouse_postion, isMousePressed, drag_value, filter_values, show_event_hint_value} = this.state
-        let {all_addrs,all_triggers,all_people, all_years, left_events} = this
+
         // console.log(all_years)
         label_data = label_data.map(elm=>{
             if (mouseover_value && elm.x===mouseover_value.x && elm.y===mouseover_value.y) {
@@ -502,35 +507,8 @@ class InferSunBurst extends React.Component{
 
 
         let object_link_mark_data = []
-        let {id2ids} = this
-        // console.log(id2ids)
-        filter_values.forEach(elm1=>{
-            let id2count = id2ids[elm1.object_id]
-            if (!id2count) {
-                // console.warn(elm1, '有了问题')
-                return
-            }
-            filter_values.forEach(elm2=>{
-                if (elm1===elm2) {
-                    return
-                }
-                // && elm2.y<(2*r-elm1.x)
-                if (id2count[elm2.object_id]) {
-                    let point = {
-                        x: elm1.x,
-                        y: elm2.y,
-                        size: parseFloat(id2count[elm2.object_id]),
-                        elm1: elm1,
-                        elm2: elm2
-                    }
-                    console.log(parseFloat(id2count[elm2.object_id]))
-                    if (point.y<(2.1-point.x)) {
-                        object_link_mark_data.push(point)
-                    }
-                }
-            }) 
-        }) 
-        // console.log(object_link_mark_data, rules, show_event_label_data, rules.map(elm=> elm.getNodeInGraph()))
+
+
         if(mouseover_value){
             show_event_hint_value = undefined
         }
@@ -749,14 +727,12 @@ class InferSunBurst extends React.Component{
                     allowOffsetToBeReversed
                     onValueMouseOver={value=>{
                         value = this.all_objects[value._index]
-                        console.log(value, value._index)
                         if (!mouseover_value || (!value_equal(value, mouseover_value) && !isDrag && !isMousePressed)) {
                             this.setState({mouseover_value: value})
                         }
                     }}
                     onValueMouseOut={value=>{
                         this.setState({mouseover_value: undefined})
-                        // console.log('clear')
                     }}
                     style={{
                         pointerEvents: isDrag ? 'none' : '',
@@ -769,21 +745,363 @@ class InferSunBurst extends React.Component{
                             {show_event_hint_value.label}
                             </div>
                         </Hint>
-                        // console.log(show_event_hint_value)
-                    }
-                    {
-                        // mouseover_value&&
-                        // <Hint value={mouseover_value}>
-                        //     <div style={{ fontSize: 8,background: 'black', padding: '10px'}}>
-                        //     {objectManager.get(mouseover_value.object_id).getName()}
-                        //     </div>
-                        // </Hint>
                     }
                     <XAxis/>
                     <YAxis/>
                 </XYPlot>
             </div>
         )
+    }
+}
+
+class OnePart{
+    constructor(events, center_event, center_x, center_y, index, r, parent_component){
+        this.ruleManager = RuleManager()
+        this.center_x = center_x
+        this.center_y = center_y
+        this.all_events=  events
+        this.part_index = index  //第几个
+
+        this.r = r
+        this.this_part = this
+        this.parent_component = parent_component
+    }
+    
+    setEvents(events){
+        this.events = events
+        this.loadSunBurstData()
+    }
+
+    loadSunBurstData(){
+        const show_object_num = 20
+        const {center_x , center_y, all_events, center_event} = this
+
+        if (!center_event) {
+            console.warn('center_event 不存在')
+            return
+        }
+        let {prob_year} = center_event
+        const center_people = center_event.getPeople()
+
+        let all_triggers = [...new Set(all_events.map(event=> event.trigger))]
+        let trigger2sim = {}
+        all_triggers.forEach(trigger=>{
+            if (trigger.vec.length !== center_event.trigger.vec.length)
+                return
+            trigger2sim[trigger.id] = cos_dist(trigger.vec, center_event.trigger.vec)
+        })
+        all_triggers = all_triggers.sort((a,b)=> trigger2sim[a.id]-trigger2sim[b.id]).slice(0, show_object_num)
+        all_triggers = all_triggers.sort((a,b)=> a.name-b.name)
+
+        let all_people = []
+        all_events.forEach(event=>{
+            let people = event.getPeople()
+            all_people = [...all_people, ...people]
+        })
+        all_people = [...new Set(all_people)]
+        let people2sim = {}
+        all_people.forEach(person=>{
+            const center_people = center_event.getPeople()
+            people2sim[person.id] = center_people.reduce((total, center_person)=>{
+                // console.log(total + cos_dist(person.vec, center_person.vec), total, center_people.length)
+                return total + cos_dist(person.vec, center_person.vec)
+            }, 0)/center_people.length
+        })
+        all_people = all_people.sort((a,b)=> people2sim[a.id]-people2sim[b.id]).slice(0, show_object_num)
+
+        let all_addrs = []
+        all_events.forEach(event=>{
+            let addr = event.addrs
+            all_addrs = [...all_addrs, ...addr]
+        })
+        all_addrs = [...new Set(all_addrs)]
+        let addr2sim = {}
+        all_addrs.forEach(addr=>{
+            if (center_event.addrs.length!==0) {
+                const center_addrs = center_event.addrs
+                addr2sim[addr.id] = center_addrs.reduce((total, center_addr)=>{
+                    return total + cos_dist(addr.vec, center_addr.vec)
+                }, 0)/center_addrs.length
+            }else{
+                addr2sim[addr.id] = cos_dist(addr.vec, center_event.vec)
+            }
+        })
+        all_addrs = all_addrs.sort((a,b)=> addr2sim[a.id]-addr2sim[b.id]).slice(0,show_object_num)
+
+        let all_years = new Set()
+        all_events.forEach(event=>{
+            all_years.add(event.time_range[0])
+            all_years.add(event.time_range[1])
+        })
+        all_years = [...all_years].map(year=> timeManager.get(year))
+        console.warn('这里还要改呀 不要用prob_year了')
+        all_years = all_years.sort((a,b)=> parseFloat(prob_year[b])-parseFloat(prob_year[a])).slice(0,show_object_num)
+
+
+        const myTsne = (vecs, dim=1)=>{
+            const opt = {
+                epsilon: 10,  // epsilon is learning rate (10 = default)
+                perplexity: 10, // roughly how many neighbors each point influences (30 = default)
+                dim: dim // dimensionality of the embedding (2 = default)
+            }
+            let tsne = new tsnejs.tSNE(opt); // create a tSNE instance
+            if (vecs.length===0) {
+                return []
+            }
+            tsne.initDataRaw(vecs);  //这里用dist会出问题
+            for(var k = 0; k < 0; k++) {
+                tsne.step();
+            }
+
+            return  tsne.getSolution();
+        }
+
+        const objects2Vec = (all_objects, start_angle, end_angle, center_index = undefined, center_vec = undefined, object_type, color) =>{
+            start_angle += PI/360
+            end_angle -= PI/360
+
+            let vecs = all_objects.map(elm=> elm.toVec())
+            if (center_vec) {
+                vecs.push(center_vec)
+                center_index = vecs.length-1
+            }
+
+    
+            let angles = myTsne(vecs).map(elm=> elm[0])
+            let min_angle = Math.min(...angles),
+                max_angle = Math.max(...angles)
+
+            angles = angles.map(elm=> (elm-min_angle)/(max_angle-min_angle))
+
+            let dists = vecs.map(elm=> cos_dist(elm, vecs[center_index]))
+
+            let sort_dists = [...dists].sort((a,b)=> a-b)
+            dists = dists.map(dist=> sort_dists.findIndex(elm=> elm===dist)/dists.length)
+
+            angles[center_index] = Math.random()*(max_angle-min_angle)+min_angle
+            let sort_angles = [...angles].sort((a,b)=> a-b)
+            // console.log(angles, sort_angles)
+            angles = angles.map(angle=> sort_angles.findIndex(elm=> elm===angle)/angles.length)
+            // console.log(angles)
+            let label_data = all_objects.map((elm, index)=>{
+                // 直径应该更加均匀
+                let radius = dists[index] * (1-inner_radius) + inner_radius
+                let angle = angles[index]*(end_angle-start_angle) + start_angle
+                let x = center_x + radius*Math.cos(angle), y = radius*Math.sin(angle) + center_y
+                let text_rotate = -angle/PI*180
+                if (text_rotate<-90&& text_rotate>-270) {
+                    text_rotate = 180+text_rotate
+                }
+                return {
+                    x: x,
+                    y: y,
+                    origin_x: x,
+                    origin_y: y,
+                    rotation: text_rotate,
+                    label: elm.getName(),
+                    object_id: elm.id,
+                    vec: vecs[index],
+                    new_vec: angles[index],
+                    object_type: object_type,
+                    node_type: 'related_object',
+                    links: [],
+                    style: {
+                        stroke: color,
+                        cursor: "pointer",
+                        fontSize: 12,
+                        opacity: 0.5,
+                    },
+                }
+            })
+            return label_data
+        }
+
+        const total_angle = 2*PI
+        let stack_angle = 0
+        let trigger_num = all_triggers.length, addr_num = all_addrs.length,  people_num = all_people.length, year_num = all_years.length
+        let angle_per_object = total_angle/(trigger_num+addr_num+people_num+year_num)
+    
+        let center_people_vec = meanVec(center_people)
+
+        let center_addr_vec = center_event.vec
+        if (center_event.addrs.length>0) {
+            center_addr_vec = meanVec(center_event.addrs)
+        }
+
+        // let center_time_vec = center_event.vec
+        // let
+
+        let trigger_label_data = objects2Vec(all_triggers, stack_angle, stack_angle += trigger_num*angle_per_object, undefined, center_event.trigger.vec, 'trigger', '#f4cea3')
+        let people_label_data = objects2Vec(all_people, stack_angle, stack_angle += people_num*angle_per_object, undefined, center_people_vec, 'people', '#9a8bb9')
+        let addr_label_data = objects2Vec(all_addrs, stack_angle, stack_angle += addr_num*angle_per_object, undefined, center_addr_vec, 'addr', '#bfdda8')
+        let year_label_data = objects2Vec(all_years, stack_angle, stack_angle += year_num*angle_per_object, undefined, center_event.toVec(), 'year', '#e29cae')
+        
+        let label_data = [...trigger_label_data, ...people_label_data, ...addr_label_data, ...year_label_data]
+        let id2label = {}
+        label_data.forEach(elm=>{
+            id2label[elm.object_id] = elm
+        })
+
+        let center_event_label_data = [{
+            x: center_x, y: center_y, label: center_event.toText()
+        }]
+        
+        let left_events = []   //跟剩下的有关的事件
+        let event2links = {}
+        all_events.forEach(event=>{
+            let links = []   //记录了事件连接的点
+            if (all_triggers.includes(event.trigger)) {
+                links.push(id2label[event.trigger.id])
+            }
+            event.getPeople().forEach(person=>{
+                if (all_people.includes(person)) {
+                    links.push(id2label[person.id])
+                }
+            })
+            event.addrs.forEach(addr=>{
+                if (all_addrs.includes(addr)) {
+                    links.push(id2label[addr.id])
+                }
+            })
+            if(event.isTimeCertain()){
+                let year = event.time_range[0]
+                year = timeManager.get(year)
+                if (all_years.includes(year)) {
+                    links.push(id2label[year.id])
+                }
+            }
+            if (links.length>1) {
+                left_events.push(event)
+                event2links[event.id] = links.filter(link=> link)
+            }
+        })
+
+        let event_label_data = []
+        // let vecs = left_events.map(elm => elm.vec)
+        // let new_vecs = myTsne(vecs, 2)
+        // new_vecs = normalizeVec(new_vecs)
+        // console.log(new_vecs)
+        this.left_events = left_events
+
+        event_label_data = left_events.map((event, index)=>{
+            const links = event2links[event.id]
+            let x = links.reduce((total,elm)=> total+elm.x, 0)/links.length
+            let y = links.reduce((total,elm)=> total+elm.y, 0)/links.length
+            let dist = eucDist([x,y], [center_x, center_y])
+            if (dist> inner_radius*inner_radius) {
+                x = x*inner_radius/dist * (1-Math.random()/3)
+                y = y*inner_radius/dist * (1-Math.random()/3)
+            }
+            if (event===center_event) {
+                x = 0
+                y = 0
+            }
+            return {
+                x: x,
+                y: y,
+                label: event.toText(),
+                object_id: event.id,
+                opacity: 0.5,
+                links: links,
+                size: 5,
+                style: {
+                    // stroke: color,
+                    cursor: "pointer",
+                    fontSize: 20,
+                    opacity: 0.5,
+                },
+            }
+        })
+
+        // let id2ids = {}
+        // left_events.forEach(event=>{
+        //     let people = event.getPeople()
+        //     let addrs = event.addrs
+        //     let trigger = event.trigger
+        //     let times = event.time_range.map(elm=> timeManager.get(elm))
+
+        //     people.forEach(elm=>{
+        //         id2ids[elm.id] = id2ids[elm.id] || []
+        //         id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
+        //     })
+        //     addrs.forEach(elm=>{
+        //         id2ids[elm.id] = id2ids[elm.id] || []
+        //         id2ids[elm.id] = [...id2ids[elm.id], ...people, trigger, ...times, ...addrs]
+        //     })
+        //     times.forEach(elm=>{
+        //         id2ids[elm.id] = id2ids[elm.id] || []
+        //         id2ids[elm.id] = [...id2ids[elm.id], ...addrs, trigger, ...times, ...people]
+        //     })
+        //     id2ids[trigger.id] = id2ids[trigger.id] || []
+        //     id2ids[trigger.id] = [...id2ids[trigger.id], ...addrs, trigger, ...times, ...people]
+        // })
+        // for(let key in id2ids){
+        //     let id2count = {}
+        //     id2ids[key].forEach(elm=>{
+        //         id2count[elm.id] = id2count[elm.id] || 0
+        //         id2count[elm.id]++
+        //     })
+        //     id2ids[key] = id2count
+        // }
+        // this.id2ids = id2ids
+        // let {id2ids} = this
+        // // console.log(id2ids)
+        // let object_link_mark_data = []
+        // this.filter_values.forEach(elm1=>{
+        //     let id2count = id2ids[elm1.object_id]
+        //     if (!id2count) {
+        //         // console.warn(elm1, '有了问题')
+        //         return
+        //     }
+        //     this.filter_values.forEach(elm2=>{
+        //         if (elm1===elm2) {
+        //             return
+        //         }
+        //         // && elm2.y<(2*r-elm1.x)
+        //         if (id2count[elm2.object_id]) {
+        //             let point = {
+        //                 x: elm1.x,
+        //                 y: elm2.y,
+        //                 size: parseFloat(id2count[elm2.object_id]),
+        //                 elm1: elm1,
+        //                 elm2: elm2
+        //             }
+        //             console.log(parseFloat(id2count[elm2.object_id]))
+        //             if (point.y<(2.1-point.x)) {
+        //                 object_link_mark_data.push(point)
+        //             }
+        //         }
+        //     }) 
+        // }) 
+
+        event_label_data.forEach((elm,index)=>{
+            const {links} = elm
+            links.forEach(object=>{
+                object.links.push(index)
+            })
+        })
+        
+        this.setState({
+            label_data: label_data,
+            center_event_label_data: center_event_label_data,
+            event_label_data: event_label_data,
+        })
+    }
+
+    setState(update_state){
+        let prefix = this.part_index
+        let temp_state = {}
+        for(let key in update_state)
+            temp_state[prefix+key] = update_state[key]
+        this.parent_component.setState(update_state)
+    }
+
+    render(){
+        let {center_event, part_index} = this
+        let prefix = part_index
+        return[
+
+        ]
     }
 }
 
@@ -901,7 +1219,6 @@ class Rule{
         return this
     }
 }
-
 
 export {ruleManager} 
 export default InferSunBurst

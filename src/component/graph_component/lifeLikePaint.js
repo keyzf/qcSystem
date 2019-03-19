@@ -335,7 +335,7 @@ class LifeLikePaint extends Component{
         }
         // prob_mark_data = prob_mark_data.filter(data=> selected_prob_year && data.year===selected_prob_year).filter(elm=> elm)
         // prob_mark_data = prob_mark_data || []
-        console.log(prob_mark_data)
+        // console.log(prob_mark_data)
         return (
             <g ref="svg" width={width} height={height}>
                 <text x={width-50} y={20}>{selected_person.name}</text>

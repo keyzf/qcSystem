@@ -67,7 +67,7 @@ export default class EventTable extends React.Component{
   }
   render(){
     const { column, data, direction } = this.state;
-    console.log(data);
+    // console.log(data);
     return (
         <Table sortable celled fixed selectable>
         <Table.Header>
