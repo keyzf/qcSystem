@@ -4,6 +4,10 @@ $borderWidth: 2px;
   font-family: 'DFPSongW9';
   src : url('./static/DFPSongW9-GB5.ttf');
 }
+@font-face{
+  font-family: 'HYSunWanMinCaoShu';
+  src : url('./static/HYSunWanMinCaoShuW-2.ttf');
+}
 #wrap {
   margin:20px;
   display: grid;

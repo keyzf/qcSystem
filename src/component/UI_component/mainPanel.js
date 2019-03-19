@@ -5,10 +5,10 @@ import dataStore, { eventManager, personManager, isValidYear } from '../../dataM
 // import { values } from 'mobx';
 import './mainPanel.scss';
 import * as d3 from 'd3';
+import _ from 'lodash';
 import logo from './static/mountain.png';
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
-import net_work from '../../dataManager/netWork';
 import HistoryEvent from '../graph_component/HistoryEvent';
 
 // 界面的上半部分
@@ -24,27 +24,18 @@ class MainPanel extends Component {
     }
     let {width,height,padding} = this.props;
     this.xscale=d3.scaleLinear();
-    this.getRelationLine = this.getRelationLine.bind(this);
     this.zoom = d3.zoom()
     .scaleExtent([0.5, 9])
     // .translateExtent([[0, 0], [width - padding.left - padding.right, height - padding.top - padding.bottom]])
     .on("zoom", this.zoomed.bind(this));
     this.changeViewType=this.changeViewType.bind(this);
+    this.all_events=[]
   }
 
   _changeShowPeople = autorun(()=>{
     if (stateManager.is_ready) {
       let selected_people = stateManager.selected_people
-      this.setState({selected_people: selected_people}) 
-      net_work.require('getPersonEvents', {person_id:selected_people[0].id})
-      .then(data=>{
-          if(data){
-              data = dataStore.processResults(data)
-              this.all_events = dataStore.dict2array(data.events)
-              this.all_events = this.all_events.filter(event=> event.isTimeCertain())
-              this.getRelationLine();
-          }
-      })           
+      this.setState({selected_people: selected_people});
     }
   })
 
@@ -58,34 +49,23 @@ class MainPanel extends Component {
       .call(this.zoom)
   }
 
-  getRelationLine(){
-    console.log(this.all_events);
-    let {selected_people} = this.state;
-    let other_people = selected_people.slice(1);
-    console.log(other_people);
-    let relationLines = [];
-    if(selected_people.length>0){
-      this.all_events.forEach((d,index)=>{
-        let tmp = {};
-        if(d.roles.length>1){
-          for(let i=0;i<d.roles.length;i++){
-            let person_index = other_people.indexOf(d.roles[i].person);
-            if(person_index!==-1){
-              let tmpLines=[];
-              tmp.event = d;
-              tmpLines.push({'person_index':0,'x':d.max_prob_year});
-              tmpLines.push({'person_index':(person_index+1)/2,'x':d.max_prob_year});
-              tmpLines.push({'person_index':person_index+1,'x':d.max_prob_year});
-              tmp.lines = tmpLines;
-              relationLines.push(tmp);
-            }
-          }
-        }
-      })
-    }
-    this.setState({
-      relationLines: relationLines
-    })
+  handleLineMouseOver(e,d){
+    let node = this.refs.relationLines;
+    // let pos = d3.mouse(node);
+    // console.log(pos);
+    d3.select(node).select('.relationLineInfo')
+      .attr('visibility','visible')
+      .attr('x',e.offsetX)
+      .attr('y',e.offsetY)
+      .select('div')
+      .select('span')
+      .text(d.event.toText())
+  }
+
+  handleLineMouseOut(){
+    let node = this.refs.svg;
+    d3.select(node).select('.relationLineInfo')
+    .attr('visibility','hidden')
   }
 
   changeViewType=()=>{
@@ -136,27 +116,28 @@ class MainPanel extends Component {
     this.xscale.domain([min,max])
                .range([0,chart_width]);
     this.line=d3.line()
-               .x((d)=>this.xscale(d.x))
+               .x((d,i)=>{
+                  return this.xscale(d.x)
+                })
                .y((d)=>{
-                 console.log(d)
-               //  console.log(this.xscale(d.x),paintHeight*d.person_index)
-                return lifeLikePaint_height*(d.person_index+1)-25
-              })
+                  return lifeLikePaint_height*d.person_index-50
+                })
                .curve(d3.curveBasis)
     if(zoomTransform){
       this.xscale.domain(zoomTransform.rescaleX(this.xscale).domain());
     }
     return (
       <div className="mainPanel" style={{height:height, width: width}}>
-        <header><img className='brand' src={logo}></img><span>Life Mountain View</span></header>
+        <header>
+          <img className='brand' src={logo}></img>
+          <span>Life Mountain View</span>
+          <div className="toggleView ui toggle checkbox">
+            <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
+            <label>分类视图</label>
+          </div>
+        </header>
           <div className="lineChart" style={{height:height}}>
             <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)}>
-              <foreignObject className="lifeMountain" x="20" y="30" width="120" height="100">
-                <div className="ui toggle checkbox">
-                    <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
-                    <label>分类视图</label>
-                </div>
-              </foreignObject >
               <defs>
               <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
                 <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
@@ -200,47 +181,13 @@ class MainPanel extends Component {
                 <stop offset="40%" stopColor="#c4c7a1" stopOpacity="0.8" />
                 <stop offset="100%"   stopColor="#a7ad77" stopOpacity="1.0" />
               </linearGradient>
-              <linearGradient id="linear9" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#c8dbe1" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#4e7884" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear10" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#b4bdd3" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#36539a" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear11" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#8ea698" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#415232" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear12" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#f0ebdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#a19a8a" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear13" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#e6eadd" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#acaf77" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear14" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#e6e8d8" stopOpacity="0.5" />
-                <stop offset="40%" stopColor="#c4c7a1" stopOpacity="0.8" />
-                <stop offset="100%"   stopColor="#a7ad77" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear15" x1="0%" y1="100%" x2="0%" y2="0%">
-              <stop offset="0%" stopColor="#f0ebdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#a19a8a" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear16" x1="0%" y1="100%" x2="0%" y2="0%">
-              <stop offset="0%" stopColor="#c8dbe1" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#4e7884" stopOpacity="1.0" />
-              </linearGradient>
             </defs>
               {
                 selected_people.map((person, index)=>
                   person &&
                   <g key={'life_link_paint'+person.id}
                     width={chart_width}
-                    className={'life_like_paint'+person.id}
-                    transform={`translate(0,${lifeLikePaint_height*index+15})`}>
+                    className={'life_like_paint'+person.id}>
                     <LifeLikePaint 
                       zoomTransform={zoomTransform}
                       xscale={this.xscale}
@@ -248,17 +195,15 @@ class MainPanel extends Component {
                       height={lifeLikePaint_height} 
                       index = {index}
                       checked={checked}
+                      transform={`translate(0,${lifeLikePaint_height*index+15})`}
                       selected_person={person} 
                       calcualte_method={calcualte_method}
-                      uncertainHeight={uncertainHeight}/>
+                      uncertainHeight={uncertainHeight}
+                      line={this.line}/>
                   </g>
                 )
               }
               <HistoryEvent xscale={this.xscale} translate={`translate(${padding.left}, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
-              {relationLines.map((d,i)=>{
-                console.log(d);
-                return (<path key={i} d={this.line(d.lines)} fill="none" stroke="black"></path>);
-              })}
             </svg>
           </div>
       </div>
