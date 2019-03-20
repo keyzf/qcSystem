@@ -5,14 +5,84 @@ $borderWidth: 2px;
   src : url('./static/DFPSongW9-GB5.ttf');
 }
 @font-face{
+  font-family: 'STKaiti';
+  src : url('./static/STKaiti.ttf');
+}
+@font-face{
   font-family: 'HYSunWanMinCaoShu';
   src : url('./static/HYSunWanMinCaoShuW-2.ttf');
 }
+/* 设置滚动条的样式 */
+body ::-webkit-scrollbar {
+  width:6px;
+}
+/* 滚动槽 */
+body ::-webkit-scrollbar-track {
+-webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
+border-radius:10px;
+}
+/* 滚动条滑块 */
+body ::-webkit-scrollbar-thumb {
+border-radius:0px;
+width: 3px;
+background:rgba(0,0,0,0.1);
+-webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
+}
+body ::-webkit-scrollbar-thumb:window-inactive {
+}
 #wrap {
-  margin:20px;
+  margin:0px;
   display: grid;
   border: 1px solid #bababa;
-  grid-template-rows: 700px 380px;
+  grid-template-rows: 30px 540px 500px;
+  button{
+    outline: none;
+  }
+  #mainHeader{
+    background-color: rgba($color: #CBCBCB, $alpha: 0.3);
+    // border-bottom: 1px solid rgba($color: #CBCBCB, $alpha: 0.4);
+    #toggleDyn{
+      display: inline-block;
+      line-height: 24px;
+      width: 62px;
+      margin: 3px;
+      border-right: 1.5px solid rgba($color: #414141, $alpha: 0.4);
+      img{
+        height:14px;
+        vertical-align: middle;
+        margin-left: 20px;
+      }
+    }
+    img{
+      margin:5px;
+      line-height: 20px;
+      vertical-align: middle;
+      margin-left: 15px;
+    }
+    .togglelanguage{
+      float: right;
+      margin:3px;
+      line-height: 24px;
+      button{
+        vertical-align: middle;
+        cursor: pointer;
+        text-align: center;
+        margin: auto;
+        display: inline-block;
+        background: white;
+        width: 70px;
+        height: 20px;
+        border-radius: 6px;
+        font-family:'STKaiti';
+        font-size:12px;
+        font-weight: 600;
+        color:#5f5f5f;
+        letter-spacing:2.07px;
+        margin-right: 20px;
+        border: 1px solid rgba($color: #CBCBCB, $alpha: 0.4);
+      }
+    }
+  }
   header{
     font-family: 'DFPSongW9';
     font-size:18px;
@@ -23,91 +93,100 @@ $borderWidth: 2px;
     font-weight: 500;
   }
   #selectview {
-      // position: absolute;
     top:50;
     left:0;
-      display: grid;
-      height: 100%;
-      grid-template-columns: 310px 1200px 1fr;
-      .leftPanel{
-        width:330px;
-        height: 100%;
-        .title{
-            height: 0;
-            width:300px;
-            border-top: 55px solid rgba(188,144,95,1);
-            border-right: 50px solid transparent;
-        }
-        .container{
-          padding:20px;
-          width: 250px;
-          height: 640px;
-          border-right: 3px solid #d9d9d9;
-          label{
-            font-family:STKaitiTC-Regular;
-            font-size:18px;
-            color:#905551;
-            letter-spacing:-0.5px;
-            text-align:justify;
-            line-height:25px;
-          }
-          .dropdown.selection{
-            .text{
-              color: #757575;
-            }
-            margin-top:5px;
-            padding: 2px;
-            min-height: 20px;
-            height: 32px;
+    display: grid;
+    height: 100%;
+    grid-template-columns: 220px 1300px 1fr;
+    .leftPanel{
+      width:220px;
+      height: 540px;
+      border-right: 2px solid rgba($color: #CBCBCB, $alpha: 0.5);
+      .title{
+          height: 140px;
+          margin: 10px 15px;
+          margin-top: 20px;
+          padding-bottom:10px;
+          border-bottom: 2px solid rgba($color: #CBCBCB, $alpha: 0.8);
+      }
+      .container>label{
+        font-family:'STKaiti';
+        font-size:18px;
+        font-weight: 600;
+        color:#5f5f5f;
+        letter-spacing:-0.5px;
+        text-align:justify;
+        line-height:25px;
+      }
+      .container{
+        padding:20px;
+        padding-top: 0px;
+        height: 640px;
+        .dropdown.selection{
+          .text{
+            color: #757575;
+            font-family:'STKaiti';
             line-height: 25px;
-            border-radius: 0;
-            border-color: #905551;
-            color: #905551;
-            background-color: beige;
-            i {
-              padding: 5px;
-              height: 30px;
-              line-height: 20px;
-              border-color: #905551;
-            }
-            a{
-              height: 26px;
-              margin:0px;
-              padding: 0px;
-              background-color: rgba(0,0,0,0);
-              box-shadow: none;
-              i{
-                margin:0;
-                padding:2px;
-              }
-            }
-            .menu{
-              border-color: #905551;
-              div{
-                padding:2px;
-              }
+            margin:0;
+            padding-left: 10px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+          }
+          margin-top:0px;
+          margin-bottom: 20px;
+          min-height: 20px;
+          height: 25px;
+          line-height: 25px;
+          border-radius: 0;
+          border-color: #454545;
+          color: #454545;
+          i {
+            padding: 5px;
+            height: 30px;
+            line-height: 20px;
+            border-color: #454545;
+          }
+          a{
+            height: 26px;
+            margin:0px;
+            padding: 0px;
+            background-color: rgba(0,0,0,0);
+            box-shadow: none;
+            i{
+              margin:0;
+              padding:2px;
             }
           }
-          .selection_person{
-            height: 100px;
+          .menu>.item{
+              padding: 0;
           }
-          div::selection{
-            border-color:#905551;
+          div{
+            border-color: #454545;
+            div{
+              padding:2px auto;
+            }
           }
         }
-        .typeFilter{
-          .ui.bulleted.list{
-            margin-left: 0;
-          }
-          ul{
-            padding-left: 12px;
-          }
+        .selection_person{
+          height: 100px;
+        }
+        div::selection{
+          border-color:#454545;
         }
       }
-      .rightPanel{
-        height: 700px;
-        overflow-y: scroll;
+      .typeFilter{
+        .ui.bulleted.list{
+          margin-left: 0;
+        }
+        ul{
+          padding-left: 12px;
+        }
       }
+    }
+    .rightPanel{
+      height: 540px;
+      overflow-y: scroll;
+    }
   }
   #footer{
     display: grid;

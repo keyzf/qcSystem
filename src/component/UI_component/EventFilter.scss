@@ -1,0 +1,99 @@
+ul{
+  padding:0px;
+  margin:0px;
+  li{
+    list-style-type:none;
+    height: 25px;
+    border: 1px solid #454545;
+    margin-bottom: 4px;
+    div{
+      height: 100%;
+      input:first-child{
+        vertical-align: middle;
+        position: relative;
+        width: 12px;
+        height: 12px;
+        border-radius: 0;
+        margin-left: 6px;
+      }
+      label{
+        font-family:'STKaiti';
+        font-size:14px;
+        color:#5f5f5f;
+        letter-spacing:-0.39px;
+        text-align:justify;
+        display: inline-block;
+        line-height: 12px;
+        margin: 6px 2px;
+        padding-right: 6px;
+        border-right: 1px solid  rgba($color: #414141, $alpha: 0.6);
+      }
+      input:last-child{
+        width:100px;
+        position: absolute;
+        margin-left:10px;
+        height: 22px;
+      }
+    }
+  }
+}
+#rs-bullet{
+  position: absolute;
+  height: 8px;
+  line-height: 8px;
+  font-size: 6px;
+}
+.rs-range {
+  -webkit-appearance: none;
+  &:focus {
+      outline: none;
+  }
+  &::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      box-shadow: none;
+      background: rgba(200,200,200,0.8);
+      border-radius: 0px;
+      border: 0px solid #010101;
+  }
+  &::-moz-range-track {
+      width: 100%;
+      height: 1px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 2px;
+      border: 0px solid #010101;
+  }
+
+  &::-webkit-slider-thumb {
+      box-shadow: none;
+      border: 0px solid #dfdfdf;
+      height: 8px;
+      width: 3px;
+      border-radius: 1px;
+      background: rgba(120,120,120,0.9);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top:-3px;
+  }
+&::-moz-range-thumb{
+      box-shadow: none;
+      border: 0px solid #ffffff;
+      box-shadow: 0px 10px 10px rgba(0,0,0,0.25);
+      height: 42px;
+      width: 22px;
+      border-radius: 22px;
+      background: rgba(255,255,255,1);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -20px;
+}
+&::-ms-fill-lower { 
+  background: 'black';
+}
+&::-moz-focus-outer {
+  border: 0;
+  }
+}

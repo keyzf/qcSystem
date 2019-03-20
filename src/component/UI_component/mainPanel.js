@@ -5,7 +5,6 @@ import dataStore, { eventManager, personManager, isValidYear } from '../../dataM
 // import { values } from 'mobx';
 import './mainPanel.scss';
 import * as d3 from 'd3';
-import _ from 'lodash';
 import logo from './static/mountain.png';
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
@@ -84,7 +83,7 @@ class MainPanel extends Component {
       width: 1920,
       height: 650,
       padding:{
-        right: 50,
+        right: 40,
         left: 20,
         top:10,
         bottom:10
@@ -98,7 +97,7 @@ class MainPanel extends Component {
     let {zoomTransform,selected_people,relationLines,checked} = this.state;
     // const padding_botton = 20, padding_right = 10
     console.log(selected_people);
-    let lifeLikePaint_height = height/(selected_people.length===0?1:selected_people.length);
+    let lifeLikePaint_height = (height-6)/(selected_people.length===0?1:selected_people.length);
     lifeLikePaint_height = lifeLikePaint_height>210?lifeLikePaint_height:210;
     let min = 9999;
     let max = -9999;
@@ -128,14 +127,17 @@ class MainPanel extends Component {
     }
     return (
       <div className="mainPanel" style={{height:height, width: width}}>
-        <header>
+        <div className="mountainHeader">
           <img className='brand' src={logo}></img>
+          <div>
+          <span>人生起伏</span>
           <span>Life Mountain View</span>
-          <div className="toggleView ui toggle checkbox">
+          </div>
+          <div className="toggleView">
             <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
             <label>分类视图</label>
           </div>
-        </header>
+        </div>
           <div className="lineChart" style={{height:height}}>
             <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)}>
               <defs>

@@ -364,7 +364,7 @@ class LifeLikePaint extends Component{
 
     render(){
         const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, uncertainHeight} = this.props
-        console.log('render lifeLikePaint 主视图', selected_person)
+        console.log('render lifeLikePaint 主视图', area_datas)
         let {area_datas, relationLines, prob_mark_data, selected_prob_year} = this.state
         this.yscale.domain([0,this.maxy_sum])
                    .range([height-uncertainHeight,0]);

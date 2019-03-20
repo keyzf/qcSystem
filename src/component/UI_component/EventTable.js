@@ -5,6 +5,7 @@ import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
 import net_work from '../../dataManager/netWork';
 import dataStore from '../../dataManager/dataStore2';
+import './EventTable.scss';
 
 export default class EventTable extends React.Component{
   constructor(){
@@ -69,6 +70,11 @@ export default class EventTable extends React.Component{
     const { column, data, direction } = this.state;
     console.log(data);
     return (
+      <div className="eventList">
+        <div>
+          
+        </div>
+        <div>
         <Table sortable celled fixed selectable>
         <Table.Header>
           <Table.Row>
@@ -116,6 +122,8 @@ export default class EventTable extends React.Component{
         })}
         </Table.Body>
       </Table>
+      </div>
+    </div>
     )
   }
 }

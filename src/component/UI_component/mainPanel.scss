@@ -1,13 +1,10 @@
 .mainPanel{
   height:100%;
-  margin-left: -50px;
-  header{
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  .mountainHeader{
     img{
-      width:27px;
-      height:14px;
       line-height:25px;
-      margin-right: 10px;
-      margin-left: 10px;
       vertical-align: middle;
     }
     width:100%;
@@ -16,22 +13,53 @@
     text-align:justify;
     line-height:25px;
     margin-top:5px;
-    margin-left:30px;
-    span{
-      font-family:DFPSongW9;
-      font-size:18px;
-      color:#626262;
-    }
+    margin-left: 5px;
     div{
-      label{
-        font-family:DFPSongW9;
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      color:#5f5f5f;
+      font-weight: 600;
+      span:first-child{
+        font-family: 'STKaiti';
         font-size:18px;
+        letter-spacing:0px;
+        text-align:justify;
+        line-height:21px;
+        writing-mode: vertical-lr;
+        width: 100%;
+        height: 100px;
+      }
+      span:last-child{
+        writing-mode: vertical-lr;
+        font-family: 'STKaiti';
+        line-height:15px;
+        font-size: 10px;
+        padding-top:16px;
+        letter-spacing:0.5px;
+      }
+    }
+    
+    .toggleView{
+      margin-top: 20px;
+      writing-mode: vertical-lr;
+      input{
+        width:20px;
+        margin: auto;
+        outline: none;
+      }
+      label{
+        font-family:'STKaiti';
+        font-size:14px;
         color:#626262;
+        letter-spacing:-1px;
+        writing-mode: vertical-lr;
+        padding-left: 0px;
+        height: 100px;
       }
     }
   }
   .lineChart{
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     padding-left: 20px;
   }

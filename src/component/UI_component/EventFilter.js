@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Checkbox, List} from 'semantic-ui-react'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager } from '../../dataManager/dataStore2'
+import { triggerManager } from '../../dataManager/dataStore2'
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import { EMLINK } from 'constants';
+import './eventFilter.scss';
 
 class EventFilter  extends Component {
     constructor(){
@@ -102,7 +103,6 @@ class EventFilter  extends Component {
         let {data, check_box2checked} = this.state
         // console.log(data)
         return (
-            <div ref='container'>
                 <List bulleted>
                     <List.Item  as='li'>
                         <List.Header>事件类型</List.Header>
@@ -144,7 +144,6 @@ class EventFilter  extends Component {
                         </List.List>
                     </List.Item>
                 </List>          
-            </div>
         )
     }
 }
