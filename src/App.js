@@ -142,7 +142,7 @@ class App extends Component {
             </div>
           </div>
           <div>
-            <MainPanel height={540} width={1300} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
+            <MainPanel height={540} width={1340} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
           </div>
           <div className="rightPanel">
             <EventTable/>

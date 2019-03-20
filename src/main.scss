@@ -1,5 +1,8 @@
 $downHeight: 380px;
 $borderWidth: 2px;
+body{
+  overflow: hidden;
+}
 @font-face{
   font-family: 'DFPSongW9';
   src : url('./static/DFPSongW9-GB5.ttf');
@@ -97,7 +100,7 @@ body ::-webkit-scrollbar-thumb:window-inactive {
     left:0;
     display: grid;
     height: 100%;
-    grid-template-columns: 220px 1300px 1fr;
+    grid-template-columns: 220px 1340px 1fr;
     .leftPanel{
       width:220px;
       height: 540px;
@@ -185,7 +188,7 @@ body ::-webkit-scrollbar-thumb:window-inactive {
     }
     .rightPanel{
       height: 540px;
-      overflow-y: scroll;
+      border-left: 2px solid rgba($color: #CBCBCB, $alpha: 0.5);
     }
   }
   #footer{
