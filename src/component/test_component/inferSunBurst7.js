@@ -42,7 +42,7 @@ class InferSunBurst extends React.Component{
     now_click_value = undefined
     former_click_value = undefined
 
-    stateStack = []  //回到上一步用的
+    // stateStack = []  //回到上一步用的
     left_events = []
 
     constructor(){
@@ -51,7 +51,6 @@ class InferSunBurst extends React.Component{
             label_data: [],
             event_label_data: [],
             center_event_label_data: [],
-
 
             mouseover_value: undefined,
 
@@ -67,36 +66,12 @@ class InferSunBurst extends React.Component{
         }
     }
 
-
-    onFilterChange = autorun(()=>{
-        if (stateManager.is_ready) {
-            const need_refresh = stateManager.need_refresh
-            this.loadData()
-        }
-    })
-
-    loadNewEvent = autorun(()=>{
-        // console.log(stateManager.selected_event)
-        if (stateManager.is_ready) {
-            let selected_event_id = stateManager.selected_event_id.get()
-            // let selected_event = eventManager.get(selected_event_id)
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:2000})
-            .then(data=>{
-                console.log(data)
-                data = dataStore.processResults(data.data)
-                let {events} = data
-                // console.log(events.length)
-                let center_event = eventManager.get(selected_event_id)
-                // console.log(center_event)
-                this.all_events = dataStore.dict2array(events)
-                if (!this.all_events.includes(center_event)) {
-                    this.all_events.push(center_event)
-                }
-                this.center_event = center_event
-                this.loadData()
-            })
-        }
-    })
+    componentDidMount(){
+        let all_events = this.all_events
+        let center_event = this.center_event
+        console.log(all_events, center_event)
+        this.loadData()
+    }
 
     loadData(){
         const show_object_num = 20
@@ -437,8 +412,14 @@ class InferSunBurst extends React.Component{
     
     render(){
         console.log('render triggerSunBurst')
+
+        let {events, center_event} = this.props
+        this.all_events = events
+        this.center_event = center_event
+
+
         const {width, height} = this.props
-        const {center_event, value_equal} = this
+        const {value_equal} = this
         
         let {center_event_label_data, label_data, mouseover_value, event_label_data, rules} = this.state
         let {isDrag, mouse_postion, isMousePressed, drag_value, filter_values, show_event_hint_value} = this.state
@@ -534,6 +515,7 @@ class InferSunBurst extends React.Component{
         if(mouseover_value){
             show_event_hint_value = undefined
         }
+        console.log(label_data)
         return (
             <div 
                 className='trigger_sunburst_graph' 

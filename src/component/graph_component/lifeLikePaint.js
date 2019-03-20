@@ -240,7 +240,7 @@ class LifeLikePaint extends Component{
         // all_events = peopleFilter(all_events)
         // all_events = addrFilter(all_events)
         // all_events = yearFilter(all_events)
-        console.log(all_events);
+        // console.log(all_events);
 
         let year2events = eventManager.array2year2events(all_events)
         // 找到出生和死亡

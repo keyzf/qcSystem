@@ -1,0 +1,264 @@
+-1,[Missing Data],[Missing Data]
+0,[Unknown],[未詳]
+2,army officer,武將
+3,artisan,工匠
+4,astronomer,天文學家（星象家）
+6,betrothed maiden fiancé,[未婚妻]
+7,buddhist nun,比丘尼
+8,buddhist monk,僧人
+9,calligrapher,書法家
+10,cashiered civil servant,削籍官員
+11,Celestial Master,天師
+12,Confucian learning,儒學
+13,clerical staff,胥吏
+14,commoner (buyi),布衣
+15,community leader,鄉里長者
+16,concubine,妾
+18,office title from contribution,[捐納得官]
+19,Daoist priest,道士
+20,Daoist nun,道姑(女冠)
+21,Daoist recluse,隱居道士
+22,died young,早卒(未成年而卒)
+23,died before marriage,未婚而卒
+24,died before taking office,未仕而卒
+25,education official,[學官]
+26,emperor,[皇帝]
+27,empress,[皇后]
+28,estate management,管理田產
+29,eunuch,宦官
+30,failed exams literatus,落第士人
+31,teacher at family school,家塾師
+32,manager of family affairs,主家事
+33,farmer,農民
+34,office:state council,[宰執]
+35,warlord ruler,軍閥
+36,local literatus / gentry,地方士人/鄉紳
+37,alchemist,煉丹家
+38,philanthropist,為善鄉里
+39,respected by locality,為邑里所重
+40,civil office,[為官者：文]
+41,imperial consort,[后妃]
+42,imperial palace service,[供奉內廷]
+43,imperial prince,宗子
+44,inner palace teacher,[]
+46,Jesuit,耶穌會士
+47,jinshi degree holder,[進士]
+48,ruler,統治者
+49,lady-in-waiting,侍女
+50,landownership,家有田產
+52,literati,士人
+53,holder of minor office,[低級官僚]
+55,maiden,在室女
+56,wealth,富豪
+57,mathematician,數學家
+58,medical instructor,醫學教授
+59,merchant,商人
+60,military governor,[節度使]
+61,military,[武官]
+63,militia leader,義軍首領
+65,noble,[貴族]
+66,private secretary of official,[幕僚]
+67,office: medical office,[醫官]
+68,office: finance,[財政官員]
+69,office: chief councilor,[宰相]
+70,official title,[有官銜]
+71,painter,畫家
+72,physician,行醫
+73,prefectural teacher,[府州學教授]
+74,convict,罪犯
+75,rebel,叛臣
+76,recluse,[隱士]
+77,retainer (ke),門客
+78,gentleman without office,處士
+79,secretary: muguan,[幕官]
+80,secretary to a prefect,[刺史幕僚（知州幕僚）]
+81,seeking office,求仕
+82,shamen,薩滿教巫師
+83,student: shengyuan,[學生：生員]
+85,academy (shuyuan) director,書院山長
+86,slave,奴婢
+87,soldier of military general's headquarters (yajiang),牙將
+88,recommended for decree exam,[推薦參加制科]
+89,student,[諸生]
+90,studying for jinshi,業進士
+91,taiwei (Han),[太尉（漢）]
+92,tax broker,包攬?
+93,tax collector,[稅務官]
+94,teacher,收徒講學
+95,teacher: military,教師：軍事教官
+96,tribal chieftain,酋長
+97,not serving due to blindness,以瞽廢
+98,not serving due to illness,以疾廢
+100,student: university,[太學生]
+101,urban ward leader,[]
+102,veterinarian,食素
+103,village elder,父老;耆老
+104,wife,[妻]
+105,mother,[母]
+106,Xianbi khan,[鮮卑可汗]
+107,local teacher,鄉先生
+109,yinju (or yinde),[隱居（有隱德）]
+110,recluse who refused office,隱居不仕
+111,teaching in reclusion,隱居授徒
+112,yinyang expert,陰陽家
+113,military general,[大帥]
+114,poet,詩人
+115,student: juren,[舉人]
+116,military officer,[軍事將校]
+117,refused office,拒絕出仕
+119,chose not to participate in exams,主動放棄科舉
+120,died before exams,未參加科舉而卒
+121,chose not to seek office,不求仕
+122,student: baxing,[學生： 八行]
+123,student: county student (xueshen,[縣學生]
+124,student: military university,[武學生]
+125,student: fugong,[附貢]
+126,student: gongsheng,[貢生]
+127,student: jiansheng,[監生]
+128,student: university-purchase,[捐監]
+129,student: suigong,[歲貢]
+130,student: taixuesheng,[太學生]
+132,student: ligong,[例貢]
+133,student: zeng guangsheng (Ws),[增廣生員]
+134,student: linyuan,[廩員]
+135,student: xiangjian,[預鄉薦]
+136,student: xianggong jinshi,[鄉貢進士]
+137,outer noblewoman,[外命婦]
+138,inner noblewoman,[內命婦]
+139,consort family,外戚
+140,chaste widow,貞婦
+141,dynastic martyr,死國難
+142,historian,史學家
+143,connoisseur,鑒賞家
+144,holder of a private library,藏書家
+145,government entertainer,官伎
+146,Neo-Confucian thinker (lixue),理學家
+147,filial son/daughter,孝子/孝女
+148,multigenerational family,義門
+149,musical entertainer,樂人
+150,dynastic loyalist,遺民
+151,soldier,軍卒
+152,executioner,劊子手
+154,printblock carver,刻工
+155,female entertainer,妓
+156,merciless official,酷吏
+157,honest official,良吏;循吏
+158,foreign official who give allegiance to dynasty,歸明人
+159,returned to proper allegiance,歸正人
+162,,[季父房]
+163,philologist,小學家
+164,Classicist,經學家
+165,man of culture (wenren),文人
+166,woodblock publisher,刻書家
+167,Plain Yellow Banner,[正黃旗]
+168,Plain Blue Banner,[正藍旗]
+169,Plain White Banner,[正白旗]
+170,Plain Red Banner,[正紅旗]
+171,Bordered Yellow Banner,[鑲黃旗]
+172,Bordered Blue Banner,[鑲藍旗]
+173,Bordered White Banner,[鑲白旗]
+174,Bordered Red Banner,[鑲紅旗]
+175,"bondservant (booi, baoyi) bannerman",[內務府旗人（籠統）]
+176,"bondservant (booi, baoyi) bannerman -- Bordered Yellow Banner",[內務府旗人（鑲黄旗包衣）]
+177,"bondservant (booi, baoyi) bannerman -- Plain Yellow Banner",[內務府旗人（正黄旗包衣）]
+178,"bondservant (booi, baoyi) bannerman -- Plain White Banner",[內務府旗人（正白旗包衣）]
+179,academy lecturer,主書院講席
+180,erudite,博學之人
+181,Neo-Confucian scholar (Wang Yangming school),理學家 — 陽明學派
+182,linguist,語言學家
+183,versed in foreign language(s),通曉外語
+184,collector,收藏家
+185,excelled in particular military weapons,精於某種兵器
+186,society member,結社
+187,narrow pedant,腐儒
+188,scholar,學者
+189,scholar of Classics (Book of Change),經學家—易經
+190,scholar of Classics (Book of Documents),經學家—尚書
+191,scholar of Classics (Book of Odes),經學家—詩經
+192,scholar of Classics (Classics of Rites),經學家—禮經
+193,scholar of Classics (Gongyang commentary on Spring and Autumn Annals),經學家—公羊學
+194,scholar of Classics (Guliang commentary on Spring and Autumn Annals),經學家—榖梁學
+195,scholar of Classics (Han learning),經學家—漢學
+196,scholar of Classics (New Text School),經學家—今文經學
+197,scholar of Classics (Spring and Autumn Annals),經學家—春秋
+198,scholar of Classics (Zuo commentary on Spring and Autumn Annals),經學家—左傳
+199,philologist (shuowen),小學家－說文
+200,philologist (wenzi - graphology),小學家－字學
+201,philologist (xungu - semantics),小學家－訓詁學
+202,philologist (yinyun - phonology),小學家－音韻學
+203,scholar of textual research (kaoju learning),考據學家
+204,scholar of textual criticism (jiaokan),校堪學家
+205,bibliographer,目錄學家
+206,expert on book editions,版本學家
+207,scholar of statecraft learning,經世學者
+208,expert on oracle bones,甲骨文專家
+209,scholar of bronze and stone inscriptions,金石學家
+210,novelist,小說家
+211,philosopher,哲學家
+212,scholar of Western learning,精通西學
+213,geographer,地理學家
+214,scholar of law,法律專家
+215,scholar of music,音樂學家
+219,diviner,卜筮者（太乙、軌革、六壬、遁甲等）
+220,geomancer,堪輿家風水師
+221,physiognomist,相面相手者
+222,practioner of Daoist magics,習於道術
+224,specialist in the calendar,曆算家
+225,scientist,科學家
+227,agronomist,農學家
+228,biologist,生物學家
+229,botanist,植物學家
+230,water management expert,水利專家
+232,writer,作家
+233,skilled at writing,工於文
+234,writer of ancient-style prose,工於古文
+235,ci lyric writer,詞人
+236,qu writer,曲作家
+237,expert in operas,精於戲劇
+238,rhapsody writer,工於作賦
+239,rhymed prose (pianwen) writer,工於駢體文
+240,versed in composing examination essays,長於制舉之文
+241,translator of writings,譯書家
+242,language translator,翻譯
+243,seal cutter,篆刻家
+244,sculptor,雕繪鐫刻家
+245,architect (gardern designer),建築家 — 園林設計
+246,publisher,出版家
+247,educator,教育家
+248,statesman,政治家
+249,thinker,思想家
+250,go (weiqi) chess player,圍棋棋手
+251,excelled in archery,精於箭術
+252,excelled in horseriding and archery,精於騎射
+253,excelled in particular musical instruments,精於某種樂器
+254,excelled in swordsmanship,精於劍術
+255,expert in boxing,精於拳法
+256,military strategist,熟諳兵法韜略
+257,navy warfare expert,熟諳水務海戰
+258,lay Buddhist,佛教之俗家弟子
+259,overseas Chinese,華僑
+260,scholar of foreign literature,外文學家
+261,expert in poetic rhymes,精通詩(詞曲)之聲韻音律
+262,student of medicine,醫學
+263,extensive factual knowledge,強記;博學強記
+264,fond of learning,好學
+265,Summoned to the capital,徵至京師
+266,Founded private academy or school,建書院/義塾/家塾  
+267,Belongs to exemplary group,並稱/齊名
+268,Was exiled,曾被流放
+269,Was impeached,曾被彈劾
+270,prognostication,圖讖
+271,diplomat,外交
+272,Known for wine drinking,好飲酒
+273,scholars of the Four Books ,四書
+274,interested in artistic crafts,工藝
+275,"Shu shu (includes astronomy, five phases, prognostication)",數術
+276,engineer,機械
+277,military arts,武藝
+278,specialist in water conservancy,河工
+279,physics,物理
+280, christianity,神學
+281,buddhist studies,禪機
+282,specialist in archaelogy,考古
+283,specialist in institutions,職官
+284,Tatooing,刺藝

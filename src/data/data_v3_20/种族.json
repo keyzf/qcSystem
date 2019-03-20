@@ -1,0 +1,1990 @@
+{
+    "0": {
+        "chn": "未详",
+        "en": "unknown"
+    },
+    "1": {
+        "chn": "汉",
+        "en": "Han"
+    },
+    "3": {
+        "chn": "吐蕃",
+        "en": "tu fan"
+    },
+    "4": {
+        "chn": "突厥",
+        "en": "tu jue"
+    },
+    "5": {
+        "chn": "契丹",
+        "en": "qi dan"
+    },
+    "6": {
+        "chn": "廻纥",
+        "en": "hui he"
+    },
+    "7": {
+        "chn": "回鹘",
+        "en": "hui he"
+    },
+    "8": {
+        "chn": "回回",
+        "en": "hui hui"
+    },
+    "9": {
+        "chn": "渤海",
+        "en": "bo hai"
+    },
+    "10": {
+        "chn": "高丽",
+        "en": "gao li"
+    },
+    "11": {
+        "chn": "囘囘",
+        "en": "hui hui"
+    },
+    "12": {
+        "chn": "囘纥",
+        "en": "hui he"
+    },
+    "13": {
+        "chn": "日本",
+        "en": "ri ben"
+    },
+    "14": {
+        "chn": "薛延陀",
+        "en": "xue yan tuo"
+    },
+    "15": {
+        "chn": "拔野古",
+        "en": "ba ye gu"
+    },
+    "16": {
+        "chn": "仆骨",
+        "en": "pu gu"
+    },
+    "17": {
+        "chn": "同罗",
+        "en": "tong luo"
+    },
+    "18": {
+        "chn": "白霫",
+        "en": "bai xi"
+    },
+    "19": {
+        "chn": "斛薛",
+        "en": "hu xue"
+    },
+    "20": {
+        "chn": "西州回鹘",
+        "en": "xi zhou hui he"
+    },
+    "21": {
+        "chn": "龟兹",
+        "en": "qiu ci"
+    },
+    "22": {
+        "chn": "丘兹",
+        "en": "qiu ci"
+    },
+    "23": {
+        "chn": "屈兹",
+        "en": "qu ci"
+    },
+    "24": {
+        "chn": "西州龟兹",
+        "en": "xi zhou qiu ci"
+    },
+    "25": {
+        "chn": "畏兀",
+        "en": "wei wu"
+    },
+    "26": {
+        "chn": "畏兀儿",
+        "en": "wei wu er"
+    },
+    "27": {
+        "chn": "畏吾",
+        "en": "wei wu"
+    },
+    "28": {
+        "chn": "畏吾儿",
+        "en": "wei wu er"
+    },
+    "29": {
+        "chn": "高车",
+        "en": "gao ju"
+    },
+    "30": {
+        "chn": "铁勒",
+        "en": "tie le"
+    },
+    "31": {
+        "chn": "特勒",
+        "en": "te le"
+    },
+    "32": {
+        "chn": "敕勒",
+        "en": "chi le"
+    },
+    "33": {
+        "chn": "古素鲁",
+        "en": "gu su lu"
+    },
+    "34": {
+        "chn": "古速鲁",
+        "en": "gu su lu"
+    },
+    "35": {
+        "chn": "八瓦耳",
+        "en": "ba wa er"
+    },
+    "36": {
+        "chn": "哈密理",
+        "en": "ha mi li"
+    },
+    "37": {
+        "chn": "哈迷里",
+        "en": "ha mi li"
+    },
+    "38": {
+        "chn": "沙陀",
+        "en": "sha tuo"
+    },
+    "39": {
+        "chn": "柔然",
+        "en": "ruo ran"
+    },
+    "40": {
+        "chn": "蠕蠕",
+        "en": "ru ru"
+    },
+    "41": {
+        "chn": "南诏",
+        "en": "nan zhao"
+    },
+    "42": {
+        "chn": "扎赤丹",
+        "en": "zha chi dan"
+    },
+    "43": {
+        "chn": "室韦",
+        "en": "shi wei"
+    },
+    "44": {
+        "chn": "靺鞨",
+        "en": "mo he"
+    },
+    "45": {
+        "chn": "奚",
+        "en": "xi"
+    },
+    "46": {
+        "chn": "契丹耶律",
+        "en": "qi dan ye lv"
+    },
+    "47": {
+        "chn": "契丹述律氏",
+        "en": "qi dan shu lv"
+    },
+    "48": {
+        "chn": "库真奚",
+        "en": "ku zhen xi"
+    },
+    "49": {
+        "chn": "黑水靺鞨",
+        "en": "hei shui mo she"
+    },
+    "50": {
+        "chn": "挹娄",
+        "en": "yi lou"
+    },
+    "51": {
+        "chn": "高昌",
+        "en": "gao chang"
+    },
+    "52": {
+        "chn": "吐谷浑",
+        "en": "tu yu hun"
+    },
+    "53": {
+        "chn": "勿吉",
+        "en": "wu ji"
+    },
+    "54": {
+        "chn": "渤海靺鞨",
+        "en": "bo hai mo she"
+    },
+    "55": {
+        "chn": "扶余",
+        "en": "fu yu"
+    },
+    "56": {
+        "chn": "百济",
+        "en": "bai ji"
+    },
+    "57": {
+        "chn": "新罗",
+        "en": "xin luo"
+    },
+    "58": {
+        "chn": "流鬼",
+        "en": "liu gui"
+    },
+    "59": {
+        "chn": "泥婆罗",
+        "en": "ni po luo"
+    },
+    "60": {
+        "chn": "党项",
+        "en": "dang xiang"
+    },
+    "61": {
+        "chn": "党项羌",
+        "en": "dang xiang qiang"
+    },
+    "62": {
+        "chn": "东女",
+        "en": "dong nv"
+    },
+    "63": {
+        "chn": "苏伐剌拏瞿咀罗",
+        "en": "su fa la na qu ju luo"
+    },
+    "64": {
+        "chn": "吐浑",
+        "en": "tu hun"
+    },
+    "65": {
+        "chn": "焉耆",
+        "en": "yan qi"
+    },
+    "66": {
+        "chn": "跋禄迦",
+        "en": "ba lu jia"
+    },
+    "67": {
+        "chn": "交阯",
+        "en": "jiao zhi"
+    },
+    "68": {
+        "chn": "亟墨",
+        "en": "ji mo"
+    },
+    "69": {
+        "chn": "疏勒",
+        "en": "shu le"
+    },
+    "70": {
+        "chn": "于阗",
+        "en": "yu tian"
+    },
+    "71": {
+        "chn": "瞿萨旦那",
+        "en": "qu sa dan na"
+    },
+    "72": {
+        "chn": "涣那",
+        "en": "huan na"
+    },
+    "73": {
+        "chn": "屈丹",
+        "en": "qu dan"
+    },
+    "74": {
+        "chn": "天竺",
+        "en": "tian zhu"
+    },
+    "75": {
+        "chn": "身毒",
+        "en": "shen du"
+    },
+    "76": {
+        "chn": "摩伽陀",
+        "en": "mo qie tuo"
+    },
+    "77": {
+        "chn": "婆罗门",
+        "en": "po luo men"
+    },
+    "78": {
+        "chn": "摩揭陀",
+        "en": "mo jie tuo"
+    },
+    "79": {
+        "chn": "摩揭它",
+        "en": "mo jie ta"
+    },
+    "80": {
+        "chn": "摩伽陀",
+        "en": "mo qie tuo"
+    },
+    "81": {
+        "chn": "西南溪峒诸蛮",
+        "en": "xi nan xi dong zhu man"
+    },
+    "82": {
+        "chn": "罽宾",
+        "en": "ji bin"
+    },
+    "83": {
+        "chn": "漕国",
+        "en": "cao guo"
+    },
+    "84": {
+        "chn": "康",
+        "en": "kang"
+    },
+    "85": {
+        "chn": "康居",
+        "en": "kang ju"
+    },
+    "86": {
+        "chn": "萨末鞬",
+        "en": "sa mo jian"
+    },
+    "87": {
+        "chn": "黎洞",
+        "en": "li dong"
+    },
+    "88": {
+        "chn": "飒秣建",
+        "en": "sa mo jian"
+    },
+    "89": {
+        "chn": "悉万斤",
+        "en": "xi wan jin"
+    },
+    "90": {
+        "chn": "黎州诸蛮",
+        "en": "li zhou zhu man"
+    },
+    "91": {
+        "chn": "宁远",
+        "en": "ning yuan"
+    },
+    "92": {
+        "chn": "拔汗那",
+        "en": "ba han na"
+    },
+    "93": {
+        "chn": "䥽汗",
+        "en": "po han"
+    },
+    "94": {
+        "chn": "破洛那",
+        "en": "po luo na"
+    },
+    "95": {
+        "chn": "大勃律",
+        "en": "da bo lv"
+    },
+    "96": {
+        "chn": "吐火罗",
+        "en": "tu huo luo"
+    },
+    "97": {
+        "chn": "土豁罗",
+        "en": "tu huo luo"
+    },
+    "98": {
+        "chn": "覩货逻",
+        "en": "du huo luo"
+    },
+    "99": {
+        "chn": "吐呼罗",
+        "en": "tu hu luo"
+    },
+    "100": {
+        "chn": "布露",
+        "en": "bu lu"
+    },
+    "101": {
+        "chn": "谢𫗇",
+        "en": "xie yu"
+    },
+    "102": {
+        "chn": "漕矩",
+        "en": "cao ju"
+    },
+    "103": {
+        "chn": "漕矩咤",
+        "en": "cao ju zha"
+    },
+    "104": {
+        "chn": "诃达罗支",
+        "en": "he da luo zhi"
+    },
+    "105": {
+        "chn": "识匿",
+        "en": "shi ni"
+    },
+    "106": {
+        "chn": "瑟匿",
+        "en": "se ni"
+    },
+    "107": {
+        "chn": "尸弃尼",
+        "en": "shi qi ni"
+    },
+    "108": {
+        "chn": "个失密",
+        "en": "ge shi mi"
+    },
+    "109": {
+        "chn": "渝州蛮",
+        "en": "yu zhou man"
+    },
+    "110": {
+        "chn": "迦湿弥逻",
+        "en": "jia shi mi luo"
+    },
+    "111": {
+        "chn": "骨咄",
+        "en": "gu duo"
+    },
+    "112": {
+        "chn": "珂咄罗",
+        "en": "ke duo luo"
+    },
+    "113": {
+        "chn": "苏毗",
+        "en": "su pi"
+    },
+    "114": {
+        "chn": "师子",
+        "en": "shi zi"
+    },
+    "115": {
+        "chn": "波斯",
+        "en": "bo si"
+    },
+    "116": {
+        "chn": "拂菻",
+        "en": "fu lin"
+    },
+    "117": {
+        "chn": "大秦",
+        "en": "da qin"
+    },
+    "118": {
+        "chn": "海西国",
+        "en": "hai xi guo"
+    },
+    "119": {
+        "chn": "大理",
+        "en": "da li"
+    },
+    "120": {
+        "chn": "鹤拓",
+        "en": "he tuo"
+    },
+    "121": {
+        "chn": "龙尾",
+        "en": "long wei"
+    },
+    "122": {
+        "chn": "苴咩",
+        "en": "ju mie"
+    },
+    "123": {
+        "chn": "阳剑",
+        "en": "yang jian"
+    },
+    "124": {
+        "chn": "蒙巂诏",
+        "en": "meng xi zhao"
+    },
+    "125": {
+        "chn": "越析诏",
+        "en": "yue xi zhao"
+    },
+    "126": {
+        "chn": "浪穹诏",
+        "en": "lang qiong zhao"
+    },
+    "127": {
+        "chn": "邆睒诏",
+        "en": "teng shan zhao"
+    },
+    "128": {
+        "chn": "施浪诏",
+        "en": "shi lang zhao"
+    },
+    "129": {
+        "chn": "环王",
+        "en": "huan wang"
+    },
+    "130": {
+        "chn": "占不劳",
+        "en": "zhan bu lao"
+    },
+    "131": {
+        "chn": "蒙古",
+        "en": "meng gu"
+    },
+    "132": {
+        "chn": "女真",
+        "en": "nv zhen"
+    },
+    "133": {
+        "chn": "占婆",
+        "en": "zhan po"
+    },
+    "134": {
+        "chn": "盘盘",
+        "en": "pan pan"
+    },
+    "135": {
+        "chn": "扶南",
+        "en": "fu nan"
+    },
+    "136": {
+        "chn": "真腊",
+        "en": "zhen la"
+    },
+    "137": {
+        "chn": "占腊",
+        "en": "zhan la"
+    },
+    "138": {
+        "chn": "诃陵",
+        "en": "he ling"
+    },
+    "139": {
+        "chn": "社婆",
+        "en": "she po"
+    },
+    "140": {
+        "chn": "阇婆",
+        "en": "she po"
+    },
+    "141": {
+        "chn": "投和",
+        "en": "tou he"
+    },
+    "142": {
+        "chn": "瞻博",
+        "en": "zhan bo"
+    },
+    "143": {
+        "chn": "瞻婆",
+        "en": "zhan po"
+    },
+    "144": {
+        "chn": "室利佛逝",
+        "en": "shi li fo shi"
+    },
+    "145": {
+        "chn": "尸利佛誓",
+        "en": "shi li fo shi"
+    },
+    "146": {
+        "chn": "名蔑",
+        "en": "ming mie"
+    },
+    "147": {
+        "chn": "单单",
+        "en": "dan dan"
+    },
+    "148": {
+        "chn": "骠",
+        "en": "biao"
+    },
+    "149": {
+        "chn": "朱波",
+        "en": "zhu bo"
+    },
+    "150": {
+        "chn": "突罗朱",
+        "en": "tu luo zhu"
+    },
+    "151": {
+        "chn": "徒里拙",
+        "en": "tu li zhuo"
+    },
+    "152": {
+        "chn": "两爨蛮",
+        "en": "liang cuan man"
+    },
+    "153": {
+        "chn": "南平獠",
+        "en": "nan ping liao"
+    },
+    "154": {
+        "chn": "西原蛮",
+        "en": "xi yuan man"
+    },
+    "155": {
+        "chn": "昆明部落",
+        "en": "kun ming bu luo"
+    },
+    "156": {
+        "chn": "昆明",
+        "en": "kun ming"
+    },
+    "157": {
+        "chn": "昆明蛮",
+        "en": "kun ming man"
+    },
+    "158": {
+        "chn": "昆弥",
+        "en": "kun mi"
+    },
+    "159": {
+        "chn": "占城",
+        "en": "zhan cheng"
+    },
+    "160": {
+        "chn": "牂牁蛮",
+        "en": "zang ke man"
+    },
+    "161": {
+        "chn": "达靼",
+        "en": "da da"
+    },
+    "162": {
+        "chn": "拓跋",
+        "en": "tuo ba"
+    },
+    "163": {
+        "chn": "西夏",
+        "en": "xi xia"
+    },
+    "164": {
+        "chn": "夏国",
+        "en": "xia guo"
+    },
+    "165": {
+        "chn": "唐兀",
+        "en": "tang wu"
+    },
+    "166": {
+        "chn": "吾密",
+        "en": "wu mi"
+    },
+    "167": {
+        "chn": "乌密",
+        "en": "wu mi"
+    },
+    "168": {
+        "chn": "河西唐兀",
+        "en": "he xi tang wu"
+    },
+    "169": {
+        "chn": "满族",
+        "en": "man zu"
+    },
+    "170": {
+        "chn": "朝鲜",
+        "en": "chao xian"
+    },
+    "171": {
+        "chn": "野蒲",
+        "en": "ye pu"
+    },
+    "172": {
+        "chn": "安南",
+        "en": "an nan"
+    },
+    "173": {
+        "chn": "蒲甘",
+        "en": "pu gan"
+    },
+    "174": {
+        "chn": "邈黎",
+        "en": "miao li"
+    },
+    "175": {
+        "chn": "三佛齐",
+        "en": "san fo qi"
+    },
+    "176": {
+        "chn": "南毗",
+        "en": "nan pi"
+    },
+    "177": {
+        "chn": "勃泥",
+        "en": "bo ni"
+    },
+    "178": {
+        "chn": "注辇",
+        "en": "zhu nian"
+    },
+    "179": {
+        "chn": "丹眉流",
+        "en": "dan mei liu"
+    },
+    "180": {
+        "chn": "层檀",
+        "en": "ceng tan"
+    },
+    "181": {
+        "chn": "沙州",
+        "en": "sha zhou"
+    },
+    "182": {
+        "chn": "流求国",
+        "en": "liu qiu guo"
+    },
+    "183": {
+        "chn": "定安国",
+        "en": "ding an guo"
+    },
+    "184": {
+        "chn": "梅山峒蛮",
+        "en": "mei shan dong man"
+    },
+    "185": {
+        "chn": "诚州蛮",
+        "en": "cheng zhou man"
+    },
+    "186": {
+        "chn": "南丹州蛮",
+        "en": "nan dan zhou man"
+    },
+    "187": {
+        "chn": "抚水州蛮",
+        "en": "fu shui zhou man"
+    },
+    "188": {
+        "chn": "广源州蛮",
+        "en": "guang yuan zhou man"
+    },
+    "189": {
+        "chn": "环州蛮",
+        "en": "huan zhou man"
+    },
+    "190": {
+        "chn": "西南诸夷",
+        "en": "xi nan zhu yi"
+    },
+    "191": {
+        "chn": "山后两林蛮",
+        "en": "shan hou liang lin man"
+    },
+    "192": {
+        "chn": "邛部川蛮",
+        "en": "qiong bu chuan man"
+    },
+    "193": {
+        "chn": "大路蛮",
+        "en": "da lu man"
+    },
+    "194": {
+        "chn": "勿邓",
+        "en": "wu deng"
+    },
+    "195": {
+        "chn": "风琶蛮",
+        "en": "feng pa man"
+    },
+    "196": {
+        "chn": "保塞蛮",
+        "en": "bao sai man"
+    },
+    "197": {
+        "chn": "三王蛮",
+        "en": "san wang man"
+    },
+    "198": {
+        "chn": "西箐蛮",
+        "en": "xi qing man"
+    },
+    "199": {
+        "chn": "净浪蛮",
+        "en": "jing lang man"
+    },
+    "200": {
+        "chn": "白蛮",
+        "en": "bai man"
+    },
+    "201": {
+        "chn": "乌蒙蛮",
+        "en": "wu meng man"
+    },
+    "202": {
+        "chn": "阿宗蛮",
+        "en": "a zong man"
+    },
+    "203": {
+        "chn": "大云南蛮",
+        "en": "da yun nan man"
+    },
+    "204": {
+        "chn": "小云南蛮",
+        "en": "xiao yun nan man"
+    },
+    "205": {
+        "chn": "西南夷部(黔州涪州徼外)",
+        "en": "xi nan yi bu ( qian zhou fu zhou jiao wai )"
+    },
+    "206": {
+        "chn": "施州蛮",
+        "en": "shi zhou man"
+    },
+    "207": {
+        "chn": "高州蛮",
+        "en": "gao zhou man"
+    },
+    "208": {
+        "chn": "泸州蛮",
+        "en": "lu zhou man"
+    },
+    "209": {
+        "chn": "耽罗",
+        "en": "dan luo"
+    },
+    "210": {
+        "chn": "缅国",
+        "en": "mian guo"
+    },
+    "211": {
+        "chn": "暹国",
+        "en": "xian guo"
+    },
+    "212": {
+        "chn": "爪哇",
+        "en": "zhao wa"
+    },
+    "213": {
+        "chn": "瑠求",
+        "en": "liu qiu"
+    },
+    "214": {
+        "chn": "三屿",
+        "en": "san yu"
+    },
+    "215": {
+        "chn": "马八儿",
+        "en": "ma ba er"
+    },
+    "216": {
+        "chn": "须门那",
+        "en": "xu men na"
+    },
+    "217": {
+        "chn": "叙州三路蛮",
+        "en": "xu zhou san lu man"
+    },
+    "218": {
+        "chn": "董蛮",
+        "en": "dong man"
+    },
+    "219": {
+        "chn": "石门部",
+        "en": "shi men bu"
+    },
+    "220": {
+        "chn": "南广蛮",
+        "en": "nan guang man"
+    },
+    "221": {
+        "chn": "威州蛮",
+        "en": "wei zhou man"
+    },
+    "222": {
+        "chn": "茂州蛮",
+        "en": "mao zhou man"
+    },
+    "223": {
+        "chn": "南平獠",
+        "en": "nan ping liao"
+    },
+    "224": {
+        "chn": "僧急里",
+        "en": "seng ji li"
+    },
+    "225": {
+        "chn": "南无力",
+        "en": "nan wu li"
+    },
+    "226": {
+        "chn": "马兰丹",
+        "en": "ma lan dan"
+    },
+    "227": {
+        "chn": "那旺",
+        "en": "na wang"
+    },
+    "228": {
+        "chn": "丁呵儿",
+        "en": "ding he er"
+    },
+    "229": {
+        "chn": "来来",
+        "en": "lai lai"
+    },
+    "230": {
+        "chn": "急兰亦䚟",
+        "en": "ji lan yi dai"
+    },
+    "231": {
+        "chn": "苏木都剌",
+        "en": "su mu dou la"
+    },
+    "232": {
+        "chn": "林邑",
+        "en": "lin yi"
+    },
+    "233": {
+        "chn": "婆利",
+        "en": "po li"
+    },
+    "234": {
+        "chn": "陀洹",
+        "en": "tuo huan"
+    },
+    "235": {
+        "chn": "堕和罗",
+        "en": "duo he luo"
+    },
+    "236": {
+        "chn": "堕婆登",
+        "en": "duo po deng"
+    },
+    "237": {
+        "chn": "东谢蛮",
+        "en": "dong xie man"
+    },
+    "238": {
+        "chn": "西赵蛮",
+        "en": "xi zhao man"
+    },
+    "239": {
+        "chn": "倭国",
+        "en": "wo guo"
+    },
+    "240": {
+        "chn": "铁勒",
+        "en": "tie le"
+    },
+    "241": {
+        "chn": "靺鞨",
+        "en": "mo he"
+    },
+    "242": {
+        "chn": "乌罗浑国",
+        "en": "wu luo hun guo"
+    },
+    "243": {
+        "chn": "霫",
+        "en": "xi"
+    },
+    "244": {
+        "chn": "章求拔国",
+        "en": "zhang qiu ba guo"
+    },
+    "245": {
+        "chn": "章揭拔",
+        "en": "zhang jie ba"
+    },
+    "246": {
+        "chn": "乞失里台",
+        "en": "qi shi li tai"
+    },
+    "247": {
+        "chn": "乞失里台",
+        "en": "qi shi li tai"
+    },
+    "248": {
+        "chn": "亦乞列思",
+        "en": "yi qi lie si"
+    },
+    "249": {
+        "chn": "亦乞烈",
+        "en": "yi qi lie"
+    },
+    "250": {
+        "chn": "伯岳吾",
+        "en": "bo yue wu"
+    },
+    "251": {
+        "chn": "伯牙吾",
+        "en": "bo ya wu"
+    },
+    "252": {
+        "chn": "伯牙乌",
+        "en": "bo ya wu"
+    },
+    "253": {
+        "chn": "伯要",
+        "en": "bo yao"
+    },
+    "254": {
+        "chn": "伯要兀",
+        "en": "bo yao wu"
+    },
+    "255": {
+        "chn": "杰烈宜",
+        "en": "jie lie yi"
+    },
+    "256": {
+        "chn": "克烈",
+        "en": "ke lie"
+    },
+    "257": {
+        "chn": "凯烈",
+        "en": "kai lie"
+    },
+    "258": {
+        "chn": "怯烈",
+        "en": "qie lie"
+    },
+    "259": {
+        "chn": "土别燕",
+        "en": "tu bie yan"
+    },
+    "260": {
+        "chn": "秃伯怯烈",
+        "en": "tu bo qie lie"
+    },
+    "261": {
+        "chn": "秃伯怯烈",
+        "en": "tu bo qie lie"
+    },
+    "262": {
+        "chn": "兀良哈",
+        "en": "wu liang he"
+    },
+    "263": {
+        "chn": "兀良合",
+        "en": "wu liang he"
+    },
+    "264": {
+        "chn": "兀鲁",
+        "en": "wu lu"
+    },
+    "265": {
+        "chn": "兀罗带",
+        "en": "wu luo dai"
+    },
+    "266": {
+        "chn": "兀鲁兀台",
+        "en": "wu lu wu tai"
+    },
+    "267": {
+        "chn": "八剌忽",
+        "en": "ba la hu"
+    },
+    "268": {
+        "chn": "八剌忽䚟",
+        "en": "ba la hu dai"
+    },
+    "269": {
+        "chn": "八鲁剌䚟",
+        "en": "ba lu la dai"
+    },
+    "270": {
+        "chn": "巴阿邻",
+        "en": "ba a lin"
+    },
+    "271": {
+        "chn": "八邻",
+        "en": "ba lin"
+    },
+    "272": {
+        "chn": "巴邻",
+        "en": "ba lin"
+    },
+    "273": {
+        "chn": "别速",
+        "en": "bie su"
+    },
+    "274": {
+        "chn": "别速特",
+        "en": "bie su te"
+    },
+    "275": {
+        "chn": "别速台",
+        "en": "bie su tai"
+    },
+    "276": {
+        "chn": "召烈台",
+        "en": "zhao lie tai"
+    },
+    "277": {
+        "chn": "乞颜",
+        "en": "qi yan"
+    },
+    "278": {
+        "chn": "奇渥温",
+        "en": "qi wo wen"
+    },
+    "279": {
+        "chn": "孙都歹",
+        "en": "sun dou dai"
+    },
+    "280": {
+        "chn": "察台",
+        "en": "cha tai"
+    },
+    "281": {
+        "chn": "札剌儿",
+        "en": "zha la er"
+    },
+    "282": {
+        "chn": "札剌台",
+        "en": "zha la tai"
+    },
+    "283": {
+        "chn": "札剌歹",
+        "en": "zha la dai"
+    },
+    "284": {
+        "chn": "察哈札剌儿",
+        "en": "cha ha zha la er"
+    },
+    "285": {
+        "chn": "巴鲁剌思",
+        "en": "ba lu la si"
+    },
+    "286": {
+        "chn": "度礼班",
+        "en": "du li ban"
+    },
+    "287": {
+        "chn": "朶罗",
+        "en": "duo luo"
+    },
+    "288": {
+        "chn": "弘吉剌",
+        "en": "hong ji la"
+    },
+    "289": {
+        "chn": "忙兀",
+        "en": "mang wu"
+    },
+    "290": {
+        "chn": "忙兀台",
+        "en": "mang wu tai"
+    },
+    "291": {
+        "chn": "忙忽特",
+        "en": "mang hu te"
+    },
+    "292": {
+        "chn": "脱托历",
+        "en": "tuo tuo li"
+    },
+    "293": {
+        "chn": "脱脱里",
+        "en": "tuo tuo li"
+    },
+    "294": {
+        "chn": "脱里",
+        "en": "tuo li"
+    },
+    "295": {
+        "chn": "按摊脱脱里",
+        "en": "an tan tuo tuo li"
+    },
+    "296": {
+        "chn": "脱脱里台",
+        "en": "tuo tuo li tai"
+    },
+    "297": {
+        "chn": "揑古思",
+        "en": "nie gu si"
+    },
+    "298": {
+        "chn": "揑古台",
+        "en": "nie gu tai"
+    },
+    "299": {
+        "chn": "揑古䚟",
+        "en": "nie gu dai"
+    },
+    "300": {
+        "chn": "斡剌纳儿",
+        "en": "wo la na er"
+    },
+    "301": {
+        "chn": "斡罗纳儿",
+        "en": "wo luo na er"
+    },
+    "302": {
+        "chn": "斡耳那",
+        "en": "wo er na"
+    },
+    "303": {
+        "chn": "斡鲁纳台",
+        "en": "wo lu na tai"
+    },
+    "304": {
+        "chn": "斡勒忽讷",
+        "en": "wo le hu na"
+    },
+    "305": {
+        "chn": "斡帖格歹",
+        "en": "wo tie ge dai"
+    },
+    "306": {
+        "chn": "晃合丹",
+        "en": "huang he dan"
+    },
+    "307": {
+        "chn": "晃豁坛",
+        "en": "huang huo tan"
+    },
+    "308": {
+        "chn": "札只剌",
+        "en": "zha zhi la"
+    },
+    "309": {
+        "chn": "札只剌歹",
+        "en": "zha zhi la dai"
+    },
+    "310": {
+        "chn": "术温台",
+        "en": "zhu wen tai"
+    },
+    "311": {
+        "chn": "只温台",
+        "en": "zhi wen tai"
+    },
+    "312": {
+        "chn": "束吕𫄙",
+        "en": "shu lv jiu"
+    },
+    "313": {
+        "chn": "格泥格里",
+        "en": "ge ni ge li"
+    },
+    "314": {
+        "chn": "蔑儿乞",
+        "en": "mie er qi"
+    },
+    "315": {
+        "chn": "蔑里吉",
+        "en": "mie li ji"
+    },
+    "316": {
+        "chn": "默而吉台",
+        "en": "mo er ji tai"
+    },
+    "317": {
+        "chn": "蔑儿吉歹",
+        "en": "mie er ji dai"
+    },
+    "318": {
+        "chn": "蔑儿吉䚟",
+        "en": "mie er ji dai"
+    },
+    "319": {
+        "chn": "灭里乞台",
+        "en": "mie li qi tai"
+    },
+    "320": {
+        "chn": "火鲁剌",
+        "en": "huo lu la"
+    },
+    "321": {
+        "chn": "豁罗剌思",
+        "en": "huo luo la si"
+    },
+    "322": {
+        "chn": "珊竹",
+        "en": "shan zhu"
+    },
+    "323": {
+        "chn": "塔塔儿",
+        "en": "ta ta er"
+    },
+    "324": {
+        "chn": "塔塔",
+        "en": "ta ta"
+    },
+    "325": {
+        "chn": "答答",
+        "en": "da da"
+    },
+    "326": {
+        "chn": "达达儿",
+        "en": "da da er"
+    },
+    "327": {
+        "chn": "答答带",
+        "en": "da da dai"
+    },
+    "328": {
+        "chn": "答答里带",
+        "en": "da da li dai"
+    },
+    "329": {
+        "chn": "斡亦剌",
+        "en": "wo yi la"
+    },
+    "330": {
+        "chn": "卫拉特",
+        "en": "wei la te"
+    },
+    "331": {
+        "chn": "许兀愼",
+        "en": "xu wu shen"
+    },
+    "332": {
+        "chn": "逊都思",
+        "en": "xun dou si"
+    },
+    "333": {
+        "chn": "那牙兀",
+        "en": "na ya wu"
+    },
+    "334": {
+        "chn": "阿鲁剌",
+        "en": "a lu la"
+    },
+    "335": {
+        "chn": "阿儿剌",
+        "en": "a er la"
+    },
+    "336": {
+        "chn": "雪泥惕",
+        "en": "xue ni ti"
+    },
+    "337": {
+        "chn": "塔儿忽惕",
+        "en": "ta er hu ti"
+    },
+    "338": {
+        "chn": "按赤歹",
+        "en": "an chi dai"
+    },
+    "339": {
+        "chn": "兀速儿吉",
+        "en": "wu su er ji"
+    },
+    "340": {
+        "chn": "女真完颜",
+        "en": "nv zhen wan yan"
+    },
+    "341": {
+        "chn": "女真抹撚",
+        "en": "nv zhen mo nian"
+    },
+    "342": {
+        "chn": "女真蒲察",
+        "en": "nv zhen pu cha"
+    },
+    "343": {
+        "chn": "乌茶",
+        "en": "wu cha"
+    },
+    "344": {
+        "chn": "乌伏那",
+        "en": "wu fu na"
+    },
+    "345": {
+        "chn": "乌苌",
+        "en": "wu chang"
+    },
+    "346": {
+        "chn": "安",
+        "en": "an"
+    },
+    "347": {
+        "chn": "那揭",
+        "en": "na jie"
+    },
+    "348": {
+        "chn": "布豁",
+        "en": "bu huo"
+    },
+    "349": {
+        "chn": "捕喝",
+        "en": "bu he"
+    },
+    "350": {
+        "chn": "忸蜜",
+        "en": "niu mi"
+    },
+    "351": {
+        "chn": "东安",
+        "en": "dong an"
+    },
+    "352": {
+        "chn": "喝汗",
+        "en": "he han"
+    },
+    "353": {
+        "chn": "东曹",
+        "en": "dong cao"
+    },
+    "354": {
+        "chn": "率都沙那",
+        "en": "lv dou sha na"
+    },
+    "355": {
+        "chn": "苏对沙那",
+        "en": "su dui sha na"
+    },
+    "356": {
+        "chn": "劫布呾那",
+        "en": "jie bu ya na"
+    },
+    "357": {
+        "chn": "苏都识匿",
+        "en": "su dou shi ni"
+    },
+    "358": {
+        "chn": "西曹",
+        "en": "xi cao"
+    },
+    "359": {
+        "chn": "曹",
+        "en": "cao"
+    },
+    "360": {
+        "chn": "中曹",
+        "en": "zhong cao"
+    },
+    "361": {
+        "chn": "石",
+        "en": "shi"
+    },
+    "362": {
+        "chn": "柘支",
+        "en": "zhe zhi"
+    },
+    "363": {
+        "chn": "柘折",
+        "en": "zhe zhe"
+    },
+    "364": {
+        "chn": "赭时",
+        "en": "zhe shi"
+    },
+    "365": {
+        "chn": "碎叶",
+        "en": "sui ye"
+    },
+    "366": {
+        "chn": "怖捍",
+        "en": "bu han"
+    },
+    "367": {
+        "chn": "米",
+        "en": "mi"
+    },
+    "368": {
+        "chn": "弥末",
+        "en": "mi mo"
+    },
+    "369": {
+        "chn": "弭秣贺",
+        "en": "mi mo he"
+    },
+    "370": {
+        "chn": "何",
+        "en": "he"
+    },
+    "371": {
+        "chn": "屈霜你迦",
+        "en": "qu shuang ni jia"
+    },
+    "372": {
+        "chn": "贵霜匿",
+        "en": "gui shuang ni"
+    },
+    "373": {
+        "chn": "火寻",
+        "en": "huo xun"
+    },
+    "374": {
+        "chn": "货利习弥",
+        "en": "huo li xi mi"
+    },
+    "375": {
+        "chn": "过利",
+        "en": "guo li"
+    },
+    "376": {
+        "chn": "史",
+        "en": "shi"
+    },
+    "377": {
+        "chn": "佉沙",
+        "en": "qu sha"
+    },
+    "378": {
+        "chn": "羯霜那",
+        "en": "jie shuang na"
+    },
+    "379": {
+        "chn": "那色波",
+        "en": "na se bo"
+    },
+    "380": {
+        "chn": "小史",
+        "en": "xiao shi"
+    },
+    "381": {
+        "chn": "小勃律",
+        "en": "xiao bo lv"
+    },
+    "382": {
+        "chn": "哥罗",
+        "en": "ge luo"
+    },
+    "383": {
+        "chn": "个罗",
+        "en": "ge luo"
+    },
+    "384": {
+        "chn": "哥罗富沙罗",
+        "en": "ge luo fu sha luo"
+    },
+    "385": {
+        "chn": "拘蒌蜜",
+        "en": "ju lou mi"
+    },
+    "386": {
+        "chn": "松外蛮",
+        "en": "song wai man"
+    },
+    "387": {
+        "chn": "附国",
+        "en": "fu guo"
+    },
+    "388": {
+        "chn": "三濮",
+        "en": "san pu"
+    },
+    "389": {
+        "chn": "徽州蛮",
+        "en": "hui zhou man"
+    },
+    "390": {
+        "chn": "甲峒蛮",
+        "en": "jia dong man"
+    },
+    "391": {
+        "chn": "白族",
+        "en": "bai zu"
+    },
+    "392": {
+        "chn": "高句骊",
+        "en": "gao gou li"
+    },
+    "393": {
+        "chn": "肃良合",
+        "en": "su liang he"
+    },
+    "394": {
+        "chn": "肃良合台",
+        "en": "su liang he tai"
+    },
+    "395": {
+        "chn": "哈剌乞丹",
+        "en": "ha la qi dan"
+    },
+    "396": {
+        "chn": "哈剌乞",
+        "en": "ha la qi"
+    },
+    "397": {
+        "chn": "色目人",
+        "en": "se mu ren"
+    },
+    "398": {
+        "chn": "色目",
+        "en": "se mu"
+    },
+    "399": {
+        "chn": "木速蛮",
+        "en": "mu su man"
+    },
+    "400": {
+        "chn": "木速鲁蛮",
+        "en": "mu su lu man"
+    },
+    "401": {
+        "chn": "不花剌",
+        "en": "bu hua la"
+    },
+    "402": {
+        "chn": "乃蛮",
+        "en": "nai man"
+    },
+    "403": {
+        "chn": "乃马真",
+        "en": "nai ma zhen"
+    },
+    "404": {
+        "chn": "达鲁乃蛮",
+        "en": "da lu nai man"
+    },
+    "405": {
+        "chn": "也里可温",
+        "en": "ye li ke wen"
+    },
+    "406": {
+        "chn": "伽乃",
+        "en": "ga nai"
+    },
+    "407": {
+        "chn": "匣剌鲁",
+        "en": "xia la lu"
+    },
+    "408": {
+        "chn": "哈剌鲁",
+        "en": "ha la lu"
+    },
+    "409": {
+        "chn": "哈儿鲁",
+        "en": "ha er lu"
+    },
+    "410": {
+        "chn": "合鲁",
+        "en": "he lu"
+    },
+    "411": {
+        "chn": "哈鲁",
+        "en": "ha lu"
+    },
+    "412": {
+        "chn": "哈鲁台",
+        "en": "ha lu tai"
+    },
+    "413": {
+        "chn": "罕禄鲁",
+        "en": "han lu lu"
+    },
+    "414": {
+        "chn": "康里",
+        "en": "kang li"
+    },
+    "415": {
+        "chn": "斡罗台",
+        "en": "wo luo tai"
+    },
+    "416": {
+        "chn": "斡罗白",
+        "en": "wo luo bai"
+    },
+    "417": {
+        "chn": "钦察",
+        "en": "qin cha"
+    },
+    "418": {
+        "chn": "汪古",
+        "en": "wang gu"
+    },
+    "419": {
+        "chn": "珠笏",
+        "en": "zhu hu"
+    },
+    "420": {
+        "chn": "甘木里",
+        "en": "gan mu li"
+    },
+    "421": {
+        "chn": "甘木鲁",
+        "en": "gan mu lu"
+    },
+    "422": {
+        "chn": "答失蛮",
+        "en": "da shi man"
+    },
+    "423": {
+        "chn": "答失蛮人",
+        "en": "da shi man ren"
+    },
+    "424": {
+        "chn": "薛亦",
+        "en": "xue yi"
+    },
+    "425": {
+        "chn": "赛亦",
+        "en": "sai yi"
+    },
+    "426": {
+        "chn": "赛夷",
+        "en": "sai yi"
+    },
+    "427": {
+        "chn": "迦叶弥儿",
+        "en": "she ye mi er"
+    },
+    "428": {
+        "chn": "阿儿鲁",
+        "en": "a er lu"
+    },
+    "429": {
+        "chn": "阿速",
+        "en": "a su"
+    },
+    "430": {
+        "chn": "雍古",
+        "en": "yong gu"
+    },
+    "431": {
+        "chn": "雍古部",
+        "en": "yong gu bu"
+    },
+    "432": {
+        "chn": "哈儿柳温台",
+        "en": "ha er liu wen tai"
+    },
+    "433": {
+        "chn": "阿儿温",
+        "en": "a er wen"
+    },
+    "434": {
+        "chn": "阿剌浑",
+        "en": "a la hun"
+    },
+    "435": {
+        "chn": "阿剌温",
+        "en": "a la wen"
+    },
+    "436": {
+        "chn": "阿里温",
+        "en": "a li wen"
+    },
+    "437": {
+        "chn": "阿鲁浑",
+        "en": "a lu hun"
+    },
+    "438": {
+        "chn": "阿鲁温",
+        "en": "a lu wen"
+    },
+    "439": {
+        "chn": "阿鲁",
+        "en": "a lu"
+    },
+    "440": {
+        "chn": "合鲁温",
+        "en": "he lu wen"
+    },
+    "441": {
+        "chn": "大温歹",
+        "en": "da wen dai"
+    },
+    "442": {
+        "chn": "察剌温",
+        "en": "cha la wen"
+    },
+    "443": {
+        "chn": "彻亢台",
+        "en": "che kang tai"
+    },
+    "444": {
+        "chn": "彻兀台",
+        "en": "che wu tai"
+    },
+    "445": {
+        "chn": "彻兀台",
+        "en": "che wu tai"
+    },
+    "446": {
+        "chn": "泰赤兀特",
+        "en": "tai chi wu te"
+    },
+    "447": {
+        "chn": "泰兀特",
+        "en": "tai wu te"
+    },
+    "448": {
+        "chn": "燕只吉台",
+        "en": "yan zhi ji tai"
+    },
+    "449": {
+        "chn": "燕只吉歹",
+        "en": "yan zhi ji dai"
+    },
+    "450": {
+        "chn": "燕只吉䚟",
+        "en": "yan zhi ji dai"
+    },
+    "451": {
+        "chn": "朶儿别",
+        "en": "duo er bie"
+    },
+    "452": {
+        "chn": "朶儿别台",
+        "en": "duo er bie tai"
+    },
+    "453": {
+        "chn": "朶里别歹",
+        "en": "duo li bie dai"
+    },
+    "454": {
+        "chn": "秃立不带",
+        "en": "tu li bu dai"
+    },
+    "455": {
+        "chn": "秃立不带",
+        "en": "tu li bu dai"
+    },
+    "456": {
+        "chn": "答立迷里",
+        "en": "da li mi li"
+    },
+    "457": {
+        "chn": "肃慎",
+        "en": "su shen"
+    },
+    "458": {
+        "chn": "速剌歹",
+        "en": "su la dai"
+    },
+    "459": {
+        "chn": "速要歹",
+        "en": "su yao dai"
+    },
+    "460": {
+        "chn": "阿剌兀义",
+        "en": "a la wu yi"
+    },
+    "461": {
+        "chn": "雅乐威",
+        "en": "ya yue wei"
+    },
+    "462": {
+        "chn": "斡兀立",
+        "en": "wo wu li"
+    },
+    "463": {
+        "chn": "昔里",
+        "en": "xi li"
+    },
+    "464": {
+        "chn": "术真",
+        "en": "zhu zhen"
+    },
+    "465": {
+        "chn": "赛典赤",
+        "en": "sai dian chi"
+    },
+    "466": {
+        "chn": "达里伯",
+        "en": "da li bo"
+    },
+    "467": {
+        "chn": "大食",
+        "en": "da shi"
+    },
+    "468": {
+        "chn": "三韩",
+        "en": "san han"
+    },
+    "469": {
+        "chn": "鲜卑",
+        "en": "xian bei"
+    },
+    "470": {
+        "chn": "慕容部鲜卑",
+        "en": "mu rong bu xian bei"
+    },
+    "471": {
+        "chn": "宇文部鲜卑",
+        "en": "yu wen bu xian bei"
+    },
+    "472": {
+        "chn": "段部鲜卑",
+        "en": "duan bu xian bei"
+    },
+    "473": {
+        "chn": "秃髪部鲜卑",
+        "en": "tu fa bu xian bei"
+    },
+    "474": {
+        "chn": "乞伏部鲜卑",
+        "en": "qi fu bu xian bei"
+    },
+    "475": {
+        "chn": "拓跋部鲜卑",
+        "en": "tuo ba bu xian bei"
+    },
+    "476": {
+        "chn": "慕容",
+        "en": "mu rong"
+    },
+    "477": {
+        "chn": "宇文",
+        "en": "yu wen"
+    },
+    "478": {
+        "chn": "段部",
+        "en": "duan bu"
+    },
+    "479": {
+        "chn": "秃发",
+        "en": "tu fa"
+    },
+    "480": {
+        "chn": "乞伏",
+        "en": "qi fu"
+    },
+    "481": {
+        "chn": "昌黎鲜卑",
+        "en": "chang li xian bei"
+    },
+    "482": {
+        "chn": "旦加落鲜卑",
+        "en": "dan jia luo xian bei"
+    },
+    "483": {
+        "chn": "河南氏拓拔",
+        "en": "he nan shi tuo ba"
+    },
+    "484": {
+        "chn": "西戎",
+        "en": "xi rong"
+    },
+    "485": {
+        "chn": "大夏月氏",
+        "en": "da xia rou zhi"
+    },
+    "486": {
+        "chn": "康国",
+        "en": "kang guo"
+    },
+    "487": {
+        "chn": "曲氏高昌",
+        "en": "qu shi gao chang"
+    },
+    "488": {
+        "chn": "石国",
+        "en": "shi guo"
+    },
+    "489": {
+        "chn": "安国",
+        "en": "an guo"
+    },
+    "490": {
+        "chn": "曹国",
+        "en": "cao guo"
+    },
+    "491": {
+        "chn": "何国",
+        "en": "he guo"
+    },
+    "492": {
+        "chn": "米国",
+        "en": "mi guo"
+    },
+    "493": {
+        "chn": "燖国",
+        "en": "xun"
+    },
+    "494": {
+        "chn": "史国",
+        "en": "shi guo"
+    },
+    "495": {
+        "chn": "戊地",
+        "en": "wu di"
+    },
+    "496": {
+        "chn": "昭武九姓",
+        "en": "zhao wu jiu xing"
+    },
+    "497": {
+        "chn": "粟特",
+        "en": "su te"
+    }
+}

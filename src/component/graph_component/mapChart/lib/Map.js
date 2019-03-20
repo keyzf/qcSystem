@@ -110,7 +110,7 @@ class Map extends React.Component {
     let {width,height}= this.props;
     let {selected_people} = this.state;
     this.colors.domain([0,selected_people.length]);
-    console.log(selected_people)
+    // console.log(selected_people)
     return (
       <div className='geomap'>
         <svg width={width} height={height}>
