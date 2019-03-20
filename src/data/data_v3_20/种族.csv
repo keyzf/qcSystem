@@ -1,0 +1,497 @@
+0,0,0,0,未詳,unknown,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,1
+1,1,1,1,漢,Han,,,,,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,2
+3,2,1,1,吐蕃,tu fan,,,,本西羌屬，蓋百有五十種（新唐書）；本漢西羌之地，或云南涼禿髮利鹿孤之後，其子孫以禿髮為國號，語訛為吐蕃（舊五代史）；本漢西羌之地，其種落莫知所出．或云南涼禿髮利鹿孤之後，其子孫以禿髮為國號，語訛故謂之吐蕃（宋史）,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,3
+4,4,1,1,突厥,tu jue,,Turk,,突厥阿史那氏，蓋古匈奴北部也．居金山之陽，臣于蠕蠕，種裔繁衍．至吐門，遂彊大{A14B}{A14B}隋大業之亂，始畢可汗咄吉嗣立，華人多往依之，契丹、室韋、吐谷渾、高昌皆役屬（新唐書）,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,34
+5,5,1,1,契丹,qi dan,,Kitan,,"""本東胡種，其先為匈奴所破，保鮮卑山．{A14B}{A14B}逃潢水之南，黃龍之北．至元魏，自號曰契丹{A14B}{A14B}其君大賀氏，有勝兵四萬，析八部，臣于突厥（新唐書）；古匈奴之種也（舊五代史）；契丹自後魏以來，名見中國．或曰與庫莫奚同類而異種{A14B}{A14B}得鮮卑之故地，故又以為鮮卑之遺種{A14B}{A14B}後分為八部，其一曰伹皆利部，二曰乙室活部，三曰實活部，四曰納尾部，五曰頻沒部，六曰內會雞部，七曰集解部，八曰奚嗢部（新五代史），四庫本作後分為八部，其一曰達爾扎部，二曰伊斯琿部，三曰舎琿部，四曰諾爾威部，五曰頗摩部，六曰納古齊部，七曰濟勒勤部，八曰實衮部. C. Atwood note:Kitan (this is conventional Chinese transcription dating from the Tang, for what in Mongolian is usually Kitad)""",TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,36
+6,3,1,1,廻紇,hui he,,Uyghur,,Ethnicity code 3;其先匈奴之裔也，在後魏時，號鐵勒部落．其微小，其俗驍強，依託高車，臣屬突厥，近謂之特勒（舊唐書）；其先匈奴也，俗多乘高輪車，元魏時亦號高車部，或曰敕勒，訛為鐵勒．其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）；其先匈奴之種也．後魏時，號為鐵勒，亦名回紇．唐元和四年，本國可汗遣使上言，改為回鶻，義取迴旋搏擊，如鶻之迅捷也（舊五代史）；本匈奴之別裔，在天德西北娑陵水上．後魏號鐵勒，唐初號特勒，後稱回紇（宋史）,,,,,,,,,,,5
+7,3,1,2,回鶻,hui he,,Uyghur,,Ethnicity code 3;其先匈奴之裔也，在後魏時，號鐵勒部落．其微小，其俗驍強，依託高車，臣屬突厥，近謂之特勒（舊唐書）；其先匈奴也，俗多乘高輪車，元魏時亦號高車部，或曰敕勒，訛為鐵勒．其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）；其先匈奴之種也．後魏時，號為鐵勒，亦名回紇．唐元和四年，本國可汗遣使上言，改為回鶻，義取迴旋搏擊，如鶻之迅捷也（舊五代史）；本匈奴之別裔，在天德西北娑陵水上．後魏號鐵勒，唐初號特勒，後稱回紇（宋史）,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,6
+8,3,1,3,回回,hui hui,,Uyghur,,"""C. Atwood note:Huihui and Huihe are in the process of evolution from """"Uyghur"""" to """"Turkestani"""" to """"Muslim"""" in the Yuan; it's hard to tell in any one instance what is meant. """,,,,,,,,,,,7
+9,9,1,1,渤海,bo hai,,,,"Ethnicity code 9;""本粟末靺鞨附高麗者，姓大氏（新唐書）；渤海，本號靺鞨，高麗之別種也（新五代史）；渤海本高麗之別種．唐高宗平高麗，徙其人居中國．則天萬歲通天中，契丹攻陷營府，高麗別種大祚榮走保遼東，睿宗以為忽汗州都督，封渤海郡王，因自稱渤海國，併有扶餘、肅慎等十餘國（宋史; In Yuan: C. Atwood note:Probably remnant of the Bohai people of eastern Manchuria, conquered by the Kitan Liao and deported through the empire; ethno-legal status Han.""",TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,47
+10,170,3,1,高麗,gao li,,Koryo,,C. Atwood note:Korean,,,,,,,,,,,388
+11,3,1,4,囘囘,hui hui,,Uyghur,,"""C. Atwood note:Huihui and Huihe are in the process of evolution from """"Uyghur"""" to """"Turkestani"""" to """"Muslim"""" in the Yuan; it's hard to tell in any one instance what is meant. """,,,,,,,,,,,8
+12,3,1,5,囘紇,hui he,,Uyghur,,"""C. Atwood note:Huihui and Huihe are in the process of evolution from """"Uyghur"""" to """"Turkestani"""" to """"Muslim"""" in the Yuan; it's hard to tell in any one instance what is meant. """,,,,,,,,,,,9
+13,13,1,1,日本,ri ben,,Nihon,,[舊唐書中倭國與日本國分列兩條，兩者之間關係有三說]；日本，古倭奴也（新唐書）；日本國者，本倭奴國也．自以其國近日所出，故以日本為名；或云惡其舊名改之也（宋史）；日本國在東海之東，古稱倭奴國，或云惡其舊名，故改名日本，以其國近日所出也（元史）,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,52
+14,3,2,1,薛延陀,xue yan tuo,,,,其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）,,,,,,,,,,,10
+15,3,2,2,拔野古,ba ye gu,,,,其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）,,,,,,,,,,,11
+16,3,2,3,僕骨,pu gu,,,,其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）,,,,,,,,,,,12
+17,3,2,4,同羅,tong luo,,,,其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）,,,,,,,,,,,13
+18,3,2,5,白霫,bai xi,,,,其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）,,,,,,,,,,,14
+19,3,2,6,斛薛,hu xue,,,,其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）,,,,,,,,,,,15
+20,3,3,1,西州回鶻,xi zhou hui he,,,,Ethnicity code 21;本回鶻別種{A14B}{A14B}或稱西州回鶻，或稱西州龜茲，又稱龜茲回鶻（宋史）,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,16
+21,3,3,2,龜茲,qiu ci,,,,Ethnicity code 21;本回鶻別種{A14B}{A14B}或稱西州回鶻，或稱西州龜茲，又稱龜茲回鶻（宋史）,,,,,,,,,,,17
+22,3,3,3,丘茲,qiu ci,,,,,,,,,,,,,,,18
+23,3,3,4,屈茲,qu ci,,,,,,,,,,,,,,,19
+24,3,3,5,西州龜茲,xi zhou qiu ci,,,,本回鶻別種{A14B}{A14B}或稱西州回鶻，或稱西州龜茲，又稱龜茲回鶻（宋史）,,,,,,,,,,,20
+25,3,5,1,畏兀,wei wu,Semuren,Uyi'ur,,C. Atwood note:Uyi'ur (plural Uyi'ud; i.e. Uyghur); ethno-legal category Semuren,,,,,,,,,,,21
+26,3,5,2,畏兀兒,wei wu er,Semuren,Uyi'ur,,C. Atwood note:Uyi'ur (i.e. Uyghur); ethno-legal category Semuren,,,,,,,,,,,22
+27,3,5,3,畏吾,wei wu,Semuren,Uyi'ur,,C. Atwood note:Uyi'ur (plural Uyi'ud; i.e. Uyghur); ethno-legal category Semuren,,,,,,,,,,,23
+28,3,5,4,畏吾兒,wei wu er,Semuren,Uyi'ur,,C. Atwood note:Uyi'ur (i.e. Uyghur); ethno-legal category Semuren,,,,,,,,,,,24
+29,3,6,1,高車,gao ju,,,,Ethnicity code 3;其先匈奴之裔也，在後魏時，號鐵勒部落．其#微小，其俗驍強，依託高車，臣屬突厥，近謂之特勒（舊唐書）；其先匈奴也，俗多乘高輪車，元魏時亦號高車部，或曰敕勒，訛為鐵勒．其部落曰袁紇、薛延陀、契苾羽、都播、骨利幹、多覽葛、僕骨、拔野古、同羅、渾、思結、斛薛、奚結、阿跌、白霫，凡十有五種，皆散處磧北（新唐書）；其先匈奴之種也．後魏時，號為鐵勒，亦名回紇．唐元和四年，本國可汗遣使上言，改為回鶻，義取迴旋搏擊，如鶻之迅捷也（舊五代史）；本匈奴之別裔，在天德西北娑陵水上．後魏號鐵勒，唐初號特勒，後稱回紇（宋史）,,,,,,,,,,,25
+30,3,6,2,鐵勒,tie le,,,,Ethnicity code 3,,,,,,,,,,,26
+31,3,6,3,特勒,te le,,,,,,,,,,,,,,,27
+32,3,6,4,敕勒,chi le,,,,,,,,,,,,,,,28
+33,3,7,1,古素魯,gu su lu,,Gusur,,"""C. Atwood note:Could be Gusur~Gusulu; from context Turkic  speaking but non-Muslim, which would mean it must be some kind of identifier in Uyghuristan; probably a place. CBDB note:  In Yuan sources identified as 回回古素魯.""",,,,,,,,,,,29
+34,3,7,2,古速魯,gu su lu,,Gusur,,"""C. Atwood note:Could be Gusur~Gusulu; from context Turkic  speaking but non-Muslim, which would mean it must be some kind of identifier in Uyghuristan; probably a place. CBDB note:  In Yuan sources identified as 回回古速魯.""",,,,,,,,,,,30
+35,3,9,1,八瓦耳,ba wa er,Semuren,Bavard,,C. Atwood note:Western (i.e. Central Asian or Middle Eastern) place name. Transcription consistent with Bavard; ethno-legal status: Semuren.,,,,,,,,,,,31
+36,3,10,1,哈密理,ha mi li,Semuren,Qamïl,,"""C. Atwood note:Qamïl, the modern Qumul or Hami. Uyghurs; ethno-legal status Semuren.""",,,,,,,,,,,32
+37,3,10,2,哈迷里,ha mi li,Semuren,Qamïl,,"""C. Atwood note:Qamïl, the modern Qumul or Hami. Uyghurs; ethno-legal status Semuren.""",,,,,,,,,,,33
+38,4,2,1,沙陀,sha tuo,,,,西突厥別部處月種也（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,35
+39,38,1,1,柔然,ruo ran,,,,,,,,,,,,,,,113
+40,38,1,2,蠕蠕,ru ru,,,,,,,,,,,,,,,114
+41,41,1,1,南詔,nan zhao,,,,Ethnicity code 41;本烏蠻之別種也，姓蒙氏（舊唐書）；本哀牢夷後，烏蠻別種也．夷語王為「詔」．其先渠帥有六，自號「六詔」，曰蒙巂詔、越析詔、浪穹詔、邆睒詔、施浪詔、蒙舍詔．兵埒，不能相君，蜀諸葛亮討定之．蒙舍詔在諸部南，故稱南詔（新唐書）；曰大雲南蠻，曰小雲南蠻，即唐南詔，今名大理國（宋史）,TRUE,TRUE,FALSE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,115
+42,5,2,1,扎赤丹,zha chi dan,Kitan,Jagchid,,"""C. Atwood note:From affiliation with person of the Shimo surname, should be a Kitan term. Perhaps Jagchidan (jagchid+dan (which is the plural of the gentilic suffix -dai).""",,,,,,,,,,,37
+43,5,3,1,室韋,shi wei,,,,契丹別種，東胡之北邊，蓋丁零苗裔也{A14B}{A14B}其語言，靺鞨也（新唐書）,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,38
+44,5,3,2,靺鞨,mo he,,,,契丹別種，東胡之北邊，蓋丁零苗裔也{A14B}{A14B}其語言，靺鞨也（新唐書）,,,,,,,,,,,39
+45,6,1,1,奚,xi,,,,奚亦東胡種，為匈奴所破，保烏丸山{A14B}{A14B}元魏時自號庫真奚，居鮮卑故地{A14B}{A14B}至隋始去「庫真」，但曰奚（新唐書）；本匈奴之別種（新五代史）,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,42
+46,5,4,1,契丹耶律,qi dan ye lv,,Kitan-Yelv,S,Kitan surname; later used as a kind of clan marker,,,,,,,,,,,40
+47,5,5,1,契丹述律氏,qi dan shu lv,,Kitan-Shulv,S,Kitan surname; later used as a kind of clan marker,,,,,,,,,,,41
+48,6,2,1,庫真奚,ku zhen xi,,,,,,,,,,,,,,,43
+49,8,1,1,黑水靺鞨,hei shui mo she,,,,黑水靺鞨居肅慎地，亦曰挹婁，元魏時曰勿吉{A14B}{A14B}離為數十部，酋各自治．其著者曰粟末部亦曰徒太山{A14B}{A14B}；稍東北曰汨咄部；又次曰安居骨部；益東曰拂湼部；居骨之西北曰黑水部；粟末之東曰白山部（新唐書）；本號勿吉（新五代史）,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,44
+50,8,2,1,挹婁,yi lou,,,,,,,,,,,,,,,45
+51,18,1,1,高昌,gao chang,,Qocho,,"""漢車師前王廷也（新唐書）；漢車師前王之地（宋史);C. Atwood note:Gaochang (Uyghur and Mongolian: Qocho, which is actually just a rendering of the Chang'an Tang pronunciation)""",TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,59
+52,19,1,1,吐谷渾,tu yu hun,,,,本號吐谷渾，或曰乞伏乾歸之苗裔．自後魏以來，名見中國（新五代史）,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,61
+53,8,3,1,勿吉,wu ji,,,,,,,,,,,,,,,46
+54,9,2,1,渤海靺鞨,bo hai mo she,,,,Ethnicity code 9,,,,,,,,,,,48
+55,11,1,1,扶餘,fu yu,,,,,,,,,,,,,,,49
+56,11,2,1,百濟,bai ji,,,,本亦扶餘之別種，嘗為馬韓故地（舊唐書）；扶餘別種也（新唐書）,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,50
+57,12,1,1,新羅,xin luo,,Silla,,本弁韓之苗裔也．其國在漢時樂浪之地（舊唐書）；弁韓苗裔也．居漢樂浪地（新唐書）；弁韓之遺種也（新五代史）,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,51
+58,14,1,1,流鬼,liu gui,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,53
+59,15,1,1,泥婆羅,ni po luo,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,54
+60,16,1,1,党項,dang xiang,,,,漢西羌之別種也（舊唐書）；漢西羌別種（新唐書）；西羌之遺種（新五代史）；古析支之地，漢西羌之別種（宋史）,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,55
+61,16,2,1,党項羌,dang xiang qiang,,,,,,,,,,,,,,,56
+62,17,1,1,東女,dong nv,,,,西羌之別種，以西海中復有女國，故稱東女焉（舊唐書）；亦曰蘇伐剌拏瞿咀羅，羌別種也，西海亦有女自王，故稱「東」別之（新唐書）,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,57
+63,17,2,1,蘇伐剌拏瞿咀羅,su fa la na qu ju luo,,,,,,,,,,,,,,,58
+64,19,2,1,吐渾,tu hun,,,,,,,,,,,,,,,62
+65,20,1,1,焉耆,yan qi,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,63
+66,21,1,1,跋祿迦,ba lu jia,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,64
+67,67,1,1,交阯,jiao zhi,,,,Ethnicity code 67;本漢初南越之地（宋史）；安南國，古交趾也（元史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,164
+68,21,2,1,亟墨,ji mo,,,,亟墨（即漢姑墨國）,,,,,,,,,,,65
+69,22,1,1,疏勒,shu le,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,66
+70,23,1,1,于闐,yu tian,,,,,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,67
+71,23,2,1,瞿薩旦那,qu sa dan na,,,,,,,,,,,,,,,68
+72,23,3,1,渙那,huan na,,,,,,,,,,,,,,,69
+73,23,4,1,屈丹,qu dan,,,,,,,,,,,,,,,70
+74,24,1,1,天竺,tian zhu,,,,Ethnicity code 25;分東、西、南、北、中五天竺{A14B}{A14B}有別城數百，皆置長，別國數十（新唐書);身毒（漢）,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,71
+75,24,2,1,身毒,shen du,,,,Ethnicity code 25;,,,,,,,,,,,72
+76,24,3,1,摩伽陀,mo qie tuo,,,,,,,,,,,,,,,73
+77,24,4,1,婆羅門,po luo men,,,,,,,,,,,,,,,74
+78,25,1,1,摩揭陀,mo jie tuo,,,,本中天竺屬國（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,75
+79,25,2,1,摩揭它,mo jie ta,,,,,,,,,,,,,,,76
+80,25,3,1,摩伽陀,mo qie tuo,,,,,,,,,,,,,,,77
+81,81,1,1,西南溪峒諸蠻,xi nan xi dong zhu man,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,177
+82,26,1,1,罽賓,ji bin,,,,漕國（隋）,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,78
+83,26,2,1,漕國,cao guo,,,,,,,,,,,,,,,79
+84,192,2,2,康,kang,,,,康居（漢）；薩末鞬、颯秣建，悉萬斤（元魏）,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,483
+85,27,2,1,康居,kang ju,,,,,,,,,,,,,,,80
+86,27,3,1,薩末鞬,sa mo jian,,,,,,,,,,,,,,,81
+87,87,1,1,黎洞,li dong,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,183
+88,27,3,2,颯秣建,sa mo jian,,,,,,,,,,,,,,,82
+89,27,4,1,悉萬斤,xi wan jin,,,,,,,,,,,,,,,83
+90,90,1,1,黎州諸蠻,li zhou zhu man,,,,黎州諸蠻，凡十二種：曰山後兩林蠻，在州南七日程；曰邛部川蠻[一五]，在州東南十二程；曰風琶蠻，在州西南一千一百里；曰保塞蠻，在州西南三百里；曰三王蠻，亦曰部落蠻，在州西百里；曰西箐蠻，有彌羌部落，在州西三百里；曰淨浪蠻，在州南一百五十里；曰白蠻，在州東南一百里；曰烏蒙蠻，在州東南千里；曰阿宗蠻，在州西南二日程．凡風琶、兩林、邛部皆謂之東蠻，其餘小蠻各分隸焉．邛部於諸蠻中最驕悍狡譎，招集蕃漢亡命，侵攘他種，閉其道以專利．曰大雲南蠻，曰小雲南蠻，即唐南詔，今名大理國（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,186
+91,28,1,1,寧遠,ning yuan,,,,破洛那（元魏,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,84
+92,28,2,1,拔汗那,ba han na,,,,,,,,,,,,,,,85
+93,28,3,1,鏺汗,po han,,,,,,,,,,,,,,,86
+94,28,4,1,破洛那,po luo na,,,,,,,,,,,,,,,87
+95,29,1,1,大勃律,da bo lv,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,88
+96,29,1,2,吐火羅,tu huo luo,,,,吐呼羅(元魏）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,89
+97,29,1,3,土豁羅,tu huo luo,,,,,,,,,,,,,,,90
+98,29,1,4,覩貨邏,du huo luo,,,,,,,,,,,,,,,91
+99,29,1,5,吐呼羅,tu hu luo,,,,,,,,,,,,,,,92
+100,29,2,1,布露,bu lu,,,,,,,,,,,,,,,94
+101,30,1,1,謝䫻,xie yu,,,,顯慶時謂訶達羅支，武后改今號（新唐書）訶達羅支（唐顯慶）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,95
+102,30,2,1,漕矩,cao ju,,,,,,,,,,,,,,,96
+103,30,2,2,漕矩吒,cao ju zha,,,,,,,,,,,,,,,97
+104,30,3,1,訶達羅支,he da luo zhi,,,,,,,,,,,,,,,98
+105,31,1,1,識匿,shi ni,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,99
+106,31,1,2,瑟匿,se ni,,,,,,,,,,,,,,,100
+107,31,1,3,尸棄尼,shi qi ni,,,,,,,,,,,,,,,101
+108,32,1,1,箇失密,ge shi mi,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,102
+109,109,1,1,渝州蠻,yu zhou man,,,,古板楯七姓蠻、唐南平獠（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,219
+110,32,1,2,迦濕彌邏,jia shi mi luo,,,,,,,,,,,,,,,103
+111,33,1,1,骨咄,gu duo,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,104
+112,33,1,2,珂咄羅,ke duo luo,,,,,,,,,,,,,,,105
+113,34,1,1,蘇毗,su pi,,,,本西羌族，為吐蕃所併，號孫波，在諸部最大（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,106
+114,35,1,1,師子,shi zi,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,107
+115,36,1,1,波斯,bo si,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,108
+116,37,1,1,拂菻,fu lin,,,,Ethnicity code 39,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,110
+117,37,2,1,大秦,da qin,,,,Ethnicity code 39,,,,,,,,,,,111
+118,37,3,1,海西國,hai xi guo,,,,,,,,,,,,,,,112
+119,41,2,1,大理,da li,,,,Ethnicity code 41;曰大雲南蠻，曰小雲南蠻，即唐南詔，今名大理國（宋史）,,,,,,,,,,,116
+120,41,3,1,鶴拓,he tuo,,,,,,,,,,,,,,,117
+121,41,4,1,龍尾,long wei,,,,,,,,,,,,,,,118
+122,41,5,1,苴咩,ju mie,,,,,,,,,,,,,,,119
+123,41,6,1,陽劍,yang jian,,,,,,,,,,,,,,,120
+124,42,1,1,蒙巂詔,meng xi zhao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,121
+125,43,1,1,越析詔,yue xi zhao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,122
+126,44,1,1,浪穹詔,lang qiong zhao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,123
+127,45,1,1,邆睒詔,teng shan zhao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,124
+128,46,1,1,施浪詔,shi lang zhao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,125
+129,47,1,1,環王,huan wang,,,,本林邑也（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,126
+130,47,2,1,占不勞,zhan bu lao,,,,,,,,,,,,,,,127
+131,131,1,1,蒙古,meng gu,,Mongol,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,243
+132,132,1,1,女真,nv zhen,,Jurchen,,,,,,,,,,,,,338
+133,47,2,2,占婆,zhan po,,,,,,,,,,,,,,,128
+134,48,1,1,盤盤,pan pan,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,129
+135,49,1,1,扶南,fu nan,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,130
+136,50,1,1,真臘,zhen la,,,,Ethnicity code 50;真臘國，在林邑西北，本扶南之屬國，「崑崙」之類（舊唐書）；，本扶南屬國（新唐書）,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,131
+137,50,1,2,占臘,zhan la,,,,Ethnicity code 50,,,,,,,,,,,132
+138,51,1,1,訶陵,he ling,,,,Ethnicity code 51,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,133
+139,51,2,1,社婆,she po,,,,,,,,,,,,,,,134
+140,51,2,2,闍婆,she po,,,,Ethnicity code 51,,,,,,,,,,,135
+141,52,1,1,投和,tou he,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,136
+142,53,1,1,瞻博,zhan bo,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,137
+143,53,1,2,瞻婆,zhan po,,,,,,,,,,,,,,,138
+144,54,1,1,室利佛逝,shi li fo shi,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,139
+145,54,1,2,尸利佛誓,shi li fo shi,,,,,,,,,,,,,,,140
+146,55,1,1,名蔑,ming mie,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,141
+147,56,1,1,單單,dan dan,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,142
+148,57,1,1,驃,biao,,,,古朱波也，自號突羅朱，闍婆國人曰徒里拙。凡屬國十八{A14B}{A14B}凡鎮城九{A14B}{A14B}凡部落二百九十八（新唐書）;朱波（古）,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,143
+149,57,2,1,朱波,zhu bo,,,,,,,,,,,,,,,144
+150,57,2,2,突羅朱,tu luo zhu,,,,,,,,,,,,,,,145
+151,57,2,3,徒里拙,tu li zhuo,,,,,,,,,,,,,,,146
+152,58,1,1,兩爨蠻,liang cuan man,,,,自曲州、靖州西南昆川、曲軛、晉寧、喻獻、安寧距龍和城，通謂之西爨白蠻；自彌鹿、升麻二川，南至步頭，謂之東爨烏蠻（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,147
+153,59,1,1,南平獠,nan ping liao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,148
+154,60,1,1,西原蠻,xi yuan man,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,149
+155,62,1,1,昆明部落,kun ming bu luo,,,,,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,150
+156,62,1,2,昆明,kun ming,,,,,,,,,,,,,,,151
+157,62,1,3,昆明蠻,kun ming man,,,,,,,,,,,,,,,152
+158,62,1,4,昆彌,kun mi,,,,,,,,,,,,,,,153
+159,63,1,1,占城,zhan cheng,,,,,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,154
+160,64,1,1,牂牁蠻,zang ke man,,,,,TRUE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,155
+161,65,1,1,達靼,da da,,,,達靼，靺鞨之遺種，本在奚、契丹之東北，後為契丹所攻，而部族分散，或屬契丹，或屬渤海，別部散居陰山者，自號達靼．當唐末，以名見中國（新五代史）,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,156
+162,190,5,1,拓跋,tuo ba,,Tabgatch,,,,,,,,,,,,,471
+163,66,2,1,西夏,xi xia,,,,本魏拓跋氏後，其地則赫連國也（遼史）,FALSE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,157
+164,66,2,2,夏國,xia guo,,,,,,,,,,,,,,,158
+165,66,3,1,唐兀,tang wu,,Tangut,,"""C. Atwood note:Tangghud~Tang'ud (Mongolian and Uyghur readings, respectively of Tangut); Yuan dynasty ethno-legal category Semuren""",,,,,,,,,,,159
+166,66,4,1,吾密,wu mi,,Umi,,"""C. Atwood note:Same as 烏密.  Umi(with or without final k/q/gh, or d/t). From context a lineage or group name within the Tanguts.""",,,,,,,,,,,160
+167,66,4,2,烏密,wu mi,,Umi,,"""C. Atwood note:Same as 吾密.  Umi(with or without final k/q/gh, or d/t). From context a lineage or group name within the Tanguts.""",,,,,,,,,,,161
+168,66,5,1,河西唐兀,he xi tang wu,,Qashi Tang'ud,,C. Atwood note:Qashi Tang'ud: two ethnonyms (Qashi from Hexi) and Tang'ud (Uyghur pronunciation of Tangghud),,,,,,,,,,,162
+169,169,,,滿族,man zu,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,385
+170,170,1,1,朝鮮,chao xian,,Choson,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,386
+171,66,6,1,野蒲,ye pu,,Yepu,,C. Atwood note:From context a Tangut surname.,,,,,,,,,,,163
+172,67,2,1,安南,an nan,,,,Ethnicity code 67,,,,,,,,,,,165
+173,69,1,1,蒲甘,pu gan,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,166
+174,70,1,1,邈黎,miao li,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,167
+175,71,1,1,三佛齊,san fo qi,,,,蓋南蠻之別種（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,168
+176,73,1,1,南毗,nan pi,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,169
+177,74,1,1,勃泥,bo ni,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,170
+178,75,1,1,注輦,zhu nian,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,171
+179,76,1,1,丹眉流,dan mei liu,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,172
+180,77,1,1,層檀,ceng tan,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,173
+181,78,1,1,沙州,sha zhou,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,174
+182,79,1,1,流求國,liu qiu guo,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,175
+183,80,1,1,定安國,ding an guo,,,,本馬韓之種，為契丹所攻破，其酋帥糾合餘衆，保于西鄙，建國改元，自稱定安國（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,176
+184,82,1,1,梅山峒蠻,mei shan dong man,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,178
+185,83,1,1,誠州蠻,cheng zhou man,,,,唐溪峒州（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,179
+186,84,1,1,南丹州蠻,nan dan zhou man,,,,亦溪峒之別種也（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,180
+187,85,1,1,撫水州蠻,fu shui zhou man,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,181
+188,86,1,1,廣源州蠻,guang yuan zhou man,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,182
+189,88,1,1,環州蠻,huan zhou man,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,184
+190,89,1,1,西南諸夷,xi nan zhu yi,,,,漢牂牁郡地（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,185
+191,90,2,1,山後兩林蠻,shan hou liang lin man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,187
+192,90,3,1,邛部川蠻,qiong bu chuan man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,188
+193,90,3,2,大路蠻,da lu man,,,,,,,,,,,,,,,189
+194,90,3,3,勿鄧,wu deng,,,,,,,,,,,,,,,190
+195,90,4,1,風琶蠻,feng pa man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,191
+196,90,5,1,保塞蠻,bao sai man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,192
+197,90,6,1,三王蠻,san wang man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,193
+198,90,7,1,西箐蠻,xi qing man,,,,屬黎州諸蠻；(有)彌羌部落（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,194
+199,90,8,1,淨浪蠻,jing lang man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,195
+200,90,9,1,白蠻,bai man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,196
+201,90,10,1,烏蒙蠻,wu meng man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,197
+202,90,11,1,阿宗蠻,a zong man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,198
+203,90,12,1,大雲南蠻,da yun nan man,,,,屬黎州諸蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,199
+204,90,13,1,小雲南蠻,xiao yun nan man,,,,屬黎州諸蠻; 南詔、大理國（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,200
+205,91,1,1,西南夷部(黔州涪州徼外),xi nan yi bu ( qian zhou fu zhou jiao wai ),,,,漢牂牁郡，唐南寧州、牂牁、昆明、東謝、南謝、西趙、充州諸蠻也（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,201
+206,92,1,1,施州蠻,shi zhou man,,,,蓋唐彭水蠻也（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,202
+207,93,1,1,高州蠻,gao zhou man,,,,故夜郎也（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,203
+208,94,1,1,瀘州蠻,lu zhou man,,,,含淯水夷（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,204
+209,95,1,1,耽羅,dan luo,,,,高麗與國也（元史）,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,205
+210,96,1,1,緬國,mian guo,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,206
+211,97,1,1,暹國,xian guo,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,207
+212,98,1,1,爪哇,zhao wa,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,208
+213,99,1,1,瑠求,liu qiu,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,209
+214,100,1,1,三嶼,san yu,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,210
+215,101,1,1,馬八兒,ma ba er,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,211
+216,102,1,1,須門那,xu men na,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,212
+217,103,1,1,叙州三路蠻,xu zhou san lu man,,,,,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,213
+218,103,2,1,董蠻,dong man,,,,屬叙州三路蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,214
+219,103,3,1,石門部,shi men bu,,,,屬叙州三路蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,215
+220,103,4,1,南廣蠻,nan guang man,,,,屬叙州三路蠻,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,216
+221,107,1,1,威州蠻,wei zhou man,,,,唐保、霸二州蠻（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,217
+222,108,1,1,茂州蠻,mao zhou man,,,,含蓋、塗、靜、當、直、時、飛、宕、恭等九州蠻也（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,218
+223,109,2,1,南平獠,nan ping liao,,,,,,,,,,,,,,,220
+224,110,1,1,僧急里,seng ji li,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,221
+225,111,1,1,南無力,nan wu li,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,222
+226,112,1,1,馬蘭丹,ma lan dan,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,223
+227,113,1,1,那旺,na wang,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,224
+228,114,1,1,丁呵兒,ding he er,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,225
+229,115,1,1,來來,lai lai,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,226
+230,116,1,1,急蘭亦䚟,ji lan yi dai,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,227
+231,117,1,1,蘇木都剌,su mu dou la,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,228
+232,118,1,1,林邑,lin yi,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,229
+233,119,1,1,婆利,po li,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,230
+234,120,1,1,陀洹,tuo huan,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,231
+235,121,1,1,墮和羅,duo he luo,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,232
+236,122,1,1,墮婆登,duo po deng,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,233
+237,123,1,1,東謝蠻,dong xie man,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,234
+238,124,1,1,西趙蠻,xi zhao man,,,,,TRUE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,235
+239,125,1,1,倭國,wo guo,,,,古倭奴國也（舊唐書）,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,236
+240,126,1,1,鐵勒,tie le,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,237
+241,127,1,1,靺鞨,mo he,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,238
+242,128,1,1,烏羅渾國,wu luo hun guo,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,239
+243,129,1,1,霫,xi,,,,,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,240
+244,130,1,1,章求拔國,zhang qiu ba guo,,,,本西羌種（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,241
+245,130,1,2,章揭拔,zhang jie ba,,,,,,,,,,,,,,,242
+246,131,2,1,乞失里台,qi shi li tai,Mongol,Kishiliqdai,,"""C. Atwood note:Seems to be from the personal name Kishiliq with the masculine gentilic suffix dai which is often conventionally represented in Chinese by -tai. This should thus be the people descended from Kishiliq, the horse herder who warned Chinggis Khan and got the title of darqan. Category: Mongol""",,,,,,,,,,,244
+247,131,2,2,乞失里臺,qi shi li tai,Mongol,Kishiliqdei,,"""C. Atwood note:Seems to be from the personal name Kishiliq with the masculine gentilic suffix dai which is often conventionally represented in Chinese by -tai. This should thus be the people descended from Kishiliq, the horse herder who warned Chinggis Khan and got the title of darqan. Category: Mongol""",,,,,,,,,,,245
+248,131,3,1,亦乞列思,yi qi lie si,Mongol,Ikires,,"""C. Atwood note:Mongol, marriage allies (quda) of the imperial lineage""",,,,,,,,,,,246
+249,131,3,2,亦乞烈,yi qi lie,Mongol,Ikires,,"""C. Atwood note:Ikires; omission of the -s is probably just a dropped character. Category: Mongol, marriage allies (quda) of the imperial lineage""",,,,,,,,,,,247
+250,131,4,1,伯岳吾,bo yue wu,Mongol,Baya'ud,S,"""C. Atwood note:Baya'ud; the alternate forms have no significance. In this case the category is probably Mongol, and they are the marriage allies (quda) of the imperial family. But Baya'ud is, as Pelliot argued, simply """"rich merchant"""" in a Turco-Mongolian form and the surname is attested among the Qïpchaqs and Qanglï of Kazakhstan as well.""",,,,,,,,,,,248
+251,131,4,2,伯牙吾,bo ya wu,Mongol,Baya'ud,S,"""C. Atwood note:Baya'ud; the alternate forms have no significance. In this case the category is probably Mongol, and they are the marriage allies (quda) of the imperial family. But Baya'ud is, as Pelliot argued, simply """"rich merchant"""" in a Turco-Mongolian form and the surname is attested among the Qïpchaqs and Qanglï of Kazakhstan as well.""",,,,,,,,,,,249
+252,131,4,3,伯牙烏,bo ya wu,Mongol,Baya'ud,S,"""C. Atwood note:Baya'ud; the alternate forms have no significance. In this case the category is probably Mongol, and they are the marriage allies (quda) of the imperial family. But Baya'ud is, as Pelliot argued, simply """"rich merchant"""" in a Turco-Mongolian form and the surname is attested among the Qïpchaqs and Qanglï of Kazakhstan as well.""",,,,,,,,,,,250
+253,131,4,4,伯要,bo yao,Mongol,Baya'ud,,"""C. Atwood note:Undoubtedly, the wu was just dropped from the Chinese""",,,,,,,,,,,251
+254,131,4,5,伯要兀,bo yao wu,Mongol,Baya'ud,S,"""C. Atwood note:Baya'ud; the alternate forms have no significance. In this case the category is probably Mongol, and they are the marriage allies (quda) of the imperial family. But Baya'ud is, as Pelliot argued, simply """"rich merchant"""" in a Turco-Mongolian form and the surname is attested among the Qïpchaqs and Qanglï of Kazakhstan as well.""",,,,,,,,,,,252
+255,131,5,1,傑烈宜,jie lie yi,Mongol,Kereyid,,C. Atwood note:Kereyid; same as 克烈夷. (Gereyid is a dialectal pronunciation.) Category: Mongol,,,,,,,,,,,253
+256,131,5,2,克烈,ke lie,Mongol,Kereyid,,C. Atwood note:Kereyid; same as 克烈夷. (Gereyid is a dialectal pronunciation.) Category: Mongol,,,,,,,,,,,254
+257,131,5,3,凱烈,kai lie,Mongol,Kereyid,,C. Atwood note:Kereyid,,,,,,,,,,,255
+258,131,5,4,怯烈,qie lie,Mongol,Kereyid,,C. Atwood note:Kereyid,,,,,,,,,,,256
+259,131,5,5,土別燕,tu bie yan,Mongol,Tübe'en,S,"""C. Atwood note:Tübe'en, surname among the Kereyid; ethno-legal category is Mongol""",,,,,,,,,,,257
+260,131,5,6,禿伯怯烈,tu bo qie lie,Mongol,Tübe'ed Kereyid,S,"""C. Atwood note:Tübe'ed Kereyid, surname among the Kereyid; ethno-legal category is Mongol. Tübe'ed is plural of Tübe'en above.""",,,,,,,,,,,258
+261,131,5,7,秃伯怯烈,tu bo qie lie,Mongol,Tübe'ed Kereyid,S,"""C. Atwood note:Tübe'ed Kereyid, surname among the Kereyid; ethno-legal category is Mongol. Tübe'ed is plural of Tübe'en above.""",,,,,,,,,,,259
+262,131,6,1,兀良哈,wu liang he,Mongol,Uriyangqad,S,"""C. Atwood note:Uriyangqad (singular: Uriyangqan) was/is a surname among the Mongols. Distinguish from “Uriyangqai” is a general term used by steppe Mongols for all forest peoples to the northwest (roughly Tuva, Altay Republic, Minusinsk Basin, etc.), and carries slightly pejorative implications of being cultural exotic and politically weak. The 合/哈 character at the end (the two are interchangeable in Yuan-era transcriptions, although not in Ming/Qing ones), would actually normally be capped by a diacritical –ti (惕 or perhaps 剔), for the final –d, which is usually omitted in common transcription. """,,,,,,,,,,,260
+263,131,6,2,兀良合,wu liang he,Mongol,Uriyangqad,S,"""C. Atwood note:Uriyangqad (singular: Uriyangqan) was/is a surname among the Mongols. Distinguish from “Uriyangqai” is a general term used by steppe Mongols for all forest peoples to the northwest (roughly Tuva, Altay Republic, Minusinsk Basin, etc.), and carries slightly pejorative implications of being cultural exotic and politically weak. The 合/哈 character at the end (the two are interchangeable in Yuan-era transcriptions, although not in Ming/Qing ones), would actually normally be capped by a diacritical –ti (惕 or perhaps 剔), for the final –d, which is usually omitted in common transcription. """,,,,,,,,,,,261
+264,131,7,1,兀魯,wu lu,Mongol,Uru'ud,S,C. Atwood note:Uru'ud; surname among the Mongols; ethno-legal category: Mongol,,,,,,,,,,,262
+265,131,7,2,兀羅帶,wu luo dai,Mongol,Uru'udai,S,"""C. Atwood note:Uru'ud; surname among the Mongols; form here is with suffix -dai, i.e. Uru'udai, the masculine gentilic suffix""",,,,,,,,,,,263
+266,131,7,3,兀魯兀台,wu lu wu tai,Mongol,Uru'udai,S,"""C. Atwood note:Uru'ud; surname among the Mongols; form here is with suffix -dai, i.e. Uru'udai, the masculine gentilic suffix""",,,,,,,,,,,264
+267,131,8,1,八剌忽,ba la hu,Mongol,Barghu,,C. Atwood note:Barghu; ethno-legal category Mongol,,,,,,,,,,,265
+268,131,8,2,八剌忽䚟,ba la hu dai,Mongol,Barghudai,,"""C. Atwood note:Barghudai, i.e. Barghu with the masculine gentilic suffix -dai. ethno-legal category Mongol""",,,,,,,,,,,266
+269,131,8,3,八魯剌䚟,ba lu la dai,Mongol,Barghudai,,"""C. Atwood note:Barghudai, i.e. Barghu with the masculine gentilic suffix -dai. ethno-legal category Mongol""",,,,,,,,,,,267
+270,131,9,1,巴阿鄰,ba a lin,Mongol,Ba'arin,,C. Atwood note:Ba'arin (apostrophe signals a -gh- that is not pronounced); ethno-legal category Mongol,,,,,,,,,,,268
+271,131,9,2,八鄰,ba lin,Mongol,Ba'arin,,C. Atwood note:Ba'arin (apostrophe signals a -gh- that is not pronounced); ethno-legal category Mongol,,,,,,,,,,,269
+272,131,9,3,巴鄰,ba lin,Mongol,Ba'arin,,C. Atwood note:Ba'arin (apostrophe signals a -gh- that is not pronounced); ethno-legal category Mongol,,,,,,,,,,,270
+273,131,10,1,別速,bie su,Mongol,Besüd,S,"""C. Atwood note:Besüd; surname, ethno-legal category Mongol""",,,,,,,,,,,271
+274,131,10,2,別速特,bie su te,Mongol,Besüd,,"""C. Atwood note:Besüd; the suffix here 特 is quite unusual in Yuan transcriptions. One would rather expect 剔, 忒, or 惕""",,,,,,,,,,,272
+275,131,10,3,別速台,bie su tai,Mongol,Besüdei,,"""C. Atwood note:Besüdei, Besüd with masculine gentilic suffix dai""",,,,,,,,,,,273
+276,131,11,1,召烈台,zhao lie tai,Mongol,Je'üriyedei,S,C. Atwood note:Je'üriyed with Masculine gentilic suffix -dai (i.e. Je'üriyedei); surname; ethno-legal category Mongol,,,,,,,,,,,274
+277,131,12,1,乞顏,qi yan,Mongol,Kiyan,S,"""C. Atwood note:Kiyan, plural is Kiyad. Surname of the Chinggisids in the pre-Chinggisid period. After Chinggis it also acquires a meaning as the surname of the descendants of Chinggis Khan's cousins and uncles. Ethno-legal category Mongol""",,,,,,,,,,,275
+278,131,12,2,奇渥溫,qi wo wen,Mongol,Kiyan,S,C. Atwood note:Qing era transcription of the surname Kiyan (see above),,,,,,,,,,,276
+279,131,13,1,孫都歹,sun dou dai,Mongol,Suldudai,,"""C. Atwood note:Suldus with masculine gentilic, i.e. Suldudai; ethno-legal category Mongol""",,,,,,,,,,,277
+280,131,14,1,察台,cha tai,Mongol,Cha'adai,S,"""C. Atwood note:Cha'adai: surname derived from the plural of Chaghan~Cha'an """"white"""". There were """"Cha'ad"""" among the Jalayir (alternative of Chaghad Jalayir below) and the Tatars. Ethno-legal status Mongol.""",,,,,,,,,,,278
+281,131,15,1,札剌兒,zha la er,Mongol,Jalayir,,"""C. Atwood note:Jalayir; Jalar is a divergent pronunciation, probably derived from the Kitan pronunciation of the term; ethno-legal category Mongol""",,,,,,,,,,,279
+282,131,15,2,札剌台,zha la tai,Mongol,Jalayirdai,,C. Atwood note:Jalayirdai (see above),,,,,,,,,,,280
+283,131,15,3,札剌歹,zha la dai,Mongol,Jalayirdai,,C. Atwood note:Jalayirdai (see above),,,,,,,,,,,281
+284,131,15,4,察哈札剌兒,cha ha zha la er,Mongol,Chaghad Jalayir,S,"""C. Atwood note:Chaghad Jalayir; surname; ethno-legal category Mongol. Jalayir (~Jalar) plus adjective Chaghad (plural of Chaghan """"white"""")""",,,,,,,,,,,282
+285,131,16,1,巴魯剌思,ba lu la si,Mongol,Barulas,,C. Atwood note:Barulas: ethno-legal category Mongol,,,,,,,,,,,283
+286,131,17,1,度禮班,du li ban,Mongol,Dörben,,C. Atwood note:Dörben; ethno-legal category Mongol,,,,,,,,,,,284
+287,131,17,2,朶羅,duo luo,Mongol,Dörben,,C. Atwood note:Probably a version of Dörben with the character for -ben dropped,,,,,,,,,,,285
+288,131,18,1,弘吉剌,hong ji la,Mongol,Qonggirad,S,C. Atwood note:Qonggirad; surname; ethno-legal category Mongol,,,,,,,,,,,286
+289,131,19,1,忙兀,mang wu,Mongol,Mangghud,,C. Atwood note:Mangghud~Mang'ud (see entry for Tangghud~Tang'ud on this alternation). Category Mongol,,,,,,,,,,,287
+290,131,19,2,忙兀台,mang wu tai,Mongol,Mangghudai,,"""C. Atwood note:Mangghud~Mang'ud (see entry for Tangghud~Tang'ud on this alternation). Here with Gentilic suffix, thus Mangghudai~Mang'udai. Category Mongol""",,,,,,,,,,,288
+291,131,19,3,忙忽特,mang hu te,Mongol,Mangghud,,"""C. Atwood note:Mangghud here, te 特 charater is likely a  Qing interpollation""",,,,,,,,,,,289
+292,131,20,1,脫托歷,tuo tuo li,Mongol,Totoqli,,"""C. Atwood note:Totoqli; group name found among Tatars and Merkid, also in form Tutuqli'ud. Derives from Tang era 都督 with Turkic suffix li(q) and Mongolian plural 'ud, meaning """"those ruled by a 都督“; ethno-legal category Mongol. This particular form seems influenced by Qing transcriptions.""",,,,,,,,,,,290
+293,131,20,2,脫脫里,tuo tuo li,Mongol,Totoqli,,"""C. Atwood note:Totoqli; group name found among Tatars and Merkid, also in form Tutuqli'ud. Derives from Tang era 都督 with Turkic suffix li(q) and Mongolian plural 'ud, meaning """"those ruled by a 都督“; ethno-legal category Mongol""",,,,,,,,,,,291
+294,131,20,3,脫里,tuo li,Mongol,Totoqli,,C. Atwood note:Has an initial 脱 been dropped here?,,,,,,,,,,,292
+295,131,20,4,按攤脫脫里,an tan tuo tuo li,Mongol,Altan Totoqli,S,"""C. Atwood note:Altan Totoqli; Totoqli is a surname (also in form Tutuqli'ud), altan is a prefix meaning golden. Probably pre-Chinggisid Merkid or Tatar, but ethno-legal category Mongol""",,,,,,,,,,,293
+296,131,20,5,脫脫里台,tuo tuo li tai,Mongol,Totoqlidai,,"""C. Atwood note:Totoqlidai (Totoqli, plus gentilic suffix -dai); group name found among Tatars and Merkid, also in form Tutuqli'ud. Derives from Tang era 都督 with Turkic suffix li(q) and Mongolian plural 'ud, meaning """"those ruled by a 都督“; ethno-legal category Mongol""",,,,,,,,,,,294
+297,131,21,1,揑古思,nie gu si,Mongol,Negüs,S,"""C. Atwood note:Negüs, surname; ethno-legal category Mongol. 思 is not mistaken.""",,,,,,,,,,,295
+298,131,21,2,揑古台,nie gu tai,Mongol,Negüdei,S,"""C. Atwood note:Negüdei, surname; ethno-legal category Mongol. -dai is the gentilic suffix""",,,,,,,,,,,296
+299,131,21,3,揑古䚟,nie gu dai,Mongol,Negüdei,S,C. Atwood note:Negudei; surname; ethno-legal category Mongol. 䚟 is rare complex form of  歹,,,,,,,,,,,297
+300,131,22,1,斡剌納兒,wo la na er,Mongol,Oranar,S,"""C. Atwood note:Oranar; surname; ethno-legal category Mongol. Same as Oronar, but in a Western dialect pronunciation.""",,,,,,,,,,,298
+301,131,22,2,斡羅納兒,wo luo na er,Mongol,Oronar,S,C. Atwood note:Oronar; surname; ethno-legal category Mongol,,,,,,,,,,,299
+302,131,22,3,斡耳那,wo er na,Mongol,Oronar,S,C. Atwood note:Oronar; surname; ethno-legal category Mongol,,,,,,,,,,,300
+303,131,22,4,斡魯納台,wo lu na tai,Mongol,Oronar,S,C. Atwood note:Oronar; surname; ethno-legal category Mongol; Oronadai (with gentilic suffix -dai),,,,,,,,,,,301
+304,131,23,1,斡勒忽訥,wo le hu na,Mongol,Olqunud,S,"""C. Atwood note:Olqunud; surname, associated with Qonggirad; ethno-legal category Mongol""",,,,,,,,,,,302
+305,131,24,1,斡帖格歹,wo tie ge dai,Mongol,Ötegedei,S,"""C. Atwood note:Ötegedei; surname; ethno-legal category Mongol; ötege (""""old men"""") plus the gentilic suffix -dai.""",,,,,,,,,,,303
+306,131,25,1,晃合丹,huang he dan,Mongol,Qongqotan,S,C. Atwood note:Qongqotan; surname; ethno-legal category Mongol,,,,,,,,,,,304
+307,131,25,2,晃豁壇,huang huo tan,Mongol,Qongqotan,S,C. Atwood note:Qongqotan; surname; ethno-legal category Mongol,,,,,,,,,,,305
+308,131,26,1,札只剌,zha zhi la,Mongol,Jajirad,,C. Atwood note:Jajirad; ethno-legal category Mongol,,,,,,,,,,,306
+309,131,26,2,札只剌歹,zha zhi la dai,Mongol,Jajiradai,,C. Atwood note:Jajiradai; Jajirad with the gentilic suffix -dai; ethno-legal category Mongol,,,,,,,,,,,307
+310,131,27,1,朮溫台,zhu wen tai,Mongol,Ji'ündei,,"""C. Atwood note:Jü'ündei; another version of the term Ji'ün (see Ji'ündei) or Jüin, used for borders in the service of the Jin, some in Inner Mongolia, others among the Tatars and Merkid; ethno-legal status Mongol. """,,,,,,,,,,,308
+311,131,27,2,只溫台,zhi wen tai,Mongol,Ji'ündei,,"""C. Atwood note:Ji'ündei; a group name associated with the military units known as Jiu 糺 (see below), attested both on the Jin frontier and among Tatars and Merkid; spellings highly variable: Ji'ün, Jü'ün (see below) or Jüin; ethno-legal status Mongol""",,,,,,,,,,,309
+312,131,27,3,束呂糺,shu lv jiu,Mongol,Ji'ün,,"""C. Atwood note:Jiu here is the Chinese for Ji'ün~Jü'ün~Jüin (found in SHM as Jüin, often transcribed as Jüyin).""",,,,,,,,,,,310
+313,131,28,1,格泥格里,ge ni ge li,Mongol,Keniges,S,"""C. Atwood note:Seems like a singular form (unattested elsewhere) of Keniges, a surname; ethno-legal status Mongol.""",,,,,,,,,,,311
+314,131,29,1,蔑兒乞,mie er qi,Mongol,Merkid,,C. Atwood note:Merkid; ethno-legal category Mongol,,,,,,,,,,,312
+315,131,29,2,蔑里吉,mie li ji,Mongol,Merkid,,C. Atwood note:Merkid; ethno-legal category Mongol,,,,,,,,,,,313
+316,131,29,3,默而吉台,mo er ji tai,Mongol,Merkid,,C. Atwood note:Merkidei (Merkid plus gentilic suffix dai); ethno-legal category Mongol,,,,,,,,,,,314
+317,131,29,4,蔑兒吉歹,mie er ji dai,Mongol,Merkidei,,"""C. Atwood note:Merkid; but with gentilic suffix -dai, i.e. Merkidei""",,,,,,,,,,,315
+318,131,29,5,蔑兒吉䚟,mie er ji dai,Mongol,Merkidei,,"""C. Atwood note:Merkid; but with gentilic suffix -dai, i.e. Merkidei; 䚟 is a complex form of 歹""",,,,,,,,,,,316
+319,131,29,6,滅里乞台,mie li qi tai,Mongol,Merkidei,,C. Atwood note:Merkidei; ethno-legal category Mongol; Merkid plus gentilic ending -dai.,,,,,,,,,,,317
+320,131,30,1,火魯剌,huo lu la,Mongol,Ghorulas,S,C. Atwood note:Ghorulas ( same as Ghorolas below; origin of name of modern-day Gorlos Mongol Aut. Country in Jilin province); surname associated with the Qonggirad; ethno-legal category Mongol,,,,,,,,,,,318
+321,131,30,2,豁羅剌思,huo luo la si,Mongol,Ghorolas,S,C. Atwood note:Ghorolas (same as Ghorulas above); surname; ethno-legal category Mongol,,,,,,,,,,,319
+322,131,31,1,珊竹,shan zhu,Mongol,Salji'ud,S,C. Atwood note:Salji'ud; surname; ethno-legal category Mongol,,,,,,,,,,,320
+323,131,32,1,塔塔兒,ta ta er,Mongol,Tatar,,,,,,,,,,,,,321
+324,131,32,2,塔塔,ta ta,Mongol,Tatar,,,,,,,,,,,,,322
+325,131,32,3,答答,da da,Mongol,Tatar,,,,,,,,,,,,,323
+326,131,32,4,達達兒,da da er,Mongol,Tatar,,"""C. Atwood note:Tatar (Dadar appears to be a variant pronunciation, although exactly where it was said that way I don't know)""",,,,,,,,,,,324
+327,131,32,5,答答帶,da da dai,Mongol,Tatardai,,C. Atwood note:Tatardai: Tatar plus gentilic suffix -dai; ethno-legal status: Mongol,,,,,,,,,,,325
+328,131,32,6,答答里帶,da da li dai,Mongol,Tatardai,,C. Atwood note:Tatardai: Tatar plus gentilic suffix -dai; ethno-legal status: Mongol,,,,,,,,,,,326
+329,131,33,1,斡亦剌,wo yi la,Mongol,Oyirad,,C. Atwood note:Oyirad (in the usual Yuan transcription),,,,,,,,,,,327
+330,131,33,2,衛拉特,wei la te,Mongol,Oyirad,,"""C. Atwood note:Oyirad; ethno-legal category Mongol. Transcription here is a Qing-era transcription, not a Yuan one.""",,,,,,,,,,,328
+331,131,34,1,許兀愼,xu wu shen,Mongol,Hü'üshin,S,"""C. Atwood note:Actually it's Hü'üshin, surname of Boroghul, the great official. This surname also gave its name to Üüshin banner in current day Ordos municipality, SW Inner Mongolia.""",,,,,,,,,,,329
+332,131,35,1,遜都思,xun dou si,Mongol,Suldus,S,C. Atwood note:Suldus; surname; category Mongol,,,,,,,,,,,330
+333,131,36,1,那牙兀,na ya wu,Mongol,Noyaq,S,C. Atwood note:Seems to be Noya'ud. This is not attested but should be a plural -ud of a root Noyaq. This root Noyaq in turn may be the origin of the attested Mongol family name Noyagin (-gin is a gentilic suffix). So I guess that Noya'd is most likely an alternative form of the surname Noyagin. If so ethno-legal category is Mongol,,,,,,,,,,,331
+334,131,37,1,阿魯剌,a lu la,Mongol,Arulad,S,"""C. Atwood note:Arulad (same as Arlad), surname; ethno-legal category Mongol""",,,,,,,,,,,332
+335,131,37,2,阿兒剌,a er la,Mongol,Arlad,S,"""C. Atwood note:Arlad, that is a variant of Arulad without the -u-; surname; ethno-legal category Mongol""",,,,,,,,,,,333
+336,131,38,1,雪泥惕,xue ni ti,Mongol,Sönid,S,"""C. Atwood note:Sönid; surname, ethno-legal category Mongol""",,,,,,,,,,,334
+337,131,39,1,塔兒忽惕,ta er hu ti,Mongol,Targhud,,"""C. Atwood note:Targhud, surname probably affiliated in pre-Chinggisid times with the Tayichi'ud; ethno-legal category Mongol""",,,,,,,,,,,335
+338,131,40,1,按赤歹,an chi dai,,Alchidai,,"""C. Atwood note:Alchidai; probably the name Alchi, attested in the compound Alchi Tatar, with the gentilic -dai suffix. Alchi should be an adjective, but its meaning is disputed. It appears mostly in areas on the Mongolic-Tungusic linguistic interface.""",,,,,,,,,,,336
+339,132,2,1,兀速兒吉,wu su er ji,Jurchen,Usurgi,,C. Atwood note:could be Usurgi; from context seems a Jurchen or other Manchurian group,,,,,,,,,,,339
+340,132,3,1,女真完顏,nv zhen wan yan,,Jurchen-Wanyan,S,Kitan surname; it Yuan appears as a tribal name in some usages,,,,,,,,,,,340
+341,132,4,1,女真抹撚,nv zhen mo nian,,Jurchen-Monian,S,Kitan surname; it Yuan appears as a tribal name in some usages,,,,,,,,,,,341
+342,132,,,女真蒲察,nv zhen pu cha,,Jurchen-Pucha,S,Kitan surname; it Yuan appears as a tribal name in some usages,,,,,,,,,,,337
+343,133,1,1,烏茶,wu cha,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,342
+344,133,1,2,烏伏那,wu fu na,,,,,,,,,,,,,,,343
+345,133,1,3,烏萇,wu chang,,,,,,,,,,,,,,,344
+346,192,3,2,安,an,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,485
+347,134,2,1,那揭,na jie,,,,亦[中天竺]屬國也（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,345
+348,134,3,1,布豁,bu huo,,,,,,,,,,,,,,,346
+349,134,4,1,捕喝,bu he,,,,,,,,,,,,,,,347
+350,134,5,1,忸蜜,niu mi,,,,忸蜜（元魏）,,,,,,,,,,,348
+351,135,1,1,東安,dong an,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,349
+352,135,2,1,喝汗,he han,,,,,,,,,,,,,,,350
+353,136,1,1,東曹,dong cao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,351
+354,136,2,1,率都沙那,lv dou sha na,,,,,,,,,,,,,,,352
+355,136,2,2,蘇對沙那,su dui sha na,,,,,,,,,,,,,,,353
+356,136,2,3,劫布呾那,jie bu ya na,,,,,,,,,,,,,,,354
+357,136,2,4,蘇都識匿,su dou shi ni,,,,,,,,,,,,,,,355
+358,137,1,1,西曹,xi cao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,356
+359,192,5,2,曹,cao,,,,曹（隋）,,,,,,,,,,,489
+360,138,1,1,中曹,zhong cao,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,357
+361,192,4,2,石,shi,,,,漢大宛北鄙也（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,487
+362,139,1,2,柘支,zhe zhi,,,,,,,,,,,,,,,358
+363,139,1,3,柘折,zhe zhe,,,,,,,,,,,,,,,359
+364,139,1,4,赭時,zhe shi,,,,,,,,,,,,,,,360
+365,140,1,1,碎葉,sui ye,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,361
+366,141,1,1,怖捍,bu han,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,362
+367,192,7,2,米,mi,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,493
+368,142,1,2,彌末,mi mo,,,,,,,,,,,,,,,363
+369,142,1,3,弭秣賀,mi mo he,,,,,,,,,,,,,,,364
+370,192,6,2,何,he,,,,康居小王附墨城故地（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,491
+371,143,2,1,屈霜你迦,qu shuang ni jia,,,,,,,,,,,,,,,365
+372,143,3,1,貴霜匿,gui shuang ni,,,,,,,,,,,,,,,366
+373,144,1,1,火尋,huo xun,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,367
+374,144,2,1,貨利習彌,huo li xi mi,,,,,,,,,,,,,,,368
+375,144,3,1,過利,guo li,,,,,,,,,,,,,,,369
+376,192,8,2,史,shi,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,495
+377,145,2,1,佉沙,qu sha,,,,,,,,,,,,,,,370
+378,145,3,1,羯霜那,jie shuang na,,,,,,,,,,,,,,,371
+379,146,1,1,那色波,na se bo,,,,蓋為史所役屬．居吐火羅故地（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,372
+380,146,2,1,小史,xiao shi,,,,,,,,,,,,,,,373
+381,147,1,1,小勃律,xiao bo lv,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,374
+382,148,1,1,哥羅,ge luo,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,375
+383,148,1,2,箇羅,ge luo,,,,,,,,,,,,,,,376
+384,148,2,1,哥羅富沙羅,ge luo fu sha luo,,,,,,,,,,,,,,,377
+385,149,1,1,拘蔞蜜,ju lou mi,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,378
+386,150,1,1,松外蠻,song wai man,,,,,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,379
+387,151,1,1,附國,fu guo,,,,蓋漢西南夷也（新唐書）,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,380
+388,152,1,1,三濮,san pu,,,,[即文面濮、赤口濮、黑僰濮],FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,381
+389,153,1,1,徽州蠻,hui zhou man,,,,唐溪峒州（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,382
+390,154,1,1,甲峒蠻,jia dong man,,,,役屬交阯（宋史）,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE,383
+391,155,1,1,白族,bai zu,,,,,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,384
+392,170,2,1,高句驪,gao gou li,,Koguryo,,,,,,,,,,,,,387
+393,170,4,1,肅良合,su liang he,Han,Solanggha,,C. Atwood note:Solanggha; Mongolian for Korean; ethno-legal category Han,,,,,,,,,,,389
+394,170,4,2,肅良合台,su liang he tai,Han,Solangghadai,,"""C. Atwood note:Solanggha with the gentilic suffix dai, i.e. Solangghadai; Mongolian for Korean; ethno-legal category Han""",,,,,,,,,,,390
+395,171,1,1,哈剌乞丹,ha la qi dan,,Qara-Kitan,,C. Atwood note:Qara-Kitan; ethno-legal status: Semuren?,,,,,,,,,,,392
+396,171,1,2,哈剌乞,ha la qi,,Qara-Kitan,,C. Atwood note:Probably Qara-Ki[tan] with a missing dan 丹 character; ethno-legal status: Semuren?,,,,,,,,,,,393
+397,172,1,1,色目人,se mu ren,Semuren,,,ethno-legal category in Yuan for non-Mongol tribes from Inner and Central Asia,,,,,,,,,,,394
+398,172,1,2,色目,se mu,,,,,,,,,,,,,,,395
+399,172,2,1,木速蠻,mu su man,Semuren,Musulman,,C. Atwood note:Musulman (=Muslim); Mongolian from the Khorazmian pronunciation of Muslim; ethno-legal status Semuren.,,,,,,,,,,,396
+400,172,2,2,木速魯蠻,mu su lu man,Semuren,Musulman,,C. Atwood note:Musulman; Mongolian from the Khorazmian pronunciation of Muslim; ethno-legal status Semuren.,,,,,,,,,,,397
+401,172,3,1,不花剌,bu hua la,Semuren,Buqara,,"""C. Atwood note:Buqara (Mongolian spelling, from Bukhara, the city); Ethno-legal category Semuren""",,,,,,,,,,,398
+402,172,4,1,乃蠻,nai man,Semuren,Naiman,,"""C. Atwood note:Naiman; ethno-legal category, Semuren (at least according to Tao Zongyi, but there's some controversy over that).""",,,,,,,,,,,399
+403,172,4,2,乃馬真,nai ma zhen,Semuren,Naimanjin,,"""C. Atwood note:equals Naiman, with the feminine gentilic suffix -jin; Semuren""",,,,,,,,,,,400
+404,172,5,1,達魯乃蠻,da lu nai man,,,,,,,,,,,,,,,401
+405,172,5,2,也里可溫,ye li ke wen,Semuren,Erek'ün,,"""C. Atwood note:Erek'ün, singular, plural is Erke'üd. Refers to Christian clergy (most of whom were probably Syriac in origin, but often lived among Ongguds, Kereyids, etc.; ethno-legal category probably Semuren.""",,,,,,,,,,,402
+406,172,6,1,伽乃,ga nai,Semuren,Ganai,,"""C. Atwood note:Could be Ganai~Kanai~Kane~Gane. The context indicates this is some surname or social status of Kashmir; ethno-legal status, Semuren.""",,,,,,,,,,,403
+407,172,7,1,匣剌魯,xia la lu,Semuren,Qarluq,,"""C. Atwood note:Qarluq; Turkic people on the N. Xinjiang, Kazakhstan border. Ethno-legal status Semuren.""",,,,,,,,,,,404
+408,172,7,2,哈剌魯,ha la lu,Semuren,Qarluq,,"""C. Atwood note:Qarluq; Turkic people on the N. Xinjiang, Kazakhstan border. Ethno-legal status Semuren.""",,,,,,,,,,,405
+409,172,7,3,哈兒魯,ha er lu,Semuren,Qarluq,,"""C. Atwood note:Qarluq; Turkic people on the N. Xinjiang, Kazakhstan border. Ethno-legal status Semuren.""",,,,,,,,,,,406
+410,172,7,4,合魯,he lu,Semuren,Qarluq,,C. Atwood note:could be Qarluq (and lots of other things).,,,,,,,,,,,407
+411,172,7,5,哈魯,ha lu,Semuren,Qarluq,,"""C. Atwood note:Could be Qarluq, if we assume that the two liquids in a row (-rl-) were transcribed by a single Chinese liquid -l-; said to be semuren in the Tao Zongyi list (1/13)""",,,,,,,,,,,408
+412,172,7,6,哈魯台,ha lu tai,Semuren,Qarludai,,"""C. Atwood note:Could be Qarludai (Qarluq+gentitlic -dai), if we assume that the two liquids in a row (-rl-) were transcribed by a single Chinese liquid -l-; said to be semuren in the Tao Zongyi list (1/13)""",,,,,,,,,,,409
+413,172,7,7,罕祿魯,han lu lu,Semuren,Qarluq,,"""C. Atwood note:Qarluq; Turkic people on the N. Xinjiang, Kazakhstan border. Ethno-legal status Semuren.""",,,,,,,,,,,410
+414,172,8,1,康里,kang li,Semuren,Qanglï,,C. Atwood note:Qanglï; Turkic speaking ethnic group in current day Kazakhstan; ethno-legal category Semuren,,,,,,,,,,,411
+415,172,9,1,斡羅台,wo luo tai,Semuren,Oros,,"""C. Atwood note:Orodai; Oros ( equals Rus', Russian) with the gentilic suffix -dai; ethno-legal category Semuren """,,,,,,,,,,,412
+416,172,9,2,斡羅白,wo luo bai,Semuren,Oros,,"""C. Atwood note:Orodai; Oros ( equals Rus', Russian) with the gentilic suffix -dai; ethno-legal category Semuren. 白 here must be a corruption of 台 (it's pretty common) """,,,,,,,,,,,413
+417,172,10,1,欽察,qin cha,Semuren,Qïpchaq,,C. Atwood note:Mongolian Kimchaq from Turkic Qïpchaq; ethno-legal category Semuren,,,,,,,,,,,414
+418,172,11,1,汪古,wang gu,Semuren,Önggüd,,"""C. Atwood note:Önggüd(~Öng'üt in the Uyghur reading), also know as the """"White Tatars"""" 白達達; descendants of the Shatuo 沙陀; Turco-Sogdian in origin from Central Inner Mongolia; ethno-legal category Semuren.""",,,,,,,,,,,415
+419,172,12,1,珠笏,zhu hu,Semuren,Juqud/Jew,,"""C. Atwood note:Juqud; Mongolian for """"Jew"""" (from Arabic Yahūd, via Uyghur Yuqud, with regular Mongolian Y- to J- sound change); see Cleaves article in Journal of Turkish Studies; ethno-legal status semuren.""",,,,,,,,,,,416
+420,172,13,1,甘木里,gan mu li,Semuren,Gamul,,"""C. Atwood note:Probably Gamul, an alternative, less Mongolized, transcription of Qamïl (Hami). That it's a place name is demonstrated by YS 16/333; that it’s a semuren one is demonstrated by Tao Zongyi 1/13. Marco Polo calls Qamïl """"Camul"""".""",,,,,,,,,,,417
+421,172,13,2,甘木魯,gan mu lu,Semuren,Gamul,,"""C. Atwood note:Probably Gamul, an alternative, less Mongolized, transcription of Qamïl (Hami). That it's a place name is demonstrated by YS 16/333; that it’s a semuren one is demonstrated by Tao Zongyi 1/13. Marco Polo calls Qamïl """"Camul"""".""",,,,,,,,,,,418
+422,172,14,1,答失蠻,da shi man,Semuren,Dashman,,"""C. Atwood note:Dashman (singuler; plural dashmad); Mongolian term from Muslim cleric, from Persian danishmand; ethno-legal status: Semuren""",,,,,,,,,,,419
+423,172,14,2,答失蠻人,da shi man ren,Semuren,Dashman,,"""C. Atwood note:Dashman (singuler; plural dashmad); Mongolian term from Muslim cleric, from Persian danishmand; ethno-legal status: Semuren""",,,,,,,,,,,420
+424,172,15,1,薛亦,xue yi,Semuren,Seyid,,"""C. Atwood note:Seyid (assuming, as I think is right, that the identification with Sayid is correct). Transcription of a palatalized version of Arabic Sayyid; ethno-legal status Semuren. """,,,,,,,,,,,421
+425,172,15,2,賽亦,sai yi,Semuren,Sayid,,C. Atwood note:Sayid (Mongolian version of Arabic Sayyid); title of descendants of Muhammad via Fatima; ethno-legal category Semuren.,,,,,,,,,,,422
+426,172,15,3,賽夷,sai yi,Semuren,Sayid,,C. Atwood note:Sayid (Mongolian version of Arabic Sayyid); title of descendants of Muhammad via Fatima; ethno-legal category Semuren.,,,,,,,,,,,423
+427,172,16,1,迦葉彌兒,she ye mi er,Semuren,Kashmir,,C. Atwood note: 葉 is to be read here as shè; Kashmir; place name; ethno-legal status Semuren.,,,,,,,,,,,424
+428,172,17,1,阿兒魯,a er lu,Semuren,Aerlu,S,"""C. Atwood note:This is a family name of Abdurrahman (暗都剌蠻) so it should be a semuren one. There's also an """"Aerlu"""" military unit stationed in China. """,,,,,,,,,,,425
+429,172,18,1,阿速,a su,Semuren,Asud,,"""C. Atwood note:Mongolian Asud (plural in -d) from As (modern Ossetian), an Iranian-speaking mostly Christian people of the Caucasus.""",,,,,,,,,,,426
+430,172,19,1,雍古,yong gu,Semuren,Önggüd/Öng'üt,,"""C. Atwood note:Önggüd(~Öng'üt in the Uyghur reading), also know as the """"White Tatars"""" 白達達; descendants of the Shatuo 沙陀; Turco-Sogdian in origin from Central Inner Mongolia; ethno-legal category Semuren.""",,,,,,,,,,,427
+431,172,19,2,雍古部,yong gu bu,Semuren,Önggüd/Öng'üt,,"""C. Atwood note:Önggüd(~Öng'üt in the Uyghur reading), also know as the """"White Tatars"""" 白達達; descendants of the Shatuo 沙陀; Turco-Sogdian in origin from Central Inner Mongolia; ethno-legal category Semuren.""",,,,,,,,,,,428
+432,172,20,1,哈兒柳溫台,ha er liu wen tai,,Qarli'u'undai,,C. Atwood note:From context a Muslim surname/place name. Should render Qarli'u'undai. Qarliq for Qarluq is attested (Juwayni) and perhaps this is an over-complex way of transcribing Qarli'u'uddai. (Plural -ud+ gentilic dai). Same as 合魯溫?,,,,,,,,,,,429
+433,172,21,1,阿兒溫,a er wen,Semuren,Arghun,,C. Atwood note:Arghun (in alternative reading Ar'un); subgroup within the Öng'üt that Marco Polo describes as Muslims (the other Öng'üt were Christian); ethno-legal category Semuren,,,,,,,,,,,430
+434,172,21,2,阿剌渾,a la hun,Semuren,Arghun,,C. Atwood note:Arghun; subgroup within the Öng'üt that Marco Polo describes as Muslims (the other Öng'üt were Christian); ethno-legal category Semuren,,,,,,,,,,,431
+435,172,21,3,阿剌溫,a la wen,Semuren,Arghun,,`,,,,,,,,,,,432
+436,172,21,4,阿里溫,a li wen,Semuren,Arghun,,C. Atwood note:Arghun (in alternative reading Ar'un); subgroup within the Öng'üt that Marco Polo describes as Muslims (the other Öng'üt were Christian); ethno-legal category Semuren,,,,,,,,,,,433
+437,172,21,5,阿魯渾,a lu hun,Semuren,Arghun,,C. Atwood note:Arghun; subgroup within the Öng'üt that Marco Polo describes as Muslims (the other Öng'üt were Christian); ethno-legal category Semuren,,,,,,,,,,,434
+438,172,21,6,阿魯溫,a lu wen,Semuren,Arghun,,C. Atwood note:Arghun (in alternative reading Ar'un); subgroup within the Öng'üt that Marco Polo describes as Muslims (the other Öng'üt were Christian); ethno-legal category Semuren,,,,,,,,,,,435
+439,172,21,7,阿魯,a lu,Semuren,Arghun,,C. Atwood note:Almost certainly a corrupt shortened form of Arulad or Arghun (you'd need to see who it is to tell),,,,,,,,,,,436
+440,173,3,1,合魯溫,he lu wen,,Qarlu'ud,,"""C. Atwood note:Could be Qalu'un, Ghalu'un, Qaru'un, Gharu'un, etc.; from context some group or place in the Islamic world. Same as 哈兒柳溫台? If so then Qarlu'ud, Qarluq+plural -ud.""",,,,,,,,,,,437
+441,174,1,1,大溫歹,da wen dai,,Dai'undai,,"""C. Atwood note:Could be Dai'undai or Dai'urdai. If we posit a more modern reading of Dai as Da, could be Da'urdai, that is, of the Daur ancestry. But that's speculative.""",,,,,,,,,,,438
+442,175,1,1,察剌溫,cha la wen,,Chara'un,,C. Atwood note:Chara'un or Char'un,,,,,,,,,,,439
+443,176,1,1,徹亢臺,che kang tai,,Che'üdei,,"""C. Atwood note:Should be Che'üdei, which some identify with Je'üriyedei (also attested as Je’üredei). But this seems unlikely on phonological grounds (Cleaves did not make that association in his article on the Baljuna covenant).  YS 132/3210  has 徹里臺; is the 里 an lapsus for 兀, or could it be added? The latter could make it徹兀里臺, which could Che’üridei, closer to Je’üredei , but simple lapsus seems to be more probable, since 徹兀里臺  is not actually attested. Whether this is a semuren or a Mongol surname appears very uncertain. The person with the name is Maili, which could be from Melik, which would indicate a Semuren. But he “led the徹里臺tribe” in 1203 which should indicate his group was as a whole present on the Mongolian plateau before the conquest.""",,,,,,,,,,,440
+444,176,1,2,徹兀台,che wu tai,,Che'üdei,,"""C. Atwood note:Should be Che'üdei, which some identify with Je'üriyedei (also attested as Je’üredei). But this seems unlikely on phonological grounds (Cleaves did not make that association in his article on the Baljuna covenant).  YS 132/3210  has 徹里臺; is the 里 an lapsus for 兀, or could it be added? The latter could make it徹兀里臺, which could Che’üridei, closer to Je’üredei , but simple lapsus seems to be more probable, since 徹兀里臺  is not actually attested. Whether this is a semuren or a Mongol surname appears very uncertain. The person with the name is Maili, which could be from Melik, which would indicate a Semuren. But he “led the徹里臺tribe” in 1203 which should indicate his group was as a whole present on the Mongolian plateau before the conquest.""",,,,,,,,,,,441
+445,176,1,3,徹兀臺,che wu tai,,Che'üdei,,"""C. Atwood note:Should be Che'üdei, which some identify with Je'üriyedei (also attested as Je’üredei). But this seems unlikely on phonological grounds (Cleaves did not make that association in his article on the Baljuna covenant).  YS 132/3210  has 徹里臺; is the 里 an lapsus for 兀, or could it be added? The latter could make it徹兀里臺, which could Che’üridei, closer to Je’üredei , but simple lapsus seems to be more probable, since 徹兀里臺  is not actually attested. Whether this is a semuren or a Mongol surname appears very uncertain. The person with the name is Maili, which could be from Melik, which would indicate a Semuren. But he “led the徹里臺tribe” in 1203 which should indicate his group was as a whole present on the Mongolian plateau before the conquest.""",,,,,,,,,,,442
+446,177,1,1,泰赤兀特,tai chi wu te,,Tayichi'ud,,,,,,,,,,,,,443
+447,177,1,2,泰兀特,tai wu te,,Tayichi'ud,,,,,,,,,,,,,444
+448,178,1,1,燕只吉台,yan zhi ji tai,,Eljigidei,,"""C. Atwood note:Eljigidei; -dai is a gentilic ending, to be distinguished from the adjectival ending -tai (-dai disappears after the fifteenth century)""",,,,,,,,,,,445
+449,178,1,2,燕只吉歹,yan zhi ji dai,,Eljigidei,,"""C. Atwood note:Eljigidei; -dai is a gentilic ending, to be distinguished from the adjectival ending -tai (-dai disappears after the fifteenth century)""",,,,,,,,,,,446
+450,178,1,3,燕只吉䚟,yan zhi ji dai,,Eljigidei,,"""C. Atwood note:Eljigidei; -dai is a gentilic ending, to be distinguished from the adjectival ending -tai (-dai disappears after the fifteenth century)""",,,,,,,,,,,447
+451,179,1,1,朶兒別,duo er bie,,Dörbed,,C. Atwood note:Dörbed,,,,,,,,,,,448
+452,179,1,2,朶兒別台,duo er bie tai,,Dörbedei,,C. Atwood note:Dörbedei; the ending -dai is to be distinguished from the adjectival ending -tai (-dai disappeared after the fifteenth century),,,,,,,,,,,449
+453,179,1,3,朶里別歹,duo li bie dai,,Dörbedei,,C. Atwood note:Dörbedei,,,,,,,,,,,450
+454,179,1,4,禿立不帶,tu li bu dai,,Dörbedei,,C. Atwood note:Perhaps Dörbedei in an unusual reading and transcription. Rendered literally it would be more like Turbudai or Türbüdei (or Tulbudai or Tülbüdei).,,,,,,,,,,,451
+455,179,1,5,秃立不帶,tu li bu dai,,Dörbedei,,C. Atwood note:Perhaps Dörbedei in an unusual reading and transcription. Rendered literally it would be more like Turbudai or Türbüdei (or Tulbudai or Tülbüdei).,,,,,,,,,,,452
+456,180,1,1,答立迷裏,da li mi li,,,,,,,,,,,,,,,453
+457,181,1,1,肅慎,su shen,,,,,,,,,,,,,,,454
+458,182,1,1,速剌歹,su la dai,,,,,,,,,,,,,,,455
+459,182,1,2,速要歹,su yao dai,,,,,,,,,,,,,,,456
+460,183,1,1,阿剌兀義,a la wu yi,,Al'ui/Ala'ui,,C. Atwood note:Could be Al'ui or Ala'ui (Alghui or Alaghui); attested as personal name,,,,,,,,,,,457
+461,184,1,1,雅樂威,ya yue wei,,Yayo'ui,,C. Atwood note:Could be Yayo'ui,,,,,,,,,,,458
+462,185,1,1,斡兀立,wo wu li,,O'ul,S,"erroneous ethnonym? C. Atwood note:Should be O'ul, from Turkic Oghul """"son""""; Often used with father's name to form patronymics. (Oghul-Qaimish is transcribed as 斡兀立海迷失)""",,,,,,,,,,,459
+463,186,1,1,昔里,xi li,,,S,erroneous ethnonym?,,,,,,,,,,,460
+464,187,1,1,朮真,zhu zhen,,,S,erroneous ethnonym? C. Atwood note:Probably Jurchen ; 朮 in Yuan transcriptions read as Zhu (Pelliot has a note on this in his NCHK),,,,,,,,,,,461
+465,188,1,1,賽典赤,sai dian chi,,,S,"erroneous ethnonym? C. Atwood note:Personal name: Sayid-Elchi """"Sayyid the messenger""""; this is the name of Sayyid Ajall, the famous Turkestani official in Yunnan""",,,,,,,,,,,462
+466,189,1,1,達里伯,da li bo,,Darbai,S,erroneous ethnonym? C. Atwood note:Darbai; attested as a personal name,,,,,,,,,,,463
+467,36,2,1,大食,da shi,,,,,,,,,,,,,,,109
+468,170,5,1,三韓,san han,,Samhan,,DY:삼한,,,,,,,,,,,391
+469,190,1,1,鮮卑,xian bei,,,,,,,,,,,,,,,464
+470,190,2,1,慕容部鮮卑,mu rong bu xian bei,,,,,,,,,,,,,,,465
+471,190,3,1,宇文部鮮卑,yu wen bu xian bei,,,,,,,,,,,,,,,467
+472,190,4,1,段部鮮卑,duan bu xian bei,,,,,,,,,,,,,,,469
+473,190,5,3,禿髪部鮮卑,tu fa bu xian bei,,Tabgatch,,,,,,,,,,,,,473
+474,190,6,1,乞伏部鮮卑,qi fu bu xian bei,,,,,,,,,,,,,,,476
+475,190,5,2,拓跋部鮮卑,tuo ba bu xian bei,,Tabgatch,,,,,,,,,,,,,472
+476,190,2,2,慕容,mu rong,,,,,,,,,,,,,,,466
+477,190,3,2,宇文,yu wen,,,,,,,,,,,,,,,468
+478,190,4,2,段部,duan bu,,,,,,,,,,,,,,,470
+479,190,5,4,禿髮,tu fa,,Tabgatch,,DY: equals to 拓跋,,,,,,,,,,,474
+480,190,6,2,乞伏,qi fu,,,,,,,,,,,,,,,477
+481,190,7,1,昌黎鮮卑,chang li xian bei,,,,"DY:including 慕容氏, 谷氏, 屈氏, 盧氏, 仇尼氏, and 悅氏",,,,,,,,,,,478
+482,190,8,1,旦加落鮮卑,dan jia luo xian bei,,,,,,,,,,,,,,,479
+483,190,5,5,河南氏拓拔,he nan shi tuo ba,,Tabgatch,,DY: 河南氏 functions as a 郡望 here,,,,,,,,,,,475
+484,2,1,2,西戎,xi rong,,,,DY: equals to 吐蕃 in a Tang context,,,,,,,,,,,4
+485,29,1,6,大夏月氏,da xia rou zhi,,Bacteria,,,,,,,,,,,,,93
+486,192,2,1,康國,kang guo,,Samarqand,,,,,,,,,,,,,482
+487,18,2,1,麴氏高昌,qu shi gao chang,,,,,,,,,,,,,,,60
+488,192,4,1,石國,shi guo,,Tashkand,,,,,,,,,,,,,486
+489,192,3,1,安國,an guo,,,,,,,,,,,,,,,484
+490,192,5,1,曹國,cao guo,,,,,,,,,,,,,,,488
+491,192,6,1,何國,he guo,,,,,,,,,,,,,,,490
+492,192,7,1,米國,mi guo,,Maymurgh,,,,,,,,,,,,,492
+493,192,8,1,燖國,xun,,Khwarezmia,,,,,,,,,,,,,494
+494,192,9,1,史國,shi guo,,Kesh,,,,,,,,,,,,,496
+495,192,10,1,戊地,wu di,,,,,,,,,,,,,,,497
+496,192,1,1,昭武九姓,zhao wu jiu xing,,,,,,,,,,,,,,,480
+497,192,1,2,粟特,su te,,Sogdian,,,,,,,,,,,,,481

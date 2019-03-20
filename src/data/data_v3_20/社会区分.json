@@ -1,0 +1,1058 @@
+{
+    "-1": {
+        "chn": "[Missing Data]",
+        "en": "[Missing Data]"
+    },
+    "0": {
+        "chn": "[未详]",
+        "en": "[Unknown]"
+    },
+    "2": {
+        "chn": "武将",
+        "en": "army officer"
+    },
+    "3": {
+        "chn": "工匠",
+        "en": "artisan"
+    },
+    "4": {
+        "chn": "天文学家（星象家）",
+        "en": "astronomer"
+    },
+    "6": {
+        "chn": "[未婚妻]",
+        "en": "betrothed maiden fiancé"
+    },
+    "7": {
+        "chn": "比丘尼",
+        "en": "buddhist nun"
+    },
+    "8": {
+        "chn": "僧人",
+        "en": "buddhist monk"
+    },
+    "9": {
+        "chn": "书法家",
+        "en": "calligrapher"
+    },
+    "10": {
+        "chn": "削籍官员",
+        "en": "cashiered civil servant"
+    },
+    "11": {
+        "chn": "天师",
+        "en": "Celestial Master"
+    },
+    "12": {
+        "chn": "儒学",
+        "en": "Confucian learning"
+    },
+    "13": {
+        "chn": "胥吏",
+        "en": "clerical staff"
+    },
+    "14": {
+        "chn": "布衣",
+        "en": "commoner (buyi)"
+    },
+    "15": {
+        "chn": "乡里长者",
+        "en": "community leader"
+    },
+    "16": {
+        "chn": "妾",
+        "en": "concubine"
+    },
+    "18": {
+        "chn": "[捐纳得官]",
+        "en": "office title from contribution"
+    },
+    "19": {
+        "chn": "道士",
+        "en": "Daoist priest"
+    },
+    "20": {
+        "chn": "道姑(女冠)",
+        "en": "Daoist nun"
+    },
+    "21": {
+        "chn": "隐居道士",
+        "en": "Daoist recluse"
+    },
+    "22": {
+        "chn": "早卒(未成年而卒)",
+        "en": "died young"
+    },
+    "23": {
+        "chn": "未婚而卒",
+        "en": "died before marriage"
+    },
+    "24": {
+        "chn": "未仕而卒",
+        "en": "died before taking office"
+    },
+    "25": {
+        "chn": "[学官]",
+        "en": "education official"
+    },
+    "26": {
+        "chn": "[皇帝]",
+        "en": "emperor"
+    },
+    "27": {
+        "chn": "[皇后]",
+        "en": "empress"
+    },
+    "28": {
+        "chn": "管理田产",
+        "en": "estate management"
+    },
+    "29": {
+        "chn": "宦官",
+        "en": "eunuch"
+    },
+    "30": {
+        "chn": "落第士人",
+        "en": "failed exams literatus"
+    },
+    "31": {
+        "chn": "家塾师",
+        "en": "teacher at family school"
+    },
+    "32": {
+        "chn": "主家事",
+        "en": "manager of family affairs"
+    },
+    "33": {
+        "chn": "农民",
+        "en": "farmer"
+    },
+    "34": {
+        "chn": "[宰执]",
+        "en": "office:state council"
+    },
+    "35": {
+        "chn": "军阀",
+        "en": "warlord ruler"
+    },
+    "36": {
+        "chn": "地方士人/乡绅",
+        "en": "local literatus / gentry"
+    },
+    "37": {
+        "chn": "炼丹家",
+        "en": "alchemist"
+    },
+    "38": {
+        "chn": "为善乡里",
+        "en": "philanthropist"
+    },
+    "39": {
+        "chn": "为邑里所重",
+        "en": "respected by locality"
+    },
+    "40": {
+        "chn": "[为官者：文]",
+        "en": "civil office"
+    },
+    "41": {
+        "chn": "[后妃]",
+        "en": "imperial consort"
+    },
+    "42": {
+        "chn": "[供奉内廷]",
+        "en": "imperial palace service"
+    },
+    "43": {
+        "chn": "宗子",
+        "en": "imperial prince"
+    },
+    "44": {
+        "chn": "[]",
+        "en": "inner palace teacher"
+    },
+    "46": {
+        "chn": "耶稣会士",
+        "en": "Jesuit"
+    },
+    "47": {
+        "chn": "[进士]",
+        "en": "jinshi degree holder"
+    },
+    "48": {
+        "chn": "统治者",
+        "en": "ruler"
+    },
+    "49": {
+        "chn": "侍女",
+        "en": "lady-in-waiting"
+    },
+    "50": {
+        "chn": "家有田产",
+        "en": "landownership"
+    },
+    "52": {
+        "chn": "士人",
+        "en": "literati"
+    },
+    "53": {
+        "chn": "[低级官僚]",
+        "en": "holder of minor office"
+    },
+    "55": {
+        "chn": "在室女",
+        "en": "maiden"
+    },
+    "56": {
+        "chn": "富豪",
+        "en": "wealth"
+    },
+    "57": {
+        "chn": "数学家",
+        "en": "mathematician"
+    },
+    "58": {
+        "chn": "医学教授",
+        "en": "medical instructor"
+    },
+    "59": {
+        "chn": "商人",
+        "en": "merchant"
+    },
+    "60": {
+        "chn": "[节度使]",
+        "en": "military governor"
+    },
+    "61": {
+        "chn": "[武官]",
+        "en": "military"
+    },
+    "63": {
+        "chn": "义军首领",
+        "en": "militia leader"
+    },
+    "65": {
+        "chn": "[贵族]",
+        "en": "noble"
+    },
+    "66": {
+        "chn": "[幕僚]",
+        "en": "private secretary of official"
+    },
+    "67": {
+        "chn": "[医官]",
+        "en": "office: medical office"
+    },
+    "68": {
+        "chn": "[财政官员]",
+        "en": "office: finance"
+    },
+    "69": {
+        "chn": "[宰相]",
+        "en": "office: chief councilor"
+    },
+    "70": {
+        "chn": "[有官衔]",
+        "en": "official title"
+    },
+    "71": {
+        "chn": "画家",
+        "en": "painter"
+    },
+    "72": {
+        "chn": "行医",
+        "en": "physician"
+    },
+    "73": {
+        "chn": "[府州学教授]",
+        "en": "prefectural teacher"
+    },
+    "74": {
+        "chn": "罪犯",
+        "en": "convict"
+    },
+    "75": {
+        "chn": "叛臣",
+        "en": "rebel"
+    },
+    "76": {
+        "chn": "[隐士]",
+        "en": "recluse"
+    },
+    "77": {
+        "chn": "门客",
+        "en": "retainer (ke)"
+    },
+    "78": {
+        "chn": "处士",
+        "en": "gentleman without office"
+    },
+    "79": {
+        "chn": "[幕官]",
+        "en": "secretary: muguan"
+    },
+    "80": {
+        "chn": "[刺史幕僚（知州幕僚）]",
+        "en": "secretary to a prefect"
+    },
+    "81": {
+        "chn": "求仕",
+        "en": "seeking office"
+    },
+    "82": {
+        "chn": "萨满教巫师",
+        "en": "shamen"
+    },
+    "83": {
+        "chn": "[学生：生员]",
+        "en": "student: shengyuan"
+    },
+    "85": {
+        "chn": "书院山长",
+        "en": "academy (shuyuan) director"
+    },
+    "86": {
+        "chn": "奴婢",
+        "en": "slave"
+    },
+    "87": {
+        "chn": "牙将",
+        "en": "soldier of military general's headquarters (yajiang)"
+    },
+    "88": {
+        "chn": "[推荐参加制科]",
+        "en": "recommended for decree exam"
+    },
+    "89": {
+        "chn": "[诸生]",
+        "en": "student"
+    },
+    "90": {
+        "chn": "业进士",
+        "en": "studying for jinshi"
+    },
+    "91": {
+        "chn": "[太尉（汉）]",
+        "en": "taiwei (Han)"
+    },
+    "92": {
+        "chn": "包揽?",
+        "en": "tax broker"
+    },
+    "93": {
+        "chn": "[税务官]",
+        "en": "tax collector"
+    },
+    "94": {
+        "chn": "收徒讲学",
+        "en": "teacher"
+    },
+    "95": {
+        "chn": "教师：军事教官",
+        "en": "teacher: military"
+    },
+    "96": {
+        "chn": "酋长",
+        "en": "tribal chieftain"
+    },
+    "97": {
+        "chn": "以瞽废",
+        "en": "not serving due to blindness"
+    },
+    "98": {
+        "chn": "以疾废",
+        "en": "not serving due to illness"
+    },
+    "100": {
+        "chn": "[太学生]",
+        "en": "student: university"
+    },
+    "101": {
+        "chn": "[]",
+        "en": "urban ward leader"
+    },
+    "102": {
+        "chn": "食素",
+        "en": "veterinarian"
+    },
+    "103": {
+        "chn": "父老;耆老",
+        "en": "village elder"
+    },
+    "104": {
+        "chn": "[妻]",
+        "en": "wife"
+    },
+    "105": {
+        "chn": "[母]",
+        "en": "mother"
+    },
+    "106": {
+        "chn": "[鲜卑可汗]",
+        "en": "Xianbi khan"
+    },
+    "107": {
+        "chn": "乡先生",
+        "en": "local teacher"
+    },
+    "109": {
+        "chn": "[隐居（有隐德）]",
+        "en": "yinju (or yinde)"
+    },
+    "110": {
+        "chn": "隐居不仕",
+        "en": "recluse who refused office"
+    },
+    "111": {
+        "chn": "隐居授徒",
+        "en": "teaching in reclusion"
+    },
+    "112": {
+        "chn": "阴阳家",
+        "en": "yinyang expert"
+    },
+    "113": {
+        "chn": "[大帅]",
+        "en": "military general"
+    },
+    "114": {
+        "chn": "诗人",
+        "en": "poet"
+    },
+    "115": {
+        "chn": "[举人]",
+        "en": "student: juren"
+    },
+    "116": {
+        "chn": "[军事将校]",
+        "en": "military officer"
+    },
+    "117": {
+        "chn": "拒绝出仕",
+        "en": "refused office"
+    },
+    "119": {
+        "chn": "主动放弃科举",
+        "en": "chose not to participate in exams"
+    },
+    "120": {
+        "chn": "未参加科举而卒",
+        "en": "died before exams"
+    },
+    "121": {
+        "chn": "不求仕",
+        "en": "chose not to seek office"
+    },
+    "122": {
+        "chn": "[学生： 八行]",
+        "en": "student: baxing"
+    },
+    "123": {
+        "chn": "[县学生]",
+        "en": "student: county student (xueshen"
+    },
+    "124": {
+        "chn": "[武学生]",
+        "en": "student: military university"
+    },
+    "125": {
+        "chn": "[附贡]",
+        "en": "student: fugong"
+    },
+    "126": {
+        "chn": "[贡生]",
+        "en": "student: gongsheng"
+    },
+    "127": {
+        "chn": "[监生]",
+        "en": "student: jiansheng"
+    },
+    "128": {
+        "chn": "[捐监]",
+        "en": "student: university-purchase"
+    },
+    "129": {
+        "chn": "[岁贡]",
+        "en": "student: suigong"
+    },
+    "130": {
+        "chn": "[太学生]",
+        "en": "student: taixuesheng"
+    },
+    "132": {
+        "chn": "[例贡]",
+        "en": "student: ligong"
+    },
+    "133": {
+        "chn": "[增广生员]",
+        "en": "student: zeng guangsheng (Ws)"
+    },
+    "134": {
+        "chn": "[廪员]",
+        "en": "student: linyuan"
+    },
+    "135": {
+        "chn": "[预乡荐]",
+        "en": "student: xiangjian"
+    },
+    "136": {
+        "chn": "[乡贡进士]",
+        "en": "student: xianggong jinshi"
+    },
+    "137": {
+        "chn": "[外命妇]",
+        "en": "outer noblewoman"
+    },
+    "138": {
+        "chn": "[内命妇]",
+        "en": "inner noblewoman"
+    },
+    "139": {
+        "chn": "外戚",
+        "en": "consort family"
+    },
+    "140": {
+        "chn": "贞妇",
+        "en": "chaste widow"
+    },
+    "141": {
+        "chn": "死国难",
+        "en": "dynastic martyr"
+    },
+    "142": {
+        "chn": "史学家",
+        "en": "historian"
+    },
+    "143": {
+        "chn": "鉴赏家",
+        "en": "connoisseur"
+    },
+    "144": {
+        "chn": "藏书家",
+        "en": "holder of a private library"
+    },
+    "145": {
+        "chn": "官伎",
+        "en": "government entertainer"
+    },
+    "146": {
+        "chn": "理学家",
+        "en": "Neo-Confucian thinker (lixue)"
+    },
+    "147": {
+        "chn": "孝子/孝女",
+        "en": "filial son/daughter"
+    },
+    "148": {
+        "chn": "义门",
+        "en": "multigenerational family"
+    },
+    "149": {
+        "chn": "乐人",
+        "en": "musical entertainer"
+    },
+    "150": {
+        "chn": "遗民",
+        "en": "dynastic loyalist"
+    },
+    "151": {
+        "chn": "军卒",
+        "en": "soldier"
+    },
+    "152": {
+        "chn": "刽子手",
+        "en": "executioner"
+    },
+    "154": {
+        "chn": "刻工",
+        "en": "printblock carver"
+    },
+    "155": {
+        "chn": "妓",
+        "en": "female entertainer"
+    },
+    "156": {
+        "chn": "酷吏",
+        "en": "merciless official"
+    },
+    "157": {
+        "chn": "良吏;循吏",
+        "en": "honest official"
+    },
+    "158": {
+        "chn": "归明人",
+        "en": "foreign official who give allegiance to dynasty"
+    },
+    "159": {
+        "chn": "归正人",
+        "en": "returned to proper allegiance"
+    },
+    "162": {
+        "chn": "[季父房]",
+        "en": ""
+    },
+    "163": {
+        "chn": "小学家",
+        "en": "philologist"
+    },
+    "164": {
+        "chn": "经学家",
+        "en": "Classicist"
+    },
+    "165": {
+        "chn": "文人",
+        "en": "man of culture (wenren)"
+    },
+    "166": {
+        "chn": "刻书家",
+        "en": "woodblock publisher"
+    },
+    "167": {
+        "chn": "[正黄旗]",
+        "en": "Plain Yellow Banner"
+    },
+    "168": {
+        "chn": "[正蓝旗]",
+        "en": "Plain Blue Banner"
+    },
+    "169": {
+        "chn": "[正白旗]",
+        "en": "Plain White Banner"
+    },
+    "170": {
+        "chn": "[正红旗]",
+        "en": "Plain Red Banner"
+    },
+    "171": {
+        "chn": "[镶黄旗]",
+        "en": "Bordered Yellow Banner"
+    },
+    "172": {
+        "chn": "[镶蓝旗]",
+        "en": "Bordered Blue Banner"
+    },
+    "173": {
+        "chn": "[镶白旗]",
+        "en": "Bordered White Banner"
+    },
+    "174": {
+        "chn": "[镶红旗]",
+        "en": "Bordered Red Banner"
+    },
+    "175": {
+        "chn": " baoyi) bannerman\"",
+        "en": "\"bondservant (booi"
+    },
+    "176": {
+        "chn": " baoyi) bannerman -- Bordered Yellow Banner\"",
+        "en": "\"bondservant (booi"
+    },
+    "177": {
+        "chn": " baoyi) bannerman -- Plain Yellow Banner\"",
+        "en": "\"bondservant (booi"
+    },
+    "178": {
+        "chn": " baoyi) bannerman -- Plain White Banner\"",
+        "en": "\"bondservant (booi"
+    },
+    "179": {
+        "chn": "主书院讲席",
+        "en": "academy lecturer"
+    },
+    "180": {
+        "chn": "博学之人",
+        "en": "erudite"
+    },
+    "181": {
+        "chn": "理学家 — 阳明学派",
+        "en": "Neo-Confucian scholar (Wang Yangming school)"
+    },
+    "182": {
+        "chn": "语言学家",
+        "en": "linguist"
+    },
+    "183": {
+        "chn": "通晓外语",
+        "en": "versed in foreign language(s)"
+    },
+    "184": {
+        "chn": "收藏家",
+        "en": "collector"
+    },
+    "185": {
+        "chn": "精于某种兵器",
+        "en": "excelled in particular military weapons"
+    },
+    "186": {
+        "chn": "结社",
+        "en": "society member"
+    },
+    "187": {
+        "chn": "腐儒",
+        "en": "narrow pedant"
+    },
+    "188": {
+        "chn": "学者",
+        "en": "scholar"
+    },
+    "189": {
+        "chn": "经学家—易经",
+        "en": "scholar of Classics (Book of Change)"
+    },
+    "190": {
+        "chn": "经学家—尚书",
+        "en": "scholar of Classics (Book of Documents)"
+    },
+    "191": {
+        "chn": "经学家—诗经",
+        "en": "scholar of Classics (Book of Odes)"
+    },
+    "192": {
+        "chn": "经学家—礼经",
+        "en": "scholar of Classics (Classics of Rites)"
+    },
+    "193": {
+        "chn": "经学家—公羊学",
+        "en": "scholar of Classics (Gongyang commentary on Spring and Autumn Annals)"
+    },
+    "194": {
+        "chn": "经学家—榖梁学",
+        "en": "scholar of Classics (Guliang commentary on Spring and Autumn Annals)"
+    },
+    "195": {
+        "chn": "经学家—汉学",
+        "en": "scholar of Classics (Han learning)"
+    },
+    "196": {
+        "chn": "经学家—今文经学",
+        "en": "scholar of Classics (New Text School)"
+    },
+    "197": {
+        "chn": "经学家—春秋",
+        "en": "scholar of Classics (Spring and Autumn Annals)"
+    },
+    "198": {
+        "chn": "经学家—左传",
+        "en": "scholar of Classics (Zuo commentary on Spring and Autumn Annals)"
+    },
+    "199": {
+        "chn": "小学家－说文",
+        "en": "philologist (shuowen)"
+    },
+    "200": {
+        "chn": "小学家－字学",
+        "en": "philologist (wenzi - graphology)"
+    },
+    "201": {
+        "chn": "小学家－训诂学",
+        "en": "philologist (xungu - semantics)"
+    },
+    "202": {
+        "chn": "小学家－音韵学",
+        "en": "philologist (yinyun - phonology)"
+    },
+    "203": {
+        "chn": "考据学家",
+        "en": "scholar of textual research (kaoju learning)"
+    },
+    "204": {
+        "chn": "校堪学家",
+        "en": "scholar of textual criticism (jiaokan)"
+    },
+    "205": {
+        "chn": "目录学家",
+        "en": "bibliographer"
+    },
+    "206": {
+        "chn": "版本学家",
+        "en": "expert on book editions"
+    },
+    "207": {
+        "chn": "经世学者",
+        "en": "scholar of statecraft learning"
+    },
+    "208": {
+        "chn": "甲骨文专家",
+        "en": "expert on oracle bones"
+    },
+    "209": {
+        "chn": "金石学家",
+        "en": "scholar of bronze and stone inscriptions"
+    },
+    "210": {
+        "chn": "小说家",
+        "en": "novelist"
+    },
+    "211": {
+        "chn": "哲学家",
+        "en": "philosopher"
+    },
+    "212": {
+        "chn": "精通西学",
+        "en": "scholar of Western learning"
+    },
+    "213": {
+        "chn": "地理学家",
+        "en": "geographer"
+    },
+    "214": {
+        "chn": "法律专家",
+        "en": "scholar of law"
+    },
+    "215": {
+        "chn": "音乐学家",
+        "en": "scholar of music"
+    },
+    "219": {
+        "chn": "卜筮者（太乙、轨革、六壬、遁甲等）",
+        "en": "diviner"
+    },
+    "220": {
+        "chn": "堪舆家风水师",
+        "en": "geomancer"
+    },
+    "221": {
+        "chn": "相面相手者",
+        "en": "physiognomist"
+    },
+    "222": {
+        "chn": "习于道术",
+        "en": "practioner of Daoist magics"
+    },
+    "224": {
+        "chn": "历算家",
+        "en": "specialist in the calendar"
+    },
+    "225": {
+        "chn": "科学家",
+        "en": "scientist"
+    },
+    "227": {
+        "chn": "农学家",
+        "en": "agronomist"
+    },
+    "228": {
+        "chn": "生物学家",
+        "en": "biologist"
+    },
+    "229": {
+        "chn": "植物学家",
+        "en": "botanist"
+    },
+    "230": {
+        "chn": "水利专家",
+        "en": "water management expert"
+    },
+    "232": {
+        "chn": "作家",
+        "en": "writer"
+    },
+    "233": {
+        "chn": "工于文",
+        "en": "skilled at writing"
+    },
+    "234": {
+        "chn": "工于古文",
+        "en": "writer of ancient-style prose"
+    },
+    "235": {
+        "chn": "词人",
+        "en": "ci lyric writer"
+    },
+    "236": {
+        "chn": "曲作家",
+        "en": "qu writer"
+    },
+    "237": {
+        "chn": "精於戏剧",
+        "en": "expert in operas"
+    },
+    "238": {
+        "chn": "工于作赋",
+        "en": "rhapsody writer"
+    },
+    "239": {
+        "chn": "工于骈体文",
+        "en": "rhymed prose (pianwen) writer"
+    },
+    "240": {
+        "chn": "长于制举之文",
+        "en": "versed in composing examination essays"
+    },
+    "241": {
+        "chn": "译书家",
+        "en": "translator of writings"
+    },
+    "242": {
+        "chn": "翻译",
+        "en": "language translator"
+    },
+    "243": {
+        "chn": "篆刻家",
+        "en": "seal cutter"
+    },
+    "244": {
+        "chn": "雕绘镌刻家",
+        "en": "sculptor"
+    },
+    "245": {
+        "chn": "建筑家 — 园林设计",
+        "en": "architect (gardern designer)"
+    },
+    "246": {
+        "chn": "出版家",
+        "en": "publisher"
+    },
+    "247": {
+        "chn": "教育家",
+        "en": "educator"
+    },
+    "248": {
+        "chn": "政治家",
+        "en": "statesman"
+    },
+    "249": {
+        "chn": "思想家",
+        "en": "thinker"
+    },
+    "250": {
+        "chn": "围棋棋手",
+        "en": "go (weiqi) chess player"
+    },
+    "251": {
+        "chn": "精于箭术",
+        "en": "excelled in archery"
+    },
+    "252": {
+        "chn": "精于骑射",
+        "en": "excelled in horseriding and archery"
+    },
+    "253": {
+        "chn": "精于某种乐器",
+        "en": "excelled in particular musical instruments"
+    },
+    "254": {
+        "chn": "精于剑术",
+        "en": "excelled in swordsmanship"
+    },
+    "255": {
+        "chn": "精于拳法",
+        "en": "expert in boxing"
+    },
+    "256": {
+        "chn": "熟谙兵法韬略",
+        "en": "military strategist"
+    },
+    "257": {
+        "chn": "熟谙水务海战",
+        "en": "navy warfare expert"
+    },
+    "258": {
+        "chn": "佛教之俗家弟子",
+        "en": "lay Buddhist"
+    },
+    "259": {
+        "chn": "华侨",
+        "en": "overseas Chinese"
+    },
+    "260": {
+        "chn": "外文学家",
+        "en": "scholar of foreign literature"
+    },
+    "261": {
+        "chn": "精通诗(词曲)之声韵音律",
+        "en": "expert in poetic rhymes"
+    },
+    "262": {
+        "chn": "医学",
+        "en": "student of medicine"
+    },
+    "263": {
+        "chn": "强记;博学强记",
+        "en": "extensive factual knowledge"
+    },
+    "264": {
+        "chn": "好学",
+        "en": "fond of learning"
+    },
+    "265": {
+        "chn": "征至京师",
+        "en": "Summoned to the capital"
+    },
+    "266": {
+        "chn": "建书院/义塾/家塾  ",
+        "en": "Founded private academy or school"
+    },
+    "267": {
+        "chn": "并称/齐名",
+        "en": "Belongs to exemplary group"
+    },
+    "268": {
+        "chn": "曾被流放",
+        "en": "Was exiled"
+    },
+    "269": {
+        "chn": "曾被弹劾",
+        "en": "Was impeached"
+    },
+    "270": {
+        "chn": "图谶",
+        "en": "prognostication"
+    },
+    "271": {
+        "chn": "外交",
+        "en": "diplomat"
+    },
+    "272": {
+        "chn": "好饮酒",
+        "en": "Known for wine drinking"
+    },
+    "273": {
+        "chn": "四书",
+        "en": "scholars of the Four Books "
+    },
+    "274": {
+        "chn": "工艺",
+        "en": "interested in artistic crafts"
+    },
+    "275": {
+        "chn": " five phases",
+        "en": "\"Shu shu (includes astronomy"
+    },
+    "276": {
+        "chn": "机械",
+        "en": "engineer"
+    },
+    "277": {
+        "chn": "武艺",
+        "en": "military arts"
+    },
+    "278": {
+        "chn": "河工",
+        "en": "specialist in water conservancy"
+    },
+    "279": {
+        "chn": "物理",
+        "en": "physics"
+    },
+    "280": {
+        "chn": "神学",
+        "en": " christianity"
+    },
+    "281": {
+        "chn": "禅机",
+        "en": "buddhist studies"
+    },
+    "282": {
+        "chn": "考古",
+        "en": "specialist in archaelogy"
+    },
+    "283": {
+        "chn": "职官",
+        "en": "specialist in institutions"
+    },
+    "284": {
+        "chn": "刺艺",
+        "en": "Tatooing"
+    }
+}

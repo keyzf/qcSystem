@@ -11,6 +11,8 @@ import net_work from './netWork'
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
 import pqsort from 'pqsort'
 import cos_dist from 'compute-cosine-distance'
+import id2tribe from '../data/data_v3_20/种族.json'
+import id2social_status from '../data/data_v3_20/社会区分.json'
 
 // import jsonFormat from 'json-format'
 
@@ -558,9 +560,46 @@ class Person extends _object{
     this.events = []
     this.dy = parseInt(_object.dy)
 
+    this.alt_name = _object.alt_name
+    this.alt_name_en = _object.alt_name_en
+    this.status = _object.status
+    this.household_status = _object.household_status
+    this.ethnicity = _object.ethnicity
+    this.female = parseInt(_object.female)
+
     this.vec = _object.vec
   }
 
+  getAltNames(){
+    if (IS_EN) {
+      return this.alt_name_en
+    }else{
+      return this.alt_name
+    }
+  }
+  getStatus(){
+    if (IS_EN) {
+      return this.status.map(elm=> id2social_status[elm].en)
+    }else{
+      return this.status.map(elm=> id2social_status[elm].chn)
+    }
+  }
+
+  getEthnicity(){
+    if(IS_EN){
+      return id2tribe[this.ethnicity].en
+    }else{
+      return id2tribe[this.ethnicity].chn
+    }
+  }
+
+  getGender(){
+    if (IS_EN) {
+      return this.female===0?'female':'male'
+    }else{
+      return  this.female===0?'男':'女'
+    }
+  }
   getRelatedPeople(){
     let people = []
     this.events.forEach(event=>{
