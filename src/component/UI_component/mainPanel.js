@@ -58,10 +58,10 @@ class MainPanel extends Component {
   }
 
   getRelationLine(){
-    console.log(this.all_events);
+    // console.log(this.all_events);
     let {selected_people} = this.state;
     let other_people = selected_people.slice(1);
-    console.log(other_people);
+    // console.log(other_people);
     let relationLines = [];
     if(selected_people.length>0){
       this.all_events.forEach((d,index)=>{

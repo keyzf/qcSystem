@@ -194,7 +194,7 @@ class LifeLikePaint extends Component{
         // all_events = peopleFilter(all_events)
         // all_events = addrFilter(all_events)
         // all_events = yearFilter(all_events)
-        console.log(all_events);
+        // console.log(all_events);
 
         let year2events = eventManager.array2year2events(all_events)
         // 找到出生和死亡
@@ -342,7 +342,7 @@ class LifeLikePaint extends Component{
                 {/* <HistoryEvent xscale={xscale} translate={`translate(0, 0)` } zoomTransform={zoomTransform}></HistoryEvent> */}
                 <Axis xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
                 <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} translate={`translate(0, ${height-this.uncertainHeight})`} viewType={checked}></AreaLineChart>
-                <BubbleChart data={area_datas[0]?area_datas[0].event_graph_datas:[]} xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart>
+                <BubbleChart data={area_datas[0]?area_datas[0].certain_events:[]} xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart>
                 <BubbleChart data={prob_mark_data} areaHeight={height-this.uncertainHeight} translate={`translate(0, ${height-this.uncertainHeight+20})`} xscale={xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
             </g>
         )
