@@ -22,13 +22,14 @@ import stateManager from './dataManager/stateManager';
 import {autorun} from 'mobx';
 // import LifeLineMethod from './component/UI_component/lifeLineMethod';
 import { triggerManager,personManager } from './dataManager/dataStore2'
-// import { values } from 'mobx';
+import PersonInfo from './component/UI_component/PersonInfo';
 import EventFilter from './component/UI_component/EventFilter2';
 import InferSunBurst from './component/graph_component/inferSunBurst';
 import EventTable from './component/UI_component/EventTable';
 import InferSunBurst2 from './component/graph_component/inferSunBurst6';
 import './main.scss';
-import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
+import menu from './static/menu.png';
+import songicon from './static/icon 13.png';
 
 
 class App extends Component {
@@ -109,11 +110,21 @@ class App extends Component {
     // console.log(selected_people)
     return (
       <div id="wrap" style={{width:width, height:height}}>
+        <div id="mainHeader">
+          <div id="toggleDyn"><img src={menu}></img></div>
+          <img src={songicon}></img>
+          <div className="togglelanguage">
+            <button>中文</button>
+            <button>English</button>
+          </div>
+        </div>
         {/* 上半部分 */}
         <div id="selectview">
           {/* 选择人物 */}
           <div className="leftPanel">
-            <div className="title"></div>
+            <div className="title">
+              <PersonInfo/>
+            </div>
             <div className="container">
             <label>筛选人物</label>
             <Dropdown 
@@ -124,17 +135,15 @@ class App extends Component {
               onChange={this.changeSelectPeople}
               // loading   //可以在之后添加
             />
-            <label>计算方式（下拉选择）</label>
-            <Dropdown 
-            placeholder='选择分数计算方法' 
-            fluid selection 
-            options={calcualte_method_option} defaultValue= {calcualte_method_option[0].value} />
-            <div className={'filter'} style={{ height:'83%', overflowY:'scroll'}}>
+            <label>评分值</label>
+            <div className={'filter'}>
               <EventFilter/>
             </div>
             </div>
           </div>
-          <MainPanel height={650} width={1250} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
+          <div>
+            <MainPanel height={540} width={1300} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
+          </div>
           <div className="rightPanel">
             <EventTable/>
           </div>

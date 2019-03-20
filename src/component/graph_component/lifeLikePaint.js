@@ -1,7 +1,8 @@
 // import dataGetter from '../../dataManager/dataGetter2'
 import dataStore, { personManager, triggerManager, filtEvents, eventManager, triggerFilter, peopleFilter, addrFilter, yearFilter, ruleFilter } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
-import * as d3 from 'd3'
+import * as d3 from 'd3';
+import _ from 'lodash';
 import net_work from '../../dataManager/netWork'
 import stateManager from '../../dataManager/stateManager'
 import { autorun } from 'mobx';
@@ -18,7 +19,6 @@ class LifeLikePaint extends Component{
     selected_event_types = []
     all_events = []
     yscale=d3.scaleLinear();
-    uncertainHeight= 80;
     maxy=0;
     maxy_sum=0;
     socre_range = [-1,35]
@@ -34,7 +34,8 @@ class LifeLikePaint extends Component{
             event_tree_data: {
                 title: ''
             },
-            trigger_label_data: []
+            trigger_label_data: [],
+            relationLines:{}
         }
         this.handleEventMarkClick = this.handleEventMarkClick.bind(this);
     }
@@ -61,7 +62,52 @@ class LifeLikePaint extends Component{
                 // console.log(data)
                 this.loadLifeLineData()
                 this.loadInferMarkData()
+                this.getRelationLine()
             }
+        })
+    }
+
+    getRelationLine(){
+        let selected_people = stateManager.selected_people;
+        let len = selected_people.length;
+        let other_people = selected_people.slice(0,len-1);
+        console.log(other_people);
+        let new_person = selected_people[len-1];
+        let relationLines={};
+        let yearmap = new Map();
+        new_person.events.forEach((d,index)=>{
+            let tmp = {};
+            if(d.roles.length>1){
+                for(let i=0;i<d.roles.length;i++){
+                    let person_index = other_people.indexOf(d.roles[i].person);
+                    if(person_index!==-1){
+                        let year;
+                        if(d.time_range[0]===d.time_range[1]){
+                            year = d.time_range[0];
+                        }else{
+                            year = _.max(Object.keys(d.prob_year),o=>d.prob_year[o]);
+                        }
+                        if(relationLines[year]){
+                            let tmp=relationLines[year];
+                            tmp.event.push(d);
+                            tmp.count++;
+                            relationLines[year]=tmp;
+                        }else{
+                            let tmp={};
+                            tmp.event=[d];
+                            tmp.count = 1;
+                            let tmpLines=[];
+                            tmpLines[0]={'person_index':len,'x':parseInt(year)};
+                            tmpLines[1]={'person_index':person_index+1,'x':parseInt(year)};
+                            tmp.lines = tmpLines;
+                            relationLines[year]=tmp;
+                        }
+                    }
+                }
+            }
+        })
+        this.setState({
+            relationLines:relationLines
         })
     }
 
@@ -317,33 +363,28 @@ class LifeLikePaint extends Component{
     }
 
     render(){
-        const padding_bottom = 20
-        const { checked, zoomTransform, xscale, height, width, selected_person, padding, index} = this.props
-        console.log('render lifeLikePaint 主视图', selected_person)
-        let {area_datas, showEventMark, prob_mark_data, selected_prob_year, event_tree_data,  trigger_label_data, selected_trigger} = this.state
-        // let x_domain = [
-        //     Math.min(...area_datas.map(data=> data.x_domain[0]).filter(elm=>elm)),
-        //     Math.max(...area_datas.map(data=> data.x_domain[1]).filter(elm=>elm))
-        // ];
-        // console.log(area_datas);
-        // let select_bar_width = 325;
+        const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, uncertainHeight} = this.props
+        console.log('render lifeLikePaint 主视图', area_datas)
+        let {area_datas, relationLines, prob_mark_data, selected_prob_year} = this.state
         this.yscale.domain([0,this.maxy_sum])
-                   .range([height-this.uncertainHeight,0]);
-        // console.log(prob_mark_data);
+                   .range([height-uncertainHeight,0]);
         if(selected_prob_year){
             prob_mark_data = prob_mark_data[selected_prob_year];
         }
-        // prob_mark_data = prob_mark_data.filter(data=> selected_prob_year && data.year===selected_prob_year).filter(elm=> elm)
-        // prob_mark_data = prob_mark_data || []
-        // console.log(prob_mark_data)
         return (
             <g ref="svg" width={width} height={height}>
-                <text x={width-50} y={20}>{selected_person.name}</text>
-                {/* <HistoryEvent xscale={xscale} translate={`translate(0, 0)` } zoomTransform={zoomTransform}></HistoryEvent> */}
-                <Axis xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
-                <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} translate={`translate(0, ${height-this.uncertainHeight})`} viewType={checked}></AreaLineChart>
-                <BubbleChart data={area_datas[0]?area_datas[0].event_graph_datas:[]} xscale={xscale} translate={`translate(0, ${height-this.uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart>
-                <BubbleChart data={prob_mark_data} areaHeight={height-this.uncertainHeight} translate={`translate(0, ${height-this.uncertainHeight+20})`} xscale={xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
+                <g transform={transform}>
+                    <text x={width-50} y={20}>{selected_person.name}</text>
+                    <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
+                    <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked}></AreaLineChart>
+                    <BubbleChart data={area_datas[0]?area_datas[0].certain_events:[]} xscale={xscale} translate={`translate(0, ${height-uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart>
+                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+20})`} xscale={xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
+                </g>
+                {
+                    Object.values(relationLines).map((d,index)=>{
+                        return <path d={line(d.lines)} stroke="black" strokeWidth={d.count} opacity={0.6}></path>
+                    })
+                }
             </g>
         )
     }

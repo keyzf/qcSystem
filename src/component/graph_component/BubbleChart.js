@@ -191,7 +191,6 @@ export default class BubbleChart extends React.Component {
           .attr('stroke',null)
         if(target.attr('class').substr(0,11)==='bubbleWhole'){
           let mousePos = d3.mouse(node);
-          console.log(target.data()[0])
           let content='';
           if(target.data()[0]){
             content=target.data()[0].toText()
@@ -224,7 +223,6 @@ export default class BubbleChart extends React.Component {
   }
 
   render() {
-    // console.log('bubble',this.props.data);
     let {data,xscale,translate} = this.props;
     return (
     <g className="bubble" ref="bubbleGraph" transform={translate}>

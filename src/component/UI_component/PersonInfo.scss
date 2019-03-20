@@ -1,0 +1,46 @@
+.personInfo{
+  display:grid;
+  grid-template-columns: 50px 1fr;
+  height: 100%;
+  margin-bottom: 10px;
+  .nameLabel{
+    font-family: 'HYSunWanMinCaoShu';
+    writing-mode: vertical-rl;
+    font-size:35px;
+    color:#5a5a5a;
+    letter-spacing: 0.2em;
+    text-align:justify;
+    line-height:31px;
+    text-align: center;
+    padding-right: 10px;
+    border-right: 1px solid rgba($color: #414141, $alpha: 0.6);
+  }
+  .infoContent{
+    padding-left: 10px;
+    h3{
+      font-family:'DFPSongW9';
+      font-size:14px;
+      color:#858585;
+      letter-spacing:-0.39px;
+      text-align:justify;
+      line-height:25px;
+      margin: 0;
+    }
+    p{
+      font-family: 'STKaiti';
+      font-size:9px;
+      color:#757575;
+      letter-spacing:-0.25px;
+      text-align:justify;
+      line-height:17px;
+      margin: 0;
+      span{
+        margin:0;
+        font-weight: 600;
+      }
+      span:first-child{
+        font-weight: 700;
+      }
+    }
+  }
+}

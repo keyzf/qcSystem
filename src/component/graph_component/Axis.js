@@ -13,7 +13,13 @@ export default class Axis extends React.Component {
     renderAxis() {
       var node  = this.refs.axis;
       var axis = d3.axisBottom(this.props.xscale)
-                   .tickFormat(d3.format('d'));
+                   .tickFormat(function(e){
+                    if(Math.floor(e) != e)
+                    {
+                        return;
+                    }
+                    return e;
+                });
       d3.select(node).call(axis);
     }
   

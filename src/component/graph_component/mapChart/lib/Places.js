@@ -54,7 +54,6 @@ export default class Places extends React.Component{
         if(d.time_range[0]===d.time_range[1]){
           d.addrs.forEach((dd)=>{
             let flag=0;
-            // console.log(dd);
             places_with_time.forEach((place,index)=>{
               if(place.addr.id===dd.id){
                 places_with_time[index].event.push(d);
@@ -107,7 +106,6 @@ export default class Places extends React.Component{
     let {places_con} = this.state;
     let {path,color} = this.props;
     let node = this.refs.place;
-    // console.log(places_con);
     let lineData={'type':"LineString"};
     let coordinates=[];
     places_con.forEach((d)=>{

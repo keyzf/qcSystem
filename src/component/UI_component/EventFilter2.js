@@ -4,6 +4,7 @@ import dataStore, { eventManager, addrManager, personManager, isValidYear, trigg
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import { black } from 'ansi-colors';
+import './EventFilter.scss';
 
 class EventFilter  extends Component {
     constructor(){
@@ -12,6 +13,7 @@ class EventFilter  extends Component {
             data : {},
             check_box2checked: {},
         }
+        this.onChange = this.onChange.bind(this);
     }
     son2parent ={}
     _loadData =  autorun(()=>{
@@ -42,11 +44,11 @@ class EventFilter  extends Component {
         };
     }
 
-    onChange =  (event, {checked, my_type, label})=>{
+    onChange =  (e, my_type, label)=>{
         let {data, check_box2checked} = this.state
         const {son2parent} = this
-
-        // console.log(event, checked, my_type, label)
+        let checked = e.target.checked;
+        console.log(e, checked, my_type, label)
         if (my_type==='parent_type') {
             const setSons = (parent_type, checked)=>{
                 let elm = data[parent_type]
@@ -102,29 +104,28 @@ class EventFilter  extends Component {
         let {data, check_box2checked} = this.state
         // console.log(data)
         return (
-            <div ref='container'>
-                <List selection verticalAlign='middle'>
-                    {
-                        data && Object.keys(data).sort().map(parent_type=>{
-                            // let triggers = triggerManager.getAllObjects().filter(elm=> elm.parent_type===parent_type).slice(0,2)
-                            return (
-                            <List.Item key={parent_type}>
-                                <List.Icon name='circle' color='red'/>
-                                <List.Content>
-                                    <List.Header as='a'>
-                                        <Checkbox label={parent_type} my_type='parent_type' onChange={onChange} checked={check_box2checked[parent_type]}/>
-                                    </List.Header>
-                                    {/* <List.Description>
-                                        {triggers.map(elm=> elm.)}
-                                    </List.Description> */}
-                                </List.Content>
-                            </List.Item>
-                            )                            
-                        })
-                    }
+            <ul>
+                {
+                    data && Object.keys(data).sort().map(parent_type=>{
+                        // let triggers = triggerManager.getAllObjects().filter(elm=> elm.parent_type===parent_type).slice(0,2)
+                        return (
+                        <li key={parent_type}>
+                            <div>
+                                <input type="checkbox" onChange={(e)=>this.onChange(e,'parent_type',parent_type)} checked={check_box2checked[parent_type]}></input>
+                                <label>{parent_type}</label>
+                                {/* <span id="rs-bullet" class="rs-label">0</span> */}
+                                <input type="range" className={'rs-range'} id="start" name="volume" min="0" max="1" step="0.05"/>
+                                {/* <Checkbox label={parent_type} my_type='parent_type' onChange={onChange} checked={check_box2checked[parent_type]}/> */}
+                                {/* <List.Description>
+                                    {triggers.map(elm=> elm.)}
+                                </List.Description> */}
+                            </div>
+                        </li>
+                        )                            
+                    })
+                }
 
-                </List>      
-            </div>
+            </ul>      
         )
     }
 }
