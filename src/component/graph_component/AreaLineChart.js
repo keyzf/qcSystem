@@ -22,7 +22,7 @@ export default class AreaLineChart extends React.Component {
 
   render() {
     let {data,xscale,yscale,translate,viewType} = this.props;
-    console.log(data);
+    // console.log(data);
     if(viewType){
       data=data.slice(1);
     }

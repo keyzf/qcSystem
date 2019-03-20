@@ -30,6 +30,7 @@ import InferSunBurst2 from './component/graph_component/inferSunBurst6';
 import './main.scss';
 import menu from './static/menu.png';
 import songicon from './static/icon 13.png';
+// import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
 
 
 class App extends Component {
@@ -150,7 +151,7 @@ class App extends Component {
         </div>
 
         {/* 新的推理视图 */}
-        {/* <div id="footer">
+        <div id="footer">
           <div id="mapview">
             <header>Inference Tree Map</header>
             <Map selected_people={this.state.selected_people}/>
@@ -164,8 +165,8 @@ class App extends Component {
             <header>Inference Tree Map</header>
             <InferSunBurst height={400} width={1000}/>
           </div>
-
-        </div> */}
+        </div>
+        
         {/* <InferContour/> */}
         <div style={{top:1100, left:0, position:'absolute'}} >
           <InferSunBurst2 height={2000} width={3000}/>

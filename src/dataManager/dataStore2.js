@@ -388,7 +388,7 @@ class Event extends _object{
   }
 
   getAllObjects(){
-    return [...this.addrs, this.trigger, this.getPeople(), ...this.time_range.map(year=>timeManager.get(year))]
+    return [...this.addrs, this.trigger, ...this.getPeople(), ...this.time_range.map(year=>timeManager.get(year))]
   }
   
   getPeople(){

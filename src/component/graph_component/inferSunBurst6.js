@@ -15,6 +15,7 @@ import {
     MarkSeries,
     LineSeries,
     Highlight,
+    CustomSVGSeries,
     LabelSeries
   } from 'react-vis';
 
@@ -51,7 +52,7 @@ class InferSunBurst extends React.Component{
             isMousePressed: false,
 
             drag_value: undefined,
-            filter_values: [],   //一个object对应一个rules
+            // filter_values: [],   //一个object对应一个rules
             rules: [],
             
             show_event_hint_value: undefined,
@@ -73,7 +74,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:500})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:10000})
             .then(data=>{
                 // console.log(data)
                 data = dataStore.processResults(data.data)
@@ -117,14 +118,31 @@ class InferSunBurst extends React.Component{
             let index = sunbursts.length
             let events = last_sunburst.all_events
             events = last_sunburst.ruleManager.filter(events)
-            let new_sunburst = new OnePart(events, center_event, index*2.5, 0, index, 1.1, this)
+            let new_sunburst = new OnePart(events, center_event, index*3, 0, index, 1.1, this)
             sunbursts.push(new_sunburst)
             this.sunbursts = sunbursts
         }
+        for (let index1 = 0; index1 < sunbursts.length; index1++) {
+            let elm = sunbursts[index1];
+            if (elm.need_forward) {
+                for (let index2 = index1+1; index2 < sunbursts.length; index2++){
+                    const elm = sunbursts[index2];
+                    console.log(elm, 'refresh', index2)
+                    let pre_elm = sunbursts[index2-1]
+                    let events = pre_elm.all_events
+                    events = pre_elm.ruleManager.filter(events)
+                    elm.setEvents(events)
+                }
+                this.setState({hi: !this.state.hi})
+                break
+            }
+            
+        }
+        sunbursts.forEach(elm=> elm.need_forward=false)
     }
     render(){
         // console.log(this.state)
-        console.log('render triggerSunBurst')
+        // console.log('render triggerSunBurst')
         const {width, height} = this.props
         let {isMousePressed, sunbursts} = this.state
         let {center_event} = this
@@ -152,14 +170,14 @@ class InferSunBurst extends React.Component{
                 xDomain={xDomain}
                 yDomain={yDomain}
                 onMouseDown = {event=>{
-                    console.log('MouseDown', event)
+                    // console.log('MouseDown', event)
                     let {isMousePressed} = this.state
                     if (!isMousePressed) {
                         this.setState({isMousePressed: true})
                     }
                 }}
                 onMouseUp = {event=>{
-                    console.log('MouseUp', event)
+                    // console.log('MouseUp', event)
                     let {isMousePressed} = this.state
                     if (isMousePressed) {
                         this.setState({isMousePressed: false})
@@ -208,7 +226,7 @@ class OnePart{
     }
     
     setEvents(events){
-        this.events = events
+        this.all_events = [...events]
         this.loadSunBurstData()
     }
 
@@ -289,7 +307,7 @@ class OnePart{
                 return []
             }
             tsne.initDataRaw(vecs);  //这里用dist会出问题
-            for(var k = 0; k < 0; k++) {
+            for(var k = 0; k < 5; k++) {
                 tsne.step();
             }
 
@@ -459,12 +477,12 @@ class OnePart{
     }
 
     setState(update_state){
-        console.log('set State')
+        // console.log('set State')
         let prefix = this.part_index
         let temp_state = {}
         for(let key in update_state)
             temp_state[prefix+'-'+key] = update_state[key]
-        console.log(temp_state)
+        // console.log(temp_state)
         this.parent_component.setState(temp_state)
     }
 
@@ -473,7 +491,7 @@ class OnePart{
         const prefix = this.part_index
         const {parent_component} = this
         const parent_state = parent_component.state
-        console.log(parent_component.state, prefix)
+        // console.log(parent_component.state, prefix)
         // console.log(parent_component.state)
         for(let key in parent_state){
             if (key.indexOf('-')===-1 ) {
@@ -483,7 +501,7 @@ class OnePart{
                 self_state[temp_key] = parent_state[key]
             }
         }
-        console.log(self_state)
+        // console.log(self_state)
         return self_state
     }
 
@@ -491,7 +509,8 @@ class OnePart{
     drag_value = undefined
     filter_values = []
 
-    render(all_objects){
+    need_forward = true
+    render( ){
         const {center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
 
         let {
@@ -502,10 +521,12 @@ class OnePart{
             mouse_postion,
             isMousePressed,
         } = this.getState()
-        console.log(part_index, label_data)
+        // console.log(this.all_events)
+        // console.log(part_index, label_data)
         let component_array = []
         let rules = ruleManager.rules
         
+        // console.log(label_data, part_index)
         // console.log(mouseover_value, filter_values, rules)
         // console.log(label_data, event_mark_data, filter_values, rules)
         this.all_values = [...label_data, ...event_mark_data, ...filter_values, ...rules]
@@ -543,16 +564,19 @@ class OnePart{
                             // console.log(mouseover_value, former_click_value)
                             // 这里的代码可以简化
                             if (mouseover_value.node_type==='filter_object' && former_click_value.node_type==='filter_object') {
-                                ruleManager.create([mouseover_value, former_click_value])
+                                ruleManager.create([mouseover_value, former_click_value])   
+                                this.need_forward = true   //需要先后更新
                                 this.former_click_value = undefined
                                 mouseover_value = undefined
                             }else if (mouseover_value.node_type==='filter_object' && former_click_value.node_type==='rule') {
                                 ruleManager.create([mouseover_value, former_click_value])
+                                this.need_forward = true
                                 this.former_click_value = undefined
                                 mouseover_value = undefined
                                 // console.log(rules)
                             }else if (mouseover_value.node_type==='rule' && former_click_value.node_type==='filter_object') {
                                 ruleManager.create([mouseover_value, former_click_value])
+                                this.need_forward = true
                                 this.former_click_value = undefined
                                 mouseover_value = undefined
                                 // console.log(rules)
@@ -565,33 +589,40 @@ class OnePart{
             const {drag_value}  = this
             if(drag_value && former_isMousePressed){
                 drag_value.x = mouse_postion[0]
-                drag_value.y = mouse_postion[1]                
+                drag_value.y = mouse_postion[1]              
             }
             this.former_isMousePressed = true   
         }else{
             let {drag_value} = this
             if (drag_value && drag_value.node_type!=='filter_object') {
-                // console.log(drag_value.x, center_x, r, center_x+r, drag_value.node_type)
                 if (drag_value.x>(center_x+r) && drag_value.node_type==='related_object') {
                     let {filter_values} = this
-                    let filter_value = dictCopy(drag_value)
-                    
-                    filter_value.node_type = 'filter_object'
-                    filter_values.push(filter_value)
-                    filter_value.rotation = 0
-                    filter_value.x = center_x + r  + 0.1*filter_values.length
-                    filter_value.y = center_y + r - 0.1*(filter_values.length+1)
 
-                    this.filter_values = filter_values
-                    // console.log(drag_value)
-                    ruleManager.create([filter_value])
+                    let findIndex = filter_values.findIndex(elm=> elm.object_id===drag_value.object_id)
+                    if (findIndex===-1) {
+                        // console.log(part_index, filter_values)
+                        let filter_value = dictCopy(drag_value)
+                        
+                        filter_value.node_type = 'filter_object'
+                        filter_values.push(filter_value)
+                        filter_value.rotation = 0
+                        filter_value.x = center_x + r  + 0.1*filter_values.length
+                        filter_value.y = center_y + r - 0.1*(filter_values.length+1)
+
+                        this.filter_values = filter_values
+                        // console.log(drag_value)
+                        ruleManager.create([filter_value])
+                        this.need_forward = true                        
+                    }
                 }
                 drag_value.x = drag_value.origin_x
                 drag_value.y = drag_value.origin_y
             }
-            this.drag_value = undefined
+            if (former_isMousePressed) {
+                this.setState({mouseover_value: undefined})
+            }
+            this.drag_value = undefined   
             this.former_isMousePressed = false
-            this.mouseover_value = undefined
         }
 
         let label_style =  {
@@ -678,6 +709,67 @@ class OnePart{
             allowOffsetToBeReversed/>
         )
         
+        // 拖出来的实体之间的关系
+        let filter_values_links = {}
+        this.left_events.forEach(event=>{
+            let objects = event.getAllObjects()
+            let object_ids = objects.map(elm=> elm.id)
+            filter_values.forEach(elm1=>{
+                let id1 = elm1.object_id
+                filter_values.forEach(elm2=>{
+                    let id2 = elm2.object_id
+                    if (elm1===elm2) {
+                        return
+                    }
+                    // console.log(object_ids, id1, id2)
+                    if (object_ids.includes(id1) && object_ids.includes(id2)) {
+                        // console.log('jas')
+                        filter_values_links[id1] = filter_values_links[id1] || {}
+                        filter_values_links[id2] = filter_values_links[id2] || {}
+                        filter_values_links[id1][id2] = filter_values_links[id1][id2] || {
+                            x: elm1.x,
+                            y: elm2.y,
+                            elm1: elm1,
+                            elm2: elm2,
+                            size: 0,
+                            style: {stroke: 'none', fill: 'orange'}
+                        }
+                        filter_values_links[id2][id1] =filter_values_links[id2][id1] || {
+                            x: elm2.x,
+                            y: elm1.y,
+                            elm1: elm2,
+                            elm2: elm1,
+                            size: 0,
+                            style: {stroke: 'none', fill: 'orange'}
+                        }
+                        filter_values_links[id1][id2].size++
+                        filter_values_links[id2][id1].size++
+                    }
+                })
+            })
+        })
+        let filter_values_links_data = []
+        for (let key1 in filter_values_links) {
+            for(let key2 in filter_values_links[key1]){
+                let elm = filter_values_links[key1][key2]
+                if (elm.y< (2.1-(elm.x-center_x)+center_y)) {
+                    filter_values_links_data.push(elm)
+                }
+                // filter_values_links_data.push(elm)
+            }
+        }
+        console.log(mouseover_value)
+        // console.log(filter_values_links_data, filter_values_links)
+        component_array.push(
+            <CustomSVGSeries
+            sizeRange={[5,10]}
+            key={part_index + '-filter_values_links'}
+            // className="custom-marking"
+            customComponent="square"
+            data={filter_values_links_data}/>
+        )
+
+        // 实体之间的连线
         let links_datas = []
         let show_event_mark_data = []
         if (mouseover_value && (mouseover_value.node_type==='filter_object' ||  mouseover_value.node_type==='related_object')) {
@@ -790,11 +882,13 @@ class RuleManager{
             console.warn('ruleManager', this.rules, '查都没有')
             return []
         }
+        // console.log(results)
         let final_result = results[0]
         for (let index = 1; index < results.length; index++) {
             const element = results[index];
             final_result = union(final_result, element)
         }
+        // console.log(final_result)
         return final_result
     }
 }
@@ -825,23 +919,18 @@ class Rule{
         this.type = type
         this.need_refresh = true
     }
-    getResultEvents(events){
-        if (this.need_refresh) {
-            this.results = this.calculateResults()
-            this.need_refresh = false
-        }
-        return this.results
-    }
     filter(events){
         const {type, related_objects} = this
         let sub_rules = related_objects.filter(elm=> elm.node_type==='rule')
         let sub_nodes = related_objects.filter(elm=> elm.node_type==='filter_object')
+        // console.log(sub_rules, sub_nodes)
         let results = []
-        sub_rules.forEach(elm=> results.push(elm.calculateResults(events)))
+        sub_rules.forEach(elm=> results.push(elm.filter(events)))
         sub_nodes.forEach(elm=> {
             elm = objectManager.get(elm.object_id)
             let result = events.filter(event=>{
                 let objects = event.getAllObjects()
+                // console.log(objects, elm, objects.includes(elm))
                 if (objects.includes(elm)) {
                     return true
                 }
