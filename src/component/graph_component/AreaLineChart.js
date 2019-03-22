@@ -6,7 +6,7 @@ export default class AreaLineChart extends React.Component {
   constructor(){
     super();
     this.area= d3.area()
-                .curve(d3.curveBasis)
+                // .curve(d3.curveBasis)
   }
   componentDidMount() {
     this.renderArea();

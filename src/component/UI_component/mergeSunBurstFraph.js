@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 import net_work from '../../dataManager/netWork'
 import { Button, Card, Image, Container, Divider, Checkbox, Dropdown, DimmerInner, Menu} from 'semantic-ui-react'
 import tsnejs from '../../dataManager/tsne'
-import InferSunBurst from '../graph_component/inferSunBurst7'
+import InferSunBurst from '../test_component/inferSunBurst7'
 import { autorun } from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 

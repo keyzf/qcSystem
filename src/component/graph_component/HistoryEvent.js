@@ -25,7 +25,7 @@ export default class HistoryEvent extends React.Component {
     let node = this.refs.history;
     this.line.x((d)=>xscale(d.x))
              .y((d)=>d);
-    console.log(this.data);
+    // console.log(this.data);
     d3.select(node)
     .selectAll('.historybubble').remove();
     d3.select(node)

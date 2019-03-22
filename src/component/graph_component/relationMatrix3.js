@@ -123,30 +123,14 @@ class RealtionMatrix extends React.Component{
         let event_array = all_events
         event_array = event_array.filter(elm=> elm.getPeople().length!==1)
         event_array = filtEvents(event_array)
+        event_array = ruleFilter(event_array)
+        // event_array = triggerFilter(event_array)
 
         let people_array = []
         event_array.forEach(event=>{
             people_array = [...people_array, ...event.getPeople()]
         })
         people_array = [...new Set(people_array)]
-        people_array = people_array.sort((a,b)=> b.page_rank-a.page_rank).slice(0, 50)
-
-        // event_array = event_array.filter(event=>{
-        //     let people = event.getPeople()
-        //     let include_num = 0
-        //     for (let index = 0; index < people.length; index++) {
-        //         const person = people[index];
-        //         if (people_array.includes(person)) {
-        //             include_num++
-        //         }
-        //     }
-        //     if (include_num>1) {
-        //         return true
-        //     }
-        //     return false
-        // })
-        // console.log(people_array)
-
         this.people_array = people_array
 
         let relation_rect_data = []
@@ -166,16 +150,10 @@ class RealtionMatrix extends React.Component{
                 return
             }
             people.forEach(p1=>{
-                if (!people_array.includes(p1)) {
-                    return 
-                }
                 people.forEach(p2=>{
-                    if (!people_array.includes(p2)) {
-                        return 
-                    }
-                    if (p1===p2) {
-                        return
-                    }
+                    // if (p1===p2) {
+                    //     return
+                    // }
                     person2person[p1.id][p2.id].events.push(event)
                 })
             })
@@ -468,8 +446,8 @@ class RealtionMatrix extends React.Component{
                         hint_value &&
                         <LabelSeries 
                         data={label_datas}
-                        labelAnchorX= 'end'
-                        labelAnchorY= 'end'
+                        labelAnchorX= 'middle'
+                        labelAnchorY= 'middle'
                         />
                     }
                     {/* <XAxis/>

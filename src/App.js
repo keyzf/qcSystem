@@ -30,6 +30,7 @@ import InferSunBurst2 from './component/graph_component/inferSunBurst6';
 import './main.scss';
 import menu from './static/menu.png';
 import songicon from './static/icon 13.png';
+import '../node_modules/react-vis/dist/style.css'
 // import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
 
 
@@ -168,9 +169,8 @@ class App extends Component {
         </div>
         
         {/* <InferContour/> */}
-        <div style={{top:1100, left:0, position:'absolute'}} >
-          <InferSunBurst2 height={2000} width={3000}/>
-          {/* < MergeSunBurstGraph height={500} width={1920}/> */}
+        <div style={{top:1080, left:0, position:'absolute'}} >
+          <InferSunBurst2 height={540} width={1080}/>
         </div>
         
       </div>

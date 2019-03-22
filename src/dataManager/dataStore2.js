@@ -482,7 +482,17 @@ class Event extends _object{
   // 要有个严格替换的机制
   toText(){
     const {addrs, roles, time_range, trigger} = this
-    const time_text = '[' + time_range[0] + ',' + time_range[1] + ']'
+    let time_text = '[' + time_range[0] + ',' + time_range[1] + ']'
+
+    if (this.isTimeCertain()) {
+      time_text = time_range[0]
+    }else{
+      time_text = time_text.replace('-9999', '')
+      time_text = time_text.replace('9999','')
+      if (time_text==='[,]') {
+        time_text = ''
+      }      
+    }
     let  addr_text = addrs.map(addr=> addr.name).join(',')
     addr_text = addr_text!==''? '于' + addr_text : addr_text
     let main_person = '未知人物', second_person = '未知人物', third_roles = []
@@ -508,8 +518,8 @@ class Event extends _object{
     }else{
       person_text += trigger_name + (second_person==='未知人物'?'':second_person)
     }
-    
-    return '【' + this.id + '】' + (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
+    // '【' + this.id + '】' + 
+    return (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
   }
   
   toDict(){
@@ -641,7 +651,7 @@ class Person extends _object{
 
 
   toText(){
-    let text = '(' + this.id + ')' + this.getName()
+    let text = '(' + this.id + ')' + this.getName() + ' ' + this.certain_event_num + '/' + this.event_num
     // text += '['
     // if (isValidYear(this.birth_year))
     //   text += this.birth_year
@@ -650,7 +660,7 @@ class Person extends _object{
     //   text += this.death_year
     // text += ']  '
     // text += this.certain_event_num + '/' + this.event_num
-    return text
+    return  text
   }
 
   getName(){
@@ -876,7 +886,7 @@ const arrayAdd = (arr1, arr2)=> {
   if (!arr2) {
     return arr1
   }
-  if (arr1.length!=arr2.length) {
+  if (arr1.length!==arr2.length) {
     console.warn(arr1, arr2, '没有对齐')
   }
   return arr1.map((elm,index)=> elm+arr2[index])
@@ -908,7 +918,7 @@ const meanVec = (objects)=>{
   return vec.map(elm=> elm/objects.length)
 }
 const normalizeVec = (vecs)=>{
-  if (vecs.length==0) {
+  if (vecs.length===0) {
     return []
   }
   let vec_length = vecs[0].length
@@ -1000,8 +1010,10 @@ const intersect = (a1,a2) => {
  }
 
 const difference = (a1,a2) => {
-  a2 = new Set(a2)
-  return [...new Set(a1.filter(x => !a2.has(x)))]
+  let temp_a2 = new Set(a2)
+  let temp_a1 = new Set(a1)
+  let results = [...a1.filter(x => !temp_a2.has(x)), ...a2.filter(x => !temp_a1.has(x))]
+  return [...new Set(results)]
 }
 
 
