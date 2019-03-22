@@ -26,7 +26,7 @@ export default class Axis extends React.Component {
     render() {
       let {width} = this.props;
       return (<g className="axis" ref="axis" transform={this.props.translate}>
-        <rect width={width} height={25} x={0} y={0} fill={'#ebebeb'}></rect>
+        <rect width={width} height={23} x={0} y={0} fill={'#ebebeb'}></rect>
       </g>);
     }
   }

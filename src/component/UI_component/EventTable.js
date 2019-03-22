@@ -15,6 +15,7 @@ import placeIcon from './static/icon 8.png';
 import peopleIcon from './static/icon 9.png';
 import eventIcon from './static/icon 10.png';
 import fromIcon from './static/icon 11.png';
+import sortIcon from './static/icon 12.png';
 
 export default class EventTable extends React.Component{
   constructor(){
@@ -99,30 +100,35 @@ export default class EventTable extends React.Component{
               onClick={this.handleSort('time')} width="14%"
             >
             <img src={timeIcon}/>
+            <img src={sortIcon}/>
             </th>
             <th
               sorted={column === 'place' ? direction : null}
               onClick={this.handleSort('place')} width="16%"
             >
             <img src={placeIcon}/>
+            <img src={sortIcon}/>
             </th>
             <th
               sorted={column === 'people' ? direction : null}
               onClick={this.handleSort('people')} width="24%"
             >
             <img src={peopleIcon}/>
+            <img src={sortIcon}/>
             </th>
             <th
               sorted={column === 'event' ? direction : null}
               onClick={this.handleSort('event')} width="24%"
             >
             <img src={eventIcon}/>
+            <img src={sortIcon}/>
             </th>
             <th
               sorted={column === 'from' ? direction : null}
               onClick={this.handleSort('from')} width="22%"
             >
             <img src={fromIcon}/>
+            <img src={sortIcon}/>
             </th>
           </tr>
         </thead>

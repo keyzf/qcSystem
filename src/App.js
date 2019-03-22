@@ -30,6 +30,8 @@ import InferSunBurst2 from './component/graph_component/inferSunBurst6';
 import './main.scss';
 import menu from './static/menu.png';
 import songicon from './static/icon 13.png';
+import maplogo from './static/maplogo.png';
+import '../node_modules/react-vis/dist/style.css';
 // import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
 
 
@@ -153,7 +155,15 @@ class App extends Component {
         {/* 新的推理视图 */}
         <div id="footer">
           <div id="mapview">
-            <header>Inference Tree Map</header>
+            <div className="header">
+              <div className="headerlogo">
+                <img src={maplogo}/>
+              </div>
+              <div className="headerText">
+                <span>行迹</span>
+                <span>Map View</span>
+              </div>
+            </div>
             <Map selected_people={this.state.selected_people}/>
           </div>
           <div id="matrixview">

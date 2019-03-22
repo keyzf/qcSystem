@@ -28,10 +28,10 @@ export default class PersonInfo extends React.Component{
           <h3>{selected_people?selected_people.en_name:''}</h3>
           <p><span>性别 </span><span>{selected_people?selected_people.getGender():''}</span></p>
           <p><span>民族 </span><span>{selected_people?selected_people.getEthnicity():''}</span></p>
-          <p><span>别名 </span><span>{selected_people?selected_people.getAltNames().join(','):''}</span></p>
+          <p><span>别名 </span><span>{selected_people?selected_people.getAltNames().splice(0,2).join(','):''}</span></p>
           {/* <p><span>祖籍 </span><span></span></p> */}
           <p><span>生卒年 </span><span>{selected_people?selected_people.birth_year+'-'+selected_people.death_year:''}</span></p>
-          <p><span>身份 </span><span>{selected_people?selected_people.getStatus().join(','):''}</span></p>
+          <p><span>身份 </span><span>{selected_people?selected_people.getStatus().splice(0,3).join(','):''}</span></p>
         </div>
       </div>
     )

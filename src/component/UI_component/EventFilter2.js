@@ -111,9 +111,9 @@ class EventFilter  extends Component {
                         return (
                         <li key={parent_type}>
                             <div>
-                                <div class="squaredThree">
+                                <div className="squaredThree">
                                     <input type="checkbox" id={`squaredThree${i}`} onChange={(e)=>this.onChange(e,'parent_type',parent_type)} checked={check_box2checked[parent_type]}></input>
-                                    <label for={`squaredThree${i}`} ></label>
+                                    <label htmlFor={`squaredThree${i}`} ></label>
                                 </div>
                                 <label className="labelName">{parent_type}</label>
                                 {/* <span id="rs-bullet" class="rs-label">0</span> */}

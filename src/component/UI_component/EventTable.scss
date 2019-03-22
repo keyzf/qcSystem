@@ -61,8 +61,13 @@
             vertical-align: middle;
             border: 1px solid rgba($color: #ababab, $alpha: 0.7);
             img{
-              vertical-align: middle;
-              width:8px;
+              vertical-align: center;
+              height:12px;
+            }
+            img:last-child{
+              float: right;
+              height: 8px;
+              margin-top: 6px;
             }
           }
         }

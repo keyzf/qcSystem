@@ -1,0 +1,28 @@
+#historytip{
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+  border-radius: 3px;
+  display: grid;
+  grid-auto-rows: 24px 1fr;
+  font-family: 'STKaiti';
+  color: #ffffff;
+  div:first-child{
+    padding: 3px 8px;
+    background: rgba(0,0,0,0.6);
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 471px;
+    font-weight: 600;
+    font-size: 14px;
+    padding-right: 5px;
+    img{
+      width: 18px;
+      display: float;
+      float: right;
+    }
+  }
+  div:last-child{
+    padding: 3px 10px;
+    overflow-y: scroll;
+  }
+}

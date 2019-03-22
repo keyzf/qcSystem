@@ -5,6 +5,9 @@ import * as d3 from 'd3';
 import Places from './Places';
 import song from './static/song.json';
 import {autorun} from 'mobx';
+import route from './static/route.png';
+import legend from './static/legend.png';
+import './style/map.scss';
 
 class Map extends React.Component {
   constructor (props) {
@@ -16,9 +19,9 @@ class Map extends React.Component {
       };
       this.init = this.init.bind(this);
       // 定义地图投影
-      this.projection = d3.geoEquirectangular()
+      this.projection = d3.geoMercator()
                           .center([110, 29])
-                          .scale(850)
+                          .scale(760)
                           .translate([props.width / 2, props.height / 2]);
       // 定义地理路径生成器
       this.path = d3.geoPath()
@@ -26,11 +29,8 @@ class Map extends React.Component {
       this.colors = d3.scaleOrdinal(d3.schemeAccent);
       this.handleMouseOver = this.handleMouseOver.bind(this);
       this.rscale = d3.scaleLinear()
-                      .domain([1,10])
-                      .range([3,10])
-      this.zoom = d3.zoom()
-                    .scaleExtent([0.5, 9])
-                    .on("zoom", this.zoomed.bind(this));
+                      .domain([1,20])
+                      .range([2,8])
   }
   _getSelectedEvent = autorun(()=>{
     if(stateManager.is_ready){
@@ -47,19 +47,18 @@ class Map extends React.Component {
   componentDidMount(){
     this.init();
     this.handleMouseOver();
-    d3.select(this.refs.geomap)
-      .call(this.zoom)
+    let map = this.refs.map;
+    d3.select(map)
+      .call(d3.zoom()
+              .on("zoom", function(){
+                d3.select(map).select('.child').attr('transform',d3.event.transform)
+            }))
   }
 
   componentDidUpdate(){
-    d3.select(this.refs.geomap)
-      .call(this.zoom)
+
   }
   
-  zoomed(){
-    let node = this.refs.map;
-    // d3.select(node).attr('transform',d3.event.transform)
-  }
   static get defaultProps() {
     return {
       width: 450,
@@ -92,7 +91,7 @@ class Map extends React.Component {
           console.log(targetdata)
           let addr=`地点：${targetdata.addr.name} ${targetdata.event.map(d=>d.toText())}`;
           let pos = d3.mouse(node);
-          d3.select(node).select('foreignObject')
+          d3.select('#maptip')
             .attr('visibility','visible')
             .attr('x',pos[0])
             .attr('y',pos[1])
@@ -115,20 +114,28 @@ class Map extends React.Component {
       <div className='geomap'>
         <svg width={width} height={height}>
           <g ref="map">
-            <g ref='geomap'>
-            </g>
-            <g ref="places">
-              <foreignObject x="20" y="22" width="120" height="100" visibility="hidden">
-                <div style={{width:120,height:100,position:'absolute',backgroundColor:'rgba(100,100,100,0.4)',borderRadius:'5px',overflowY:'scroll'}}>
-                  <span></span>
-                </div>
-              </foreignObject >
-              {selected_people.map((person,i)=>{
-                console.log(this.colors(i));
-                return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale}/>
-              })}
+            <g className="child">
+              <g ref='geomap'>
+              </g>
+              <g ref="places">
+                <foreignObject id="maptip" x="20" y="22" width="120" height="100" visibility="hidden">
+                  <div style={{width:120,height:100,position:'absolute',backgroundColor:'rgba(100,100,100,0.4)',borderRadius:'5px',overflowY:'scroll'}}>
+                    <span></span>
+                  </div>
+                </foreignObject >
+                {selected_people.map((person,i)=>{
+                  console.log(this.colors(i));
+                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale}/>
+                })}
+              </g>
             </g>
           </g>
+          <foreignObject id="mapLegend" x="10" y="5" width="140" height="80">
+            <div>
+              <div><img src={legend}/><span>1-20(次)</span></div>
+              <div><span>行进路线</span><img src={route}/></div>
+            </div>
+          </foreignObject >
         </svg>
       </div>
     );

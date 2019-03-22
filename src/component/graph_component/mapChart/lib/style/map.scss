@@ -5,3 +5,35 @@
   background-color:'rgba(100,100,100,0.4)';
   border-radius: 5px;
 }
+#mapLegend{
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(200,200,200,0.5);
+  border-radius:6px;
+  width:120px;
+  height:48px;
+  position:absolute;
+  div{
+    display:grid;
+    grid-template-columns: 45px 70px;
+    height:100%;
+    padding:2px;
+    div:last-child{
+      img{
+        margin-left:35px;
+        margin-top:4px;
+      }
+      span{
+        position:absolute;
+      }
+    }
+  }
+  img{
+    display:inline;
+    position:absolute;
+  }
+  span{
+    font-family: 'STKaiti';
+    font-size: 10px;
+    margin-top:20px;
+  }
+}
