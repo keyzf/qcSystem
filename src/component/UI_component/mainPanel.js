@@ -9,6 +9,7 @@ import logo from './static/mountain.png';
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
 import HistoryEvent from '../graph_component/HistoryEvent';
+import EventTooltip from './eventTooltip';
 
 // 界面的上半部分
 // @observer
@@ -208,6 +209,9 @@ class MainPanel extends Component {
               }
               </g>
               <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
+              <foreignObject x="20" y="22" width="200" height="140" visibility={'visible'}>
+              {/* <EventTooltip/> */}
+              </foreignObject>
             </svg>
           </div>
       </div>

@@ -370,6 +370,7 @@ class LifeLikePaint extends Component{
         if(selected_prob_year){
             prob_mark_data = prob_mark_data[selected_prob_year];
         }
+        console.log(relationLines);
         return (
             <g ref="svg" width={width} height={height}>
                 <g transform={transform}>
