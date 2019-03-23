@@ -32,6 +32,7 @@ export default class AreaLineChart extends React.Component {
   }
 
   calculatePos() {
+    console.log(this.data);
     let {data,translate,viewType,selected_person} = this.props;
     console.log(data);
     if(this.data===0&&data.length!==0&&data[0].length!==0){

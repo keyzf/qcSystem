@@ -364,13 +364,15 @@ class LifeLikePaint extends Component{
     }
 
     onMouseOver = (value,pos) => {
-        let {height,uncertainHeight}= this.props;
+        let {height,uncertainHeight,width}= this.props;
         this.setState({
           chooseEvent : value,
         })
+        let x= pos[0]+10;
+        if(pos[0]+10+160>width) x = pos[0]-180;
         d3.select(this.refs.svg).select('#bubbleEventTooltip')
           .attr('visibility', 'visible')
-          .attr('x',pos[0])
+          .attr('x',x)
           .attr('y', pos[1]+height-uncertainHeight-100)
     }
     onMouseOut = () =>{

@@ -107,7 +107,7 @@ class MainPanel extends Component {
     // const padding_botton = 20, padding_right = 10
     // console.log(selected_people);
     let lifeLikePaint_height = (height-30)/(selected_people.length===0?1:selected_people.length);
-    lifeLikePaint_height = lifeLikePaint_height>210?lifeLikePaint_height:210;
+    lifeLikePaint_height = lifeLikePaint_height>160?lifeLikePaint_height:160;
     let min = 9999;
     let max = -9999;
     selected_people.forEach((person)=>{
@@ -148,7 +148,7 @@ class MainPanel extends Component {
           </div>
         </div>
           <div className="lineChart" style={{height:height}}>
-            <svg ref="svg" width={chart_width} height={height-10}>
+            <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)+20}>
               <defs>
               <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
                 <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
