@@ -36,12 +36,14 @@ export default class HistoryEvent extends React.Component {
     let node = this.refs.history;
     this.line.x((d)=>xscale(d.x))
              .y((d)=>d);
-    // console.log(this.data);
-    d3.select(node)
-    .selectAll('.historybubble').remove();
-    d3.select(node)
+    console.log(this.data);
+
+    let datadom = d3.select(node)
       .selectAll('.historybubble')
-      .data(this.data)
+      .data(this.data);
+    datadom.exit().remove();
+    datadom.attr('cx',d=>xscale(d.x))
+    datadom
       .enter()
       .append('circle')
       .attr('class','historybubble')
@@ -58,7 +60,7 @@ export default class HistoryEvent extends React.Component {
             .attr('y1',15)
             .attr('y2',height-uncertainHeight+15)
             .attr('style',"stroke:rgba(99,99,99,0.6);stroke-width:2;stroke-dasharray:6")
-          d3.select('foreignObject').attr('x',()=>{
+          d3.select(node).select('foreignObject').attr('x',()=>{
             if(xscale(d.x)>780) return xscale(d.x)-480;
             else return xscale(d.x)+10;
           }).attr('visibility','visible');
@@ -83,13 +85,13 @@ export default class HistoryEvent extends React.Component {
         if(!this.selected){
           d3.select(node).selectAll('line')
             .attr('visibility','hidden');
-          d3.select('foreignObject').attr('visibility','hidden');
+          d3.select(node).select('foreignObject').attr('visibility','hidden');
         }
       })
       .on('mousedown',(d)=>{
         d3.select(node).selectAll('line')
         .attr('visibility','visible');
-        d3.select('foreignObject').attr('visibility','visible');
+        d3.select(node).select('foreignObject').attr('visibility','visible');
         this.selected = 1;
       })
   }
@@ -98,7 +100,7 @@ export default class HistoryEvent extends React.Component {
     let node = this.refs.history;
     d3.select(node).selectAll('line')
       .attr('visibility','hidden');
-    d3.select('foreignObject').attr('visibility','hidden');
+    d3.select(node).select('foreignObject').attr('visibility','hidden');
     this.selected = 0;
   }
 

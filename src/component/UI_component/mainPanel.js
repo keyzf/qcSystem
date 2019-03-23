@@ -28,7 +28,9 @@ class MainPanel extends Component {
     // .translateExtent([[0, 0], [width - padding.left - padding.right, height - padding.top - padding.bottom]])
     .on("zoom", this.zoomed.bind(this));
     this.changeViewType=this.changeViewType.bind(this);
-    this.all_events=[]
+    this.handleEventMarkClick = this.handleEventMarkClick.bind(this);
+    this.all_events=[];
+
   }
 
   _changeShowPeople = autorun(()=>{
@@ -69,7 +71,7 @@ class MainPanel extends Component {
 
   changeViewType=()=>{
     this.setState({
-        checked: !this.state.checked
+        checked: !this.state.checked,
     });
   }
 
@@ -78,6 +80,13 @@ class MainPanel extends Component {
       zoomTransform: d3.event.transform
     });
   }
+
+  
+  handleEventMarkClick = value => {
+    const event = eventManager.get(value.id)
+    stateManager.setSelectedEvent(event)
+  }
+
   static get defaultProps() {
     return {
       width: 1920,
@@ -202,6 +211,7 @@ class MainPanel extends Component {
                       selected_person={person} 
                       calcualte_method={calcualte_method}
                       uncertainHeight={uncertainHeight}
+                      handleEventMarkClick={this.handleEventMarkClick}
                       line={this.line}/>
                   </g>
                 )

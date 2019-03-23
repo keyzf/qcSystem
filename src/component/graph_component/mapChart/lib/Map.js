@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import Places from './Places';
 import song from './static/song.json';
 import {autorun} from 'mobx';
+import EventTooltip from '../../../UI_component/eventTooltip';
 import route from './static/route.png';
 import legend from './static/legend.png';
 import './style/map.scss';
@@ -15,7 +16,8 @@ class Map extends React.Component {
       this.state = {
         selected_people:[],
         places: [],
-        event: undefined
+        event: undefined,
+        chooseEvent: undefined,
       };
       this.init = this.init.bind(this);
       // 定义地图投影
@@ -28,6 +30,7 @@ class Map extends React.Component {
                     .projection(this.projection);
       this.colors = d3.scaleOrdinal(d3.schemeAccent);
       this.handleMouseOver = this.handleMouseOver.bind(this);
+      this.closePopup = this.closePopup.bind(this);
       this.rscale = d3.scaleLinear()
                       .domain([1,20])
                       .range([2,8])
@@ -89,40 +92,39 @@ class Map extends React.Component {
         if(target.node().tagName==='circle'){
           let targetdata = target.datum();
           console.log(targetdata)
-          let addr=`地点：${targetdata.addr.name} ${targetdata.event.map(d=>d.toText())}`;
           let pos = d3.mouse(node);
-          d3.select('#maptip')
-            .attr('visibility','visible')
+          this.setState({
+            chooseEvent : targetdata,
+          })
+          d3.select('#geomap').select('#mapEventTooltip')
+            .attr('visibility', 'visible')
             .attr('x',pos[0])
-            .attr('y',pos[1])
-            .select('div')
-            .select('span')
-            .text(addr)
+            .attr('y', pos[1])
         }
       })
       .on('mouseout',()=>{
-        d3.select(node).select('foreignObject')
-        .attr('visibility','hidden')
+        d3.select('#geomap').select('#mapEventTooltip')
+          .attr('visibility','hidden')
       })
   }
+
+  closePopup(){
+    d3.select('#geomap').select('#mapEventTooltip').attr('visibility','hidden');
+  }
+
   render () {
     let {width,height}= this.props;
-    let {selected_people} = this.state;
+    let {selected_people,chooseEvent} = this.state;
     this.colors.domain([0,selected_people.length]);
     // console.log(selected_people)
     return (
-      <div className='geomap'>
+      <div id='geomap'>
         <svg width={width} height={height}>
           <g ref="map">
             <g className="child">
               <g ref='geomap'>
               </g>
               <g ref="places">
-                <foreignObject id="maptip" x="20" y="22" width="120" height="100" visibility="hidden">
-                  <div style={{width:120,height:100,position:'absolute',backgroundColor:'rgba(100,100,100,0.4)',borderRadius:'5px',overflowY:'scroll'}}>
-                    <span></span>
-                  </div>
-                </foreignObject >
                 {selected_people.map((person,i)=>{
                   console.log(this.colors(i));
                   return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale}/>
@@ -136,6 +138,9 @@ class Map extends React.Component {
               <div><span>行进路线</span><img src={route}/></div>
             </div>
           </foreignObject >
+          <foreignObject id="mapEventTooltip" x="20" y="22" width="200" height="140" visibility={'hidden'}>
+            <EventTooltip event={chooseEvent} closePopup={this.closePopup}/>
+          </foreignObject>
         </svg>
       </div>
     );

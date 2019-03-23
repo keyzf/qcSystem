@@ -27,12 +27,12 @@ export default class PersonInfo extends React.Component{
         </div>
         <div className="infoContent">
           <h3>{selected_people?selected_people.en_name:''}</h3>
-          <p><span>{IS_EN?'Gender':'性别'}: </span><span>{selected_people?selected_people.getGender():''}</span></p>
-          <p><span>{IS_EN?'Ethnicity tribe':'民族'}: </span><span>{selected_people?selected_people.getEthnicity():''}</span></p>
-          <p><span>{IS_EN?'Aliases':'别名'}: </span><span>{selected_people?selected_people.getAltNames().splice(0,2).join(','):''}</span></p>
+          <p><span className="nameString">{IS_EN?'Gender':'性别'}: </span><span>{selected_people?selected_people.getGender():''}</span></p>
+          <p><span className="nameString">{IS_EN?'Ethnicity tribe':'民族'}: </span><span>{selected_people?selected_people.getEthnicity():''}</span></p>
+          <p><span className="nameString">{IS_EN?'Aliases':'别名'}: </span><span>{selected_people?selected_people.getAltNames().splice(0,2).join(','):''}</span></p>
           {/* <p><span>祖籍 </span><span></span></p> */}
-          <p><span>{IS_EN?'Death/Birth year':'生卒年'}: </span><span>{selected_people?selected_people.birth_year+'-'+selected_people.death_year:''}</span></p>
-          <p><span>{IS_EN?'Social status':'社会区分'}: </span><span>{selected_people?selected_people.getStatus().splice(0,3).join(','):''}</span></p>
+          <p><span className="nameString">{IS_EN?'Death/Birth year':'生卒年'}: </span><span>{selected_people?selected_people.birth_year+'-'+selected_people.death_year:''}</span></p>
+          <p><span className="nameString">{IS_EN?'Social status':'社会区分'}: </span><span>{selected_people?selected_people.getStatus().splice(0,3).join(','):''}</span></p>
         </div>
       </div>
     )

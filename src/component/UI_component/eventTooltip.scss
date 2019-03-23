@@ -5,13 +5,13 @@
   grid-auto-rows: 24px 1fr;
   font-family: 'STKaiti';
   color: #ffffff;
-  div:first-child{
+  .tooltipHeader{
     padding: 3px 8px;
     background: rgba(0,0,0,0.6);
     border-radius: 5px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    width: 471px;
+    width: 161px;
     font-weight: 600;
     font-size: 14px;
     padding-right: 5px;
@@ -21,11 +21,25 @@
       float: right;
     }
   }
-  div:last-child{
+  .tipContent{
     padding: 3px 10px;
-    overflow-y: scroll;
-    .tipContent{
-      
+    overflow-y: auto;
+    display:grid;
+    div{
+      height: 25px;
+      img{
+        height: 16px;
+        width: 14px;
+        margin:4px 2px;
+      }
+      span{
+        width: 112px;
+        display: inline-block;
+        border-bottom: 1px solid #ffffff;
+        margin-bottom: 4px;
+        margin-left: 4px;
+        margin-right: 4px;
+      }
     }
   }
 }

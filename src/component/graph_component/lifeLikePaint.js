@@ -11,6 +11,7 @@ import AreaLineChart from './AreaLineChart';
 import BubbleChart from './BubbleChart';
 import EventChart from './EventChart';
 import MountainChart from './MountainChart';
+import EventTooltip from '../UI_component/eventTooltip';
 import './lifeLikePaint.scss';
 
 // 2019/2/25 线换成area，但是计算似乎出现了巨大的问题
@@ -35,9 +36,13 @@ class LifeLikePaint extends Component{
                 title: ''
             },
             trigger_label_data: [],
-            relationLines:{}
+            relationLines:{},
+            chooseEvent: undefined,
+            triggerName: new Set(),
         }
-        this.handleEventMarkClick = this.handleEventMarkClick.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+        this.closePopup = this.closePopup.bind(this);
     }
 
     _onEventFilterChange = autorun(()=>{
@@ -249,12 +254,14 @@ class LifeLikePaint extends Component{
         let year2events = eventManager.array2year2events(all_events)
         // 找到出生和死亡
         let birth_event = undefined, death_event = undefined
+        let triggerName = new Set();
         all_events.forEach(event=>{
             if (event.trigger.name==='出生') {
                 birth_event = event
             }else if (event.trigger.name==='死亡') {
                 death_event = event
             }
+            triggerName.add(event.trigger.name);
         })
 
         let years = Object.keys(year2events).map(year=> parseInt(year))
@@ -333,7 +340,7 @@ class LifeLikePaint extends Component{
         }
         area_datas = area_datas.filter(line_data=> area_datas.length>0)
         // console.log(area_datas)
-        this.setState({area_datas: area_datas})
+        this.setState({area_datas: area_datas,triggerName:triggerName})
     }
 
     
@@ -342,11 +349,6 @@ class LifeLikePaint extends Component{
           width: 800,
           height: 600,
         };
-    }
-
-    handleEventMarkClick = value => {
-        const event = eventManager.get(value.id)
-        stateManager.setSelectedEvent(event)
     }
 
     handleSelectBarChange = (event, {checked, my_type, label})=>{
@@ -366,10 +368,29 @@ class LifeLikePaint extends Component{
         this.loadLifeLineData(selected_person)         
     }
 
+    onMouseOver = (value,pos) => {
+        let {height,uncertainHeight}= this.props;
+        this.setState({
+          chooseEvent : value,
+        })
+        d3.select(this.refs.svg).select('#bubbleEventTooltip')
+          .attr('visibility', 'visible')
+          .attr('x',pos[0])
+          .attr('y', pos[1]+height-uncertainHeight-100)
+    }
+    onMouseOut = () =>{
+        d3.select(this.refs.svg).select('#bubbleEventTooltip')
+          .attr('visibility', 'hidden')
+    }
+
+    closePopup(){
+        d3.select(this.refs.svg).select('#bubbleEventTooltip').attr('visibility','hidden');
+    }    
+
     render(){
-        const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, uncertainHeight} = this.props
+        const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, uncertainHeight, handleEventMarkClick} = this.props
         console.log('render lifeLikePaint 主视图', area_datas)
-        let {area_datas, relationLines, prob_mark_data, selected_prob_year} = this.state
+        let {area_datas, relationLines, prob_mark_data, selected_prob_year, triggerName, chooseEvent } = this.state
         this.yscale.domain([0,this.maxy_sum])
                    .range([height-uncertainHeight,30]);
         if(selected_prob_year){
@@ -378,15 +399,29 @@ class LifeLikePaint extends Component{
         return (
             <g ref="svg" width={width} height={height}>
                 <g transform={transform}>
-                    <text x={width-50} y={20}>{selected_person.name}</text>
+                    <g className="triggerName" transform={`translate(${width-10},${10})`}>
+                        {Array.from(triggerName).map((d,i)=>{
+                            return (<text x={-i*20} key={i}>{d}</text>)
+                        })}
+                    </g>
+                    <text className="personName" x={20} y={20}>{selected_person.name}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
                     <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person}></MountainChart>
-                    {/* <BubbleChart data={area_datas[0]?area_datas[0].certain_events:[]} xscale={xscale} translate={`translate(0, ${height-uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart> */}
-                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
+                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></BubbleChart>
+                    <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="140" visibility={'hidden'}>
+                        <EventTooltip event={chooseEvent} name={selected_person.name} closePopup={this.closePopup}/>
+                    </foreignObject>
                 </g>
                 {
                     Object.values(relationLines).map((d,index)=>{
-                        return <path d={line(d.lines)} key={index} stroke="black" strokeWidth={d.count} opacity={0.6} strokeDasharray={"4 1"}></path>
+                        console.log(d.lines);
+                        return (
+                            <g>
+                                <path d={line(d.lines)} stroke={'black'} strokeDasharray={"4 1"}/>
+                                <circle cx={xscale(d.lines[0].x)} cy={height*d.lines[0].person_index-50} r={4} stroke={'#000000'}/>
+                                <circle cx={xscale(d.lines[0].x)} cy={height*d.lines[1].person_index-50} r={4} stroke={'#000000'}/>
+                            </g>
+                        )
                     })
                 }
             </g>
