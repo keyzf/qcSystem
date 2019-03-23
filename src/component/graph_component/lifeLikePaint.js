@@ -190,6 +190,11 @@ class LifeLikePaint extends Component{
 
     loadInferMarkData(){
         const {yearScale, eventNumScale, socre_range} = this
+        const selected_person = this.selected_person
+        if (!selected_person) {
+            console.warn('没有选择的人物')
+            return
+        }
         let birth_year = this.selected_person.birth_year;
         let death_year = this.selected_person.death_year;
         let {all_events} = this

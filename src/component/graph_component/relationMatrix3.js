@@ -30,26 +30,16 @@ class RealtionMatrix extends React.Component{
     min_person_relation_num =  0
     relation_num_list = []
 
-    show_people_num = 9
-    max_people_num = 100
     constructor(){
         super()
         this.state = {
             events_rect_data : [],
+            trigger_rect_data: [],
             hint_value: undefined,
         }
-
     }
 
-    _onInferEventsInput = autorun(()=>{
-        let event_ids = stateManager.relation_event_ids.slice()
-        let events =  event_ids.map(id=> eventManager.get(id))
-        
-        if (events.length>0) {
-            this.all_events = events
-            this.loadMatrix()
-        }
-    })
+      
 
     _onEventFilterChange = autorun(()=>{
         if (stateManager.is_ready) {
@@ -133,26 +123,14 @@ class RealtionMatrix extends React.Component{
         let event_array = all_events
         event_array = event_array.filter(elm=> elm.getPeople().length!==1)
         event_array = filtEvents(event_array)
+        event_array = ruleFilter(event_array)
+        // event_array = triggerFilter(event_array)
 
         let people_array = []
         event_array.forEach(event=>{
             people_array = [...people_array, ...event.getPeople()]
         })
         people_array = [...new Set(people_array)]
-
-        this.max_people_num = people_array.length
-        people_array = people_array.sort((a,b)=> b.page_rank-a.page_rank).slice(0, this.show_people_num)
-        event_array = event_array.filter(event=>{
-            let people = event.getPeople()
-            let num = 0
-            people.forEach(person=>{
-                if (people_array.includes(person)) {
-                    num++
-                }
-            })
-            return num>1
-        })
-
         this.people_array = people_array
 
         let relation_rect_data = []
@@ -172,28 +150,57 @@ class RealtionMatrix extends React.Component{
                 return
             }
             people.forEach(p1=>{
-                if (!people_array.includes(p1)) {
-                    return 
-                }
                 people.forEach(p2=>{
-                    if (!people_array.includes(p2)) {
-                        return 
-                    }
-                    if (p1===p2) {
-                        return
-                    }
+                    // if (p1===p2) {
+                    //     return
+                    // }
                     person2person[p1.id][p2.id].events.push(event)
                 })
             })
         })
 
-        // 做群体发现
+        // 筛掉关系数小于多少的人，也会影响到关系数和小喽喽有关的人，所以有问题
+        let temp_people_array = [...people_array]
+        let min_relation_num = this.min_relation_num, max_relation_num = this.max_relation_num
+
+        people_array = people_array.filter((person, index)=>{
+            let event_list = temp_people_array.map(temp_person=>{
+                return person2person[person.id][temp_person.id].events
+            }).filter(events=> events.length>0)
+            let relation_num = event_list.length
+
+            // let events = all_events.filter(event=> person.isIn(event))
+            if (relation_num<min_relation_num || relation_num>max_relation_num) {
+                // console.warn(person, '非常的孤单')
+            }
+            return relation_num>=min_relation_num && relation_num<=max_relation_num
+        })
+
+        // 去掉没有小喽喽后也出去的人
+        temp_people_array = [...people_array]
+        people_array = people_array.filter((person, index)=>{
+            let event_list = temp_people_array.map(temp_person=>{
+                return person2person[person.id][temp_person.id].events.filter(event=>{
+                    let all_is_in = true
+                    let roles = event.getPeople()
+                    roles.forEach(person=>{
+                        if (!temp_people_array.includes(person))
+                            all_is_in = false
+                    })
+                    return all_is_in
+                })
+            }).filter(events=> events.length>0)
+            let relation_num = event_list.length
+            return relation_num!==0
+        })
+        this.people_array = people_array
         const people_num = people_array.length
         if (people_num===0) {
-            this.setState({events_rect_data: []})
+            this.setState({events_rect_data: [], trigger_rect_data:[]})
             console.log('关系矩阵没人啦')
             return
         }
+
         let links = []
         for(let person_id1 in person2person){
             const p1 = personManager.get(person_id1)
@@ -204,12 +211,14 @@ class RealtionMatrix extends React.Component{
                     const index2 = people_array.findIndex(elm=>elm===p1)
                     const index1 = people_array.findIndex(elm=>elm===p2)
                     if (index1>index2 && index1!==-1 && index2!==-1) {
+                        // console.log(index1, index2)
                         links.push( index1 + '-' + index2)
                     }  
                 }
             }
         }
 
+        // console.log(links)
         net_work.require('getCommunity', {num:people_num, links: links.join(',') })
         .then(data=>{
             let community_data = data.data
@@ -219,6 +228,7 @@ class RealtionMatrix extends React.Component{
                 community2people[group] = community2people[group] || []
                 community2people[group].push(people_array[parseInt(index)])
             }
+            // console.log(community2people, community_data, people_array)
 
             let temp_people_array = [...people_array]
             people_array = people_array.sort((p1,p2)=>{
@@ -243,54 +253,93 @@ class RealtionMatrix extends React.Component{
                         continue
                     }
                     const events = person2person[person_id1][person_id2].events
+                    // console.log(events)
                     if (events.length===0) {
                         continue
                     }
                     const center_x = personScale(p1), center_y = personScale(p2)
-                    let type2color = {
-                        '其它': '#667db6',
-                        '学术': '#2C5364',
-                        '政治': '#FDC830',
-                        '社交': '#ffc3a0',
-                        '著述': '#c0c0aa',
-                        '迁徙': '#FFEFBA',
-                        // '#ACB6E5'
-                    }
-                    let types = Object.keys(type2color)
-                    let parent_types = events.map(elm=> elm.trigger.parent_type)
-                    let counts = {}
-                    parent_types.forEach(elm=>{
-                        counts[elm]= counts[elm] || 0
-                        counts[elm]++
-                    })
-  
-                    let max_type = parent_types[0]
-                    parent_types.forEach(elm=>{
-                        if(counts[max_type]<counts[elm]){
-                            max_type = elm
-                        }
-                    })
-                    // console.log(counts, max_type)
-                    // let main_types = 
-                    // main_types =  types[Math.floor(main_types+0.5)]
-                    // console.log(main_types, type2color[main_types])
-                    const color = d3.color(type2color[max_type]) //.rgb(255, 255, 255)
+                    // if (center_y>center_x) {
+                    //     continue
+                    // }
+                    
+                    const color = d3.rgb(255, 255, 255)
                     let rect_data = {
                         x: center_x - rect_width/2,  //为啥要平移一格呀
                         y: center_y + rect_width/2,
                         x0: center_x + rect_width/2,
                         y0: center_y - rect_width/2,
-                        color: color, //.darker([events.length+1]),
-                        event_ids: events.map(event=>event.id),
+                        color: color.darker([events.length+1]),
+                        events_id: events.map(event=>event.id),
                         person_x_id: p1.id,
                         person_y_id: p2.id 
                     }
 
+                    // console.log(rect_data,p1.name, p2.name)
                     relation_rect_data.push(rect_data)
                     now_events = [...now_events, ...events]
                 }
             }
-            this.setState({events_rect_data: relation_rect_data})
+            let trigger_rect_data = []
+
+            // 生成对偶矩阵
+            // now_events = [...new Set(now_events)]
+            // let trigger2triggers = {}
+            // let triggers = [...new Set(now_events.map(event=> event.trigger))]
+            // this.trigger_array = triggers
+            // triggers.forEach(trigger1=>{
+            //     trigger2triggers[trigger1.id] = {}
+            //     triggers.forEach(trigger2=>{
+            //         trigger2triggers[trigger1.id][trigger2.id] = []
+            //     })
+            // })
+            // for(let person_id1 in person2person){
+            //     const p1 = personManager.get(person_id1)
+            //     if (!people_array.includes(p1)) {
+            //         continue
+            //     }
+            //     for(let person_id2 in person2person[person_id1]){
+            //         const p2 = personManager.get(person_id2)
+            //         if (!people_array.includes(p2)) {
+            //             continue
+            //         }
+            //         const events = person2person[person_id1][person_id2].events
+            //         const person_scale_triggers = [...new Set(events.map(event=>event.trigger))]
+            //         person_scale_triggers.forEach(trigger1=>{
+            //             person_scale_triggers.forEach(trigger2=>{
+            //                 trigger2triggers[trigger1.id][trigger2.id].push([p1,p2, events])
+            //             })
+            //         })
+            //     }
+            // }
+            // triggers.forEach(trigger1=>{
+            //     triggers.forEach(trigger2=>{
+            //         if (trigger1===trigger2) {
+            //             return
+            //         }
+            //         const perosn_pairs = trigger2triggers[trigger1.id][trigger2.id]
+            //         if (perosn_pairs.length===0) {
+            //             return
+            //         }
+            //         const center_x = triggers.findIndex(elm=> elm===trigger1)*rect_width, 
+            //             center_y = triggers.findIndex(elm=> elm===trigger2)*rect_width
+            //         if (center_y>center_x) {
+            //             return
+            //         }
+            //         const color = d3.rgb(255, 255, 255)
+            //         let rect_data = {
+            //             x: center_x - rect_width/2-rect_width,  //为啥要平移一格呀
+            //             y: center_y - rect_width/2,
+            //             x0: center_x + rect_width/2-rect_width,
+            //             y0: center_y + rect_width/2,
+            //             color: color.darker([perosn_pairs.length+1]),
+            //             perosn_pairs: perosn_pairs
+            //         }
+            //         trigger_rect_data.push(rect_data)
+            //     })
+            // })
+            // console.log(triggers, trigger_rect_data)
+            // console.log(relation_rect_data)
+            this.setState({events_rect_data: relation_rect_data, trigger_rect_data:trigger_rect_data})
         })
     }
 
@@ -309,12 +358,10 @@ class RealtionMatrix extends React.Component{
         // let svg_width = width-right_part_width>height?height:width-right_part_width
         let svg_width = width;
         let svg_height = svg_width
-
         let people_array = this.people_array
         let selected_people = this.selected_people
         let all_events = this.all_events
         let trigger_array = this.trigger_array
-
         // 只提取跟主角有关的事件类型
         let main_events = all_events.filter(event=>{
             let people = event.getPeople()
@@ -327,17 +374,18 @@ class RealtionMatrix extends React.Component{
             }
         })
 
-        let {events_rect_data, hint_value} = this.state
+        let {events_rect_data, trigger_rect_data, hint_value} = this.state
         let hint_point_rect = [], personX, personY, label_datas
-        const people_num = people_array.length
 
-        if (hint_value && people_num>17) {
+        if (hint_value) {
             hint_value = dictCopy(hint_value)
             const {rect_width} = this
             const {x ,x0, y, y0} = hint_value
             personY = this.scalePerson((x+x0)/2)
             personX = this.scalePerson((y+y0)/2)
+            // console.log(hint_value)
 
+            // x: people_array.length*rect_width, y: y, x0: x+rect_width , y0: y0 //X方向
             hint_point_rect = [{ 
                 x: x0, y: y, x0: 0, y0: y0 //X方向
             },{
@@ -354,29 +402,11 @@ class RealtionMatrix extends React.Component{
             }
         }
 
-        let x_label_data = people_array.map(person=>{
-            return {
-                x: this.personScale(person)+this.rect_width/2, 
-                y: people_array.length*this.rect_width, 
-                label: person.getName(),
-                rotation: 45,
-                yOffset: -10,
-            }
-        })
-        let y_label_data = people_array.map(person=>{
-            return {
-                x: 0, 
-                y: this.personScale(person),
-                rotation: 45,
-                label: person.getName()
-            }
-        })
-
+        const people_num = people_array.length
         const padding_e = people_num<=3?2:1.1
-
         return (
-            <div style={{width:width, height:height, position: 'absolute' }}>
-                <div style={{width:svg_width, height:height, top: 50, left:10, position: 'absolute'}}>
+            <div style={{width:width, height:height }}>
+                <div style={{width:svg_width, height:height, top: 0, left:10}}>
                     <XYPlot
                     width={svg_width}
                     height={svg_height}
@@ -384,7 +414,14 @@ class RealtionMatrix extends React.Component{
                     onMouseLeave={event => this.setState({hint_value: undefined})}
                     xDomain={[-people_num*(padding_e-1), people_num*padding_e]}
                     yDomain={[-people_num*(padding_e-1), people_num*padding_e]}
+                    // margin={{left: 10, right: 10, top: 10, bottom: 10}}
                     >
+                    {
+                        // hint_value && 
+                        // <VerticalRectSeries
+                        //     data = {hint_point_rect}
+                        // />                 
+                    }
                     <VerticalRectSeries
                         data={events_rect_data} 
                         colorType= "literal"
@@ -396,7 +433,7 @@ class RealtionMatrix extends React.Component{
                         hint_value &&
                         <Hint value={hint_value}>
                             <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
-                                {hint_value.event_ids.map(id => 
+                                {hint_value.events_id.map(id => 
                                     <div key={id}>
                                         {eventManager.get(id).toText()}
                                     </div>
@@ -409,36 +446,82 @@ class RealtionMatrix extends React.Component{
                         hint_value &&
                         <LabelSeries 
                         data={label_datas}
-                        labelAnchorX= 'end'
-                        labelAnchorY= 'end'
-                        />
-                    }
-                    {
-                        people_num<17 && 
-                        <LabelSeries
                         labelAnchorX= 'middle'
-                        labelAnchorY= 'end'
-                        data = {x_label_data}
-                        />
-                    }
-                     {
-                        people_num<17 && 
-                        <LabelSeries
-                        labelAnchorX= 'end'
                         labelAnchorY= 'middle'
-                        data = {y_label_data}
                         />
                     }
+                    {/* <XAxis/>
+                    <YAxis/> */}
                     </XYPlot>
                 </div>
                 
+                {/* 邻接矩阵 */}
+                {/* <div style={{width:right_part_width, height:right_part_width, top: 10, left:20, position:"absolute"}}>
+                    <XYPlot
+                    width={svg_width}
+                    height={svg_height}>
+                    <VerticalRectSeries
+                        data={trigger_rect_data} 
+                        colorType= "literal"
+                        stroke='black'
+                        style={{strokeWidth: 0.001}}
+                        onValueClick={value=>{
+                            console.log(value.events)
+                        }}
+                    />
+                    <XAxis title='事件类型'
+                        tickValues={trigger_array.map((trigger,index)=> index)}
+                        tickFormat={
+                            (value, index, scale, tickTotal)=>{
+                                if ( trigger_array[value]) {
+                                    return trigger_array[value].name + value
+                                }else{
+                                    return ''
+                                }
+                            }
+                        }
+                        tickSize={0}
+                        top={20}
+                        tickLabelAngle = {45}
+                    />
+                    <YAxis title='事件类型'
+                    orientation='right'
+                        tickValues={trigger_array.map((trigger,index)=> index)}
+                        tickFormat={
+                            (value, index, scale, tickTotal)=>{
+                                // console.log(value, index, scale, tickTotal)
+                                if ( trigger_array[value]) {
+                                    return trigger_array[value].name + value
+                                }else{
+                                    return ''
+                                }
+                            }
+                        }
+                        tickSize={0}
+                        // tickLabelAngle = {45}
+                        left={20}
+                    />
+                    </XYPlot>
+                </div> */}
+
                 {/* 这个范围应该是会变的 */}
-                <div style={{left:250,height:20, top:10, width:right_part_width, position:'absolute'}}>
-                    <input ref='show_people_num_range' type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
-                    onChange={event=>{
-                        this.show_people_num = parseInt(this.refs.show_people_num_range.value)
-                        this.loadMatrix()
-                    }}/>
+                <div style={{left:250,height:50, top:-330, width:right_part_width, position:'relative'}}>
+                    <MyBrush 
+                    range={[this.min_person_relation_num, this.max_person_relation_num] }
+                    input_list={this.relation_num_list}
+                    onChange={
+                        range=> {
+                            if (range) {
+                                this.max_relation_num = Math.ceil(range[1])
+                                this.min_relation_num = Math.floor(range[0])                                
+                            }else{
+                                this.max_relation_num = this.max_person_relation_num
+                                this.min_relation_num = this.min_person_relation_num
+                            }
+
+                            this.loadMatrix()
+                        }
+                    }/>
                 </div>
             </div>
         )

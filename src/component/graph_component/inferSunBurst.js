@@ -443,7 +443,7 @@ class InferSunBurst extends React.Component{
                 })
             })
         }
-        console.log(links_datas)
+        // console.log(links_datas)
         let year_options = all_years.map(elm => {return {'key': elm.id, 'text': elm.name, 'value':elm.id}})
         let person_options = all_people.map(elm => {return {'key': elm.id, 'text': elm.name, 'value':elm.id}})
         let addr_options = all_addrs.map(elm => {return {'key': elm.id, 'text': elm.name, 'value':elm.id}})

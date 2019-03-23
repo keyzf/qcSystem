@@ -1,4 +1,4 @@
-import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec, intersect, union, difference, IS_EN } from '../../dataManager/dataStore2'
+import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec, intersect, union, difference } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
 import net_work from '../../dataManager/netWork'
@@ -53,8 +53,6 @@ class InferSunBurst extends React.Component{
 
     sunbursts = []  //等于state中那个
     mouseover_value = undefined
-
-    mouse_postion = [0,0]
     constructor(){
         super()
         this.state = {
@@ -80,7 +78,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:1000})
             .then(data=>{
                 // console.log(data)
                 data = dataStore.processResults(data.data)
@@ -168,14 +166,14 @@ class InferSunBurst extends React.Component{
 
         const title_height = 50
         const control_bar_height = 100
-        const graph_height = height-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        const graph_height = height-title_height-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
 
 
-
-        let now_sunburst = this.sunbursts[this.now_part_index]
+        let change_event_index = 0 
+        // console.log(this.sunbursts)
         return (
             <div 
                 className='trigger_sunburst_graph' 
@@ -184,14 +182,96 @@ class InferSunBurst extends React.Component{
                 }}>
                 <div style={{height: title_height, width: width}}>
                     {
-                        center_event && now_sunburst &&
-                        <ChangeEventPanel 
-                            center_event={center_event} 
-                            trigger_options={now_sunburst.trigger_options}
-                            addr_options={now_sunburst.addr_options} 
-                            time_options={now_sunburst.time_options}
-                            people_options={now_sunburst.people_options}/>
-     
+                        center_event && 
+                        <div className='change_event_bar' style={{position: 'relative'}}>
+                            <style type="text/css">{'.change_event_div {position:absolute; top: 5px; width: 100px; height:30px; margin:2px; margin-right:10px}'}</style>
+                            <div className='change_event_div' style={{right: 10}}>
+                                <Dropdown 
+                                fluid search selection 
+                                placeholder='触发词'
+                                options={this.trigger_options}
+                                value = {center_event.trigger.id}
+                                onChange={(event,{value})=>{
+                                    let trigger = triggerManager.get(value)
+                                    if (center_event.trigger!==value) {
+                                        center_event.trigger = trigger
+                                        this.setState({hi: !this.state.hi})
+                                    }
+                                }}/>
+                            </div>
+                            {
+                                center_event.roles.map(({role, person}, index)=>{
+                                    return (
+                                    <div key= {index} className='change_event_div' style={{right: 120+165*change_event_index++, width: 160}}>
+                                        <Dropdown
+                                        fluid search selection 
+                                        placeholder='人物/角色'
+                                        options={this.people_options.map(elm=> {
+                                            elm = dictCopy(elm)
+                                            elm.text += '/' + role
+                                            return elm
+                                        })}
+                                        value = {person.id}
+                                        onChange={(event,{value})=>{
+                                            let person = personManager.get(value)
+                                            // console.log(role, person)
+                                            center_event.roles.forEach(elm=>{
+                                                if (elm.role===role && person!==elm.person) {
+                                                    elm.person = person
+                                                    this.setState({hi: !this.state.hi})
+                                                }
+                                            })
+                                        }}/>
+                                    </div>
+                                    )
+                                })
+                            }
+
+                            <div className='change_event_div' style={{right: 120+165*change_event_index}}>
+                                <Dropdown 
+                                fluid search selection  multiple
+                                placeholder='地点'
+                                options={this.addr_options}
+                                value = {center_event.addrs.map(elm=> elm.id)}
+                                onChange={(event,{value})=>{
+                                    let addrs = value.map(elm=> addrManager.get(elm))
+                                    if (difference(addrs, center_event.addrs).length>1) {
+                                        center_event.addrs = addrs
+                                        this.setState({hi: !this.state.hi})
+                                    }
+                                }}/>
+                            </div>
+
+                            <div className='change_event_div' style={{right: 230+165*change_event_index}}>
+                                <Dropdown 
+                                fluid search selection
+                                placeholder='时间'
+                                options={this.time_options}
+                                value = {center_event.time_range[1].toString()}
+                                onChange={(event,{value})=>{
+                                    let time = parseFloat(value)
+                                    if (time!==center_event.time_range[0]) {
+                                        center_event.time_range[1] = time
+                                        this.setState({hi: !this.state.hi})
+                                    }
+                                }}/>
+                            </div>
+
+                            <div className='change_event_div' style={{right: 340+165*change_event_index}}>
+                                <Dropdown 
+                                fluid search selection
+                                placeholder='时间'
+                                options={this.time_options}
+                                value = {center_event.time_range[0].toString()}
+                                onChange={(event,{value})=>{
+                                    let time = parseFloat(value)
+                                    if (time!==center_event.time_range[0]) {
+                                        center_event.time_range[0] = time
+                                        this.setState({hi: !this.state.hi})
+                                    }
+                                }}/>
+                            </div>
+                        </div>                        
                     }
                 </div>
                 <div style={{height: control_bar_height, width: 150, position: 'absolute', right: 0}}>
@@ -224,51 +304,48 @@ class InferSunBurst extends React.Component{
                         }
                     }}/>
                 </div>
-                {/* <div style={{height: control_bar_height, width: width}}>
-                </div> */}
-                <div style={{height: graph_height, width: width, overflowX:'auto'}}>
-                    <XYPlot 
-                    width={graph_width} 
-                    height={graph_height}
-                    xDomain={xDomain}
-                    yDomain={yDomain}
-                    onMouseDown = {event=>{
-                        // console.log('MouseDown', event)
-                        let {isMousePressed} = this.state
-                        if (!isMousePressed) {
-                            this.setState({isMousePressed: true})
-                        }
-                    }}
-                    onMouseUp = {event=>{
-                        // console.log('MouseUp', event)
-                        let {isMousePressed} = this.state
-                        if (isMousePressed) {
-                            this.setState({isMousePressed: false})
-                        }
-                    }}>
-                        {
-                            sunbursts.map(elm=> {
-                                // console.log(elm.render())
-                                return elm.render()
-                            })
-                        }
-                        <MarkSeries
-                        size={0}
-                        data={[{x:0,y:0, size:0}]}
-                        onNearestXY={(value, {event})=>{
-                            let {layerX, layerY} = event
-                            let {isDrag} = this.state
-                            let graph_x = trueX2X(layerX), graph_y = trueY2Y(layerY)
-                            this.mouse_postion = [graph_x, graph_y]
-                            if (isMousePressed) {
-                                this.setState({mouse_postion: [graph_x, graph_y]})
-                            }
-                        }}/>
-                        {/* <XAxis/>
-                        <YAxis/> */}
-                    </XYPlot>
-
+                <div style={{height: control_bar_height, width: width}}>
                 </div>
+                <XYPlot 
+                width={graph_width} 
+                height={graph_height}
+                xDomain={xDomain}
+                yDomain={yDomain}
+                onMouseDown = {event=>{
+                    console.log('MouseDown', event)
+                    let {isMousePressed} = this.state
+                    if (!isMousePressed) {
+                        this.setState({isMousePressed: true})
+                    }
+                }}
+                onMouseUp = {event=>{
+                    console.log('MouseUp', event)
+                    let {isMousePressed} = this.state
+                    if (isMousePressed) {
+                        this.setState({isMousePressed: false})
+                    }
+                }}>
+                    {
+                        sunbursts.map(elm=> {
+                            // console.log(elm.render())
+                            return elm.render()
+                        })
+                    }
+                    <MarkSeries
+                    size={0}
+                    data={[{x:0,y:0, size:0}]}
+                    onNearestXY={(value, {event})=>{
+                        let {layerX, layerY} = event
+                        let {isDrag} = this.state
+                        let graph_x = trueX2X(layerX), graph_y = trueY2Y(layerY)
+                        this.mouse_postion = [graph_x, graph_y]
+                        if (isMousePressed) {
+                            this.setState({mouse_postion: [graph_x, graph_y]})
+                        }
+                    }}/>
+                    {/* <XAxis/>
+                    <YAxis/> */}
+                </XYPlot>
             </div>
         )
     }
@@ -291,10 +368,6 @@ class OnePart{
         // console.log(index, center_x, center_y)
         this.all_values = []
 
-        this.all_addrs = []
-        this.all_people = []
-        this.all_triggers = []
-        this.all_years = []
 
         this.self_id = OnePart.id_count
         OnePart.id_count++
@@ -334,7 +407,6 @@ class OnePart{
             this.later_state = undefined
         }
     }
-
     getState(){
         let self_state = {}
         const prefix = this.self_id
@@ -366,6 +438,7 @@ class OnePart{
     former_click_values = []
 
     render( ){
+        // console.log('render', this.part_index)
         const {center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
         let former_click_values = this.former_click_values 
         let {
@@ -373,13 +446,17 @@ class OnePart{
             event_mark_data, 
             isDrag, 
             mouseover_value,
+            mouse_postion,
             isMousePressed,
         } = this.getState()
         let ruleManager_mark = ruleManager.getNodeInGraph()
-
+        // console.log(this.all_events)
+        // console.log(part_index, label_data)
         let rules = ruleManager.rules
         
-
+        // console.log(label_data, part_index)
+        // console.log(mouseover_value, filter_values, rules)
+        // console.log(label_data, event_mark_data, filter_values, rules)
         this.all_values = [...label_data, ...event_mark_data, ...filter_values, ...rules, ruleManager_mark]
         this.all_values.forEach((elm,index)=>{
             elm._index = index
@@ -397,88 +474,94 @@ class OnePart{
                 elm.style.opacity = 0.5
             }
         })
-
+        // console.log(mouseover_value)
         let {former_isMousePressed} = this
 
-        // console.log(mouseover_value)
         // 可以放到监听函数中
-        if (isMousePressed) {
+        if (isMousePressed && !mouseover_value) {
+            console.log(parent_component.mouse_postion)
             // 判断实在哪个当中
             let mouse_x = parent_component.mouse_postion[0]
             let index = (mouse_x+r)/3.25
             parent_component.now_part_index = Math.floor(index)
         }
-        if (this.all_values.includes(mouseover_value)) {
-            if (isMousePressed) {
-                this.mouse_press_value = mouseover_value
-                // 第一次点击
-                if (!former_isMousePressed) {
-                    if (mouseover_value) {
-                        if (mouseover_value.node_type==='related_value') {
-                            this.drag_value = mouseover_value
-                            mouseover_value.origin_x = mouseover_value.x
-                            mouseover_value.origin_y = mouseover_value.y 
-                        }
+        if (isMousePressed && this.all_values.includes(mouseover_value)) {
+            this.mouse_press_value = mouseover_value
+            // 点击一次,有一个两次点击的bug
+            if (!former_isMousePressed) {
+                // 点到东西上了
+                if (mouseover_value) {
+                    if (mouseover_value.node_type==='related_value') {
+                        this.drag_value = mouseover_value
+                        mouseover_value.origin_x = mouseover_value.x
+                        mouseover_value.origin_y = mouseover_value.y 
                     }
                 }
-                const {drag_value}  = this
-                if(drag_value && former_isMousePressed && parent_component.mouse_postion){
-                    drag_value.x = parent_component.mouse_postion[0]
-                    drag_value.y = parent_component.mouse_postion[1]              
-                }
-                this.former_isMousePressed = true   
-            }else{
-                let {drag_value} = this
-                if (drag_value && drag_value.node_type!=='filter_value') {
-                    if (drag_value.x>(center_x+r) && drag_value.node_type==='related_value') {
-                        let {filter_values} = this
+            }
+            const {drag_value}  = this
+            if(drag_value && former_isMousePressed && parent_component.mouse_postion){
+                drag_value.x = parent_component.mouse_postion[0]
+                drag_value.y = parent_component.mouse_postion[1]              
+            }
+            this.former_isMousePressed = true   
+        }else{
+            let {drag_value} = this
+            if (drag_value && drag_value.node_type!=='filter_value') {
+                if (drag_value.x>(center_x+r) && drag_value.node_type==='related_value') {
+                    let {filter_values} = this
 
-                        let find = filter_values.find(elm=> elm.object_id===drag_value.object_id)
-                        if (!find) {
-                            let filter_value = dictCopy(drag_value)
-                            
-                            filter_value.node_type = 'filter_value'
-                            filter_values.push(filter_value)
-                            filter_value.rotation = 0
-                            filter_value.x = center_x + r  + 0.1*filter_values.length  //一列也什么了几个地方
-                            filter_value.y = center_y + r - 0.2*filter_values.length-0.3
-                            this.all_values.push(filter_value)
-                            filter_value._index = this.all_values.length-1
-                            this.filter_values = filter_values
+                    let findIndex = filter_values.findIndex(elm=> elm.object_id===drag_value.object_id)
+                    if (findIndex===-1) {
+                        // console.log(part_index, filter_values)
+                        let filter_value = dictCopy(drag_value)
+                        
+                        filter_value.node_type = 'filter_value'
+                        filter_values.push(filter_value)
+                        filter_value.rotation = 0
+                        filter_value.x = center_x + r  + 0.1*filter_values.length  //一列也什么了几个地方
+                        filter_value.y = center_y + r - 0.2*filter_values.length-0.3
 
-                            this.former_isMousePressed = undefined
-                            ruleManager.create([filter_value])
-                            this.need_forward = true
-                        }
-                    }
-                    drag_value.x = drag_value.origin_x
-                    drag_value.y = drag_value.origin_y
-                }else if (former_isMousePressed) {
-                    if (mouseover_value===this.mouse_press_value && ['rule', 'filter_value'].includes(mouseover_value.node_type) ) {
-                        console.log('click', mouseover_value)
-                        // this.former_click_values.push(mouseover_value)
-                        if (former_click_values[former_click_values.length-1]!==mouseover_value) {
-                            this.former_click_values.push(mouseover_value)
-                        }
-                        // else{
-                        //     // // 双击
-                        //     // let last_index = former_click_values.length-1
-                        //     // former_click_values[last_index] = former_click_values[last_index-1]
-                        //     // former_click_values[last_index-1] = undefined
-                        // }
-                        // this.former_click_values.push(mouseover_value)
+                        this.filter_values = filter_values
+                        // console.log(drag_value)
+
+                        this.former_isMousePressed = undefined
+                        ruleManager.create([filter_value])
+                        this.need_forward = true
                     }
                 }
-                this.drag_value = undefined  
-                this.former_isMousePressed  = false
-                this.mouse_press_value = undefined
-            }            
+                drag_value.x = drag_value.origin_x
+                drag_value.y = drag_value.origin_y
+            }
+            if (former_isMousePressed) {
+                parent_component.setState({mouseover_value: undefined})
+                if (mouseover_value===this.mouse_press_value ) {
+                    // console.log('click', mouseover_value)
+                    let this_value = mouseover_value
+                    // console.log(this_value)
+                    if (former_click_values[former_click_values.length-1]!==mouseover_value) {
+                        this.former_click_values.push(mouseover_value)
+                    }else{
+                        // 双击
+                        let last_index = former_click_values.length-1
+                        former_click_values[last_index] = former_click_values[last_index-1]
+                        former_click_values[last_index-1] = undefined
+                    }
+                    // this.former_click_values.push(mouseover_value)
+                }
+            }
+            this.drag_value = undefined  
+            this.former_isMousePressed  = false
         }
-
-
+        
+        let label_style =  {
+            pointerEvents: isDrag ? 'none' : '',
+            lineerEvents: isDrag ? 'none' : ''
+        }
+        
         const handleLabelDataOver = value=>{
+            // console.log(value)
             value = this.all_values[value._index]
-            // console.log(value, mouseover_value)
+            // console.log(value)
             if (mouseover_value!==value) {
                 parent_component.setState({mouseover_value:value})
             }
@@ -492,25 +575,10 @@ class OnePart{
         let now_click_value = this.former_click_values[former_click_values.length-1]
         let component_array = []
 
-
-        let wrap_line_data = [
-            {x: center_x-r, y: center_y-r},
-            {x: center_x-r, y: center_y+r},
-            {x: center_x + 3.25 - r, y: center_y+r},
-            {x: center_x + 3.25 - r, y: center_y-r},
-        ]
-        // console.log(parent_component.now_part_index, part_index)
-        component_array.push(
-            <LineSeries
-            key={part_index+'wrap_line'}
-            stroke='#c3c3c3'
-            strokeWidth={parent_component.now_part_index===part_index?10:2}
-            data={wrap_line_data}/>
-        )
-
         // 规则和筛选实体之间连线
         component_array.push(
             rules.map(elm=> elm.getNodeInGraph()).map((elm, elm_index)=>{
+                // console.log(elm)
                 let {related_objects} = elm
                 if (related_objects.length<2) {
                     return undefined
@@ -541,6 +609,7 @@ class OnePart{
             })
         )
 
+
         // 规则
         // console.log(rules)
         component_array.push(
@@ -553,6 +622,20 @@ class OnePart{
             onValueMouseOver={handleLabelDataOver}
             onValueMouseOut={handleLabelDataOut}
             />
+        )
+
+
+        let wrap_line_data = [
+            {x: center_x-r, y: center_y-r},
+            {x: center_x-r, y: center_y+r},
+            {x: center_x + 3.25 - r, y: center_y+r},
+            {x: center_x + 3.25 - r, y: center_y-r},
+        ]
+        component_array.push(
+            <LineSeries 
+            stroke='#c3c3c3'
+            strokeWidth={2}
+            data={wrap_line_data}/>
         )
 
 
@@ -656,7 +739,8 @@ class OnePart{
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
-            onValueMouseOut={handleLabelDataOut}/>
+            onValueMouseOut={handleLabelDataOut}
+            style={label_style}/>
         )
 
         component_array.push(
@@ -669,7 +753,8 @@ class OnePart{
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
-            onValueMouseOut={handleLabelDataOut}/>
+            onValueMouseOut={handleLabelDataOut}
+            style={label_style}/>
         )
         
         
@@ -679,11 +764,11 @@ class OnePart{
             labelAnchorX = 'middle'
             labelAnchorY = 'middle'
             key={part_index+'-center_event_mark_data'}
+            style={label_style}
             data={[{x: center_x, y: center_y, label: center_event.toText()}]}
             allowOffsetToBeReversed
             animation/>
         )
-        
         // 上面那个控制面板
         const panel_data = [
             {
@@ -705,10 +790,8 @@ class OnePart{
                                         let new_rule = ruleManager.create([now_click_value, former_click_value])
                                         new_rule.setType('and')
                                         // console.log('建立连接')
-                                    }
-                                    this.former_click_values.push(undefined)
-                                    this.former_click_values.push(undefined)
-                                    parent_component.setState({hi: !parent_component.state.hi})
+                                }
+                                parent_component.setState({mouseover_value: undefined})
                             }}/>
                             <img className='control_logical_button' alt='union' src={union_icon}
                                 onClick={event=>{
@@ -716,16 +799,14 @@ class OnePart{
                                     let former_click_value = former_click_values[former_click_values.length-2]
                                     let now_click_value = former_click_values[former_click_values.length-1]
                                     const can_types = ['filter_value', 'rule']
-                                    console.log(now_click_value, former_click_value)
+                                    // console.log(now_click_value, former_click_value)
                                     if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
                                         let new_rule = ruleManager.create([now_click_value, former_click_value])
                                         new_rule.setType('or')
                                         // console.log(this.ruleManager.rules)
                                         // console.log('建立连接')
-                                    }
-                                    this.former_click_values.push(undefined)
-                                    this.former_click_values.push(undefined)
-                                    parent_component.setState({hi: !parent_component.state.hi})
+                                }
+                                parent_component.setState({mouseover_value: undefined})
                             }}/>
                             <img className='control_logical_button' alt='infer' src={infer_icon} 
                                 onClick= {event=>{
@@ -768,7 +849,6 @@ class OnePart{
 
 
     loadSunBurstData(){
-        console.log('loadSunBurstData', this.part_index)
         const show_object_num = 20
         const {center_x , center_y, all_events, center_event} = this
 
@@ -799,10 +879,12 @@ class OnePart{
         all_people.forEach(person=>{
             const center_people = center_event.getPeople()
             people2sim[person.id] = center_people.reduce((total, center_person)=>{
+                // console.log(total + cos_dist(person.vec, center_person.vec), total, center_people.length)
                 return total + cos_dist(person.vec, center_person.vec)
             }, 0)/center_people.length
         })
         all_people = all_people.sort((a,b)=> people2sim[a.id]-people2sim[b.id]).slice(0, show_object_num)
+        // console.log(all_people)
         let all_addrs = []
         all_events.forEach(event=>{
             let addr = event.addrs
@@ -831,23 +913,6 @@ class OnePart{
         // console.warn('这里还要改呀 不要用prob_year了')
         all_years = all_years.sort((a,b)=> parseFloat(prob_year[b])-parseFloat(prob_year[a])).slice(0,show_object_num)
 
-        this.all_addrs = all_addrs
-        this.all_people = all_people
-        this.all_triggers = all_triggers
-        this.all_years = all_years
-
-        const object2options = elm=>{
-            return {
-                value: elm.id,
-                key: elm.id,
-                text: elm.getName(),
-                elm: elm
-            }
-        }
-        this.people_options = this.all_people.map(object2options)
-        this.addr_options = this.all_addrs.map(object2options)
-        this.time_options = this.all_years.map(object2options)
-        this.trigger_options = this.all_triggers.map(object2options)
 
         const myTsne = (vecs, dim=1)=>{
             const opt = {
@@ -878,33 +943,8 @@ class OnePart{
                 vecs.push(center_vec)
                 center_index = vecs.length-1
             }
-            
-            // 加入上位属性
-            let types = [], parent_types = []
-            // if (object_type==='trigger') {
-            //     types = all_objects.map(elm=>elm.type)
-            //     parent_types = all_objects.map(elm=>elm.parent_type)
 
-            //     let {parent_trigger2vec} = dataStore
-            //     types.forEach(elm=>{
-            //         all_objects.push({
-            //             getName: ()=> elm,
-            //             vec: parent_trigger2vec[elm],
-            //             sub_object:  all_objects.filter(object=> object.type===elm),
-            //         })
-            //     })
-            //     parent_types.forEach(elm=>{
-            //         all_objects.push({
-            //             getName: ()=> elm,
-            //             vec: parent_trigger2vec[elm],
-            //             sub_object:  all_objects.filter(object=> object.parent_type===elm),
-            //         })
-            //     })
-
-            //     vecs = [...vecs, ...types.map(elm=> parent_trigger2vec[elm]), ...parent_types.map(elm=> parent_trigger2vec[elm])]
-            // }
-            // console.log(vecs)
-
+    
             let angles = myTsne(vecs).map(elm=> elm[0])
             let min_angle = Math.min(...angles),
                 max_angle = Math.max(...angles)
@@ -940,7 +980,6 @@ class OnePart{
 
             // 整理点和字
             let label_data = all_objects.map((elm, index)=>{
-                // let elm = all_objects[index]
                 // 直径应该更加均匀
                 let radius = dists[index] * (1-inner_radius) + inner_radius
                 let angle = angles[index]*(end_angle-start_angle) + start_angle
@@ -957,7 +996,7 @@ class OnePart{
                     origin_x: x,
                     origin_y: y,
                     rotation: text_rotate,
-                    label: simplStr(elm.getName(), IS_EN?10:4),
+                    label: simplStr(elm.getName(), 4),
                     total_label: elm.getName(),
                     object_id: elm.id,
                     vec: vecs[index],
@@ -973,11 +1012,12 @@ class OnePart{
                         // textDecoration: 'underline',
                         stroke: color,
                         cursor: "pointer",
-                        fontSize: 15,
+                        fontSize: 12,
                         opacity: 0.5,
                     },
                 }
             })
+
             label_data = label_data.sort((a,b)=>{
                 return eucDist([a.x,a.y],[center_x, center_y]) - eucDist([b.x,b.y],[center_x, center_y])
             })
@@ -1196,110 +1236,6 @@ class RuleManager{
         }
         // console.log(final_result)
         return final_result
-    }
-}
-
-class ChangeEventPanel extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            hi: undefined
-        }
-    }
-    render(){
-        let change_event_index = 0 
-        let {trigger_options, addr_options, people_options, time_options, center_event} = this.props
-        return (
-            <div className='change_event_bar' style={{position: 'relative'}}>
-            <style type="text/css">{'.change_event_div {position:absolute; top: 5px; width: 100px; height:30px; margin:2px; margin-right:10px}'}</style>
-            <div className='change_event_div' style={{right: 10}}>
-                <Dropdown 
-                fluid search selection 
-                placeholder='触发词'
-                options={trigger_options}
-                value = {center_event.trigger.id}
-                onChange={(event,{value})=>{
-                    let trigger = triggerManager.get(value)
-                    if (center_event.trigger!==value) {
-                        center_event.trigger = trigger
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
-            {
-                center_event.roles.map(({role, person}, index)=>{
-                    return (
-                    <div key= {index} className='change_event_div' style={{right: 120+165*change_event_index++, width: 160}}>
-                        <Dropdown
-                        fluid search selection 
-                        placeholder='人物/角色'
-                        options={people_options.map(elm=> {
-                            elm = dictCopy(elm)
-                            elm.text += '/' + role
-                            return elm
-                        })}
-                        value = {person.id}
-                        onChange={(event,{value})=>{
-                            let person = personManager.get(value)
-                            // console.log(role, person)
-                            center_event.roles.forEach(elm=>{
-                                if (elm.role===role && person!==elm.person) {
-                                    elm.person = person
-                                    this.setState({hi: !this.state.hi})
-                                }
-                            })
-                        }}/>
-                    </div>
-                    )
-                })
-            }
-
-            <div className='change_event_div' style={{right: 120+165*change_event_index}}>
-                <Dropdown 
-                fluid search selection  multiple
-                placeholder='地点'
-                options={addr_options}
-                value = {center_event.addrs.map(elm=> elm.id)}
-                onChange={(event,{value})=>{
-                    let addrs = value.map(elm=> addrManager.get(elm))
-                    if (difference(addrs, center_event.addrs).length>0) {
-                        center_event.addrs = addrs
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
-
-            <div className='change_event_div' style={{right: 230+165*change_event_index}}>
-                <Dropdown 
-                fluid search selection
-                placeholder='时间'
-                options={time_options}
-                value = {center_event.time_range[1].toString()}
-                onChange={(event,{value})=>{
-                    let time = parseFloat(value)
-                    if (time!==center_event.time_range[0]) {
-                        center_event.time_range[1] = time
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
-
-            <div className='change_event_div' style={{right: 340+165*change_event_index}}>
-                <Dropdown 
-                fluid search selection
-                placeholder='时间'
-                options={time_options}
-                value = {center_event.time_range[0].toString()}
-                onChange={(event,{value})=>{
-                    let time = parseFloat(value)
-                    if (time!==center_event.time_range[0]) {
-                        center_event.time_range[0] = time
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
-        </div>                    
-        )
     }
 }
 

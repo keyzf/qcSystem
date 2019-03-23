@@ -2,6 +2,7 @@ import React from 'react';
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
 import './PersonInfo.scss';
+import { IS_EN } from '../../dataManager/dataStore2';
 
 export default class PersonInfo extends React.Component{
   constructor(){
@@ -22,16 +23,16 @@ export default class PersonInfo extends React.Component{
     return (
       <div className="personInfo">
         <div className="nameLabel">
-          {selected_people?selected_people.getName():''}
+          {selected_people?selected_people.name:''}
         </div>
         <div className="infoContent">
           <h3>{selected_people?selected_people.en_name:''}</h3>
-          <p><span className="nameString">性别 </span><span>{selected_people?selected_people.getGender():''}</span></p>
-          <p><span className="nameString">民族 </span><span>{selected_people?selected_people.getEthnicity():''}</span></p>
-          <p><span className="nameString">别名 </span><span>{selected_people?selected_people.getAltNames().splice(0,2).join(','):''}</span></p>
+          <p><span className="nameString">{IS_EN?'Gender':'性别'}: </span><span>{selected_people?selected_people.getGender():''}</span></p>
+          <p><span className="nameString">{IS_EN?'Ethnicity tribe':'民族'}: </span><span>{selected_people?selected_people.getEthnicity():''}</span></p>
+          <p><span className="nameString">{IS_EN?'Aliases':'别名'}: </span><span>{selected_people?selected_people.getAltNames().splice(0,2).join(','):''}</span></p>
           {/* <p><span>祖籍 </span><span></span></p> */}
-          <p><span className="nameString">生卒年 </span><span>{selected_people?selected_people.birth_year+'-'+selected_people.death_year:''}</span></p>
-          <p><span className="nameString">身份 </span><span>{selected_people?selected_people.getStatus().splice(0,3).join(','):''}</span></p>
+          <p><span className="nameString">{IS_EN?'Death/Birth year':'生卒年'}: </span><span>{selected_people?selected_people.birth_year+'-'+selected_people.death_year:''}</span></p>
+          <p><span className="nameString">{IS_EN?'Social status':'社会区分'}: </span><span>{selected_people?selected_people.getStatus().splice(0,3).join(','):''}</span></p>
         </div>
       </div>
     )

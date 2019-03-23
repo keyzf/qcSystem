@@ -27,7 +27,6 @@ import { red } from 'ansi-colors';
 const PI = Math.PI
 const inner_radius = 0.3 //圆的内轮廓
 
-// 有矩阵没有折叠
 class InferSunBurst extends React.Component{
     id2ids = {} //记录了上一步
 

@@ -24,9 +24,9 @@ import {autorun} from 'mobx';
 import { triggerManager,personManager } from './dataManager/dataStore2'
 import PersonInfo from './component/UI_component/PersonInfo';
 import EventFilter from './component/UI_component/EventFilter2';
-import InferSunBurst from './component/graph_component/inferSunBurst';
+// import InferSunBurst from './component/graph_component/inferSunBurst';
 import EventTable from './component/UI_component/EventTable';
-import InferSunBurst2 from './component/graph_component/inferSunBurst6';
+import InferSunBurst from './component/graph_component/inferSunBurst6';
 import './main.scss';
 import menu from './static/menu.png';
 import songicon from './static/icon 13.png';
@@ -194,12 +194,7 @@ class App extends Component {
             <InferSunBurst height={400} width={1000}/>
           </div>
         </div>
-        
-        {/* <InferContour/> */}
-        <div style={{top:1100, left:0, position:'absolute'}} >
-          <InferSunBurst2 height={2000} width={3000}/>
-          {/* < MergeSunBurstGraph height={500} width={1920}/> */}
-        </div>
+
         
       </div>
     );

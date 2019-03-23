@@ -42,9 +42,9 @@ export default class EventTable extends React.Component{
                 tmp.id=d.id;
                 if(d.time_range[0]===d.time_range[1]) tmp.time = d.time_range[0];
                 else tmp.time='';
-                tmp.place = d.addrs.map((dd)=>dd.name);
-                tmp.people = d.roles.map((dd)=>dd.person.name);
-                tmp.event = d.trigger.name;
+                tmp.place = d.addrs.map((dd)=>dd.getName());
+                tmp.people = d.roles.map((dd)=>dd.person.getName());
+                tmp.event = d.trigger.getName();
                 tmp.from = '';
                 events.push(tmp);
               })
