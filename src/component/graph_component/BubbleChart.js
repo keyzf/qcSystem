@@ -6,13 +6,13 @@ export default class BubbleChart extends React.Component {
     super();
     this.rscale=d3.scaleLinear()
                   .domain([0,1])
-                  .range([1,10]);
+                  .range([1,11]);
     this.bubbleColor=d3.scaleLinear();
     this.openEvent = new Set();
     this.openEventCircle = -1;
     this.metaballs={
-      blurDeviation: 8,
-      colorMatrix: '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10',
+      blurDeviation: 10,
+      colorMatrix: '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -10',
     };
   }
   componentDidMount() {
@@ -62,18 +62,36 @@ export default class BubbleChart extends React.Component {
       let datum = data[key];
       let count = datum.length;
       let interval = 1.0/(count-1);
+      key = parseInt(key);
       let tmp = 0;
+      let len=0;
       datum.forEach((d,i) => {
-        d.max_prob_year =  parseInt(key);
-        if(i%2!==0){
-          tmp= interval * (i/2);
-        }
-        else {
-          tmp = -tmp;
-        }
-        d.x = parseInt(key) + tmp;
-        bubbles.push(d);
+        d.max_prob_year = key;
+        len+=rscale(d.prob_year[key]);
       });
+      if(len<xscale(0.5)-xscale(0)){
+        let x_start = xscale(key)-len+6;
+        datum.forEach((d,i) => {
+          d.x=x_start;
+          if(i<datum.length-1){
+            x_start+=rscale(d.prob_year[key])+rscale(datum[i+1].prob_year[key]);
+          }
+          bubbles.push(d);
+        })
+      }
+      else{
+        datum.forEach((d,i) => {
+          d.max_prob_year = key;
+          if(i%2!==0){
+            tmp= interval * (i/2);
+          }
+          else {
+            tmp = -tmp;
+          }
+          d.x = xscale(key+ tmp);
+          bubbles.push(d);
+        });
+      }
     }
     d3.select(node).selectAll('.bubbleWhole').remove()
     d3.select(node).selectAll('.bubbleWhole')
@@ -89,10 +107,10 @@ export default class BubbleChart extends React.Component {
         }
       })
       .attr('cx',d=>{
-        return xscale(d.x)
+        return d.x;
       })
       .attr('cy',10)
-      .attr('fill','#905551')
+      .attr('fill','#454545')
       .attr('fill-opacity',0.5)
       .on('click',(d)=>{
         onEventClick(d);
@@ -195,7 +213,7 @@ export default class BubbleChart extends React.Component {
           if(target.data()[0]){
             content=target.data()[0].toText()
           }
-          target.attr('stroke','yellow')
+          target.attr('fill','#F37335').raise();
           d3.select(bubbleGraph)
             .select('rect')
             .attr('visibility','visible')
@@ -218,7 +236,7 @@ export default class BubbleChart extends React.Component {
         d3.select(bubbleGraph)
          .select('text').attr('visibility','hidden');
         d3.select(node).selectAll('.bubbleWhole')
-         .attr('stroke',null)
+         .attr('fill','#454545')
       })
   }
 
@@ -226,10 +244,10 @@ export default class BubbleChart extends React.Component {
     let {data,xscale,translate} = this.props;
     return (
     <g className="bubble" ref="bubbleGraph" transform={translate}>
+      <g ref="bubble" transform={`translate(0,5)`}></g>
       <rect width="300" height="40" fill="#303030" rx={10} ry={10}  opacity={0.6} visibility="hidden">
       </rect>
       <text></text>
-      <g ref="bubble" transform={`translate(0,5)`}></g>
       {/* {
         data && data.map((eve)=>{
           return eve.events.map((d,i)=>{

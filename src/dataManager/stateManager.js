@@ -19,6 +19,19 @@ class StateManager{
     // 测试用平时用不到的
     @observable test_count = 0
 
+    @observable relation_event_ids = []
+    @observable map_event_ids = []
+    @observable mountain_event_ids = []
+    @action setRelationEvents(events){
+        console.log(events)
+        this.relation_event_ids.replace(events.map(elm=> elm.id))
+    }
+    @action setMapEvents(events){
+        this.map_event_ids.replace(events.map(elm=> elm.id))
+    }
+    @action setMountainEvents(events){
+        this.relation_event_ids.replace(events.map(elm=> elm.id))
+    }
 
     @observable center_person_id = observable.box('person_3767')
     @observable setCenterPerson = person => {

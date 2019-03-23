@@ -36,7 +36,8 @@ class DataStore{
 
   processInitData(data){
     // console.log(data)
-    let {people, addrs, triggers, trigger_imp, year2vec} = data
+    let {people, addrs, triggers, trigger_imp, year2vec, parent_trigger2vec} = data
+    this.parent_trigger2vec = parent_trigger2vec  //用在推理试图中给trigger一个大类
     let can_selected_list = new Set()
     // console.log(people, addrs, triggers)
     // console.log(trigger_imp, people)
@@ -483,7 +484,6 @@ class Event extends _object{
   toText(){
     const {addrs, roles, time_range, trigger} = this
     let time_text = '[' + time_range[0] + ',' + time_range[1] + ']'
-
     if (this.isTimeCertain()) {
       time_text = time_range[0]
     }else{
@@ -519,7 +519,7 @@ class Event extends _object{
       person_text += trigger_name + (second_person==='未知人物'?'':second_person)
     }
     // '【' + this.id + '】' + 
-    return (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
+    return '【' + this.id + '】' + (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
   }
   
   toDict(){
@@ -1016,12 +1016,11 @@ const difference = (a1,a2) => {
   return [...new Set(results)]
 }
 
-
  
 
 export {
   personManager, addrManager, eventManager, triggerManager, timeManager, objectManager,
-
+  IS_EN,
   isValidYear, 
   rangeGenrator, 
   eucDist, 

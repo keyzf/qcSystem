@@ -24,7 +24,7 @@ class MainPanel extends Component {
     let {width,height,padding} = this.props;
     this.xscale=d3.scaleLinear();
     this.zoom = d3.zoom()
-    .scaleExtent([0.5, 9])
+    // .scaleExtent([0.5, 9])
     // .translateExtent([[0, 0], [width - padding.left - padding.right, height - padding.top - padding.bottom]])
     .on("zoom", this.zoomed.bind(this));
     this.changeViewType=this.changeViewType.bind(this);
@@ -97,7 +97,7 @@ class MainPanel extends Component {
     let {zoomTransform,selected_people,relationLines,checked} = this.state;
     // const padding_botton = 20, padding_right = 10
     // console.log(selected_people);
-    let lifeLikePaint_height = (height-6)/(selected_people.length===0?1:selected_people.length);
+    let lifeLikePaint_height = (height-30)/(selected_people.length===0?1:selected_people.length);
     lifeLikePaint_height = lifeLikePaint_height>210?lifeLikePaint_height:210;
     let min = 9999;
     let max = -9999;
@@ -111,7 +111,7 @@ class MainPanel extends Component {
     });
     let chart_width = width - padding.left - padding.right;
     let chart_height = height - padding.top - padding.bottom;
-    let uncertainHeight = 80;
+    let uncertainHeight = 60;
     this.xscale.domain([min,max])
                .range([0,chart_width]);
     this.line=d3.line()
@@ -139,7 +139,7 @@ class MainPanel extends Component {
           </div>
         </div>
           <div className="lineChart" style={{height:height}}>
-            <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)}>
+            <svg ref="svg" width={chart_width} height={height-10}>
               <defs>
               <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
                 <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
@@ -184,6 +184,7 @@ class MainPanel extends Component {
                 <stop offset="100%"   stopColor="#a7ad77" stopOpacity="1.0" />
               </linearGradient>
             </defs>
+            <g transform={'translate(0,25)'}>
               {
                 selected_people.map((person, index)=>
                   person &&
@@ -197,7 +198,7 @@ class MainPanel extends Component {
                       height={lifeLikePaint_height} 
                       index = {index}
                       checked={checked}
-                      transform={`translate(0,${lifeLikePaint_height*index+15})`}
+                      transform={`translate(0,${lifeLikePaint_height*index})`}
                       selected_person={person} 
                       calcualte_method={calcualte_method}
                       uncertainHeight={uncertainHeight}
@@ -205,7 +206,8 @@ class MainPanel extends Component {
                   </g>
                 )
               }
-              <HistoryEvent xscale={this.xscale} translate={`translate(${padding.left}, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
+              </g>
+              <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
             </svg>
           </div>
       </div>

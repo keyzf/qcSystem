@@ -10,7 +10,7 @@ import Axis from './Axis';
 import AreaLineChart from './AreaLineChart';
 import BubbleChart from './BubbleChart';
 import EventChart from './EventChart';
-import HistoryEvent from './HistoryEvent';
+import MountainChart from './MountainChart';
 import './lifeLikePaint.scss';
 
 // 2019/2/25 线换成area，但是计算似乎出现了巨大的问题
@@ -176,7 +176,6 @@ class LifeLikePaint extends Component{
                 }
             })
         }
-        // console.log(type2score)
         return type2score
     }
 
@@ -280,19 +279,19 @@ class LifeLikePaint extends Component{
           let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
           // console.log(scores)
           let stack_y = 0
-          parent_types.forEach(type=>{
+          parent_types.forEach((type,i)=>{
               let this_events = events.filter(event => event.trigger.parent_type===type)
               if (scores[type] || scores[type]===0) {
                   // console.log(scoreScale(scores[type]), stack_y)
                   type2area_datas[type].push({
                       x: yearScale(year),
-                      y: stack_y + scoreScale(scores[type]) ,
+                      y: stack_y +  scoreScale(scores[type]),
                       y0: stack_y,
                       size: eventNumScale(this_events.length),
                       events: this_events,
                       color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
                   })
-                  stack_y += scoreScale(scores[type])   
+                  stack_y += scoreScale(scores[type])
               }
               if(maxy<stack_y){maxy=stack_y};
           })
@@ -372,7 +371,7 @@ class LifeLikePaint extends Component{
         console.log('render lifeLikePaint 主视图', area_datas)
         let {area_datas, relationLines, prob_mark_data, selected_prob_year} = this.state
         this.yscale.domain([0,this.maxy_sum])
-                   .range([height-uncertainHeight,0]);
+                   .range([height-uncertainHeight,30]);
         if(selected_prob_year){
             prob_mark_data = prob_mark_data[selected_prob_year];
         }
@@ -381,13 +380,13 @@ class LifeLikePaint extends Component{
                 <g transform={transform}>
                     <text x={width-50} y={20}>{selected_person.name}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
-                    <AreaLineChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked}></AreaLineChart>
-                    <BubbleChart data={area_datas[0]?area_datas[0].certain_events:[]} xscale={xscale} translate={`translate(0, ${height-uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart>
-                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+20})`} xscale={xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
+                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person}></MountainChart>
+                    {/* <BubbleChart data={area_datas[0]?area_datas[0].certain_events:[]} xscale={xscale} translate={`translate(0, ${height-uncertainHeight+40})`} viewType={checked} onEventClick={this.handleEventMarkClick}></BubbleChart> */}
+                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={this.handleEventMarkClick}></BubbleChart>
                 </g>
                 {
                     Object.values(relationLines).map((d,index)=>{
-                        return <path d={line(d.lines)} stroke="black" strokeWidth={d.count} opacity={0.6} key={index}></path>
+                        return <path d={line(d.lines)} key={index} stroke="black" strokeWidth={d.count} opacity={0.6} strokeDasharray={"4 1"}></path>
                     })
                 }
             </g>

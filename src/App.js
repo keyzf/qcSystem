@@ -24,13 +24,14 @@ import {autorun} from 'mobx';
 import { triggerManager,personManager } from './dataManager/dataStore2'
 import PersonInfo from './component/UI_component/PersonInfo';
 import EventFilter from './component/UI_component/EventFilter2';
-import InferSunBurst from './component/graph_component/inferSunBurst';
+// import InferSunBurst from './component/graph_component/inferSunBurst';
 import EventTable from './component/UI_component/EventTable';
 import InferSunBurst2 from './component/graph_component/inferSunBurst6';
 import './main.scss';
 import menu from './static/menu.png';
 import songicon from './static/icon 13.png';
-import '../node_modules/react-vis/dist/style.css'
+import maplogo from './static/maplogo.png';
+import '../node_modules/react-vis/dist/style.css';
 // import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
 
 
@@ -144,7 +145,7 @@ class App extends Component {
             </div>
           </div>
           <div>
-            <MainPanel height={540} width={1300} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
+            <MainPanel height={540} width={1340} calcualte_method={this.state.calcualte_method} selected_people={selected_people}/>
           </div>
           <div className="rightPanel">
             <EventTable/>
@@ -154,7 +155,15 @@ class App extends Component {
         {/* 新的推理视图 */}
         <div id="footer">
           <div id="mapview">
-            <header>Inference Tree Map</header>
+            <div className="header">
+              <div className="headerlogo">
+                <img src={maplogo}/>
+              </div>
+              <div className="headerText">
+                <span>行迹</span>
+                <span>Map View</span>
+              </div>
+            </div>
             <Map selected_people={this.state.selected_people}/>
           </div>
           <div id="matrixview">
@@ -163,15 +172,11 @@ class App extends Component {
           </div>
 
           <div id="relationview">
-            <header>Inference Tree Map</header>
-            <InferSunBurst height={400} width={1000}/>
+            {/* <header>Inference Tree Map</header> */}
+            <InferSunBurst2 height={540} width={1080}/>
           </div>
         </div>
-        
-        {/* <InferContour/> */}
-        <div style={{top:1080, left:0, position:'absolute'}} >
-          <InferSunBurst2 height={540} width={1080}/>
-        </div>
+
         
       </div>
     );
