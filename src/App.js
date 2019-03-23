@@ -31,6 +31,8 @@ import './main.scss';
 import menu from './static/menu.png';
 import songicon from './static/icon 13.png';
 import maplogo from './static/maplogo.png';
+import matrixlogo from './static/matrixlogo.png';
+import reasonlogo from './static/reasonlogo.png';
 import '../node_modules/react-vis/dist/style.css';
 // import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
 
@@ -167,12 +169,28 @@ class App extends Component {
             <Map selected_people={this.state.selected_people}/>
           </div>
           <div id="matrixview">
-            <header>Inference Tree Map</header>
+            <div className="header">
+              <div className="headerlogo">
+                <img src={matrixlogo}/>
+              </div>
+              <div className="headerText">
+                <span>关系矩阵</span>
+                <span>Relation Matrix View</span>
+              </div>
+            </div>
             <RelationMatrix />
           </div>
 
           <div id="relationview">
-            <header>Inference Tree Map</header>
+            <div className="header">
+              <div className="headerlogo">
+                <img src={reasonlogo}/>
+              </div>
+              <div className="headerText">
+                <span>推理视图</span>
+                <span>Uncertainty Reasoning View</span>
+              </div>
+            </div>
             <InferSunBurst height={400} width={1000}/>
           </div>
         </div>

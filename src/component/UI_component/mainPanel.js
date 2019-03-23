@@ -9,7 +9,6 @@ import logo from './static/mountain.png';
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
 import HistoryEvent from '../graph_component/HistoryEvent';
-import EventTooltip from './eventTooltip';
 
 // 界面的上半部分
 // @observer
@@ -29,7 +28,9 @@ class MainPanel extends Component {
     // .translateExtent([[0, 0], [width - padding.left - padding.right, height - padding.top - padding.bottom]])
     .on("zoom", this.zoomed.bind(this));
     this.changeViewType=this.changeViewType.bind(this);
-    this.all_events=[]
+    this.handleEventMarkClick = this.handleEventMarkClick.bind(this);
+    this.all_events=[];
+
   }
 
   _changeShowPeople = autorun(()=>{
@@ -70,7 +71,7 @@ class MainPanel extends Component {
 
   changeViewType=()=>{
     this.setState({
-        checked: !this.state.checked
+        checked: !this.state.checked,
     });
   }
 
@@ -79,6 +80,13 @@ class MainPanel extends Component {
       zoomTransform: d3.event.transform
     });
   }
+
+  
+  handleEventMarkClick = value => {
+    const event = eventManager.get(value.id)
+    stateManager.setSelectedEvent(event)
+  }
+
   static get defaultProps() {
     return {
       width: 1920,
@@ -203,15 +211,13 @@ class MainPanel extends Component {
                       selected_person={person} 
                       calcualte_method={calcualte_method}
                       uncertainHeight={uncertainHeight}
+                      handleEventMarkClick={this.handleEventMarkClick}
                       line={this.line}/>
                   </g>
                 )
               }
               </g>
               <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
-              <foreignObject x="20" y="22" width="200" height="140" visibility={'visible'}>
-              {/* <EventTooltip/> */}
-              </foreignObject>
             </svg>
           </div>
       </div>

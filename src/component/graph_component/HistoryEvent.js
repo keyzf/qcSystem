@@ -37,11 +37,13 @@ export default class HistoryEvent extends React.Component {
     this.line.x((d)=>xscale(d.x))
              .y((d)=>d);
     console.log(this.data);
-    d3.select(node)
-    .selectAll('.historybubble').remove();
-    d3.select(node)
+
+    let datadom = d3.select(node)
       .selectAll('.historybubble')
-      .data(this.data)
+      .data(this.data);
+    datadom.exit().remove();
+    datadom.attr('cx',d=>xscale(d.x))
+    datadom
       .enter()
       .append('circle')
       .attr('class','historybubble')
