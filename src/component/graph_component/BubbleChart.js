@@ -24,6 +24,7 @@ export default class BubbleChart extends React.Component {
 
   componentDidUpdate() {
     this.renderBubble();
+    this.init();
   }
 
   addMetaballs(){
@@ -124,15 +125,18 @@ export default class BubbleChart extends React.Component {
 
   init(){
     let node=this.refs.bubble;
-    let {onMouseOver,onMouseOut} =this.props;
+    let {onMouseOver,onMouseOut,width,areaHeight} =this.props;
     d3.select(node)
     .on('mouseover',()=>{
       let target = d3.select(d3.event.srcElement);
       d3.select(node).selectAll('.bubbleWhole')
         .attr('stroke',null)
       if(target.attr('class').substr(0,11)==='bubbleWhole'){
-        let mousePos = d3.mouse(node);
-        onMouseOver(target.data()[0],mousePos)
+        let pos = d3.mouse(node);
+        let x= pos[0]+10;
+        if(pos[0]+10+160>width) x = pos[0]-180;
+        let y = pos[1]+areaHeight-100
+        onMouseOver(target.data()[0],[x,y])
         target.attr('fill','#F37335').raise();
       }
     })
@@ -148,16 +152,6 @@ export default class BubbleChart extends React.Component {
     return (
     <g className="bubble" ref="bubbleGraph" transform={translate}>
       <g ref="bubble" transform={`translate(0,5)`}></g>
-      <rect width="300" height="40" fill="#303030" rx={10} ry={10}  opacity={0.6} visibility="hidden">
-      </rect>
-      <text></text>
-      {/* {
-        data && data.map((eve)=>{
-          return eve.events.map((d,i)=>{
-            return (<circle key={i} r={this.rscale(d.prob)} cx={xscale(d.x)} cy={10} fill="red" fillOpacity={0.4} onMouseOver={this.mouseOver(this)}/>)
-          })
-        })
-      } */}
     </g>
     );
   }

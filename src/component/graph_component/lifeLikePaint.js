@@ -36,13 +36,14 @@ class LifeLikePaint extends Component{
                 title: ''
             },
             trigger_label_data: [],
-            relationLines:{},
+            relationLines:undefined,
             chooseEvent: undefined,
             triggerName: new Set(),
         }
         this.onMouseOut = this.onMouseOut.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.closePopup = this.closePopup.bind(this);
+        this.renderLines = this.renderLines.bind(this);
     }
 
     _onEventFilterChange = autorun(()=>{
@@ -65,8 +66,11 @@ class LifeLikePaint extends Component{
         }
     })
     componentWillMount(){
-        let {selected_person} = this.props
-        this.selected_person = selected_person
+        let {selected_person,index} = this.props
+        this.selected_person = selected_person;
+        this.setState({
+            vis:index===0?'visible':'hidden'
+        })
         // console.log(selected_person);
         net_work.require('getPersonEvents', {person_id:selected_person.id})
         .then(data=>{
@@ -81,11 +85,14 @@ class LifeLikePaint extends Component{
         })
     }
 
+    componentWillReceiveProps(nextProps){
+        this.loadLifeLineData()
+    }
+
     getRelationLine(){
         let selected_people = stateManager.selected_people;
         let len = selected_people.length;
         let other_people = selected_people.slice(0,len-1);
-        // console.log(other_people);
         let new_person = selected_people[len-1];
         let relationLines={};
         let yearmap = new Map();
@@ -106,7 +113,7 @@ class LifeLikePaint extends Component{
                             tmp.event.push(d);
                             tmp.count++;
                             relationLines[year]=tmp;
-                        }else{
+                        }else if(year){
                             let tmp={};
                             tmp.event=[d];
                             tmp.count = 1;
@@ -147,35 +154,6 @@ class LifeLikePaint extends Component{
             let imp = event.getImp(selected_person) * Math.exp(-(year-event.time_range[0])/windows_size)
             return total+imp
         }, 0)
-        // console.log(total_imp)
-        // if (method==='平均数') {
-        //     return total_score/events.length
-        // }else if(method==='平均数 * log(事件数)') {
-        //     return total_score/events.length * Math.log(events.length+1)
-        // }else if(method==='众数') {
-        //     const majorityElement = (nums) => {
-        //         let map = {};
-        //         let max_num = 0
-        //         map[0] = 0
-        //         nums.forEach(num=> {
-        //             if (map[num]) {
-        //                 map[num]++;
-        //             } else {
-        //                 map[num] = 1;
-        //             }
-        //             if (map[num]>map[max_num]) {
-        //                 max_num = num
-        //             }
-        //         })
-        //         return max_num
-        //     };
-        //     return majorityElement(scores)
-        // }else if(method==='中位数'){
-        //     scores.sort(function(a,b){return a-b;});
-        //     var l = scores.length-1;
-        //     var n = Math.floor(l/2);
-        //     return (scores[n]+scores[l-n])/2;
-        // }else 
         if(method==='加权平均' || true){
             types.forEach(type =>{
                 if (type2events[type].length==0) {
@@ -183,7 +161,7 @@ class LifeLikePaint extends Component{
                 }else{
                     type2score[type] = type2events[type].reduce((total, event)=>{
                         let imp = event.getImp(selected_person)  * Math.exp(-(year-event.time_range[0])/windows_size)
-                        let score = event.getScore(selected_person) * imp // / total_imp
+                        let score = event.getScore(selected_person) * imp / total_imp
                         // console.log(score, event.getScore(selected_person), imp, total_imp)
                         return total + score
                     }, 0)                    
@@ -293,7 +271,7 @@ class LifeLikePaint extends Component{
         years.forEach(year=>{
           let events = year2events[year] || []
           let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
-          // console.log(scores)
+        //   console.log(scores)
           let stack_y = 0
           parent_types.forEach((type,i)=>{
               let this_events = events.filter(event => event.trigger.parent_type===type)
@@ -378,14 +356,13 @@ class LifeLikePaint extends Component{
     }
 
     onMouseOver = (value,pos) => {
-        let {height,uncertainHeight}= this.props;
         this.setState({
           chooseEvent : value,
         })
         d3.select(this.refs.svg).select('#bubbleEventTooltip')
           .attr('visibility', 'visible')
           .attr('x',pos[0])
-          .attr('y', pos[1]+height-uncertainHeight-100)
+          .attr('y',pos[1])
     }
     onMouseOut = () =>{
         d3.select(this.refs.svg).select('#bubbleEventTooltip')
@@ -396,43 +373,101 @@ class LifeLikePaint extends Component{
         d3.select(this.refs.svg).select('#bubbleEventTooltip').attr('visibility','hidden');
     }    
 
+    renderLines(){
+        let node = this.refs.relationLineDom;
+        let {line,xscale,height} = this.props;
+        let {relationLines} = this.state;
+        let linedoms = d3.select(node)
+          .selectAll('.relationLine')
+          .data(Object.values(relationLines));
+        linedoms.selectAll('path')
+                .attr('d',(d,i)=>{
+                    return line(d.lines)
+                })
+        linedoms.selectAll('.upcircle')
+                .attr('cx',d=>xscale(d.lines[0].x))
+                .attr('cy',d=>height*d.lines[0].person_index-50)
+        linedoms.selectAll('.downcircle')
+                .attr('cx',d=>xscale(d.lines[0].x))
+                .attr('cy',d=>height*d.lines[1].person_index-50)
+        linedoms.exit().remove();
+        let newgdom = linedoms.enter().append('g').attr('class','relationLine');
+        newgdom.append('path')
+                .attr('d',(d,i)=>{
+                    return line(d.lines)
+                })
+                .attr('stroke','#000')
+                .attr('stroke-width',d=>d.count)
+                .attr('stroke-dasharray','4 1')
+        newgdom.append('circle')
+                .attr('class','upcircle')
+                .attr('cx',d=>xscale(d.lines[0].x))
+                .attr('cy',d=>height*d.lines[0].person_index-50)
+                .attr('r',4)
+                .attr('stroke','#000')
+                .on('mouseover',(d)=>{
+                    this.setState({
+                        chooseEvent : d.event,
+                    })
+                    let pos = d3.mouse(this.refs.content);
+                    d3.select(this.refs.content).select('#bubbleEventTooltip')
+                    .attr('visibility', 'visible')
+                    .attr('x',pos[0]+10)
+                    .attr('y',pos[1]-130)
+                })
+                .on('mouseout',()=>{
+                    d3.select(this.refs.content).select('#bubbleEventTooltip').attr('visibility','hidden');
+                })
+        newgdom.append('circle')
+            .attr('class','downcircle')
+            .attr('cx',d=>xscale(d.lines[0].x))
+            .attr('cy',d=>height*d.lines[1].person_index-50)
+            .attr('r',4)
+            .attr('stroke','#000')
+            .on('mouseover',(d)=>{
+                this.setState({
+                    chooseEvent : d.events,
+                })
+                let pos = d3.mouse(this.refs.content);
+                d3.select(this.refs.content).select('#bubbleEventTooltip')
+                .attr('visibility', 'visible')
+                .attr('x',pos[0]+10)
+                .attr('y',pos[1]-130)
+            })
+            .on('mouseout',()=>{
+                d3.select(this.refs.content).select('#bubbleEventTooltip').attr('visibility','hidden');
+            })
+    }
+
     render(){
-        const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, uncertainHeight, handleEventMarkClick} = this.props
+        const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, index,uncertainHeight, handleEventMarkClick} = this.props
         console.log('render lifeLikePaint 主视图', area_datas)
-        let {area_datas, relationLines, prob_mark_data, selected_prob_year, triggerName, chooseEvent } = this.state
+        let {area_datas, relationLines, prob_mark_data, selected_prob_year, triggerName, chooseEvent, vis } = this.state
         this.yscale.domain([0,this.maxy_sum])
                    .range([height-uncertainHeight,30]);
         if(selected_prob_year){
             prob_mark_data = prob_mark_data[selected_prob_year];
         }
+        console.log(area_datas);
         return (
             <g ref="svg" width={width} height={height}>
-                <g transform={transform}>
-                    <g className="triggerName" transform={`translate(${width-10},${10})`}>
+                <g ref="content" transform={transform}>
+                    <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
                         {Array.from(triggerName).map((d,i)=>{
                             return (<text x={-i*20} key={i}>{d}</text>)
                         })}
                     </g>
                     <text className="personName" x={20} y={20}>{selected_person.name}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
-                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person}></MountainChart>
-                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></BubbleChart>
+                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></MountainChart>
+                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} width={width}></BubbleChart>
                     <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="140" visibility={'hidden'}>
                         <EventTooltip event={chooseEvent} name={selected_person.name} closePopup={this.closePopup}/>
                     </foreignObject>
                 </g>
-                {
-                    Object.values(relationLines).map((d,index)=>{
-                        console.log(d.lines);
-                        return (
-                            <g>
-                                <path d={line(d.lines)} stroke={'black'} strokeDasharray={"4 1"}/>
-                                <circle cx={xscale(d.lines[0].x)} cy={height*d.lines[0].person_index-50} r={4} stroke={'#000000'}/>
-                                <circle cx={xscale(d.lines[0].x)} cy={height*d.lines[1].person_index-50} r={4} stroke={'#000000'}/>
-                            </g>
-                        )
-                    })
-                }
+                <g ref="relationLineDom">
+                {relationLines&&this.renderLines()}
+                </g>
             </g>
         )
     }

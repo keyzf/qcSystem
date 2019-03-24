@@ -92,7 +92,6 @@ class Map extends React.Component {
         let target = d3.select(d3.event.srcElement);
         if(target.node().tagName==='circle'){
           let targetdata = target.datum();
-          console.log(targetdata)
           let pos = d3.mouse(node);
           this.setState({
             chooseEvent : targetdata,
@@ -127,7 +126,6 @@ class Map extends React.Component {
               </g>
               <g ref="places">
                 {selected_people.map((person,i)=>{
-                  console.log(this.colors(i));
                   return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale}/>
                 })}
               </g>

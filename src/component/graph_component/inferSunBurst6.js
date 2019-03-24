@@ -80,7 +80,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:5000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
             .then(data=>{
                 // console.log(data)
                 data = dataStore.processResults(data.data)
@@ -442,7 +442,7 @@ class OnePart{
                             filter_value.node_type = 'filter_value'
                             filter_values.push(filter_value)
                             filter_value.rotation = 0
-                            filter_value.x = center_x + r  + 0.1*filter_values.length  //一列也什么了几个地方
+                            filter_value.x = center_x + r //  + 0.1*filter_values.length  //一列也什么了几个地方
                             filter_value.y = center_y + r - 0.2*filter_values.length-0.3
                             this.all_values.push(filter_value)
                             filter_value._index = this.all_values.length-1
@@ -1411,11 +1411,11 @@ class Rule{
         if (related_objects.length===0 && related_objects[0].node_type==='filter_value') {
             return related_objects[0]
         }
-        this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.2 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
+        this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.12 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
         this.y = related_objects.reduce((total, elm)=>  total+elm.y, 0)/related_objects.length
         this.color = Rule.type2color[this.type]
         // this.color = this.
-        return this
+        return this 
     }
 }
 
