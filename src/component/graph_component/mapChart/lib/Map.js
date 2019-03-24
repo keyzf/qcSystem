@@ -75,10 +75,13 @@ class Map extends React.Component {
     d3.select(node).selectAll("path")
       .data(song.features)
       .enter().append("path")
-      .attr('stroke', '#666666')
+      .attr('stroke',d=>{
+        if(d.properties.H_SUP_PROV==="Song Dynasty"||d.properties.H_SUP_PROV===null) return '#666666';
+        else return '#aaaaaa';
+      } )
       .attr('stroke-width', 1)
       .attr('fill', d=>{
-        if(d.properties.H_SUP_PROV==="Song Dynasty"||d.properties.H_SUP_PROV===null) return '#cfcfcf';
+        if(d.properties.H_SUP_PROV==="Song Dynasty"||d.properties.H_SUP_PROV===null) return '#d7d9dd';
         else return '#ffffff';
       })
       .attr("d", this.path);
@@ -137,7 +140,7 @@ class Map extends React.Component {
           </g>
           <foreignObject id="mapLegend" x="10" y="5" width="140" height="80">
             <div>
-              <div><img src={legend}/><span>1-20(次)</span></div>
+              <div><img src={legend}/><span>事件次数</span></div>
               <div><span>行进路线</span><img src={route}/></div>
             </div>
           </foreignObject >

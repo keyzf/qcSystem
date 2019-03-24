@@ -9,17 +9,17 @@
   background: rgba(255,255,255,0.8);
   border: 1px solid rgba(200,200,200,0.5);
   border-radius:6px;
-  width:120px;
+  width:130px;
   height:48px;
   position:absolute;
   div{
     display:grid;
-    grid-template-columns: 45px 70px;
+    grid-template-columns: 55px 76px;
     height:100%;
     padding:2px;
     div:last-child{
       img{
-        margin-left:35px;
+        margin-left:36px;
         margin-top:4px;
       }
       span{

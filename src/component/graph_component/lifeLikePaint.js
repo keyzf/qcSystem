@@ -39,6 +39,7 @@ class LifeLikePaint extends Component{
             relationLines:undefined,
             chooseEvent: undefined,
             triggerName: new Set(),
+            selectTrigger: ''
         }
         this.onMouseOut = this.onMouseOut.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
@@ -49,6 +50,8 @@ class LifeLikePaint extends Component{
         this.birth_year = -9999;
         this.death_year = 9999;
         this.selected = 0;
+        this.handleTriggerMouseOut = this.handleTriggerMouseOut.bind(this);
+        this.handleTriggerMouseOver = this.handleTriggerMouseOver.bind(this);
     }
 
     _onEventFilterChange = autorun(()=>{
@@ -459,10 +462,22 @@ class LifeLikePaint extends Component{
         return order.indexOf(a.type.slice(8))-order.indexOf(b.type.slice(8));
     }
 
+    handleTriggerMouseOver(d){
+        this.setState({
+            selectTrigger:d
+        })
+    }
+
+    handleTriggerMouseOut(){
+        this.setState({
+            selectTrigger:''
+        })
+    }
+
     render(){
         const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, index,uncertainHeight, handleEventMarkClick} = this.props
         console.log('render lifeLikePaint 主视图', area_datas)
-        let {area_datas, relationLines, prob_mark_data, selected_prob_year, triggerName, chooseEvent, vis } = this.state
+        let {selectTrigger,area_datas, relationLines, prob_mark_data, selected_prob_year, triggerName, chooseEvent, vis } = this.state
         this.yscale.domain([0,this.maxy_sum])
                    .range([height-uncertainHeight,30]);
         if(selected_prob_year){
@@ -474,12 +489,12 @@ class LifeLikePaint extends Component{
                 <g ref="content" transform={transform}>
                     <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
                         {Array.from(triggerName).map((d,i)=>{
-                            return (<text x={-i*20} key={i}>{d}</text>)
+                            return (<text x={-i*20} key={i} onMouseOver={()=>this.handleTriggerMouseOver(d)} onMouseOut={this.handleTriggerMouseOut}>{d}</text>)
                         })}
                     </g>
                     <text className="personName" x={20} y={20}>{selected_person.name}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width} birth={this.birth_year} death={this.death_year}></Axis>
-                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick}></MountainChart>
+                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart>
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
                     {/* <g transform={`translate(0, ${height-uncertainHeight})`} className={'bdLine'}>
                         {this.birth_year===-9999?{}:(<g><line x1={xscale(this.birth_year)} x2={xscale(this.birth_year)} y1={-25} y2={30}></line>
