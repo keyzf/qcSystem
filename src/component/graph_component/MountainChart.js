@@ -122,6 +122,19 @@ export default class AreaLineChart extends React.Component {
     })
   }
 
+  hoverEventPoints(name){
+    d3.select(this.refs.area)
+            .select('.certainEventPoint')
+            .selectAll('circle').attr('fill','rgba(200,200,200,0.5)')
+    let dom = d3.select(this.refs.area)
+            .select('.certainEventPoint')
+            .selectAll('circle')
+            .filter((d,i)=>{
+              return d.event.trigger.name === name
+            })
+    dom.attr('fill','rgba(150,150,150,0.8)')
+  }
+
   renderCanvas(){
     let {yscale,xscale,width,height,viewType,index} = this.props;
     let canvas = d3.select(this.refs.area).select(`#canvas${index}`).node();
@@ -193,13 +206,14 @@ export default class AreaLineChart extends React.Component {
   }
 
   render() {
-    let {data,xscale,yscale,translate,viewType,width,height,index} = this.props;
+    let {data,xscale,yscale,translate,viewType,selectTrigger} = this.props;
     if(viewType){
       data=data.slice(1);
     }
     else{
       data=data[0];
     }
+    this.hoverEventPoints(selectTrigger);
     console.log(data);
     this.area.x((d)=>xscale(d.x))
               .y1((d)=>yscale(d.y))
