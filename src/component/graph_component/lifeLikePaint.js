@@ -61,7 +61,7 @@ class LifeLikePaint extends Component{
             let need_refesh = stateManager.need_refresh
             this.loadLifeLineData()
             this.loadInferMarkData()
-            this.getRelationLine()
+            // this.getRelationLine()
         }
     })
     // _onType2pChange = autorun(()=>{
@@ -112,23 +112,21 @@ class LifeLikePaint extends Component{
                         let year;
                         if(d.time_range[0]===d.time_range[1]){
                             year = d.time_range[0];
-                        }else{
-                            year = _.max(Object.keys(d.prob_year),o=>d.prob_year[o]);
-                        }
-                        if(relationLines[year]){
-                            let tmp=relationLines[year];
-                            tmp.event.push(d);
-                            tmp.count++;
-                            relationLines[year]=tmp;
-                        }else if(year){
-                            let tmp={};
-                            tmp.event=[d];
-                            tmp.count = 1;
-                            let tmpLines=[];
-                            tmpLines[0]={'person_index':len,'x':parseInt(year)};
-                            tmpLines[1]={'person_index':person_index+1,'x':parseInt(year)};
-                            tmp.lines = tmpLines;
-                            relationLines[year]=tmp;
+                            if(relationLines[year]){
+                                let tmp=relationLines[year];
+                                tmp.event.push(d);
+                                tmp.count++;
+                                relationLines[year]=tmp;
+                            }else if(year){
+                                let tmp={};
+                                tmp.event=[d];
+                                tmp.count = 1;
+                                let tmpLines=[];
+                                tmpLines[0]={'person_index':len,'x':parseInt(year)};
+                                tmpLines[1]={'person_index':person_index+1,'x':parseInt(year)};
+                                tmp.lines = tmpLines;
+                                relationLines[year]=tmp;
+                            }
                         }
                     }
                 }
@@ -428,11 +426,21 @@ class LifeLikePaint extends Component{
         let node = this.refs.relationLineDom;
         let {line,xscale,height} = this.props;
         let {relationLines} = this.state;
-        d3.select(node)
-          .selectAll('.relationLine').remove();
+        // d3.select(node)
+        //   .selectAll('.relationLine').remove();
         let linedoms = d3.select(node)
           .selectAll('.relationLine')
           .data(Object.values(relationLines));
+        linedoms.selectAll('path')
+                .attr('d',(d,i)=>{
+                    return line(d.lines)
+                })
+        linedoms.selectAll('.upcircle')
+                .attr('cx',d=>xscale(d.lines[0].x))
+                .attr('cy',d=>height*d.lines[0].person_index-50);
+        linedoms.selectAll('.downcircle')
+                .attr('cx',d=>xscale(d.lines[0].x))
+                .attr('cy',d=>height*d.lines[1].person_index-50)
         let newgdom = linedoms.enter().append('g').attr('class','relationLine');
         newgdom.append('path')
                 .attr('d',(d,i)=>{
@@ -509,6 +517,7 @@ class LifeLikePaint extends Component{
             prob_mark_data = prob_mark_data[selected_prob_year];
         }
         area_datas = area_datas.sort(this.sortType);
+        console.log(relationLines);
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>
