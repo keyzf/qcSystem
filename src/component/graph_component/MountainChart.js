@@ -71,7 +71,7 @@ export default class AreaLineChart extends React.Component {
   }
 
   renderCircles(){
-    let {yscale,xscale,onMouseOver,onMouseOut,onMouseClick,width} = this.props;
+    let {yscale,xscale,onMouseOver,onMouseOut,onMouseClick,width,height} = this.props;
     // d3.select(this.refs.area)
     //   .selectAll('circle').remove();
     let dom;
@@ -105,6 +105,8 @@ export default class AreaLineChart extends React.Component {
           let x= pos[0]+10;
           if(pos[0]+10+160>width) x = pos[0]-180;
           let y = pos[1]-100;
+          y= y-10<0? 10: y;
+          y = y+160>height? y-20: y;
           onMouseOver(d.event,[x,y]);
         })
         .on('mouseout',(d)=>{

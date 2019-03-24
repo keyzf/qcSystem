@@ -503,14 +503,14 @@ class LifeLikePaint extends Component{
                         })}
                     </g>
                     <text className="personName" x={20} y={20}>{selected_person.name}</text>
-                    <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
+                    <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width} birth={this.birth_year} death={this.death_year}></Axis>
                     <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick}></MountainChart>
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
-                    <g transform={`translate(0, ${height-uncertainHeight-30})`} className={'bdLine'}>
+                    {/* <g transform={`translate(0, ${height-uncertainHeight})`} className={'bdLine'}>
                         {this.birth_year===-9999?{}:(<g><line x1={xscale(this.birth_year)} x2={xscale(this.birth_year)} y1={-25} y2={30}></line>
                         <circle cx={xscale(this.birth_year)} cy={-29} r={4}></circle></g>)}
                         {this.death_year===9999?{}:(<g><line x1={xscale(this.death_year)} x2={xscale(this.death_year)} y1={-25} y2={30}></line><circle cx={xscale(this.death_year)} cy={-29} r={4}></circle></g>)}
-                    </g>
+                    </g> */}
                     <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="180" visibility={'hidden'}>
                         <EventTooltip event={chooseEvent} name={selected_person.name} closePopup={this.closePopup}/>
                     </foreignObject>
