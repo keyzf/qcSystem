@@ -21,7 +21,7 @@ export default class EventTooltip extends React.Component{
   componentWillReceiveProps(nextProps){
     let event = nextProps.event;
     if(event){
-      if(event.count){
+      if(Array.isArray(event)){
         this.setState({
           isEventArray:1
         })
@@ -40,9 +40,8 @@ export default class EventTooltip extends React.Component{
     let tipname=name;
     let ismultiple = 0;
     if(isEventArray){
-      tipname=event.addr.name;
-      if(event.event.length===1){
-        event = event.event;
+      if(event.length===1){
+        event = event[0];
         time = event.time_range;
         if(time[0]===time[1]) time=[time[0]];
         addr = event.addrs.map((d)=>d.name);
@@ -61,13 +60,12 @@ export default class EventTooltip extends React.Component{
       trigger = event.trigger.name;
       from = '';
     }
-    console.log(event,isEventArray);
     return (
-        <div ref="tip" className="eventTip" style={{width:160,height:136,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
+        <div ref="tip" className="eventTip" style={{width:160,height:170,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
           <div className="tooltipHeader"><span>{tipname}</span><img src={clear} onClick={closePopup}></img></div>
-          {ismultiple?(
+          {isEventArray&&ismultiple?(
               <div className="tipContent">
-                {event.event.map((d,i)=>
+                {event.map((d,i)=>
                   <li key={i}>
                     <span>{d.time_range.join('-')}</span>
                     <span>{d.roles.map((dd)=>dd.person.name)}</span>
@@ -77,7 +75,8 @@ export default class EventTooltip extends React.Component{
                 )}
               </div>
             ):(<div className="tipContent">
-            <div><img src={timeIcon}></img><span style={{width:'43px'}}>{time.join('-')}</span><img src={placeIcon}></img><span style={{width:'43px'}}>{addr.join(',')}</span></div>
+            <div><img src={timeIcon}></img><span>{time.join('-')}</span></div>
+            <div><img src={placeIcon}></img><span>{addr.join(',')}</span></div>
             <div><img src={personIcon}></img><span>{person.join(',')}</span></div>
             <div><img src={eventIcon}></img><span>{trigger}</span></div>
             <div><img src={fromIcon}></img><span>{from}</span></div>

@@ -37,7 +37,7 @@ body ::-webkit-scrollbar-thumb:window-inactive {
   margin:0px;
   display: grid;
   border: 1px solid #bababa;
-  grid-template-rows: 30px 540px 500px;
+  grid-template-rows: 30px 540px 510px;
   button{
     outline: none;
   }
@@ -209,8 +209,7 @@ body ::-webkit-scrollbar-thumb:window-inactive {
   }
   #footer{
     display: grid;
-    grid-template-columns: 1fr 1fr 1000px;
-    height:$downHeight;
+    grid-template-columns: 450px 1000px 1px;
     header{
       width: 100%;
       height: 30px;
@@ -224,18 +223,18 @@ body ::-webkit-scrollbar-thumb:window-inactive {
       line-height:25px;
     }
     #mapview{
+      height: 510px;
       border-top:$borderWidth solid #d9d9d9;
       border-right:$borderWidth solid #d9d9d9;
-      height: $downHeight - $borderWidth;
     }
     #matrixview{
+      height: 510px;
       border-top:$borderWidth solid #d9d9d9;
       border-right:$borderWidth solid #d9d9d9;
-      height: $downHeight - $borderWidth;
     }
     #relationview{
+      height: 510px;
       border-top:$borderWidth solid #d9d9d9;
-      height: $downHeight - $borderWidth;
     }
   }
 }

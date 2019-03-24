@@ -101,7 +101,7 @@ class EventFilter  extends Component {
     render() {
         let {onChange} = this
         let {data, check_box2checked} = this.state
-        // console.log(data)
+        console.log(data)
         return (
                 <List bulleted>
                     <List.Item  as='li'>

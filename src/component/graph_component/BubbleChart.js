@@ -57,7 +57,7 @@ export default class BubbleChart extends React.Component {
   renderBubble() {
     console.log('rerender bubble')
     let node=this.refs.bubble;
-    let {data,xscale,onEventClick} =this.props;
+    let {data,xscale,onEventClick,onMouseClick,width,areaHeight} =this.props;
     let rscale=this.rscale;
     let bubbles=[];
     for(let key in data){
@@ -120,6 +120,11 @@ export default class BubbleChart extends React.Component {
       .attr('fill-opacity',0.5)
       .on('click',(d)=>{
         onEventClick(d);
+        let pos = d3.mouse(node);
+        let x= pos[0]+10;
+        if(pos[0]+10+160>width) x = pos[0]-180;
+        let y = pos[1]+areaHeight-140
+        onMouseClick(d,[x,y])
       })
   }
 
@@ -135,7 +140,7 @@ export default class BubbleChart extends React.Component {
         let pos = d3.mouse(node);
         let x= pos[0]+10;
         if(pos[0]+10+160>width) x = pos[0]-180;
-        let y = pos[1]+areaHeight-100
+        let y = pos[1]+areaHeight-140
         onMouseOver(target.data()[0],[x,y])
         target.attr('fill','#F37335').raise();
       }
