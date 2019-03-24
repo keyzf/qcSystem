@@ -21,7 +21,7 @@ export default class EventTooltip extends React.Component{
   componentWillReceiveProps(nextProps){
     let event = nextProps.event;
     if(event){
-      if(event.count){
+      if(Array.isArray(event)){
         this.setState({
           isEventArray:1
         })
@@ -40,9 +40,8 @@ export default class EventTooltip extends React.Component{
     let tipname=name;
     let ismultiple = 0;
     if(isEventArray){
-      tipname=event.addr.name;
-      if(event.event.length===1){
-        event = event.event;
+      if(event.length===1){
+        event = event[0];
         time = event.time_range;
         if(time[0]===time[1]) time=[time[0]];
         addr = event.addrs.map((d)=>d.name);
@@ -61,13 +60,12 @@ export default class EventTooltip extends React.Component{
       trigger = event.trigger.name;
       from = '';
     }
-    console.log(event,isEventArray);
     return (
         <div ref="tip" className="eventTip" style={{width:160,height:136,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
           <div className="tooltipHeader"><span>{tipname}</span><img src={clear} onClick={closePopup}></img></div>
-          {ismultiple?(
+          {isEventArray&&ismultiple?(
               <div className="tipContent">
-                {event.event.map((d,i)=>
+                {event.map((d,i)=>
                   <li key={i}>
                     <span>{d.time_range.join('-')}</span>
                     <span>{d.roles.map((dd)=>dd.person.name)}</span>

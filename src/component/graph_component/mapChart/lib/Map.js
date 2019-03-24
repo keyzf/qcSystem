@@ -18,6 +18,7 @@ class Map extends React.Component {
         places: [],
         event: undefined,
         chooseEvent: undefined,
+        selectAddr: ''
       };
       this.init = this.init.bind(this);
       // 定义地图投影
@@ -93,7 +94,8 @@ class Map extends React.Component {
           let targetdata = target.datum();
           let pos = d3.mouse(node);
           this.setState({
-            chooseEvent : targetdata,
+            chooseEvent : targetdata.event,
+            selectAddr : targetdata.addr.name
           })
           d3.select('#geomap').select('#mapEventTooltip')
             .attr('visibility', 'visible')
@@ -113,7 +115,7 @@ class Map extends React.Component {
 
   render () {
     let {width,height}= this.props;
-    let {selected_people,chooseEvent} = this.state;
+    let {selected_people,chooseEvent,selectAddr} = this.state;
     this.colors.domain([0,selected_people.length]);
     // console.log(selected_people)
     return (
@@ -137,7 +139,7 @@ class Map extends React.Component {
             </div>
           </foreignObject >
           <foreignObject id="mapEventTooltip" x="20" y="22" width="200" height="140" visibility={'hidden'}>
-            <EventTooltip event={chooseEvent} closePopup={this.closePopup}/>
+            <EventTooltip event={chooseEvent} closePopup={this.closePopup} name={selectAddr}/>
           </foreignObject>
         </svg>
       </div>

@@ -209,7 +209,7 @@ body ::-webkit-scrollbar-thumb:window-inactive {
   }
   #footer{
     display: grid;
-    grid-template-columns: 1fr 1fr 1000px;
+    grid-template-columns: 450px 1000px 1px;
     height:$downHeight;
     header{
       width: 100%;

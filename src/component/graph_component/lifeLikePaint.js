@@ -53,18 +53,19 @@ class LifeLikePaint extends Component{
             let need_refesh = stateManager.need_refresh
             this.loadLifeLineData()
             this.loadInferMarkData()
+            this.getRelationLine()
         }
     })
-    _onType2pChange = autorun(()=>{
-        if (stateManager.is_ready) {
-            this.type2p = stateManager.type2p
-            let life_refresh = stateManager.life_refresh
-            console.log(this.type2p)
-            this.loadLifeLineData()
-            // this.loadInferMarkData()
-            // this.getRelationLine()
-        }
-    })
+    // _onType2pChange = autorun(()=>{
+    //     if (stateManager.is_ready) {
+    //         this.type2p = stateManager.type2p
+    //         let life_refresh = stateManager.life_refresh
+    //         console.log(this.type2p)
+    //         this.loadLifeLineData()
+    //         // this.loadInferMarkData()
+    //         // this.getRelationLine()
+    //     }
+    // })
     componentWillMount(){
         let {selected_person,index} = this.props
         this.selected_person = selected_person;
@@ -402,20 +403,22 @@ class LifeLikePaint extends Component{
         let node = this.refs.relationLineDom;
         let {line,xscale,height} = this.props;
         let {relationLines} = this.state;
+        d3.select(node)
+          .selectAll('.relationLine').remove();
         let linedoms = d3.select(node)
           .selectAll('.relationLine')
           .data(Object.values(relationLines));
-        linedoms.selectAll('path')
-                .attr('d',(d,i)=>{
-                    return line(d.lines)
-                })
-        linedoms.selectAll('.upcircle')
-                .attr('cx',d=>xscale(d.lines[0].x))
-                .attr('cy',d=>height*d.lines[0].person_index-50)
-        linedoms.selectAll('.downcircle')
-                .attr('cx',d=>xscale(d.lines[0].x))
-                .attr('cy',d=>height*d.lines[1].person_index-50)
-        linedoms.exit().remove();
+        // linedoms.selectAll('path')
+        //         .attr('d',(d,i)=>{
+        //             return line(d.lines)
+        //         })
+        // linedoms.selectAll('.upcircle')
+        //         .attr('cx',d=>xscale(d.lines[0].x))
+        //         .attr('cy',d=>height*d.lines[0].person_index-50)
+        // linedoms.selectAll('.downcircle')
+        //         .attr('cx',d=>xscale(d.lines[0].x))
+        //         .attr('cy',d=>height*d.lines[1].person_index-50)
+        // linedoms.exit().remove();
         let newgdom = linedoms.enter().append('g').attr('class','relationLine');
         newgdom.append('path')
                 .attr('d',(d,i)=>{
@@ -450,8 +453,9 @@ class LifeLikePaint extends Component{
             .attr('r',4)
             .attr('stroke','#000')
             .on('mouseover',(d)=>{
+                console.log(d);
                 this.setState({
-                    chooseEvent : d.events,
+                    chooseEvent : d.event,
                 })
                 let pos = d3.mouse(this.refs.content);
                 d3.select(this.refs.content).select('#bubbleEventTooltip')

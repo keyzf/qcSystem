@@ -168,19 +168,6 @@ class App extends Component {
             </div>
             <Map selected_people={this.state.selected_people}/>
           </div>
-          <div id="matrixview">
-            <div className="header">
-              <div className="headerlogo">
-                <img src={matrixlogo}/>
-              </div>
-              <div className="headerText">
-                <span>关系矩阵</span>
-                <span>Relation Matrix View</span>
-              </div>
-            </div>
-            <RelationMatrix />
-          </div>
-
           <div id="relationview">
             <div className="header">
               <div className="headerlogo">
@@ -192,6 +179,18 @@ class App extends Component {
               </div>
             </div>
             <InferSunBurst height={455} width={1000}/>
+          </div>
+          <div id="matrixview">
+            <div className="header">
+              <div className="headerlogo">
+                <img src={matrixlogo}/>
+              </div>
+              <div className="headerText">
+                <span>关系矩阵</span>
+                <span>Relation Matrix View</span>
+              </div>
+            </div>
+            <RelationMatrix />
           </div>
         </div>
         

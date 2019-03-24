@@ -437,7 +437,7 @@ class Event extends _object{
     // console.log(trigger_imp*ops_person.page_rank)
     // console.log(this, trigger_imp, ops_person.page_rank, trigger_imp*ops_person.page_rank)
 
-    console.log( parent_type, type_p, stateManager.type2p)
+    // console.log( parent_type, type_p, stateManager.type2p)
     // 这个log是瞎放的
     return Math.log(trigger_imp*ops_person.page_rank+1) * type_p
   }
