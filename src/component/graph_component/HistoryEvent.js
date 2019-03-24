@@ -67,8 +67,7 @@ export default class HistoryEvent extends React.Component {
             .select('div:first-child')
             .select('span')
             .text((dd)=>{
-              console.log(this.years,d.x,d3.bisectLeft(this.years,parseInt(d.x))-1)
-              let index = this.years[d3.bisectLeft(this.years,parseInt(d.x))-1];
+              let index = this.years[d3.bisectRight(this.years,parseInt(d.x))-1];
               return d.x+' '+empire[index].姓名+' '+empire[index].称号
             })
           d3.select('#historytip')
