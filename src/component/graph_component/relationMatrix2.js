@@ -9,6 +9,7 @@ import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
 import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy, ruleFilter } from '../../dataManager/dataStore2'
 import {MyBrush} from '../UI_component/myUIComponents'
+import { relative } from 'path';
 
 // 3/21 根据pagerank修建
 class RealtionMatrix extends React.Component{
@@ -290,19 +291,25 @@ class RealtionMatrix extends React.Component{
 
     static get defaultProps() {
         return {
-          width: 400,
-          height: 300,
+          width: 470,
+          height: 480,
+          padding:{
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 10
+          }
         };
     }
     
     // 分两个矩阵画？
     render(){
         console.log('render 关系矩阵')
-        let { width, height} = this.props
+        let { width, height, padding} = this.props
         const right_part_width = 250
         // let svg_width = width-right_part_width>height?height:width-right_part_width
-        let svg_width = width;
-        let svg_height = svg_width
+        let svg_width = width - padding.right- padding.left;
+        let svg_height = svg_width - padding.top - padding.bottom;
 
         let people_array = this.people_array
         let selected_people = this.selected_people
@@ -371,8 +378,8 @@ class RealtionMatrix extends React.Component{
         const padding_e = people_num<=3?2:1.1
 
         return (
-            <div style={{width:width, height:height, position: 'absolute' }}>
-                <div style={{width:svg_width, height:height, top: 50, left:10, position: 'absolute'}}>
+            <div style={{width:width, height:height, paddingTop:padding.top, paddingBottom:padding.bottom,paddingLeft:padding.left,paddingRight:padding.right}}>
+                <div style={{width:svg_width, height:svg_height}}>
                     <XYPlot
                     width={svg_width}
                     height={svg_height}
@@ -429,7 +436,7 @@ class RealtionMatrix extends React.Component{
                 </div>
                 
                 {/* 这个范围应该是会变的 */}
-                <div style={{left:250,height:20, top:10, width:right_part_width, position:'absolute'}}>
+                <div style={{left:250,height:20, top:-470, width:right_part_width,position:'relative'}}>
                     <input ref='show_people_num_range' type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
                     onChange={event=>{
                         this.show_people_num = parseInt(this.refs.show_people_num_range.value)

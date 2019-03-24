@@ -22,11 +22,19 @@ export default class Axis extends React.Component {
                 });
       d3.select(node).call(axis);
     }
-  
+
     render() {
-      let {width} = this.props;
+      let {width,birth,death,xscale} = this.props;
+      let left = xscale(birth),right=xscale(death);
+      if(birth === -9999){
+        left = 0;
+      }
+      if(right === 9999){
+        right = width;
+      }
       return (<g className="axis" ref="axis" transform={this.props.translate}>
-        <rect width={width} height={23} x={0} y={0} fill={'#ebebeb'}></rect>
+        <rect width={width} height={22} x={0} y={0} fill={'#efefef'}></rect>
+        <rect width={right-left} height={22} x={left} y={0} fill={'#dfdfdf'}></rect>
       </g>);
     }
   }

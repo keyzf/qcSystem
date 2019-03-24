@@ -75,11 +75,11 @@ export default class EventTooltip extends React.Component{
                 )}
               </div>
             ):(<div className="tipContent">
-            <div><img src={timeIcon}></img><span>{time.join('-')}</span></div>
-            <div><img src={placeIcon}></img><span>{addr.join(',')}</span></div>
-            <div><img src={personIcon}></img><span>{person.join(',')}</span></div>
-            <div><img src={eventIcon}></img><span>{trigger}</span></div>
-            <div><img src={fromIcon}></img><span>{from}</span></div>
+            <div className="rowdiv"><div><img src={timeIcon}></img></div><div><span>{time.join('-')}</span></div></div>
+            <div className="rowdiv"><div><img src={placeIcon}></img></div><div><span>{addr.join(',')}</span></div></div>
+            <div className="rowdiv"><div><img src={personIcon}></img></div><div><span>{person.join(',')}</span></div></div>
+            <div className="rowdiv"><div><img src={eventIcon}></img></div><div><span>{trigger}</span></div></div>
+            <div className="rowdiv"><div><img src={fromIcon}></img></div><div><span>{from}</span></div></div>
           </div>)}
         </div>
     )
