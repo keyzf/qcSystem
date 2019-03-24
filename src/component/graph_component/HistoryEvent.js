@@ -36,7 +36,6 @@ export default class HistoryEvent extends React.Component {
     let node = this.refs.history;
     this.line.x((d)=>xscale(d.x))
              .y((d)=>d);
-    console.log(this.data);
 
     let datadom = d3.select(node)
       .selectAll('.historybubble')
@@ -71,6 +70,9 @@ export default class HistoryEvent extends React.Component {
               let index = this.years[d3.bisectLeft(this.years,parseInt(d.x))];
               return d.x+' '+empire[index].姓名+' '+empire[index].称号
             })
+          d3.select('#historytip')
+            .select('div:last-child')
+            .selectAll('li').remove();
           d3.select('#historytip')
             .select('div:last-child')
             .selectAll('span')

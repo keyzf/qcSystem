@@ -107,7 +107,7 @@ class MainPanel extends Component {
     // const padding_botton = 20, padding_right = 10
     // console.log(selected_people);
     let lifeLikePaint_height = (height-30)/(selected_people.length===0?1:selected_people.length);
-    lifeLikePaint_height = lifeLikePaint_height>160?lifeLikePaint_height:160;
+    lifeLikePaint_height = lifeLikePaint_height>170?lifeLikePaint_height:170;
     let min = 9999;
     let max = -9999;
     selected_people.forEach((person)=>{
