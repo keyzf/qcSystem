@@ -466,8 +466,8 @@ class LifeLikePaint extends Component{
     }
 
     sortType(a,b){
-        let order = ['总','政治','学术','社交','著述','宗教','军事','其它'];
-        return order.indexOf(a.type.slice(8))-order.indexOf(b.type.slice(8));
+        let order = ['总','治','术','交','述','教','事','它'];
+        return order.indexOf(a.type.substr(a.type.length-1,1))-order.indexOf(b.type.substr(b.type.length-1,1));
     }
 
     handleTriggerMouseOver(d){
@@ -492,7 +492,7 @@ class LifeLikePaint extends Component{
             prob_mark_data = prob_mark_data[selected_prob_year];
         }
         area_datas = area_datas.sort(this.sortType);
-        console.log(relationLines);
+        console.log(area_datas);
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>

@@ -12,25 +12,26 @@ export default class AreaLineChart extends React.Component {
     this.calculateX2 = this.calculateX2.bind(this);
   }
   componentDidMount() {
-    this.calculatePos(this.props.data);
+    this.calculatePos();
     this.renderCircles();
     // this.renderCanvas();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.data.toString()!==this.props.data.toString()){
-      this.data = 0;
-      this.calculatePos(nextProps.data);
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if(nextProps.data.toString()!==this.data.toString()){
+  //     this.data = nextProps.data;
+  //     this.calculatePos();
+  //   }
+  // }
 
   componentDidUpdate() {
+        this.calculatePos();
     this.renderCircles();
     // this.renderCanvas();
   }
 
-  calculatePos(data) {
-    let {translate,viewType,selected_person} = this.props;
+  calculatePos() {
+    let {data,translate,viewType,selected_person} = this.props;
     if(this.data===0&&data.length!==0&&data[0].length!==0){
       let eventArray=[];
       let pox_scale = d3.scaleLinear()
@@ -42,7 +43,6 @@ export default class AreaLineChart extends React.Component {
       let len_scale = d3.scaleLinear()
                         .domain([0,0.0000001,0.001,1])
                         .range([0,0.16,0.25,0.36]);
-      console.log(data);
       data.forEach((data,index)=>{
         let eventCircles = [];
         data.forEach((d,i)=>{
@@ -220,7 +220,8 @@ export default class AreaLineChart extends React.Component {
               .y0((d)=>yscale(d.y0));
     return(
     <g className="area" ref="area" translate={translate}>
-      {viewType?data&&data.map((d,i)=>(<path key={i} d={this.area(d)} fill={`url(#linear${i})`}></path>)):data&&<path d={this.area(data)} fill={'url(#linear)'}></path>}
+      {viewType?data&&data.map((d,i)=>{ console.log(i);
+        return (<path key={i} d={this.area(d)} fill={`url(#linear${i})`}></path>)}):data&&<path d={this.area(data)} fill={'url(#linear)'}></path>}
       <g className="certainEventPoint"></g>
     </g>
     );
