@@ -96,16 +96,16 @@ export default class AreaLineChart extends React.Component {
   }
 
   renderCanvas(){
-    let {yscale,xscale,width,height,viewType} = this.props;
-    let canvas = d3.select(this.refs.area).select('canvas').node();
-    canvas.width = width*2;
-    canvas.height = (height+30)*2;
+    let {yscale,xscale,width,height,viewType,index} = this.props;
+    let canvas = d3.select(this.refs.area).select(`#canvas${index}`).node();
+    canvas.width = width;
+    canvas.height = (height+30);
     canvas.style.width = width + 'px';
     canvas.style.height = (height+30) +'px';
 
     let context = canvas.getContext("2d");
     let cx,cy,x2,y2,tmp_len,tmp_k;
-    context.clearRect(0, 0, width*3, (height+30)*3);
+    context.clearRect(0, 0, width, (height+30));
     context.strokeStyle = 'rgba(100,100,100,1.0)';
     context.lineWidth = 2;
     // context.filter = 'blur(4px)';
@@ -126,15 +126,15 @@ export default class AreaLineChart extends React.Component {
       }
       events.forEach((d,i)=>{
         context.beginPath();
-        cx = xscale(d.x)*2;
-        cy = (yscale(d.y)+30)*2; //30是设定的上方宽度
+        cx = xscale(d.x);
+        cy = (yscale(d.y)+30); //30是设定的上方宽度
         context.moveTo(cx, cy);
-        context.arc(cx, cy, d.len*32, 0, 2*Math.PI);
+        context.arc(cx, cy, d.len*20, 0, 2*Math.PI);
         context.fill();
         context.closePath();
         context.beginPath();
         context.moveTo(cx, cy);
-        x2=this.calculateX2(d.len*80,d.k,cx);
+        x2=this.calculateX2(d.len*40,d.k,cx);
         y2 = -d.k*(x2-cx)+cy;
         context.lineTo(x2,y2);
         cx += 3;
@@ -142,7 +142,7 @@ export default class AreaLineChart extends React.Component {
         context.moveTo(cx, cy);
         tmp_len = d.len*0.6;
         tmp_k = d.k*0.8;
-        x2=this.calculateX2(tmp_len*80,tmp_k,cx);
+        x2=this.calculateX2(tmp_len*40,tmp_k,cx);
         y2 = -tmp_k*(x2-cx)+cy;
         context.lineTo(x2,y2)
         context.stroke();
@@ -151,7 +151,7 @@ export default class AreaLineChart extends React.Component {
         context.moveTo(cx, cy);
         tmp_len = d.len*0.6;
         tmp_k = d.k*1.5;
-        x2=this.calculateX2(tmp_len*80,tmp_k,cx);
+        x2=this.calculateX2(tmp_len*40,tmp_k,cx);
         y2 = -tmp_k*(x2-cx)+cy;
         context.lineTo(x2,y2)
         context.stroke();
@@ -168,7 +168,7 @@ export default class AreaLineChart extends React.Component {
   }
 
   render() {
-    let {data,xscale,yscale,translate,viewType,width,height} = this.props;
+    let {data,xscale,yscale,translate,viewType,width,height,index} = this.props;
     // console.log(data);
     if(viewType){
       data=data.slice(1);
@@ -183,7 +183,7 @@ export default class AreaLineChart extends React.Component {
     <g className="area" ref="area" translate={translate}>
       {viewType?data&&data.map((d,i)=>(<path key={i} d={this.area(d)} fill={`url(#linear${i})`}></path>)):data&&<path d={this.area(data)} fill={'url(#linear)'}></path>}
         <foreignObject height={height+30} width={width} y="0" x="0">
-          <canvas height={(height+30)*2} width={width*2}></canvas>
+          <canvas id={`canvas${index}`} height={(height+30)} width={width}></canvas>
         </foreignObject>
     </g>
     );

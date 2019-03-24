@@ -23,14 +23,7 @@ class RealtionMatrix extends React.Component{
 
     person_equal = {}  //相似人物的映射
 
-    min_relation_num = 0
-    max_relation_num = 9999
-
-    max_person_relation_num = 9999  //个人相关事件的最大数目
-    min_person_relation_num =  0
-    relation_num_list = []
-
-    show_people_num = 9
+    show_people_num = 17
     max_people_num = 100
     constructor(){
         super()
@@ -112,13 +105,13 @@ class RealtionMatrix extends React.Component{
                     })
                 })
 
-                let nums = Object.keys(person2person).map(id=> Object.keys(person2person[id]).length)
+                // let nums = Object.keys(person2person).map(id=> Object.keys(person2person[id]).length)
                 // const temp_max = Math.max(...nums)
                 // nums = nums.splice(nums.findIndex(value=> temp_max===value), 1)
                 // console.log(nums)
-                this.max_person_relation_num = Math.max(...nums)
-                this.min_person_relation_num = Math.min(...nums)
-                this.relation_num_list = nums
+                // this.max_person_relation_num = Math.max(...nums)
+                // this.min_person_relation_num = Math.min(...nums)
+                // this.relation_num_list = nums
 
                 // console.log(this.max_person_relation_num, this.min_person_relation_num)
                 this.selected_people = selected_people
@@ -247,43 +240,44 @@ class RealtionMatrix extends React.Component{
                         continue
                     }
                     const center_x = personScale(p1), center_y = personScale(p2)
-                    let type2color = {
-                        '其它': '#667db6',
-                        '学术': '#2C5364',
-                        '政治': '#FDC830',
-                        '社交': '#ffc3a0',
-                        '著述': '#c0c0aa',
-                        '迁徙': '#FFEFBA',
-                        // '#ACB6E5'
-                    }
-                    let types = Object.keys(type2color)
-                    let parent_types = events.map(elm=> elm.trigger.parent_type)
-                    let counts = {}
-                    parent_types.forEach(elm=>{
-                        counts[elm]= counts[elm] || 0
-                        counts[elm]++
-                    })
+                    // let type2color = {
+                    //     '其它': '#667db6',
+                    //     '学术': '#2C5364',
+                    //     '政治': '#FDC830',
+                    //     '社交': '#ffc3a0',
+                    //     '著述': '#c0c0aa',
+                    //     '迁徙': '#FFEFBA',
+                    //     // '#ACB6E5'
+                    // }
+                    // let types = Object.keys(type2color)
+                    // let parent_types = events.map(elm=> elm.trigger.parent_type)
+                    // let counts = {}
+                    // parent_types.forEach(elm=>{
+                    //     counts[elm]= counts[elm] || 0
+                    //     counts[elm]++
+                    // })
   
-                    let max_type = parent_types[0]
-                    parent_types.forEach(elm=>{
-                        if(counts[max_type]<counts[elm]){
-                            max_type = elm
-                        }
-                    })
+                    // let max_type = parent_types[0]
+                    // parent_types.forEach(elm=>{
+                    //     if(counts[max_type]<counts[elm]){
+                    //         max_type = elm
+                    //     }
+                    // })
                     // console.log(counts, max_type)
                     // let main_types = 
                     // main_types =  types[Math.floor(main_types+0.5)]
                     // console.log(main_types, type2color[main_types])
-                    const color = d3.color(type2color[max_type]) //.rgb(255, 255, 255)
+                    // color(type2color[max_type]) //
+                    const color = d3.rgb(200, 200, 200)
                     let rect_data = {
                         x: center_x - rect_width/2,  //为啥要平移一格呀
                         y: center_y + rect_width/2,
                         x0: center_x + rect_width/2,
                         y0: center_y - rect_width/2,
-                        color: color, //.darker([events.length+1]),
+                        color: color.darker([events.length/3+0.25]),
                         event_ids: events.map(event=>event.id),
                         person_x_id: p1.id,
-                        person_y_id: p2.id 
+                        person_y_id: p2.id,
                     }
 
                     relation_rect_data.push(rect_data)
@@ -348,8 +342,8 @@ class RealtionMatrix extends React.Component{
             hint_value.y = (y+y0)/2
             if (personX && personY) {
                 label_datas = [
-                    { x: 0, y: (y+y0)/2, label: personX.name},
-                    { x: (x+x0)/2+rect_width, y: people_array.length*rect_width, label: personY.name}
+                    { x: 0, y: (y+y0)/2, label: personX.name, style:{fontFamily: 'STKaiti'}},
+                    { x: (x+x0)/2+rect_width, y: people_array.length*rect_width, label: personY.name, style:{fontFamily: 'STKaiti'}}
                 ]                
             }
         }
@@ -361,6 +355,7 @@ class RealtionMatrix extends React.Component{
                 label: person.getName(),
                 rotation: 45,
                 yOffset: -10,
+                style:{fontFamily: 'STKaiti'}
             }
         })
         let y_label_data = people_array.map(person=>{
@@ -368,7 +363,8 @@ class RealtionMatrix extends React.Component{
                 x: 0, 
                 y: this.personScale(person),
                 rotation: 45,
-                label: person.getName()
+                label: person.getName(),
+                style:{fontFamily: 'STKaiti'}
             }
         })
 
@@ -388,8 +384,8 @@ class RealtionMatrix extends React.Component{
                     <VerticalRectSeries
                         data={events_rect_data} 
                         colorType= "literal"
-                        stroke='black'
-                        style={{strokeWidth: 0.001}}
+                        stroke='white'
+                        style={{strokeWidth: 1}}
                         onValueMouseOver={value=>this.setState({hint_value: value})}
                     />
                     {
@@ -414,7 +410,7 @@ class RealtionMatrix extends React.Component{
                         />
                     }
                     {
-                        people_num<17 && 
+                        people_num<19 && 
                         <LabelSeries
                         labelAnchorX= 'middle'
                         labelAnchorY= 'end'
@@ -422,7 +418,7 @@ class RealtionMatrix extends React.Component{
                         />
                     }
                      {
-                        people_num<17 && 
+                        people_num<19 && 
                         <LabelSeries
                         labelAnchorX= 'end'
                         labelAnchorY= 'middle'
@@ -439,6 +435,7 @@ class RealtionMatrix extends React.Component{
                         this.show_people_num = parseInt(this.refs.show_people_num_range.value)
                         this.loadMatrix()
                     }}/>
+                    <span>{this.max_people_num}</span>
                 </div>
             </div>
         )

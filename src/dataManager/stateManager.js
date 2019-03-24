@@ -16,6 +16,25 @@ class StateManager{
         this.is_ready_with_out_notice = this.is_ready
     })
 
+    @observable type2p = {
+        '其他': 0.5,
+        '军事': 0.5,
+        '学术': 0.5,
+        '宗教': 0.5,
+        '政治': 0.5,
+        '社交': 0.5,
+        '著述': 0.5,
+    }
+    @observable life_refresh = true
+    @action setType2p(type, p){
+        // console.log(type, p)
+        // let type2p = this.type2p
+        // type2p[type] = p
+        this.type2p[type] = p
+        this.life_refresh = !this.life_refresh
+        // console.log(this.type2p.)
+    }
+
     // 测试用平时用不到的
     @observable test_count = 0
 
