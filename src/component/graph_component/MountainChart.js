@@ -71,12 +71,13 @@ export default class AreaLineChart extends React.Component {
   }
 
   renderCircles(){
-    let {yscale,xscale,onMouseOver,onMouseOut,width} = this.props;
+    let {yscale,xscale,onMouseOver,onMouseOut,onMouseClick,width} = this.props;
     // d3.select(this.refs.area)
     //   .selectAll('circle').remove();
     let dom;
     this.eventArray.forEach((events,index)=>{
       dom = d3.select(this.refs.area)
+        .select('.certainEventPoint')
         .selectAll(`.circle${index}`)
         .data(events)
       dom.attr('cx',(d,i)=>{
@@ -103,11 +104,18 @@ export default class AreaLineChart extends React.Component {
           let pos = d3.mouse(this.refs.area);
           let x= pos[0]+10;
           if(pos[0]+10+160>width) x = pos[0]-180;
-          let y = pos[1]-50;
+          let y = pos[1]-100;
           onMouseOver(d.event,[x,y]);
         })
         .on('mouseout',(d)=>{
           onMouseOut();
+        })
+        .on('mousedown',(d)=>{
+          let pos = d3.mouse(this.refs.area);
+          let x= pos[0]+10;
+          if(pos[0]+10+160>width) x = pos[0]-180;
+          let y = pos[1]-100;
+          onMouseClick(d.event,[x,y]);
         })
     })
   }
@@ -197,6 +205,7 @@ export default class AreaLineChart extends React.Component {
     return(
     <g className="area" ref="area" translate={translate}>
       {viewType?data&&data.map((d,i)=>(<path key={i} d={this.area(d)} fill={`url(#linear${i})`}></path>)):data&&<path d={this.area(data)} fill={'url(#linear)'}></path>}
+      <g className="certainEventPoint"></g>
     </g>
     );
   }

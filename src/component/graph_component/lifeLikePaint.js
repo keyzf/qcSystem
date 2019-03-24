@@ -45,6 +45,7 @@ class LifeLikePaint extends Component{
         this.closePopup = this.closePopup.bind(this);
         this.renderLines = this.renderLines.bind(this);
         this.sortType = this.sortType.bind(this);
+        this.onMouseClick = this.onMouseClick.bind(this);
         this.birth_year = -9999;
         this.death_year = 9999;
         this.selected = 0;
@@ -503,8 +504,8 @@ class LifeLikePaint extends Component{
                     </g>
                     <text className="personName" x={20} y={20}>{selected_person.name}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
-                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></MountainChart>
-                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} width={width}></BubbleChart>
+                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick}></MountainChart>
+                    <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
                     <g transform={`translate(0, ${height-uncertainHeight-30})`} className={'bdLine'}>
                         {this.birth_year===-9999?{}:(<g><line x1={xscale(this.birth_year)} x2={xscale(this.birth_year)} y1={-25} y2={30}></line>
                         <circle cx={xscale(this.birth_year)} cy={-29} r={4}></circle></g>)}

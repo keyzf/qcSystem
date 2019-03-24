@@ -123,7 +123,7 @@ export default class BubbleChart extends React.Component {
         let pos = d3.mouse(node);
         let x= pos[0]+10;
         if(pos[0]+10+160>width) x = pos[0]-180;
-        let y = pos[1]+areaHeight-100
+        let y = pos[1]+areaHeight-140
         onMouseClick(d,[x,y])
       })
   }
@@ -140,7 +140,7 @@ export default class BubbleChart extends React.Component {
         let pos = d3.mouse(node);
         let x= pos[0]+10;
         if(pos[0]+10+160>width) x = pos[0]-180;
-        let y = pos[1]+areaHeight-100
+        let y = pos[1]+areaHeight-140
         onMouseOver(target.data()[0],[x,y])
         target.attr('fill','#F37335').raise();
       }
