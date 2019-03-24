@@ -511,7 +511,7 @@ class LifeLikePaint extends Component{
                         <circle cx={xscale(this.birth_year)} cy={-29} r={4}></circle></g>)}
                         {this.death_year===9999?{}:(<g><line x1={xscale(this.death_year)} x2={xscale(this.death_year)} y1={-25} y2={30}></line><circle cx={xscale(this.death_year)} cy={-29} r={4}></circle></g>)}
                     </g>
-                    <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="180" visibility={'visible'}>
+                    <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="180" visibility={'hidden'}>
                         <EventTooltip event={chooseEvent} name={selected_person.name} closePopup={this.closePopup}/>
                     </foreignObject>
                 </g>
