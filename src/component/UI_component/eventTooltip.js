@@ -61,7 +61,7 @@ export default class EventTooltip extends React.Component{
       from = '';
     }
     return (
-        <div ref="tip" className="eventTip" style={{width:160,height:136,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
+        <div ref="tip" className="eventTip" style={{width:160,height:170,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
           <div className="tooltipHeader"><span>{tipname}</span><img src={clear} onClick={closePopup}></img></div>
           {isEventArray&&ismultiple?(
               <div className="tipContent">
@@ -75,7 +75,8 @@ export default class EventTooltip extends React.Component{
                 )}
               </div>
             ):(<div className="tipContent">
-            <div><img src={timeIcon}></img><span style={{width:'43px'}}>{time.join('-')}</span><img src={placeIcon}></img><span style={{width:'43px'}}>{addr.join(',')}</span></div>
+            <div><img src={timeIcon}></img><span>{time.join('-')}</span></div>
+            <div><img src={placeIcon}></img><span>{addr.join(',')}</span></div>
             <div><img src={personIcon}></img><span>{person.join(',')}</span></div>
             <div><img src={eventIcon}></img><span>{trigger}</span></div>
             <div><img src={fromIcon}></img><span>{from}</span></div>

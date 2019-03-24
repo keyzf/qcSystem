@@ -1,3 +1,4 @@
+@import "../../base.scss";
 ul{
   padding:0px;
   margin:0px;
@@ -20,15 +21,15 @@ ul{
           position: absolute;
           top: 4px;
           left: 0;
-          border-radius: 2px;
+          border-radius: 1px;
           background-color: #454545;
           &:after {
             content: '';
             width: 8px;
             height: 4px;
             position: absolute;
-            top: 3px;
-            left: 2px;
+            top: 2px;
+            left: 1px;
             border: 2px solid #fcfff4;
             border-top: none;
             border-right: none;
@@ -49,14 +50,6 @@ ul{
       }
       
       height: 100%;
-      // input:first-child{
-      //   vertical-align: middle;
-      //   position: relative;
-      //   width: 12px;
-      //   height: 12px;
-      //   border-radius: 0;
-      //   margin-left: 6px;
-      // }
       .labelName{
         font-family:'STKaiti';
         font-size:14px;
@@ -80,56 +73,56 @@ ul{
   li:first-child{
     .squaredThree{
       label{
-        background:  #667db6;
+        background:  $g_blue_opa;
+        border: 1px solid $g_blue;
       }
     }
   }
   li:nth-child(2){
     .squaredThree{
       label{
-        background:#2C5364;
+        background: $g_green_opa;
+        border: 1px solid $g_green;
       }
     }
   }
   li:nth-child(3){
     .squaredThree{
       label{
-        background: #FDC830
+        background: $g_yellow_opa;
+        border: 1px solid $g_yellow;
       }
     }
   }
   li:nth-child(4){
     .squaredThree{
       label{
-        background: #ffc3a0
+        background: $g_yellowgreen_opa;
+        border: 1px solid $g_yellowgreen;
       }
     }
   }
   li:nth-child(5){
     .squaredThree{
       label{
-        background: #c0c0aa
+        background: $g_red_opa;
+        border: 1px solid $g_red;
       }
     }
   }
   li:nth-child(6){
     .squaredThree{
       label{
-        background: #FFEFBA
+        background: $g_cyan_opa;
+        border: 1px solid $g_cyan;
       }
     }
   }
   li:nth-child(7){
     .squaredThree{
       label{
-        background: #ACB6E5
-      }
-    }
-  }
-  li:nth-child(7){
-    .squaredThree{
-      label{
-        background: #0082c8
+        background: $g_orange_opa;
+        border: 1px solid $g_orange;
       }
     }
   }

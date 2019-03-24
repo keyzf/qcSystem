@@ -37,3 +37,15 @@
     }
   }
 }
+
+.bdLine{
+  line{
+    stroke: #454545;
+    stroke-width: 2px;
+  }
+  circle{
+    fill: none;
+    stroke: #454545;
+    stroke-width: 2px;
+  }
+}

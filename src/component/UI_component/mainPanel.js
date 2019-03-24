@@ -155,42 +155,32 @@ class MainPanel extends Component {
                 <stop offset="100%" stopColor="#222222" stopOpacity="1.0" />
               </linearGradient>
               <linearGradient id="linear0" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#e6eadd" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#acaf77" stopOpacity="1.0" />
+              <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                <stop offset="100%"   stopColor="#0F3F53" stopOpacity="1.0" />
               </linearGradient>
               <linearGradient id="linear1" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#e6e8d8" stopOpacity="0.5" />
-                <stop offset="40%" stopColor="#c4c7a1" stopOpacity="0.8" />
-                <stop offset="100%"   stopColor="#a7ad77" stopOpacity="1.0" />
+                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                <stop offset="100%"   stopColor="#1B5D59" stopOpacity="1.0" />
               </linearGradient>
               <linearGradient id="linear2" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#c8dbe1" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#4e7884" stopOpacity="1.0" />
+                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                <stop offset="100%"   stopColor="#AB8E52" stopOpacity="1.0" />
               </linearGradient>
               <linearGradient id="linear3" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#b4bdd3" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#36539a" stopOpacity="1.0" />
+                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                <stop offset="100%"   stopColor="#92AA84" stopOpacity="1.0" />
               </linearGradient>
               <linearGradient id="linear4" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#8ea698" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#415232" stopOpacity="1.0" />
+                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                <stop offset="100%"   stopColor="#DBB397" stopOpacity="1.0" />
               </linearGradient>
               <linearGradient id="linear5" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#f0ebdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#a19a8a" stopOpacity="1.0" />
+                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                <stop offset="100%"   stopColor="#57A399" stopOpacity="1.0" />
               </linearGradient>
               <linearGradient id="linear6" x1="0%" y1="100%" x2="0%" y2="0%">
                 <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="#222222" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear7" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#e6eadd" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#acaf77" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear8" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%" stopColor="#e6e8d8" stopOpacity="0.5" />
-                <stop offset="40%" stopColor="#c4c7a1" stopOpacity="0.8" />
-                <stop offset="100%"   stopColor="#a7ad77" stopOpacity="1.0" />
+                <stop offset="100%" stopColor="#DDB56D" stopOpacity="1.0" />
               </linearGradient>
             </defs>
             <g transform={'translate(0,25)'}>

@@ -44,6 +44,10 @@ class LifeLikePaint extends Component{
         this.onMouseOver = this.onMouseOver.bind(this);
         this.closePopup = this.closePopup.bind(this);
         this.renderLines = this.renderLines.bind(this);
+        this.sortType = this.sortType.bind(this);
+        this.birth_year = -9999;
+        this.death_year = 9999;
+        this.selected = 0;
     }
 
     _onEventFilterChange = autorun(()=>{
@@ -69,6 +73,8 @@ class LifeLikePaint extends Component{
     componentWillMount(){
         let {selected_person,index} = this.props
         this.selected_person = selected_person;
+        this.birth_year = selected_person.birth_year;
+        this.death_year = selected_person.death_year;
         this.setState({
             vis:index===0?'visible':'hidden'
         })
@@ -381,6 +387,17 @@ class LifeLikePaint extends Component{
         this.loadLifeLineData(selected_person)         
     }
 
+    onMouseClick = (value,pos) => {
+        this.setState({
+          chooseEvent : value,
+        })
+        d3.select(this.refs.svg).select('#bubbleEventTooltip')
+          .attr('visibility', 'visible')
+          .attr('x',pos[0])
+          .attr('y',pos[1]);
+        this.selected = 1;
+    }
+
     onMouseOver = (value,pos) => {
         this.setState({
           chooseEvent : value,
@@ -391,12 +408,16 @@ class LifeLikePaint extends Component{
           .attr('y',pos[1])
     }
     onMouseOut = () =>{
-        d3.select(this.refs.svg).select('#bubbleEventTooltip')
-          .attr('visibility', 'hidden')
+        if(this.selected === 0){
+            d3.select(this.refs.svg).select('#bubbleEventTooltip')
+            .attr('visibility', 'hidden')
+        }
+        
     }
 
     closePopup(){
         d3.select(this.refs.svg).select('#bubbleEventTooltip').attr('visibility','hidden');
+        this.selected = 0;
     }    
 
     renderLines(){
@@ -408,17 +429,6 @@ class LifeLikePaint extends Component{
         let linedoms = d3.select(node)
           .selectAll('.relationLine')
           .data(Object.values(relationLines));
-        // linedoms.selectAll('path')
-        //         .attr('d',(d,i)=>{
-        //             return line(d.lines)
-        //         })
-        // linedoms.selectAll('.upcircle')
-        //         .attr('cx',d=>xscale(d.lines[0].x))
-        //         .attr('cy',d=>height*d.lines[0].person_index-50)
-        // linedoms.selectAll('.downcircle')
-        //         .attr('cx',d=>xscale(d.lines[0].x))
-        //         .attr('cy',d=>height*d.lines[1].person_index-50)
-        // linedoms.exit().remove();
         let newgdom = linedoms.enter().append('g').attr('class','relationLine');
         newgdom.append('path')
                 .attr('d',(d,i)=>{
@@ -468,6 +478,11 @@ class LifeLikePaint extends Component{
             })
     }
 
+    sortType(a,b){
+        let order = ['总','政治','学术','社交','著述','宗教','军事','其它'];
+        return order.indexOf(a.type.slice(8))-order.indexOf(b.type.slice(8));
+    }
+
     render(){
         const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, index,uncertainHeight, handleEventMarkClick} = this.props
         console.log('render lifeLikePaint 主视图', area_datas)
@@ -477,7 +492,7 @@ class LifeLikePaint extends Component{
         if(selected_prob_year){
             prob_mark_data = prob_mark_data[selected_prob_year];
         }
-        console.log(relationLines);
+        area_datas = area_datas.sort(this.sortType);
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>
@@ -490,7 +505,12 @@ class LifeLikePaint extends Component{
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width}></Axis>
                     <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}></MountainChart>
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} width={width}></BubbleChart>
-                    <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="140" visibility={'hidden'}>
+                    <g transform={`translate(0, ${height-uncertainHeight-30})`} className={'bdLine'}>
+                        {this.birth_year===-9999?{}:(<g><line x1={xscale(this.birth_year)} x2={xscale(this.birth_year)} y1={-25} y2={30}></line>
+                        <circle cx={xscale(this.birth_year)} cy={-29} r={4}></circle></g>)}
+                        {this.death_year===9999?{}:(<g><line x1={xscale(this.death_year)} x2={xscale(this.death_year)} y1={-25} y2={30}></line><circle cx={xscale(this.death_year)} cy={-29} r={4}></circle></g>)}
+                    </g>
+                    <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="180" visibility={'visible'}>
                         <EventTooltip event={chooseEvent} name={selected_person.name} closePopup={this.closePopup}/>
                     </foreignObject>
                 </g>

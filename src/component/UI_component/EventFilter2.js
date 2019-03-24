@@ -14,6 +14,7 @@ class EventFilter  extends Component {
             check_box2checked: {},
         }
         this.onChange = this.onChange.bind(this);
+        this.sortType = this.sortType.bind(this);
     }
     son2parent ={}
     _loadData =  autorun(()=>{
@@ -99,14 +100,18 @@ class EventFilter  extends Component {
         stateManager.setUsedTypes(used_types)
         this.setState({check_box2checked: check_box2checked})
     }
+
+    sortType(a,b){
+        let order = ['政治','学术','社交','著述','宗教','军事','其它'];
+        return order.indexOf(a)-order.indexOf(b);
+    }
     render() {
         let {onChange} = this
         let {data, check_box2checked} = this.state
-        // console.log(data)
         return (
             <ul>
                 {
-                    data && Object.keys(data).sort().map((parent_type,i)=>{
+                    data && Object.keys(data).sort(this.sortType).map((parent_type,i)=>{
                         // let triggers = triggerManager.getAllObjects().filter(elm=> elm.parent_type===parent_type).slice(0,2)
                         return (
                         <li key={parent_type}>

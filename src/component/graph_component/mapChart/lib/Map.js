@@ -23,8 +23,8 @@ class Map extends React.Component {
       this.init = this.init.bind(this);
       // 定义地图投影
       this.projection = d3.geoMercator()
-                          .center([110, 29])
-                          .scale(760)
+                          .center([112, 29])
+                          .scale(1000)
                           .translate([props.width / 2, props.height / 2]);
       // 定义地理路径生成器
       this.path = d3.geoPath()
@@ -65,8 +65,8 @@ class Map extends React.Component {
   
   static get defaultProps() {
     return {
-      width: 450,
-      height: 340,
+      width: 448,
+      height: 510,
     };
   }
   init () {   
@@ -97,6 +97,8 @@ class Map extends React.Component {
             chooseEvent : targetdata.event,
             selectAddr : targetdata.addr.name
           })
+          if(pos[0]>this.props.width-160) pos[0]=pos[0]-170;
+          if(pos[1]>this.props.height-170) pos[1]=pos[1]-180;
           d3.select('#geomap').select('#mapEventTooltip')
             .attr('visibility', 'visible')
             .attr('x',pos[0])
@@ -138,7 +140,7 @@ class Map extends React.Component {
               <div><span>行进路线</span><img src={route}/></div>
             </div>
           </foreignObject >
-          <foreignObject id="mapEventTooltip" x="20" y="22" width="200" height="140" visibility={'hidden'}>
+          <foreignObject id="mapEventTooltip" x="20" y="22" width="200" height="190" visibility={'hidden'}>
             <EventTooltip event={chooseEvent} closePopup={this.closePopup} name={selectAddr}/>
           </foreignObject>
         </svg>

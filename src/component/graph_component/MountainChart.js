@@ -10,7 +10,6 @@ export default class AreaLineChart extends React.Component {
     this.data = 0;
     this.eventArray=[];
     this.calculateX2 = this.calculateX2.bind(this);
-    this.fillStyle=['#667db6','#2C5364','#FDC830','#ffc3a0','#c0c0aa','#FFEFBA','#ACB6E5'];
   }
   componentDidMount() {
     this.calculatePos();
@@ -191,6 +190,7 @@ export default class AreaLineChart extends React.Component {
     else{
       data=data[0];
     }
+    console.log(data);
     this.area.x((d)=>xscale(d.x))
               .y1((d)=>yscale(d.y))
               .y0((d)=>yscale(d.y0));
