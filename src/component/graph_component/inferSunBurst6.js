@@ -80,7 +80,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:5000})
             .then(data=>{
                 // console.log(data)
                 data = dataStore.processResults(data.data)
@@ -138,8 +138,8 @@ class InferSunBurst extends React.Component{
     
     componentDidUpdate(){
         let {sunbursts} = this.state
-        let last_sunburst = sunbursts[sunbursts.length-1]
-        let {center_event} = this
+        // let last_sunburst = sunbursts[sunbursts.length-1]
+        // let {center_event} = this
         // 可以改为判断是否和this相等
         if (this.temp_sunbursts) {
             // console.log('change')
@@ -176,11 +176,11 @@ class InferSunBurst extends React.Component{
 
 
         let now_sunburst = this.sunbursts[this.now_part_index]
+        // console.log(now_sunburst, this.sunbursts, this.now_part_index)
         return (
             <div 
                 className='trigger_sunburst_graph' 
                 style={{width: width, height: height, position: 'absolute', 
-                overflowY: 'auto'
                 }}>
                 <div style={{height: title_height, width: width}}>
                     {
@@ -193,40 +193,40 @@ class InferSunBurst extends React.Component{
                             people_options={now_sunburst.people_options}/>
      
                     }
-                </div>
-                <div style={{height: control_bar_height, width: 150, position: 'absolute', right: 0}}>
-                    <style type="text/css">{'.toother_graph_button { height:20px; cursor: pointer; margin:2px; margin-right:10px}'}</style>
-                    <img alt='' className='toother_graph_button' src={relation_icon} 
-                    onClick={event=>{
-                        let {now_part_index} = this
-                        let now_graph = this.sunbursts[now_part_index]
-                        if (now_graph) {
-                            let events = now_graph.all_events
-                            stateManager.setRelationEvents(events)
-                        }
-                    }}/>
-                    <img alt='' className='toother_graph_button' src={lifeview_icon} 
-                    onClick={event=>{
-                        let {now_part_index} = this
-                        let now_graph = this.sunbursts[now_part_index]
-                        if (now_graph) {
-                            let events = now_graph.all_events
-                            stateManager.setMountainEvents(events)
-                        }
-                    }}/>
-                    <img alt='' className='toother_graph_button' src={footpath_icon} 
-                    onClick={event=>{
-                        let {now_part_index} = this
-                        let now_graph = this.sunbursts[now_part_index]
-                        if (now_graph) {
-                            let events = now_graph.all_events
-                            stateManager.setMapEvents(events)
-                        }
-                    }}/>
+                    <div style={{height: control_bar_height, width: 150, position: 'absolute', right: 0, top:18}}>
+                        <style type="text/css">{'.toother_graph_button { height:20px; cursor: pointer; margin:2px; margin-right:10px}'}</style>
+                        <img alt='' className='toother_graph_button' src={relation_icon} style={{height:23}}
+                        onClick={event=>{
+                            let {now_part_index} = this
+                            let now_graph = this.sunbursts[now_part_index]
+                            if (now_graph) {
+                                let events = now_graph.all_events
+                                stateManager.setRelationEvents(events)
+                            }
+                        }}/>
+                        <img alt='' className='toother_graph_button' src={lifeview_icon} 
+                        onClick={event=>{
+                            let {now_part_index} = this
+                            let now_graph = this.sunbursts[now_part_index]
+                            if (now_graph) {
+                                let events = now_graph.all_events
+                                stateManager.setMountainEvents(events)
+                            }
+                        }}/>
+                        <img alt='' className='toother_graph_button' src={footpath_icon}  style={{height:19}}
+                        onClick={event=>{
+                            let {now_part_index} = this
+                            let now_graph = this.sunbursts[now_part_index]
+                            if (now_graph) {
+                                let events = now_graph.all_events
+                                stateManager.setMapEvents(events)
+                            }
+                        }}/>
+                    </div>
                 </div>
                 {/* <div style={{height: control_bar_height, width: width}}>
                 </div> */}
-                <div style={{height: graph_height, width: width, overflowX:'auto'}}>
+                <div style={{height: graph_height+5, width: width-10, overflowX:'auto', overflowY:'hidden'}}>
                     <XYPlot 
                     width={graph_width} 
                     height={graph_height}
@@ -405,7 +405,7 @@ class OnePart{
         if (isMousePressed) {
             // 判断实在哪个当中
             let mouse_x = parent_component.mouse_postion[0]
-            let index = (mouse_x+r)/3.25
+            let index = (mouse_x+r)/3.75
             parent_component.now_part_index = Math.floor(index)
         }
         if (this.all_values.includes(mouseover_value)) {
@@ -496,15 +496,15 @@ class OnePart{
         let wrap_line_data = [
             {x: center_x-r, y: center_y-r},
             {x: center_x-r, y: center_y+r},
-            {x: center_x + 3.25 - r, y: center_y+r},
-            {x: center_x + 3.25 - r, y: center_y-r},
+            {x: center_x + 3.75 - r, y: center_y+r},
+            {x: center_x + 3.75 - r, y: center_y-r},
         ]
         // console.log(parent_component.now_part_index, part_index)
         component_array.push(
             <LineSeries
             key={part_index+'wrap_line'}
             stroke='#c3c3c3'
-            strokeWidth={parent_component.now_part_index===part_index?10:2}
+            strokeWidth={parent_component.now_part_index===part_index?5:2}
             data={wrap_line_data}/>
         )
 
@@ -586,7 +586,7 @@ class OnePart{
             event_mark_data.forEach(elm=>{
                 let links = elm.links
                 let link_ids = links.map(elm=> elm.object_id)
-                if (link_ids.includes(mouseover_object.id)) {
+                if (mouseover_object && link_ids.includes(mouseover_object.id)) {
                     show_event_mark_data.push(elm)
                     let {x,y} = elm
                     links.forEach(node=>{
@@ -736,6 +736,7 @@ class OnePart{
                                         // let now_index = part_index
                                         let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
                                         temp_sunbursts.push(sunburst)
+                                        parent_component.sunbursts = temp_sunbursts
                                         this.setStateLater({sunbursts: temp_sunbursts})
                                     }else if(now_click_value.node_type==='filter_value'){
                                         // let events = now_click_value.filter(this.all_events)
@@ -745,6 +746,7 @@ class OnePart{
                                         // let now_index = part_index
                                         let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
                                         temp_sunbursts.push(sunburst)
+                                        parent_component.sunbursts = temp_sunbursts
                                         this.setStateLater({sunbursts: temp_sunbursts})
                                     }
                             }}/>
@@ -769,7 +771,7 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 20
+        const show_object_num = 15
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -881,28 +883,30 @@ class OnePart{
             
             // 加入上位属性
             let types = [], parent_types = []
-            // if (object_type==='trigger') {
-            //     types = all_objects.map(elm=>elm.type)
-            //     parent_types = all_objects.map(elm=>elm.parent_type)
+            if (object_type==='trigger') {
+                // types = all_objects.map(elm=>elm.type)
+                parent_types = all_objects.map(elm=>elm.parent_type)
 
-            //     let {parent_trigger2vec} = dataStore
-            //     types.forEach(elm=>{
-            //         all_objects.push({
-            //             getName: ()=> elm,
-            //             vec: parent_trigger2vec[elm],
-            //             sub_object:  all_objects.filter(object=> object.type===elm),
-            //         })
-            //     })
-            //     parent_types.forEach(elm=>{
-            //         all_objects.push({
-            //             getName: ()=> elm,
-            //             vec: parent_trigger2vec[elm],
-            //             sub_object:  all_objects.filter(object=> object.parent_type===elm),
-            //         })
-            //     })
+                let {parent_trigger2vec} = dataStore
+                // types.forEach(elm=>{
+                //     all_objects.push({
+                //         getName: ()=> elm,
+                //         vec: parent_trigger2vec[elm],
+                //         id: elm,
+                //         sub_object:  all_objects.filter(object=> object.type===elm),
+                //     })
+                // })
+                // parent_types.forEach(elm=>{
+                //     all_objects.push({
+                //         getName: ()=> elm,  //这里还有英文的问题啊
+                //         vec: parent_trigger2vec[elm],
+                //         id: elm,
+                //         sub_object:  all_objects.filter(object=> object.parent_type===elm),
+                //     })
+                // })
 
-            //     vecs = [...vecs, ...types.map(elm=> parent_trigger2vec[elm]), ...parent_types.map(elm=> parent_trigger2vec[elm])]
-            // }
+                // vecs = [...vecs, ...parent_types.map(elm=> parent_trigger2vec[elm])]  //, ...types.map(elm=> parent_trigger2vec[elm])
+            }
             // console.log(vecs)
 
             let angles = myTsne(vecs).map(elm=> elm[0])
@@ -956,6 +960,8 @@ class OnePart{
                     y: y,
                     origin_x: x,
                     origin_y: y,
+                    is_parent: parent_types.includes(elm.getName()),
+
                     rotation: text_rotate,
                     label: simplStr(elm.getName(), IS_EN?10:4),
                     total_label: elm.getName(),
@@ -975,6 +981,7 @@ class OnePart{
                         cursor: "pointer",
                         fontSize: 15,
                         opacity: 0.5,
+                        fontFamily: 'STKaiti'
                     },
                 }
             })
@@ -1112,7 +1119,7 @@ class RuleManager{
         let all_events = this.filter(parent_graph.all_events)
         if (!graph) {
             let index = parent_graph.part_index + 1
-            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.25, 0, index, 1.1, parent_graph.parent_component)
+            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.75, 0, index, 1.1, parent_graph.parent_component)
         }else{
             this.graph.setEvents(all_events)
         }
@@ -1210,9 +1217,9 @@ class ChangeEventPanel extends React.Component{
         let change_event_index = 0 
         let {trigger_options, addr_options, people_options, time_options, center_event} = this.props
         return (
-            <div className='change_event_bar' style={{position: 'relative'}}>
-            <style type="text/css">{'.change_event_div {position:absolute; top: 5px; width: 100px; height:30px; margin:2px; margin-right:10px}'}</style>
-            <div className='change_event_div' style={{right: 10}}>
+            <div className='change_event_bar' style={{position: 'relative', height: 50}}>
+            <style type="text/css">{'.change_event_div {position: absolute; top: 5px; width: 100px; height:30px; margin:2px; margin-right:10px}'}</style>
+            <div className='change_event_div' style={{left: 10}}>
                 <Dropdown 
                 fluid search selection 
                 placeholder='触发词'
@@ -1226,10 +1233,57 @@ class ChangeEventPanel extends React.Component{
                     }
                 }}/>
             </div>
+
+
+            <div className='change_event_div' style={{left: 120}}>
+                <Dropdown 
+                fluid search selection
+                placeholder='时间'
+                options={time_options}
+                value = {center_event.time_range[1].toString()}
+                onChange={(event,{value})=>{
+                    let time = parseFloat(value)
+                    if (time!==center_event.time_range[0]) {
+                        center_event.time_range[1] = time
+                        this.setState({hi: !this.state.hi})
+                    }
+                }}/>
+            </div>
+
+            <div className='change_event_div' style={{left: 230}}>
+                <Dropdown 
+                fluid search selection
+                placeholder='时间'
+                options={time_options}
+                value = {center_event.time_range[0].toString()}
+                onChange={(event,{value})=>{
+                    let time = parseFloat(value)
+                    if (time!==center_event.time_range[0]) {
+                        center_event.time_range[0] = time
+                        this.setState({hi: !this.state.hi})
+                    }
+                }}/>
+            </div>
+
+            <div className='change_event_div' style={{left: 350}}>
+                <Dropdown 
+                fluid search selection  multiple
+                placeholder='地点'
+                options={addr_options}
+                value = {center_event.addrs.map(elm=> elm.id)}
+                onChange={(event,{value})=>{
+                    let addrs = value.map(elm=> addrManager.get(elm))
+                    if (difference(addrs, center_event.addrs).length>0) {
+                        center_event.addrs = addrs
+                        this.setState({hi: !this.state.hi})
+                    }
+                }}/>
+            </div>
+
             {
                 center_event.roles.map(({role, person}, index)=>{
                     return (
-                    <div key= {index} className='change_event_div' style={{right: 120+165*change_event_index++, width: 160}}>
+                    <div key= {index} className='change_event_div' style={{left: 470+165*change_event_index++, width: 160}}>
                         <Dropdown
                         fluid search selection 
                         placeholder='人物/角色'
@@ -1253,51 +1307,6 @@ class ChangeEventPanel extends React.Component{
                     )
                 })
             }
-
-            <div className='change_event_div' style={{right: 120+165*change_event_index}}>
-                <Dropdown 
-                fluid search selection  multiple
-                placeholder='地点'
-                options={addr_options}
-                value = {center_event.addrs.map(elm=> elm.id)}
-                onChange={(event,{value})=>{
-                    let addrs = value.map(elm=> addrManager.get(elm))
-                    if (difference(addrs, center_event.addrs).length>0) {
-                        center_event.addrs = addrs
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
-
-            <div className='change_event_div' style={{right: 230+165*change_event_index}}>
-                <Dropdown 
-                fluid search selection
-                placeholder='时间'
-                options={time_options}
-                value = {center_event.time_range[1].toString()}
-                onChange={(event,{value})=>{
-                    let time = parseFloat(value)
-                    if (time!==center_event.time_range[0]) {
-                        center_event.time_range[1] = time
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
-
-            <div className='change_event_div' style={{right: 340+165*change_event_index}}>
-                <Dropdown 
-                fluid search selection
-                placeholder='时间'
-                options={time_options}
-                value = {center_event.time_range[0].toString()}
-                onChange={(event,{value})=>{
-                    let time = parseFloat(value)
-                    if (time!==center_event.time_range[0]) {
-                        center_event.time_range[0] = time
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
         </div>                    
         )
     }
@@ -1337,7 +1346,7 @@ class Rule{
         let all_events = this.filter(parent_graph.all_events)
         if (!graph) {
             let index = parent_graph.part_index + 1
-            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.25, 0, index, 1.1, parent_graph.parent_component)
+            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.75, 0, index, 1.1, parent_graph.parent_component)
         }else{
             // 现在有了数组比较，所以不用refresh了
             this.graph.setEvents(all_events)

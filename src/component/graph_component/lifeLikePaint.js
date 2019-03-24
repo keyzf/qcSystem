@@ -55,7 +55,16 @@ class LifeLikePaint extends Component{
             this.loadInferMarkData()
         }
     })
-
+    _onType2pChange = autorun(()=>{
+        if (stateManager.is_ready) {
+            this.type2p = stateManager.type2p
+            let life_refresh = stateManager.life_refresh
+            console.log(this.type2p)
+            this.loadLifeLineData()
+            // this.loadInferMarkData()
+            // this.getRelationLine()
+        }
+    })
     componentWillMount(){
         let {selected_person,index} = this.props
         this.selected_person = selected_person;
@@ -264,7 +273,7 @@ class LifeLikePaint extends Component{
             }else if (event.trigger.name==='死亡') {
                 death_event = event
             }
-            triggerName.add(event.trigger.name);
+            triggerName.add(event.trigger.getName());
         })
 
         let years = Object.keys(year2events).map(year=> parseInt(year))

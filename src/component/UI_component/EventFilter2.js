@@ -117,7 +117,12 @@ class EventFilter  extends Component {
                                 </div>
                                 <label className="labelName">{parent_type}</label>
                                 {/* <span id="rs-bullet" class="rs-label">0</span> */}
-                                <input type="range" className={'rs-range'} id="start" name="volume" min="0" max="1" step="0.05"/>
+                                <input defaultValue='0.5' ref={parent_type} type="range" className={'rs-range'} id="start" name="volume" min="0" max="1" step="0.05"
+                                onChange={event=>{
+                                    let this_input = this.refs[parent_type]
+                                    let value = parseFloat(this_input.value)
+                                    stateManager.setType2p(parent_type, value)
+                                }}/>
                                 {/* <Checkbox label={parent_type} my_type='parent_type' onChange={onChange} checked={check_box2checked[parent_type]}/> */}
                                 {/* <List.Description>
                                     {triggers.map(elm=> elm.)}

@@ -387,6 +387,10 @@ class Event extends _object{
     this.prob_year = _object.prob_year
     this.prob_addr = _object.prob_addr
     this.prob_person = _object.prob_person
+
+    this.source = _object.source
+    this.text = _object.text
+    // console.log(this.source, this.text)
     // console.log(this.prob_year, this.prob_addr, this.prob_person, _object)
   }
 
@@ -413,6 +417,10 @@ class Event extends _object{
     let role = this.getRole(person)
     let trigger_id = this.trigger.name + ' ' + role
     let trigger_imp = dataStore.trigger_imp
+
+    let parent_type = this.trigger.parent_type
+    let type_p = stateManager.type2p[parent_type]
+    type_p = type_p || 0.5
     if (trigger_imp[trigger_id]) {
       trigger_imp = trigger_imp[trigger_id]
     }else{
@@ -429,8 +437,9 @@ class Event extends _object{
     // console.log(trigger_imp*ops_person.page_rank)
     // console.log(this, trigger_imp, ops_person.page_rank, trigger_imp*ops_person.page_rank)
 
+    console.log( parent_type, type_p, stateManager.type2p)
     // 这个log是瞎放的
-    return Math.log(trigger_imp*ops_person.page_rank+1)
+    return Math.log(trigger_imp*ops_person.page_rank+1) * type_p
   }
 
   // 返回一个计算不确定度的度量
@@ -519,7 +528,7 @@ class Event extends _object{
       person_text += trigger_name + (second_person==='未知人物'?'':second_person)
     }
     // '【' + this.id + '】' + 
-    return '【' + this.id + '】' + (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
+    return (time_text + ' ' + addr_text + ' ' + person_text + this.detail).replace('  ',' ')
   }
   
   toDict(){

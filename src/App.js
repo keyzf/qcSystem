@@ -191,10 +191,9 @@ class App extends Component {
                 <span>Uncertainty Reasoning View</span>
               </div>
             </div>
-            <InferSunBurst height={400} width={1000}/>
+            <InferSunBurst height={455} width={1000}/>
           </div>
         </div>
-
         
       </div>
     );
