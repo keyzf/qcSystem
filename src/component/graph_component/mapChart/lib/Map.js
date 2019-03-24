@@ -47,6 +47,7 @@ class Map extends React.Component {
       })
     }
   })
+  
   componentDidMount(){
     this.init();
     this.handleMouseOver();

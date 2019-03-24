@@ -58,7 +58,7 @@ class LifeLikePaint extends Component{
         if (stateManager.is_ready) {
             this.type2p = stateManager.type2p
             let life_refresh = stateManager.life_refresh
-            console.log(this.type2p)
+            // console.log(this.type2p)
             this.loadLifeLineData()
             // this.loadInferMarkData()
             // this.getRelationLine()
@@ -85,7 +85,7 @@ class LifeLikePaint extends Component{
         let selected_people = stateManager.selected_people;
         let len = selected_people.length;
         let other_people = selected_people.slice(0,len-1);
-        console.log(other_people);
+        // console.log(other_people);
         let new_person = selected_people[len-1];
         let relationLines={};
         let yearmap = new Map();
@@ -183,7 +183,7 @@ class LifeLikePaint extends Component{
                 }else{
                     type2score[type] = type2events[type].reduce((total, event)=>{
                         let imp = event.getImp(selected_person)  * Math.exp(-(year-event.time_range[0])/windows_size)
-                        let score = event.getScore(selected_person) * imp / total_imp
+                        let score = event.getScore(selected_person) * imp // / total_imp
                         // console.log(score, event.getScore(selected_person), imp, total_imp)
                         return total + score
                     }, 0)                    

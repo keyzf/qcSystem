@@ -117,7 +117,7 @@ class EventFilter  extends Component {
                                 </div>
                                 <label className="labelName">{parent_type}</label>
                                 {/* <span id="rs-bullet" class="rs-label">0</span> */}
-                                <input defaultValue='0.5' ref={parent_type} type="range" className={'rs-range'} id="start" name="volume" min="0" max="1" step="0.05"
+                                <input defaultValue='1' ref={parent_type} type="range" className={'rs-range'} id="start" name="volume" min="0" max="10" step="1"
                                 onChange={event=>{
                                     let this_input = this.refs[parent_type]
                                     let value = parseFloat(this_input.value)

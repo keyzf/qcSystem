@@ -33,7 +33,7 @@ export default class AreaLineChart extends React.Component {
 
   calculatePos() {
     let {data,translate,viewType,selected_person} = this.props;
-    console.log(data);
+    // console.log(data);
     if(this.data===0&&data.length!==0&&data[0].length!==0){
       let eventArray=[];
       let pox_scale = d3.scaleLinear()
@@ -116,7 +116,7 @@ export default class AreaLineChart extends React.Component {
       eventArray = this.eventArray.slice(1);
     }
     this.eventArray.forEach((events,index)=>{
-      console.log(events,index);
+      // console.log(events,index);
       if(!viewType){
         context.fillStyle = "rgba(120,120,120,0.7)";
         context.strokeStyle = "rgba(120,120,120,0.7)";

@@ -17,13 +17,13 @@ class StateManager{
     })
 
     @observable type2p = {
-        '其他': 0.5,
-        '军事': 0.5,
-        '学术': 0.5,
-        '宗教': 0.5,
-        '政治': 0.5,
-        '社交': 0.5,
-        '著述': 0.5,
+        '其他': 1,
+        '军事': 1,
+        '学术': 1,
+        '宗教': 1,
+        '政治': 1,
+        '社交': 1,
+        '著述': 1,
     }
     @observable life_refresh = true
     @action setType2p(type, p){
@@ -31,6 +31,7 @@ class StateManager{
         // let type2p = this.type2p
         // type2p[type] = p
         this.type2p[type] = p
+        console.log(this.type2p, this.type2p['政治'], this.type2p['社交'])
         this.life_refresh = !this.life_refresh
         // console.log(this.type2p.)
     }
@@ -42,7 +43,7 @@ class StateManager{
     @observable map_event_ids = []
     @observable mountain_event_ids = []
     @action setRelationEvents(events){
-        console.log(events)
+        // console.log(events)
         this.relation_event_ids.replace(events.map(elm=> elm.id))
     }
     @action setMapEvents(events){
@@ -51,18 +52,6 @@ class StateManager{
     @action setMountainEvents(events){
         this.relation_event_ids.replace(events.map(elm=> elm.id))
     }
-
-    @observable center_person_id = observable.box('person_3767')
-    @observable setCenterPerson = person => {
-        this.center_person_id = person.id
-        this.selected_people_id.replace([person.id])
-    }
-    // @computed center_person = ()=>{
-    //     // const id = this.center_person_id.get()
-    //     // console.log(id)
-    //     return undefined 
-    //     // personManager.get(id) 
-    // }
 
     // 存储id,对象忒麻烦了
     @observable selected_people_id = ['person_3767']

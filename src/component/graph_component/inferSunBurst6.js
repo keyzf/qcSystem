@@ -210,7 +210,9 @@ class InferSunBurst extends React.Component{
                             let now_graph = this.sunbursts[now_part_index]
                             if (now_graph) {
                                 let events = now_graph.all_events
-                                stateManager.setMountainEvents(events)
+                                let people = now_graph.all_people
+                                let selcted_people = stateManager.selected_people
+                                stateManager.setSelectedPeople([selcted_people[0], ...people])
                             }
                         }}/>
                         <img alt='' className='toother_graph_button' src={footpath_icon}  style={{height:19}}
@@ -405,7 +407,7 @@ class OnePart{
         if (isMousePressed) {
             // 判断实在哪个当中
             let mouse_x = parent_component.mouse_postion[0]
-            let index = (mouse_x+r)/3.75
+            let index = (mouse_x+r)/3.5
             parent_component.now_part_index = Math.floor(index)
         }
         if (this.all_values.includes(mouseover_value)) {
@@ -496,8 +498,8 @@ class OnePart{
         let wrap_line_data = [
             {x: center_x-r, y: center_y-r},
             {x: center_x-r, y: center_y+r},
-            {x: center_x + 3.75 - r, y: center_y+r},
-            {x: center_x + 3.75 - r, y: center_y-r},
+            {x: center_x + 3.5 - r, y: center_y+r},
+            {x: center_x + 3.5 - r, y: center_y-r},
         ]
         // console.log(parent_component.now_part_index, part_index)
         component_array.push(
@@ -1119,7 +1121,7 @@ class RuleManager{
         let all_events = this.filter(parent_graph.all_events)
         if (!graph) {
             let index = parent_graph.part_index + 1
-            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.75, 0, index, 1.1, parent_graph.parent_component)
+            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.5, 0, index, 1.1, parent_graph.parent_component)
         }else{
             this.graph.setEvents(all_events)
         }
@@ -1234,7 +1236,6 @@ class ChangeEventPanel extends React.Component{
                 }}/>
             </div>
 
-
             <div className='change_event_div' style={{left: 120}}>
                 <Dropdown 
                 fluid search selection
@@ -1346,7 +1347,7 @@ class Rule{
         let all_events = this.filter(parent_graph.all_events)
         if (!graph) {
             let index = parent_graph.part_index + 1
-            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.75, 0, index, 1.1, parent_graph.parent_component)
+            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.5, 0, index, 1.1, parent_graph.parent_component)
         }else{
             // 现在有了数组比较，所以不用refresh了
             this.graph.setEvents(all_events)
