@@ -80,7 +80,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:5000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
             .then(data=>{
                 // console.log(data)
                 data = dataStore.processResults(data.data)
@@ -210,7 +210,9 @@ class InferSunBurst extends React.Component{
                             let now_graph = this.sunbursts[now_part_index]
                             if (now_graph) {
                                 let events = now_graph.all_events
-                                stateManager.setMountainEvents(events)
+                                let people = now_graph.all_people
+                                let selcted_people = stateManager.selected_people
+                                stateManager.setSelectedPeople([selcted_people[0], ...people])
                             }
                         }}/>
                         <img alt='' className='toother_graph_button' src={footpath_icon}  style={{height:19}}
@@ -405,7 +407,7 @@ class OnePart{
         if (isMousePressed) {
             // 判断实在哪个当中
             let mouse_x = parent_component.mouse_postion[0]
-            let index = (mouse_x+r)/3.75
+            let index = (mouse_x+r)/3.5
             parent_component.now_part_index = Math.floor(index)
         }
         if (this.all_values.includes(mouseover_value)) {
@@ -440,7 +442,7 @@ class OnePart{
                             filter_value.node_type = 'filter_value'
                             filter_values.push(filter_value)
                             filter_value.rotation = 0
-                            filter_value.x = center_x + r  + 0.1*filter_values.length  //一列也什么了几个地方
+                            filter_value.x = center_x + r //  + 0.1*filter_values.length  //一列也什么了几个地方
                             filter_value.y = center_y + r - 0.2*filter_values.length-0.3
                             this.all_values.push(filter_value)
                             filter_value._index = this.all_values.length-1
@@ -496,8 +498,8 @@ class OnePart{
         let wrap_line_data = [
             {x: center_x-r, y: center_y-r},
             {x: center_x-r, y: center_y+r},
-            {x: center_x + 3.75 - r, y: center_y+r},
-            {x: center_x + 3.75 - r, y: center_y-r},
+            {x: center_x + 3.5 - r, y: center_y+r},
+            {x: center_x + 3.5 - r, y: center_y-r},
         ]
         // console.log(parent_component.now_part_index, part_index)
         component_array.push(
@@ -1119,7 +1121,7 @@ class RuleManager{
         let all_events = this.filter(parent_graph.all_events)
         if (!graph) {
             let index = parent_graph.part_index + 1
-            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.75, 0, index, 1.1, parent_graph.parent_component)
+            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.5, 0, index, 1.1, parent_graph.parent_component)
         }else{
             this.graph.setEvents(all_events)
         }
@@ -1234,7 +1236,6 @@ class ChangeEventPanel extends React.Component{
                 }}/>
             </div>
 
-
             <div className='change_event_div' style={{left: 120}}>
                 <Dropdown 
                 fluid search selection
@@ -1346,7 +1347,7 @@ class Rule{
         let all_events = this.filter(parent_graph.all_events)
         if (!graph) {
             let index = parent_graph.part_index + 1
-            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.75, 0, index, 1.1, parent_graph.parent_component)
+            this.graph = new OnePart(all_events, parent_graph.center_event, index*3.5, 0, index, 1.1, parent_graph.parent_component)
         }else{
             // 现在有了数组比较，所以不用refresh了
             this.graph.setEvents(all_events)
@@ -1410,11 +1411,11 @@ class Rule{
         if (related_objects.length===0 && related_objects[0].node_type==='filter_value') {
             return related_objects[0]
         }
-        this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.2 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
+        this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.12 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
         this.y = related_objects.reduce((total, elm)=>  total+elm.y, 0)/related_objects.length
         this.color = Rule.type2color[this.type]
         // this.color = this.
-        return this
+        return this 
     }
 }
 

@@ -64,16 +64,16 @@ class LifeLikePaint extends Component{
             // this.getRelationLine()
         }
     })
-    // _onType2pChange = autorun(()=>{
-    //     if (stateManager.is_ready) {
-    //         this.type2p = stateManager.type2p
-    //         let life_refresh = stateManager.life_refresh
-    //         console.log(this.type2p)
-    //         this.loadLifeLineData()
-    //         // this.loadInferMarkData()
-    //         // this.getRelationLine()
-    //     }
-    // })
+    _onType2pChange = autorun(()=>{
+        if (stateManager.is_ready) {
+            this.type2p = stateManager.type2p
+            let life_refresh = stateManager.life_refresh
+            // console.log(this.type2p)
+            this.loadLifeLineData()
+            // this.loadInferMarkData()
+            // this.getRelationLine()
+        }
+    })
     componentWillMount(){
         let {selected_person,index} = this.props
         this.selected_person = selected_person;
@@ -94,6 +94,10 @@ class LifeLikePaint extends Component{
                 this.getRelationLine()
             }
         })
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.loadLifeLineData()
     }
 
     getRelationLine(){
@@ -159,35 +163,6 @@ class LifeLikePaint extends Component{
             let imp = event.getImp(selected_person) * Math.exp(-(year-event.time_range[0])/windows_size)
             return total+imp
         }, 0)
-        // console.log(total_imp)
-        // if (method==='平均数') {
-        //     return total_score/events.length
-        // }else if(method==='平均数 * log(事件数)') {
-        //     return total_score/events.length * Math.log(events.length+1)
-        // }else if(method==='众数') {
-        //     const majorityElement = (nums) => {
-        //         let map = {};
-        //         let max_num = 0
-        //         map[0] = 0
-        //         nums.forEach(num=> {
-        //             if (map[num]) {
-        //                 map[num]++;
-        //             } else {
-        //                 map[num] = 1;
-        //             }
-        //             if (map[num]>map[max_num]) {
-        //                 max_num = num
-        //             }
-        //         })
-        //         return max_num
-        //     };
-        //     return majorityElement(scores)
-        // }else if(method==='中位数'){
-        //     scores.sort(function(a,b){return a-b;});
-        //     var l = scores.length-1;
-        //     var n = Math.floor(l/2);
-        //     return (scores[n]+scores[l-n])/2;
-        // }else 
         if(method==='加权平均' || true){
             types.forEach(type =>{
                 if (type2events[type].length==0) {
@@ -305,7 +280,7 @@ class LifeLikePaint extends Component{
         years.forEach(year=>{
           let events = year2events[year] || []
           let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
-          // console.log(scores)
+        //   console.log(scores)
           let stack_y = 0
           parent_types.forEach((type,i)=>{
               let this_events = events.filter(event => event.trigger.parent_type===type)

@@ -12,26 +12,25 @@ export default class AreaLineChart extends React.Component {
     this.calculateX2 = this.calculateX2.bind(this);
   }
   componentDidMount() {
-    this.calculatePos();
+    this.calculatePos(this.props.data);
     this.renderCircles();
     // this.renderCanvas();
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if(nextProps.data.toString()!==this.data.toString()){
-  //     this.data = nextProps.data;
-  //     this.calculatePos();
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.data.toString()!==this.props.data.toString()){
+      this.data = 0;
+      this.calculatePos(nextProps.data);
+    }
+  }
 
   componentDidUpdate() {
-        this.calculatePos();
     this.renderCircles();
     // this.renderCanvas();
   }
 
-  calculatePos() {
-    let {data,translate,viewType,selected_person} = this.props;
+  calculatePos(data) {
+    let {translate,viewType,selected_person} = this.props;
     if(this.data===0&&data.length!==0&&data[0].length!==0){
       let eventArray=[];
       let pox_scale = d3.scaleLinear()
@@ -43,6 +42,7 @@ export default class AreaLineChart extends React.Component {
       let len_scale = d3.scaleLinear()
                         .domain([0,0.0000001,0.001,1])
                         .range([0,0.16,0.25,0.36]);
+      console.log(data);
       data.forEach((data,index)=>{
         let eventCircles = [];
         data.forEach((d,i)=>{

@@ -51,7 +51,7 @@ class DataStore{
     for(let person_id in people){
       let person = people[person_id]
       person = personManager.create(person)
-      if(person.certain_event_num>10 && person.dy===15)
+      if(person.certain_event_num>20)   //&& person.dy===15
         can_selected_list.add(person)
     }
     stateManager.setShowPeopleList([...can_selected_list])
@@ -420,7 +420,7 @@ class Event extends _object{
 
     let parent_type = this.trigger.parent_type
     let type_p = stateManager.type2p[parent_type]
-    type_p = type_p || 0.5
+    // type_p = type_p || 1
     if (trigger_imp[trigger_id]) {
       trigger_imp = trigger_imp[trigger_id]
     }else{
@@ -428,18 +428,23 @@ class Event extends _object{
       console.warn(trigger_id, '没有重要度')
     }
 
-    let ops_person = person
-    this.roles.forEach(elm=>{
-      if (elm['person']!=person) {
-        ops_person = elm['person']
-      }
-    })
+    let ops_person_pagerank = this.getPeople().reduce((total, elm)=>{
+      return total + elm.page_rank
+    },0)/this.getPeople().length
+    // this.roles.forEach(elm=>{
+    //   if (elm['person']!=person) {
+    //     ops_person = elm['person']
+    //   }
+    // })
     // console.log(trigger_imp*ops_person.page_rank)
     // console.log(this, trigger_imp, ops_person.page_rank, trigger_imp*ops_person.page_rank)
 
+    // if (parent_type==='政治') {
+    //   console.log( parent_type, type_p, stateManager.type2p)
+    // }
     // console.log( parent_type, type_p, stateManager.type2p)
     // 这个log是瞎放的
-    return Math.log(trigger_imp*ops_person.page_rank+1) * type_p
+    return Math.log(trigger_imp*ops_person_pagerank+1) * type_p
   }
 
   // 返回一个计算不确定度的度量
@@ -853,7 +858,7 @@ const filtEvents = (events)=>{
 
 
 const ruleFilter = events=>{
-  console.log(stateManager.rules)
+  // console.log(stateManager.rules)
   return events.filter(event=>{
     let rules = stateManager.rules
     if (rules.length===0)
