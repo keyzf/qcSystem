@@ -63,7 +63,7 @@ export default class EventTable extends React.Component{
                 tmp.place = d.addrs.map((dd)=>dd.getName());
                 tmp.people = d.roles.map((dd)=>dd.person.getName());
                 tmp.event = d.trigger.getName();
-                tmp.from = '';
+                tmp.from = d.source;
                 events.push(tmp);
               })
               this.setState({

@@ -16,7 +16,6 @@ export default class HistoryEvent extends React.Component {
     Object.keys(empire).map(function(time){
       years.push(parseInt(time));
     });
-    console.log(empire);
     this.data=data;
     this.years=years;
     this.line=d3.line();
