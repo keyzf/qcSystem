@@ -123,7 +123,10 @@ class Map extends React.Component {
     let {width,height}= this.props;
     let {selected_people,chooseEvent,selectAddr} = this.state;
     this.colors.domain([0,selected_people.length]);
-    // console.log(selected_people)
+    let isonly = 0;
+    if(selected_people.length===1){
+      isonly = 1;
+    }
     return (
       <div id='geomap'>
         <svg width={width} height={height}>
@@ -133,7 +136,7 @@ class Map extends React.Component {
               </g>
               <g ref="places">
                 {selected_people.map((person,i)=>{
-                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale}/>
+                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale} isonly={isonly}/>
                 })}
               </g>
             </g>

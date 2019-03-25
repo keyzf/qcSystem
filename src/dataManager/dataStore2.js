@@ -665,7 +665,7 @@ class Person extends _object{
 
 
   toText(){
-    let text = '(' + this.id + ')' + this.getName() + ' ' + this.certain_event_num + '/' + this.event_num
+    let text = this.getName() + ' ' + this.certain_event_num + '/' + this.event_num
     // text += '['
     // if (isValidYear(this.birth_year))
     //   text += this.birth_year

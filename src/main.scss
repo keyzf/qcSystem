@@ -143,7 +143,9 @@ body ::-webkit-scrollbar-thumb:window-inactive {
         padding-top: 0px;
         height: 640px;
         .dropdown.selection{
-          .text{
+          font-family:'STKaiti';
+
+          div.text{
             color: #757575;
             font-family:'STKaiti';
             line-height: 25px;
@@ -155,20 +157,21 @@ body ::-webkit-scrollbar-thumb:window-inactive {
           margin-top:0px;
           margin-bottom: 20px;
           min-height: 20px;
-          height: 25px;
+          height: 50px;
           line-height: 25px;
           border-radius: 0;
           border-color: #454545;
           color: #454545;
           i {
-            padding: 5px;
+            padding: 0px 5px;
             height: 30px;
             line-height: 20px;
             border-color: #454545;
           }
           a{
-            height: 26px;
+            height: 20px;
             margin:0px;
+            margin-top:-4px;
             padding: 0px;
             background-color: rgba(0,0,0,0);
             box-shadow: none;

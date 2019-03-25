@@ -59,14 +59,17 @@
             padding: 0px 5px;
             text-align: left;
             vertical-align: middle;
+            cursor: pointer;
             border: 1px solid rgba($color: #ababab, $alpha: 0.7);
             img{
               vertical-align: center;
               height:12px;
+              width: 10px;
             }
             img:last-child{
               float: right;
               height: 8px;
+              width: 6px;
               margin-top: 6px;
             }
           }
@@ -80,12 +83,19 @@
         overflow-y: scroll;
         border-collapse: separate;
         border-spacing: 0.3em;
+        .active{
+          background-color: #efefef;
+        }
+        .hoverTr{
+          background-color: #f1f1f1;
+        }
         tr{
           width: 100%;
           padding-top: 7px;
           height: 15px;
           display: table;table-layout:fixed;
           vertical-align: baseline;
+          cursor: pointer;
           td{
             overflow: hidden;
             text-align: center;
@@ -98,10 +108,30 @@
             height: 15px;
             line-height:15px;
             border-bottom: 1px solid rgba($color: #ababab, $alpha: 0.7);
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
         }
       }
     }
+  }
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+    
+    /* 淡入 - 1秒内从 0% 到 100% 显示: */
+    opacity: 0;
+    transition: opacity 1s;
   }
 }
 

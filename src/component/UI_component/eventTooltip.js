@@ -6,7 +6,7 @@ import personIcon from './static/white2.png';
 import eventIcon from './static/white3.png';
 import fromIcon from './static/white4.png';
 import placeIcon from './static/white5.png';
-import nextIcon from './static/white6.png';
+import lackIcon from './static/icon 4.png';
 import './eventTooltip.scss';
 
 export default class EventTooltip extends React.Component{
@@ -33,8 +33,15 @@ export default class EventTooltip extends React.Component{
     }
   }
 
+  static get defaultProps() {
+    return {
+      width: 160,
+      height: 170,
+    }
+  }
+
   render(){
-    let {event,name,closePopup} = this.props;
+    let {event,name,closePopup,width,height} = this.props;
     let {isEventArray} =this.state;
     let time=[],addr=[],person=[],trigger='',from='';
     let tipname=name;
@@ -60,14 +67,20 @@ export default class EventTooltip extends React.Component{
       trigger = event.trigger.name;
       from = '';
     }
+    if(ismultiple){
+      height = 30 * event.length + 24;
+      width = 180;
+    }
     return (
-        <div ref="tip" className="eventTip" style={{width:160,height:170,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
+        <div ref="tip" className="eventTip" style={{width:width,height:height,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
           <div className="tooltipHeader"><span>{tipname}</span><img src={clear} onClick={closePopup}></img></div>
           {isEventArray&&ismultiple?(
               <div className="tipContent">
                 {event.map((d,i)=>
                   <li key={i}>
-                    <span>{d.time_range.join('-')}</span>
+                    <span> 
+                    {/* {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon} style={{ filter: 'brightness(100)'}}></img>: */}
+                    {d.time_range[0]===d.time_range[1]?d.time_range[0]:d.time_range.join('-')}</span>
                     <span>{d.roles.map((dd)=>dd.person.name)}</span>
                     <span>{d.trigger.name}</span>
                     <span>{''}</span>

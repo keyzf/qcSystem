@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import {autorun} from 'mobx';
+import * as d3 from 'd3';
 import stateManager from '../../dataManager/stateManager';
 import net_work from '../../dataManager/netWork';
 import dataStore from '../../dataManager/dataStore2';
@@ -22,15 +23,32 @@ export default class EventTable extends React.Component{
     super();
     this.state={
       selected_people: [],
+      selected_event_id: '',
       data:[],
       column: null,
       direction: null
     }
     this.handleEventClick = this.handleEventClick.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
   }
+
+  // _loadNewEvent = autorun(()=>{
+  //   // console.log(stateManager.selected_event)
+  //   if (stateManager.is_ready) {
+  //       let selected_event_id = stateManager.selected_event_id.get();
+  //       console.log(selected_event_id);
+  //       d3.select('.eventList').select('tbody').selectAll('tr').classed('active',false);
+  //       d3.select('.eventList').select('tbody').select(`#tr_${selected_event_id}`)
+  //         .classed('active',true)
+  //         .lower();
+  //   }
+  // })
+
   _changeShowPeople = autorun(()=>{
     if (stateManager.is_ready) {
-      let selected_people = stateManager.selected_people 
+      let selected_people = stateManager.selected_people ;
+      let selected_event_id = stateManager.selected_event_id.get();
       net_work.require('getPersonEvents', {person_id:selected_people[0].id})
       .then(data=>{
           if(data){
@@ -50,7 +68,8 @@ export default class EventTable extends React.Component{
               })
               this.setState({
                 data:events,
-                selected_people: selected_people
+                selected_people: selected_people,
+                selected_event_id: selected_event_id
               })
           }
       })           
@@ -73,12 +92,30 @@ export default class EventTable extends React.Component{
     })
   }
 
-  handleEventClick(event){
+  componentDidUpdate(){
+    let {selected_event_id} = this.state;
+    d3.select('.eventList').select('tbody').selectAll('tr').classed('active',false);
+    d3.select('.eventList').select('tbody').select(`#tr_${selected_event_id}`)
+      .classed('active',true)
+      .lower();
+  }
+
+  handleEventClick(event,e){
     stateManager.setSelectedEvent(event);
+  }
+
+  handleMouseOver(e){
+    e.target.parentNode.classList.add('hoverTr');
+  }
+
+  handleMouseOut(e){
+    e.target.parentNode.classList.remove('hoverTr');
   }
   render(){
     const { column, data, direction } = this.state;
-    // console.log(data);
+    let handleEventClick = this.handleEventClick;
+    let handleMouseOver = this.handleMouseOver;
+    let handleMouseOut = this.handleMouseOut;
     return (
       <div className="eventList">
         <div className="listHeader">
@@ -134,7 +171,7 @@ export default class EventTable extends React.Component{
         </thead>
         <tbody className="tbody">
         {data.map((d) => {
-           return (<tr key={d.id} onClick={()=>this.handleEventClick(d)}>
+           return (<tr key={d.id} id={`tr_${d.id}`} onClick={function(e){handleEventClick(d,e)}} onMouseOver={(e)=>handleMouseOver(e)} onMouseOut={(e)=>handleMouseOut(e)}>
               <td width="14%">{d.time?d.time:<img src={lackIcon}></img>}</td>
               <td width="16%">{d.place.join()?d.place.join():<img src={lackIcon}></img>}</td>
               <td width="24%">{d.people.join()?d.people.join():<img src={lackIcon}></img>}</td>

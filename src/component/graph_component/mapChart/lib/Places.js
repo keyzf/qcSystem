@@ -12,6 +12,7 @@ export default class Places extends React.Component{
       places_without_time:[],
       places_con:[]
     }
+    
     this.getAddrData = this.getAddrData.bind(this);
     this.renderPlace = this.renderPlace.bind(this);
     this.renderLines = this.renderLines.bind(this);
@@ -104,7 +105,7 @@ export default class Places extends React.Component{
   }
   renderLines(){
     let {places_con} = this.state;
-    let {path,color} = this.props;
+    let {path,color,isonly} = this.props;
     let node = this.refs.place;
     let lineData={'type':"LineString"};
     let coordinates=[];
@@ -122,12 +123,15 @@ export default class Places extends React.Component{
       .datum(lineData)
       .attr('class','route')
       .attr('d',path)
-      .attr('stroke',color)
+      .attr('stroke',()=>{
+        if(isonly) return '#a2a4bf';
+        else return color;
+      })
       .attr('fill','none');
   }
   renderPlace(){
     let node = this.refs.place;
-    let {projection,color,rscale} = this.props;
+    let {projection,color,rscale,isonly} = this.props;
     let {places_with_time,places_without_time} = this.state;
     d3.select(node).selectAll('.certain').remove()
     d3.select(node).selectAll(`.certain`)
@@ -140,8 +144,11 @@ export default class Places extends React.Component{
         d.addr.x,
         d.addr.y
         ]) + ")")
-      .attr('fill',color)
-      .attr('stroke','#333333');
+      .attr('fill',()=>{
+        if(isonly) return '#a2a4bf';
+        else return color;
+      })
+      .attr('stroke','#898989');
     d3.select(node).selectAll('.uncertain').remove()
     d3.select(node).selectAll('.uncertain')
       .data(places_without_time)
@@ -153,9 +160,12 @@ export default class Places extends React.Component{
         d.addr.x,
         d.addr.y
         ]) + ")")
-      .attr('fill',color)
+      .attr('fill',()=>{
+        if(isonly) return '#a2a4bf';
+        else return color;
+      })
       .attr('opacity',0.4)
-      .attr('stroke','#333333');
+      .attr('stroke','#898989');
   }
   render(){
     return (

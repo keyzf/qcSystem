@@ -284,37 +284,39 @@ class LifeLikePaint extends Component{
           let stack_y = 0
           parent_types.forEach((type,i)=>{
               let this_events = events.filter(event => event.trigger.parent_type===type)
-              if (scores[type] || scores[type]===0) {
-                  // console.log(scoreScale(scores[type]), stack_y)
-                  type2area_datas[type].push({
-                      x: yearScale(year),
-                      y: stack_y +  scoreScale(scores[type]),
-                      y0: stack_y,
-                      size: eventNumScale(this_events.length),
-                      events: this_events,
-                      color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
-                  })
-                  stack_y += scoreScale(scores[type])
+              let score_tmp = scores[type];
+              if (!score_tmp) {
+                  console.log(score_tmp);
+                score_tmp = 0
               }
+            type2area_datas[type].push({
+                x: yearScale(year),
+                y: stack_y +  scoreScale(score_tmp),
+                y0: stack_y,
+                size: eventNumScale(this_events.length),
+                events: this_events,
+                color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
+            })
+            stack_y += scoreScale(score_tmp)
               if(maxy<stack_y){maxy=stack_y};
           })
-          if (scores['总'] || scores['总']===0){
+          let tmp_score = scores['总'];
+          if(!tmp_score) tmp_score = 0;
               type2area_datas['总'].push({
                   x: yearScale(year),
-                  y: scoreScale(scores['总']),
+                  y: scoreScale(tmp_score),
                   y0: 0,
                   size: eventNumScale(events.length),
                   events: events,
                   color: events.includes(birth_event)||events.includes(death_event) ? 'red' : 'black'
               })   
-          }
-          if(maxy_sum<scoreScale(scores['总'])){
-              maxy_sum=scoreScale(scores['总']);
+          if(maxy_sum<scoreScale(tmp_score)){
+              maxy_sum=scoreScale(tmp_score);
           }
         })
         this.maxy=maxy;
         this.maxy_sum=maxy_sum;
-    //   console.log('type',type2area_datas);
+        console.log('type',type2area_datas);
 
         let area_datas = []
         for(let type in type2area_datas){
