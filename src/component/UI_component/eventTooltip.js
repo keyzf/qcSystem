@@ -36,7 +36,7 @@ export default class EventTooltip extends React.Component{
   static get defaultProps() {
     return {
       width: 160,
-      height: 170,
+      height: 150,
     }
   }
 
@@ -70,22 +70,25 @@ export default class EventTooltip extends React.Component{
       if(from==='') from = '未详'
     }
     if(ismultiple){
-      height = 30 * event.length + 24;
-      width = 180;
+      height = 26 * event.length + 24;
+      width = 200;
     }
+    person = person.filter(i => person.indexOf(i) === person.lastIndexOf(i));
     return (
         <div ref="tip" className="eventTip" style={{width:width,height:height,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
           <div className="tooltipHeader"><span>{tipname}</span><img src={clear} onClick={closePopup}></img></div>
           {isEventArray&&ismultiple?(
-              <div className="tipContent">
+              <div className="tipContent tiplist">
                 {event.map((d,i)=>
                   <li key={i}>
-                    <span> 
+                    <div>
+                    <div style={{width:'18%'}}><span> 
                     {/* {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon} style={{ filter: 'brightness(100)'}}></img>: */}
-                    {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?'未详':d.time_range.join('-'))}</span>
-                    <span>{d.roles.map((dd)=>dd.person.name)}</span>
-                    <span>{d.trigger.name}</span>
-                    <span>{d.source===''?'未详':d.source}</span>
+                    {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?'未详':d.time_range.join('-'))}</span></div>
+                    <div style={{width:'26%'}}><span>{d.roles.map((dd)=>dd.person.name)}</span></div>
+                    <div style={{width:'20%'}}><span>{d.trigger.name}</span></div>
+                    <div style={{width:'18%'}}><span>{d.source===''?'未详':d.source}</span></div>
+                    </div>
                   </li>
                 )}
               </div>

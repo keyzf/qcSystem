@@ -101,7 +101,7 @@ class Map extends React.Component {
             chooseEvent : targetdata.event,
             selectAddr : targetdata.addr.name
           })
-          if(pos[0]>this.props.width-160) pos[0]=pos[0]-170;
+          if(pos[0]>this.props.width-190) pos[0]=pos[0]-200;
           if(pos[1]>this.props.height-170) pos[1]=pos[1]-180;
           d3.select('#geomap').select('#mapEventTooltip')
             .attr('visibility', 'visible')
