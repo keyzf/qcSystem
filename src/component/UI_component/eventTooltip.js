@@ -54,7 +54,8 @@ export default class EventTooltip extends React.Component{
         addr = event.addrs.map((d)=>d.name);
         person = event.roles.map((dd)=>dd.person.name);
         trigger = event.trigger.name;
-        from = '';
+        from = event.source;
+        if(from==='') from = '未详'
       }else{
         ismultiple=1;
       }
@@ -65,7 +66,8 @@ export default class EventTooltip extends React.Component{
       addr = event.addrs.map((d)=>d.name);
       person = event.roles.map((dd)=>dd.person.name);
       trigger = event.trigger.name;
-      from = '';
+      from = event.source;
+      if(from==='') from = '未详'
     }
     if(ismultiple){
       height = 30 * event.length + 24;
@@ -80,10 +82,10 @@ export default class EventTooltip extends React.Component{
                   <li key={i}>
                     <span> 
                     {/* {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon} style={{ filter: 'brightness(100)'}}></img>: */}
-                    {d.time_range[0]===d.time_range[1]?d.time_range[0]:d.time_range.join('-')}</span>
+                    {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?'未详':d.time_range.join('-'))}</span>
                     <span>{d.roles.map((dd)=>dd.person.name)}</span>
                     <span>{d.trigger.name}</span>
-                    <span>{''}</span>
+                    <span>{d.source===''?'未详':d.source}</span>
                   </li>
                 )}
               </div>

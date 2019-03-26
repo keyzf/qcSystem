@@ -62,14 +62,17 @@ export default class Places extends React.Component{
                 flag=1;
               }
             })
-            let tmp={};
-            tmp.event=[];
-            tmp.addr=dd;
-            tmp.count=1;
-            tmp.event.push(d);
-            places_con.push(tmp);
-            if(!flag){
-              places_with_time.push(tmp);
+            if(dd.x!==-1){
+              let tmp={};
+              tmp.event=[];
+              tmp.addr=dd;
+              tmp.count=1;
+              tmp.event.push(d);
+              
+              places_con.push(tmp);
+              if(!flag){
+                places_with_time.push(tmp);
+              }
             }
           })
         }else{
@@ -82,7 +85,7 @@ export default class Places extends React.Component{
                 flag=1;
               }
             })
-            if(!flag){
+            if(!flag&&dd.x!==-1){
               let tmp={};
               tmp.event=[];
               tmp.addr=dd;
@@ -109,6 +112,7 @@ export default class Places extends React.Component{
     let node = this.refs.place;
     let lineData={'type':"LineString"};
     let coordinates=[];
+    console.log(places_con)
     places_con.forEach((d)=>{
       let tmp=[
         d.addr.x,

@@ -29,7 +29,7 @@ class Map extends React.Component {
       // 定义地理路径生成器
       this.path = d3.geoPath()
                     .projection(this.projection);
-      this.colors = d3.scaleOrdinal(d3.schemeAccent);
+      this.colors = d3.scaleOrdinal(d3.schemeSet3);
       this.handleMouseOver = this.handleMouseOver.bind(this);
       this.closePopup = this.closePopup.bind(this);
       this.rscale = d3.scaleLinear()

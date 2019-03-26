@@ -33,6 +33,7 @@ import { autorun} from 'mobx';
 import cos_dist from 'compute-cosine-distance'
 import { stat } from 'fs';
 import { all } from 'q';
+import './inferSunBurst.scss';
 
 const PI = Math.PI
 const inner_radius = 0.3 //圆的内轮廓
@@ -193,9 +194,8 @@ class InferSunBurst extends React.Component{
                             people_options={now_sunburst.people_options}/>
      
                     }
-                    <div style={{height: control_bar_height, width: 150, position: 'absolute', right: 0, top:18}}>
-                        <style type="text/css">{'.toother_graph_button { height:20px; cursor: pointer; margin:2px; margin-right:10px}'}</style>
-                        <img alt='' className='toother_graph_button' src={relation_icon} style={{height:23}}
+                    <div className="functionButton">
+                        <img alt='' className='toother_graph_button' src={relation_icon}
                         onClick={event=>{
                             let {now_part_index} = this
                             let now_graph = this.sunbursts[now_part_index]
@@ -227,7 +227,7 @@ class InferSunBurst extends React.Component{
                                 stateManager.setSelectedPeople([selcted_people[0], ...people.filter(elm=> elm!==selcted_people[0])])
                             }
                         }}/>
-                        <img alt='' className='toother_graph_button' src={footpath_icon}  style={{height:19}}
+                        <img alt='' className='toother_graph_button' src={footpath_icon}
                         onClick={event=>{
                             let {now_part_index} = this
                             let now_graph = this.sunbursts[now_part_index]
@@ -1231,9 +1231,8 @@ class ChangeEventPanel extends React.Component{
         let change_event_index = 0 
         let {trigger_options, addr_options, people_options, time_options, center_event} = this.props
         return (
-            <div className='change_event_bar' style={{position: 'relative', height: 50}}>
-            <style type="text/css">{'.change_event_div {position: absolute; top: 5px; width: 100px; height:30px; margin:2px; margin-right:10px}'}</style>
-            <div className='change_event_div' style={{left: 10}}>
+            <div className='change_event_bar'>
+            <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection 
                 placeholder='触发词'
@@ -1248,7 +1247,7 @@ class ChangeEventPanel extends React.Component{
                 }}/>
             </div>
 
-            <div className='change_event_div' style={{left: 120}}>
+            <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection
                 placeholder='时间'
@@ -1263,7 +1262,7 @@ class ChangeEventPanel extends React.Component{
                 }}/>
             </div>
 
-            <div className='change_event_div' style={{left: 230}}>
+            <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection
                 placeholder='时间'
@@ -1273,21 +1272,6 @@ class ChangeEventPanel extends React.Component{
                     let time = parseFloat(value)
                     if (time!==center_event.time_range[0]) {
                         center_event.time_range[0] = time
-                        this.setState({hi: !this.state.hi})
-                    }
-                }}/>
-            </div>
-
-            <div className='change_event_div' style={{left: 350}}>
-                <Dropdown 
-                fluid search selection  multiple
-                placeholder='地点'
-                options={addr_options}
-                value = {center_event.addrs.map(elm=> elm.id)}
-                onChange={(event,{value})=>{
-                    let addrs = value.map(elm=> addrManager.get(elm))
-                    if (difference(addrs, center_event.addrs).length>0) {
-                        center_event.addrs = addrs
                         this.setState({hi: !this.state.hi})
                     }
                 }}/>
@@ -1320,6 +1304,21 @@ class ChangeEventPanel extends React.Component{
                     )
                 })
             }
+
+            <div className='change_event_div'>
+                <Dropdown 
+                fluid search selection  multiple
+                placeholder='地点'
+                options={addr_options}
+                value = {center_event.addrs.map(elm=> elm.id)}
+                onChange={(event,{value})=>{
+                    let addrs = value.map(elm=> addrManager.get(elm))
+                    if (difference(addrs, center_event.addrs).length>0) {
+                        center_event.addrs = addrs
+                        this.setState({hi: !this.state.hi})
+                    }
+                }}/>
+            </div>
         </div>                    
         )
     }

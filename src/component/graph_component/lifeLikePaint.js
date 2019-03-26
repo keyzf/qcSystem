@@ -31,16 +31,17 @@ class LifeLikePaint extends Component{
             area_datas: [],
             showEventMark: undefined,
             prob_mark_data: [],
-            selected_prob_year: undefined,
             event_tree_data: {
                 title: ''
             },
             trigger_label_data: [],
             relationLines:undefined,
             chooseEvent: undefined,
-            triggerName: new Set(),
+            triggerName: {},
             selectTrigger: ''
         }
+        this.grayScale=d3.scaleLinear()
+                         .range(['#999999','#111111'])
         this.onMouseOut = this.onMouseOut.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.closePopup = this.closePopup.bind(this);
@@ -196,7 +197,6 @@ class LifeLikePaint extends Component{
         let {all_events} = this
         all_events = filtEvents(all_events)
         all_events = all_events.filter(event=> !event.isTimeCertain())
-        // console.log(all_events)
         let year2events = {}
         all_events.forEach(event=>{
             let {prob_year} = event
@@ -250,14 +250,20 @@ class LifeLikePaint extends Component{
         let year2events = eventManager.array2year2events(all_events)
         // 找到出生和死亡
         let birth_event = undefined, death_event = undefined
-        let triggerName = new Set();
+        let triggerName = {};
+        let tmp;
         all_events.forEach(event=>{
             if (event.trigger.name==='出生') {
                 birth_event = event
             }else if (event.trigger.name==='死亡') {
                 death_event = event
             }
-            triggerName.add(event.trigger.getName());
+            tmp = event.trigger.getName();
+            if(triggerName.hasOwnProperty(tmp)){
+                triggerName[tmp]++;
+            } else {
+                triggerName[tmp] = 1;
+            }
         })
 
         let years = Object.keys(year2events).map(year=> parseInt(year))
@@ -286,7 +292,6 @@ class LifeLikePaint extends Component{
               let this_events = events.filter(event => event.trigger.parent_type===type)
               let score_tmp = scores[type];
               if (!score_tmp) {
-                  console.log(score_tmp);
                 score_tmp = 0
               }
             type2area_datas[type].push({
@@ -316,7 +321,6 @@ class LifeLikePaint extends Component{
         })
         this.maxy=maxy;
         this.maxy_sum=maxy_sum;
-        console.log('type',type2area_datas);
 
         let area_datas = []
         for(let type in type2area_datas){
@@ -487,26 +491,24 @@ class LifeLikePaint extends Component{
     render(){
         const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, index,uncertainHeight, handleEventMarkClick} = this.props
         console.log('render lifeLikePaint 主视图', area_datas)
-        let {selectTrigger,area_datas, relationLines, prob_mark_data, selected_prob_year, triggerName, chooseEvent, vis } = this.state
+        let {selectTrigger,area_datas, relationLines, prob_mark_data, triggerName, chooseEvent, vis } = this.state
         this.yscale.domain([0,this.maxy_sum])
                    .range([height-uncertainHeight,30]);
-        if(selected_prob_year){
-            prob_mark_data = prob_mark_data[selected_prob_year];
-        }
         area_datas = area_datas.sort(this.sortType);
-        console.log(area_datas);
+        let maxTriggerCount = Math.max(...Object.values(triggerName));
+        this.grayScale.domain([0,maxTriggerCount]);
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>
-                    <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
-                        {Array.from(triggerName).map((d,i)=>{
-                            return (<text x={-i*20} key={i} onMouseOver={()=>this.handleTriggerMouseOver(d)} onMouseOut={this.handleTriggerMouseOut}>{d}</text>)
-                        })}
-                    </g>
                     <text className="personName" x={20} y={20}>{selected_person.name}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width} birth={this.birth_year} death={this.death_year}></Axis>
                     <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart>
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
+                    <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
+                        {Object.keys(triggerName).map((d,i)=>{
+                            return (<text x={-i*20} key={i} fill={'none'} stroke={this.grayScale(triggerName[d])} onMouseOver={()=>this.handleTriggerMouseOver(d)} onMouseOut={this.handleTriggerMouseOut}>{d}</text>)
+                        })}
+                    </g>
                     {/* <g transform={`translate(0, ${height-uncertainHeight})`} className={'bdLine'}>
                         {this.birth_year===-9999?{}:(<g><line x1={xscale(this.birth_year)} x2={xscale(this.birth_year)} y1={-25} y2={30}></line>
                         <circle cx={xscale(this.birth_year)} cy={-29} r={4}></circle></g>)}

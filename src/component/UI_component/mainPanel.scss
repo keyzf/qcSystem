@@ -63,4 +63,17 @@
     overflow-x: hidden;
     padding-left: 20px;
   }
+  .lineChart::-webkit-scrollbar {
+    width: 4px;
+    background-color: rgba(200, 200, 200, 0.3);
+  }
+  .lineChart::-webkit-scrollbar-track {
+      background-color: rgba(200, 200, 200, 0.3);
+      border-radius: 2px;
+  }
+  .lineChart::-webkit-scrollbar-thumb {
+      background: #aaaaaa;
+      border-radius: 2px;
+  }
+  
 }

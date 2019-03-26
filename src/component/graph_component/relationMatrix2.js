@@ -294,10 +294,10 @@ class RealtionMatrix extends React.Component{
           width: 470,
           height: 480,
           padding:{
-              top: 10,
-              bottom: 10,
-              left: 10,
-              right: 10
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0
           }
         };
     }
@@ -379,6 +379,17 @@ class RealtionMatrix extends React.Component{
 
         return (
             <div style={{width:width, height:height, paddingTop:padding.top, paddingBottom:padding.bottom,paddingLeft:padding.left,paddingRight:padding.right}}>
+                {/* 这个范围应该是会变的 */}
+                <div style={{display:'grid',gridTemplateColumns:'130px 50px',marginLeft:'300px'}}>
+                    <div>
+                    <input ref='show_people_num_range' className={'rs-range'} type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
+                    onChange={event=>{
+                        this.show_people_num = parseInt(this.refs.show_people_num_range.value)
+                        this.loadMatrix()
+                    }}/>
+                    </div>
+                    <div><span style={{fontFamily:'STKaiti',fontSize:'12px',marginLeft:'5px',fontWeight:600,marginTop:'5px',display:'block'}}>{this.max_people_num}</span></div>
+                </div>
                 <div style={{width:svg_width, height:svg_height}}>
                     <XYPlot
                     width={svg_width}
@@ -433,16 +444,6 @@ class RealtionMatrix extends React.Component{
                         />
                     }
                     </XYPlot>
-                </div>
-                
-                {/* 这个范围应该是会变的 */}
-                <div style={{left:250,height:20, top:-470, width:right_part_width,position:'relative'}}>
-                    <input ref='show_people_num_range' type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
-                    onChange={event=>{
-                        this.show_people_num = parseInt(this.refs.show_people_num_range.value)
-                        this.loadMatrix()
-                    }}/>
-                    <span>{this.max_people_num}</span>
                 </div>
             </div>
         )
