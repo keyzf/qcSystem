@@ -26,3 +26,17 @@
     overflow-y: auto;
   }
 }
+
+.historyContent::-webkit-scrollbar {
+  width: 3px;
+  background-color: rgba(200, 200, 200, 0.3);
+}
+
+.historyContent::-webkit-scrollbar-track {
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 2px;
+}
+.historyContent::-webkit-scrollbar-thumb {
+    background: #454545;
+    border-radius: 2px;
+}

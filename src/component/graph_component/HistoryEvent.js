@@ -119,7 +119,7 @@ export default class HistoryEvent extends React.Component {
       <foreignObject x="20" y="22" width="480" height="130" visibility="hidden">
         <div id="historytip" style={{width:470,height:125,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
           <div><span></span><img src={clear} onClick={this.closePopup}></img></div>
-          <div></div>
+          <div className="historyContent"></div>
         </div>
       </foreignObject >
     </g>
