@@ -1,5 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
+import mo from '../../static/mo.png';
 
 // 3/16 直接画短线段
 export default class AreaLineChart extends React.Component {
@@ -10,6 +11,12 @@ export default class AreaLineChart extends React.Component {
     this.data = 0;
     this.eventArray=[];
     this.calculateX2 = this.calculateX2.bind(this);
+    this.imp_scale = d3.scaleLinear()
+                      .domain([0,0.001,0.01,0.1,1])
+                      .range([0.2,0.4,0.6,0.9,1]);
+    this.angle_scale = d3.scaleLinear()
+                      .domain([-10,0,10])
+                      .range([90,0,-90]);
   }
   componentDidMount() {
     this.calculatePos();
@@ -25,7 +32,7 @@ export default class AreaLineChart extends React.Component {
   // }
 
   componentDidUpdate() {
-        this.calculatePos();
+    this.calculatePos();
     this.renderCircles();
     // this.renderCanvas();
   }
@@ -34,31 +41,24 @@ export default class AreaLineChart extends React.Component {
     let {data,translate,viewType,selected_person} = this.props;
     if(this.data===0&&data.length!==0&&data[0].length!==0){
       let eventArray=[];
-      let pox_scale = d3.scaleLinear()
-                        .domain([0,10])
-                        .range([0.1,3]);
-      let neg_scale = d3.scaleLinear()
-                        .domain([-10,0])
-                        .range([-3,-0.2]);
-      let len_scale = d3.scaleLinear()
-                        .domain([0,0.0000001,0.001,1])
-                        .range([0,0.16,0.25,0.36]);
+      console.log(data);
       data.forEach((data,index)=>{
         let eventCircles = [];
         data.forEach((d,i)=>{
+          let y0 = d.y0;
           let y=d.y;
           let x=d.x;
           let len = d.events.length;
           d.events.forEach((event,j)=>{
             let score = event.getScore(selected_person);
             let imp = event.getImp(selected_person);
+            console.log(imp);
             let tmp={};
-            tmp.y = y*Math.random();
-            if(tmp.y<0.1) return tmp.y=y;
-            tmp.x = x+Math.random()-0.5;
-            if(score>=0) tmp.k=pox_scale(score)
-            else tmp.k=neg_scale(score);
-            tmp.len = len_scale(imp);
+            tmp.y= y0+(y-y0)*this.imp_scale(imp);
+            if(tmp.y<0.1) return tmp.y=0.1;
+            tmp.x = x-0.5+Math.random();
+            tmp.k = this.angle_scale(score);
+            tmp.len = this.imp_scale(imp);
             tmp.event=event;
             eventCircles.push(tmp);
           })
@@ -66,73 +66,151 @@ export default class AreaLineChart extends React.Component {
         eventArray.push(eventCircles);
       })
       this.eventArray = eventArray;
+      console.log(eventArray);
       this.data=1;
     }
   }
 
   renderCircles(){
-    let {yscale,xscale,onMouseOver,onMouseOut,onMouseClick,width,height} = this.props;
+    let {yscale,xscale,onMouseOver,onMouseOut,onMouseClick,width,height,viewType} = this.props;
     // d3.select(this.refs.area)
     //   .selectAll('circle').remove();
     let dom;
-    this.eventArray.forEach((events,index)=>{
-      dom = d3.select(this.refs.area)
-        .select('.certainEventPoint')
-        .selectAll(`.circle${index}`)
-        .data(events)
-      dom.attr('cx',(d,i)=>{
-          return xscale(d.x);
-          })
-          .attr('cy',(d,i)=>{
-            return yscale(d.y);
-          })
-      dom.exit().remove();
-      dom.enter()
-        .append('circle')
-        .attr('class',`circle${index}`)
-        .attr('cx',(d,i)=>{
-          return xscale(d.x);
-        })
-        .attr('cy',(d,i)=>{
-          return yscale(d.y);
-        })
-        .attr('r',(d,i)=>{
-          return d.len*20;
-        })
-        .attr('fill','rgba(200,200,200,0.5)')
-        .on('mouseover',(d)=>{
-          let pos = d3.mouse(this.refs.area);
-          let x= pos[0]+10;
-          if(pos[0]+10+160>width) x = pos[0]-180;
-          let y = pos[1]-100;
-          y= y-10<0? 10: y;
-          y = y+160>height? y-20: y;
-          onMouseOver(d.event,[x,y]);
-        })
-        .on('mouseout',(d)=>{
-          onMouseOut();
-        })
-        .on('mousedown',(d)=>{
-          let pos = d3.mouse(this.refs.area);
-          let x= pos[0]+10;
-          if(pos[0]+10+160>width) x = pos[0]-180;
-          let y = pos[1]-100;
-          onMouseClick(d.event,[x,y]);
-        })
-    })
+    console.log(this.eventArray);
+    if(this.eventArray.length>0){
+      let eventArray;
+      if(!viewType){
+        eventArray = [this.eventArray[0]];
+        d3.select(this.refs.area)
+          .select('.certainEventPoint')
+          .selectAll('image').attr('visibility','visible');
+        d3.select(this.refs.area)
+          .select('.certainEventPoint')
+          .selectAll('image:not(.circle0)').attr('visibility','hidden');
+      }else{
+        eventArray = this.eventArray.slice(1);
+        d3.select(this.refs.area)
+          .select('.certainEventPoint')
+          .selectAll('image').attr('visibility','visible');
+        d3.select(this.refs.area)
+          .select('.certainEventPoint')
+          .selectAll('.circle0').attr('visibility','hidden');
+      }
+      eventArray.forEach((events,index)=>{
+        if(!viewType){
+          dom = d3.select(this.refs.area)
+          .select('.certainEventPoint')
+          .selectAll(`.circle${index}`)
+          .data(events)
+        } else {
+          dom = d3.select(this.refs.area)
+          .select('.certainEventPoint')
+          .selectAll(`.circle${index+1}`)
+          .data(events)
+        }
+        dom.attr('x',(d,i)=>{
+                return xscale(d.x);
+              })
+            .attr('y',(d,i)=>{
+              return yscale(d.y);
+            })
+            .attr('transform',(d)=>`rotate(${d.k},${xscale(d.x)},${yscale(d.y)})`)
+        dom.exit().remove();
+        dom.enter()
+           .append("svg:image")
+           .attr('class',()=>{
+                if(!viewType){
+                  return `circle${index}`
+                }else{
+                  return `circle${index+1}`
+                }
+              })
+           .attr('x',(d,i)=>{
+                return xscale(d.x);
+              })
+            .attr('y',(d,i)=>{
+                  return yscale(d.y);
+                })
+            .attr('width',(d)=>d.len*20)
+            .attr('height',(d)=>d.len*20)
+            .attr("xlink:href",mo)
+            .attr('opacity',0.5)
+            .attr('transform',(d)=>`rotate(${d.k},${xscale(d.x)},${yscale(d.y)})`)
+            .on('mouseover',(d)=>{
+              let pos = d3.mouse(this.refs.area);
+              let x= pos[0]+10;
+              if(pos[0]+10+160>width) x = pos[0]-180;
+              let y = pos[1]-100;
+              y= y-10<0? 10: y;
+              y = y+160>height? y-20: y;
+              onMouseOver(d.event,[x,y]);
+            })
+            .on('mouseout',(d)=>{
+              onMouseOut();
+            })
+            .on('mousedown',(d)=>{
+              let pos = d3.mouse(this.refs.area);
+              let x= pos[0]+10;
+              if(pos[0]+10+160>width) x = pos[0]-180;
+              let y = pos[1]-100;
+              onMouseClick(d.event,[x,y]);
+            });
+            // dom.enter()
+        //   .append('circle')
+        //   .attr('class',()=>{
+        //     if(!viewType){
+        //       return `circle${index}`
+        //     }else{
+        //       return `circle${index+1}`
+        //     }
+        //   })
+        //   .attr('cx',(d,i)=>{
+        //     return xscale(d.x);
+        //   })
+        //   .attr('cy',(d,i)=>{
+        //     return yscale(d.y);
+        //   })
+        //   .attr('r',(d,i)=>{
+        //     return d.len*8;
+        //   })
+        //   .attr('fill','rgb(200,200,200)')
+        //   .attr('fill-opacity',(d)=>d.len)
+          // .on('mouseover',(d)=>{
+          //   let pos = d3.mouse(this.refs.area);
+          //   let x= pos[0]+10;
+          //   if(pos[0]+10+160>width) x = pos[0]-180;
+          //   let y = pos[1]-100;
+          //   y= y-10<0? 10: y;
+          //   y = y+160>height? y-20: y;
+          //   onMouseOver(d.event,[x,y]);
+          // })
+          // .on('mouseout',(d)=>{
+          //   onMouseOut();
+          // })
+          // .on('mousedown',(d)=>{
+          //   let pos = d3.mouse(this.refs.area);
+          //   let x= pos[0]+10;
+          //   if(pos[0]+10+160>width) x = pos[0]-180;
+          //   let y = pos[1]-100;
+          //   onMouseClick(d.event,[x,y]);
+          // });
+      })
+    }
   }
 
   hoverEventPoints(name){
     d3.select(this.refs.area)
             .select('.certainEventPoint')
-            .selectAll('circle').attr('fill','rgba(200,200,200,0.5)')
+            .selectAll('circle')
+            .attr('fill','rgb(200,200,200)')
+            .attr('fill-opacity',(d)=>d.len)
     let dom = d3.select(this.refs.area)
             .select('.certainEventPoint')
             .selectAll('circle')
             .filter((d,i)=>{
               return d.event.trigger.name === name
             })
-    dom.attr('fill','rgba(150,150,150,0.8)')
+    dom.attr('fill','rgba(80,80,80,0.8)')
   }
 
   renderCanvas(){
@@ -220,7 +298,7 @@ export default class AreaLineChart extends React.Component {
               .y0((d)=>yscale(d.y0));
     return(
     <g className="area" ref="area" translate={translate}>
-      {viewType?data&&data.map((d,i)=>{ console.log(i);
+      {viewType?data&&data.map((d,i)=>{
         return (<path key={i} d={this.area(d)} fill={`url(#linear${i})`}></path>)}):data&&<path d={this.area(data)} fill={'url(#linear)'}></path>}
       <g className="certainEventPoint"></g>
     </g>
