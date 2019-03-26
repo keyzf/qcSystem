@@ -31,7 +31,7 @@ class StateManager{
         // let type2p = this.type2p
         // type2p[type] = p
         this.type2p[type] = p
-        console.log(this.type2p, this.type2p['政治'], this.type2p['社交'])
+        // console.log(this.type2p, this.type2p['政治'], this.type2p['社交'])
         this.life_refresh = !this.life_refresh
         // console.log(this.type2p.)
     }
