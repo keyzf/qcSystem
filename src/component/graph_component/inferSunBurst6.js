@@ -81,7 +81,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:10000})
             .then(data=>{
                 // console.log(data)
                 data = dataStore.processResults(data.data)
@@ -200,7 +200,19 @@ class InferSunBurst extends React.Component{
                             let {now_part_index} = this
                             let now_graph = this.sunbursts[now_part_index]
                             if (now_graph) {
-                                let events = now_graph.all_events
+                                let people = now_graph.all_people
+                                let events = []
+                                people.forEach(person=>{
+                                    let people_events = person.events
+                                    people_events = people_events.filter(elm=> {
+                                        let role = elm.getPeople().filter(elm=> elm!==person)
+                                        return people.includes(role[0]) || people.includes(role[1]) 
+                                    })
+                                    events = [...people_events, ...events]
+                                })
+                                events = [...new Set(events)]
+                                console.log(events)
+                                // let events = now_graph.all_events
                                 stateManager.setRelationEvents(events)
                             }
                         }}/>
@@ -212,7 +224,7 @@ class InferSunBurst extends React.Component{
                                 let events = now_graph.all_events
                                 let people = now_graph.all_people
                                 let selcted_people = stateManager.selected_people
-                                stateManager.setSelectedPeople([selcted_people[0], ...people])
+                                stateManager.setSelectedPeople([selcted_people[0], ...people.filter(elm=> elm!==selcted_people[0])])
                             }
                         }}/>
                         <img alt='' className='toother_graph_button' src={footpath_icon}
@@ -495,20 +507,20 @@ class OnePart{
         let component_array = []
 
 
-        let wrap_line_data = [
-            {x: center_x-r, y: center_y-r},
-            {x: center_x-r, y: center_y+r},
-            {x: center_x + 3.5 - r, y: center_y+r},
-            {x: center_x + 3.5 - r, y: center_y-r},
-        ]
+        // let wrap_line_data = [
+        //     {x: center_x-r, y: center_y-r},
+        //     {x: center_x-r, y: center_y+r},
+        //     {x: center_x + 3.5 - r, y: center_y+r},
+        //     {x: center_x + 3.5 - r, y: center_y-r},
+        // ]
         // console.log(parent_component.now_part_index, part_index)
-        component_array.push(
-            <LineSeries
-            key={part_index+'wrap_line'}
-            stroke='#c3c3c3'
-            strokeWidth={parent_component.now_part_index===part_index?5:2}
-            data={wrap_line_data}/>
-        )
+        // component_array.push(
+        //     <LineSeries
+        //     key={part_index+'wrap_line'}
+        //     stroke='#c3c3c3'
+        //     strokeWidth={parent_component.now_part_index===part_index?5:2}
+        //     data={wrap_line_data}/>
+        // )
 
         // 规则和筛选实体之间连线
         component_array.push(
@@ -1410,7 +1422,7 @@ class Rule{
         if (related_objects.length===0 && related_objects[0].node_type==='filter_value') {
             return related_objects[0]
         }
-        this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.12 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
+        this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.18 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
         this.y = related_objects.reduce((total, elm)=>  total+elm.y, 0)/related_objects.length
         this.color = Rule.type2color[this.type]
         // this.color = this.
