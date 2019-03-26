@@ -41,7 +41,8 @@ class LifeLikePaint extends Component{
             selectTrigger: ''
         }
         this.grayScale=d3.scaleLinear()
-                         .range(['#999999','#111111'])
+                         .range(['#999999','#111111']);
+        this.triggerArray = [];
         this.onMouseOut = this.onMouseOut.bind(this);
         this.onMouseOver = this.onMouseOver.bind(this);
         this.closePopup = this.closePopup.bind(this);
@@ -62,7 +63,7 @@ class LifeLikePaint extends Component{
             let need_refesh = stateManager.need_refresh
             this.loadLifeLineData()
             this.loadInferMarkData()
-            // this.getRelationLine()
+            this.getRelationLine()
         }
     })
     _onType2pChange = autorun(()=>{
@@ -98,39 +99,42 @@ class LifeLikePaint extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        this.loadLifeLineData()
+        this.loadLifeLineData();
+        this.getRelationLine();
     }
 
     getRelationLine(){
+        let {selected_person,index} = this.props;
         let selected_people = stateManager.selected_people;
-        let len = selected_people.length;
-        let other_people = selected_people.slice(0,len-1);
-        let new_person = selected_people[len-1];
+        let len = selected_people.indexOf(selected_person);
+        let other_people = selected_people.map(d=>d.id);
         let relationLines={};
-        let yearmap = new Map();
-        new_person.events.forEach((d,index)=>{
-            let tmp = {};
+        selected_person.events.forEach((d,index)=>{
             if(d.roles.length>1){
                 for(let i=0;i<d.roles.length;i++){
-                    let person_index = other_people.indexOf(d.roles[i].person);
-                    if(person_index!==-1){
-                        let year;
-                        if(d.time_range[0]===d.time_range[1]){
-                            year = d.time_range[0];
-                            if(relationLines[year]){
-                                let tmp=relationLines[year];
-                                tmp.event.push(d);
-                                tmp.count++;
-                                relationLines[year]=tmp;
-                            }else if(year){
-                                let tmp={};
-                                tmp.event=[d];
-                                tmp.count = 1;
-                                let tmpLines=[];
-                                tmpLines[0]={'person_index':len,'x':parseInt(year)};
-                                tmpLines[1]={'person_index':person_index+1,'x':parseInt(year)};
-                                tmp.lines = tmpLines;
-                                relationLines[year]=tmp;
+                    if(d.roles[i].person.id!==selected_person.id){
+                        let person_index = other_people.indexOf(d.roles[i].person.id);
+                        if(person_index<len){
+                            if(person_index!==-1){
+                                let year;
+                                if(d.time_range[0]===d.time_range[1]){
+                                    year = d.time_range[0];
+                                    if(relationLines[year]){
+                                        let tmp=relationLines[year];
+                                        tmp.event.push(d);
+                                        tmp.count++;
+                                        relationLines[year]=tmp;
+                                    }else if(year){
+                                        let tmp={};
+                                        tmp.event=[d];
+                                        tmp.count = 1;
+                                        let tmpLines=[];
+                                        tmpLines[0]={'person_index':len+1,'x':parseInt(year)};
+                                        tmpLines[1]={'person_index':person_index+1,'x':parseInt(year)};
+                                        tmp.lines = tmpLines;
+                                        relationLines[year]=tmp;
+                                    }
+                                }
                             }
                         }
                     }
@@ -251,7 +255,11 @@ class LifeLikePaint extends Component{
         // 找到出生和死亡
         let birth_event = undefined, death_event = undefined
         let triggerName = {};
+        let triggerArray = []
         let tmp;
+        all_events.sort((a,b)=>{
+            return b.time_range[0]-a.time_range[0];
+        })
         all_events.forEach(event=>{
             if (event.trigger.name==='出生') {
                 birth_event = event
@@ -263,8 +271,10 @@ class LifeLikePaint extends Component{
                 triggerName[tmp]++;
             } else {
                 triggerName[tmp] = 1;
+                triggerArray.push(tmp);
             }
         })
+        this.triggerArray = triggerArray;
 
         let years = Object.keys(year2events).map(year=> parseInt(year))
         years = years.sort((a,b)=> a-b)
@@ -407,8 +417,8 @@ class LifeLikePaint extends Component{
         let node = this.refs.relationLineDom;
         let {line,xscale,height} = this.props;
         let {relationLines} = this.state;
-        // d3.select(node)
-        //   .selectAll('.relationLine').remove();
+        d3.select(node)
+          .selectAll('.relationLine').remove();
         let linedoms = d3.select(node)
           .selectAll('.relationLine')
           .data(Object.values(relationLines));
@@ -504,7 +514,7 @@ class LifeLikePaint extends Component{
                     <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart>
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
                     <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
-                        {Object.keys(triggerName).map((d,i)=>{
+                        {this.triggerArray.map((d,i)=>{
                             return (<text x={-i*20} key={i} fill={'none'} stroke={this.grayScale(triggerName[d])} onMouseOver={()=>this.handleTriggerMouseOver(d)} onMouseOut={this.handleTriggerMouseOut}>{d}</text>)
                         })}
                     </g>
