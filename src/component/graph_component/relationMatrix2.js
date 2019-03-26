@@ -10,6 +10,7 @@ import net_work from '../../dataManager/netWork'
 import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy, ruleFilter } from '../../dataManager/dataStore2'
 import {MyBrush} from '../UI_component/myUIComponents'
 import { relative } from 'path';
+import { runInThisContext } from 'vm';
 
 // 3/21 根据pagerank修建
 class RealtionMatrix extends React.Component{
@@ -31,8 +32,8 @@ class RealtionMatrix extends React.Component{
         this.state = {
             events_rect_data : [],
             hint_value: undefined,
+            color_method: '数量',
         }
-
     }
 
     _onInferEventsInput = autorun(()=>{
@@ -106,15 +107,6 @@ class RealtionMatrix extends React.Component{
                     })
                 })
 
-                // let nums = Object.keys(person2person).map(id=> Object.keys(person2person[id]).length)
-                // const temp_max = Math.max(...nums)
-                // nums = nums.splice(nums.findIndex(value=> temp_max===value), 1)
-                // console.log(nums)
-                // this.max_person_relation_num = Math.max(...nums)
-                // this.min_person_relation_num = Math.min(...nums)
-                // this.relation_num_list = nums
-
-                // console.log(this.max_person_relation_num, this.min_person_relation_num)
                 this.selected_people = selected_people
                 this.loadMatrix()
             })
@@ -328,9 +320,17 @@ class RealtionMatrix extends React.Component{
             }
         })
 
-        let {events_rect_data, hint_value} = this.state
+        let {events_rect_data, hint_value, color_method} = this.state
         let hint_point_rect = [], personX, personY, label_datas
         const people_num = people_array.length
+
+        if (color_method==='数量') {
+            
+        }else if(color_method==='类型'){
+
+        }else if(color_method==='正负向'){
+            
+        }
 
         if (hint_value && people_num>17) {
             hint_value = dictCopy(hint_value)
@@ -379,16 +379,45 @@ class RealtionMatrix extends React.Component{
 
         return (
             <div style={{width:width, height:height, paddingTop:padding.top, paddingBottom:padding.bottom,paddingLeft:padding.left,paddingRight:padding.right}}>
-                {/* 这个范围应该是会变的 */}
-                <div style={{display:'grid',gridTemplateColumns:'130px 50px',marginLeft:'300px'}}>
+                <div style={{display:'grid',gridTemplateColumns:'150px 50px',marginLeft:'300px'}}>
                     <div>
                     <input ref='show_people_num_range' className={'rs-range'} type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
                     onChange={event=>{
                         this.show_people_num = parseInt(this.refs.show_people_num_range.value)
                         this.loadMatrix()
                     }}/>
-                    </div>
                     <div><span style={{fontFamily:'STKaiti',fontSize:'12px',marginLeft:'5px',fontWeight:600,marginTop:'5px',display:'block'}}>{this.max_people_num}</span></div>
+                    <label><input type="checkbox" onChange={(event)=>{
+                        const color = d3.rgb(200, 200, 200)
+                        events_rect_data.forEach(elm=>{
+                            let events = elm.event_ids.map(id=> eventManager.get(id))
+                            elm.color = color.darker([events.length/3+0.25])
+                        })
+                        this.setState({color_method: '数量', events_rect_data: events_rect_data})
+                    }}/>数量</label> 
+                    <label><input type="checkbox"onChange={(event)=>{
+                        const green = d3.rgb(66,251,75);	//浅绿
+                        const red = d3.rgb(212,42,42);		//深绿
+                        const color = d3.interpolate(green,red);		//颜色插值函数
+                        const colorLiner = d3.scaleLinear()
+                                            .domain([-10,10])
+                                            .range([0,1])
+                        events_rect_data.forEach(elm=>{
+                            let events = elm.event_ids.map(id=> eventManager.get(id))
+                            // console.log(elm, elm.event_ids, events)
+                            let score = events.reduce((total, event)=>{
+                                // console.log(event)
+                                let people = event.getPeople()
+                                return people.reduce((total, person)=> event.getScore(person), 0)/people.length
+                            }, 0)>0?10:-10
+                            elm.color = color(colorLiner(score))
+                        })
+                        this.setState({color_method: '正负向', events_rect_data: events_rect_data})
+                    }}/>正负向</label> 
+                    <label><input type="checkbox"onChange={(event)=>{
+                        this.setState({color_method: '类型'})
+                    }}/>类型</label> 
+                    </div>
                 </div>
                 <div style={{width:svg_width, height:svg_height}}>
                     <XYPlot

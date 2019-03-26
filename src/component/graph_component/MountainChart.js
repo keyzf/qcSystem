@@ -214,7 +214,7 @@ export default class AreaLineChart extends React.Component {
       data=data[0];
     }
     this.hoverEventPoints(selectTrigger);
-    console.log(data);
+    // console.log(data);
     this.area.x((d)=>xscale(d.x))
               .y1((d)=>yscale(d.y))
               .y0((d)=>yscale(d.y0));
