@@ -79,6 +79,13 @@ class App extends Component {
     }
   })
   
+  _onSelectedPeopleChange = autorun(()=>{
+    if (stateManager.is_ready) {
+      let selected_people = stateManager.selected_people
+      // console.log()
+      this.setState({selected_people: selected_people})
+    }
+  })
   componentWillUpdate() {
     // document.onmousemove = null
   }
@@ -137,6 +144,7 @@ class App extends Component {
               placeholder='选择人物' 
               className="selection_person"
               options={person_options}
+              value={this.state.selected_people.map(elm=> elm.id)}
               onChange={this.changeSelectPeople}
               // loading   //可以在之后添加
             />
