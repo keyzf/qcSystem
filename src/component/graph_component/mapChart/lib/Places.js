@@ -33,13 +33,15 @@ export default class Places extends React.Component{
   }
   componentWillReceiveProps(nextProps){
     let {selected_person} = nextProps;
-    net_work.require('getPersonEvents', {person_id:selected_person})
-    .then(data=>{
-      if(data){
-        data = dataStore.processResults(data)
-        this.getAddrData(data.events);
-      }
-    })
+    if(selected_person !== this.props.selected_person){
+      net_work.require('getPersonEvents', {person_id:selected_person})
+      .then(data=>{
+        if(data){
+          data = dataStore.processResults(data)
+          this.getAddrData(data.events);
+        }
+      })
+    }
   }
   componentDidUpdate(){
     this.renderPlace();
@@ -100,6 +102,12 @@ export default class Places extends React.Component{
     places_con.sort((a,b)=>{
       return a.event[0].time_range[0]-b.event[0].time_range[0]
     })
+    // console.log(places_with_time,places_without_time);
+    places_with_time.forEach((d,i)=>{
+      d.event.sort((a,b)=>{
+        return a.time_range[0]-b.time_range[0];
+      })
+    })
     this.setState({
       places_with_time:places_with_time,
       places_without_time:places_without_time,
@@ -112,7 +120,6 @@ export default class Places extends React.Component{
     let node = this.refs.place;
     let lineData={'type':"LineString"};
     let coordinates=[];
-    console.log(places_con)
     places_con.forEach((d)=>{
       let tmp=[
         d.addr.x,

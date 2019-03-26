@@ -24,15 +24,15 @@
     }
   }
   .tipContent{
-    padding: 5px 12px;
+    padding: 5px 8px;
     overflow-y: auto;
+    max-height: 100px;
     display:grid;
     li{
       list-style-type:none;
       list-style-image: url('./static/white6.png');
-      height: 10px;
       span{
-        text-decoration-line: underline;
+        // text-decoration-line: underline;
         padding: 2px;
       }
     }
@@ -47,6 +47,9 @@
       }
       div:last-child{
         border-bottom: 1px solid #ffffff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         span{
           line-height: 15px;
         }
@@ -54,4 +57,42 @@
       }
     }
   }
+  .tipContent.tiplist{
+    li{
+      div{
+        display: inline;
+        vertical-align: bottom;
+        div{
+          display: inline-block;
+          border-bottom: 1px solid #efefef;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin:0;
+          margin-right: 2px;
+          text-align: center;
+          padding: 0;
+        }
+        div:first-child{
+          // margin-left: -8px;
+          padding:0;
+          margin:0;
+        }
+      }
+    }
+  }
+}
+
+.tipContent::-webkit-scrollbar {
+  width: 3px;
+  background-color: rgba(200, 200, 200, 0.3);
+}
+
+.tipContent::-webkit-scrollbar-track {
+    background-color: rgba(200, 200, 200, 0.3);
+    border-radius: 2px;
+}
+.tipContent::-webkit-scrollbar-thumb {
+    background: #454545;
+    border-radius: 2px;
 }

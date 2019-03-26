@@ -52,6 +52,7 @@ export default class AreaLineChart extends React.Component {
           d.events.forEach((event,j)=>{
             let score = event.getScore(selected_person);
             let imp = event.getImp(selected_person);
+            console.log(score,imp);
             let tmp={};
             tmp.y = y*Math.random();
             if(tmp.y<0.1) return tmp.y=y;

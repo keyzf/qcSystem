@@ -444,7 +444,7 @@ class LifeLikePaint extends Component{
                     d3.select(this.refs.content).select('#bubbleEventTooltip')
                     .attr('visibility', 'visible')
                     .attr('x',pos[0]+10)
-                    .attr('y',pos[1]-130)
+                    .attr('y',pos[1]-110)
                 })
                 .on('mouseout',()=>{
                     d3.select(this.refs.content).select('#bubbleEventTooltip').attr('visibility','hidden');
@@ -456,7 +456,6 @@ class LifeLikePaint extends Component{
             .attr('r',4)
             .attr('stroke','#000')
             .on('mouseover',(d)=>{
-                console.log(d);
                 this.setState({
                     chooseEvent : d.event,
                 })
@@ -464,7 +463,7 @@ class LifeLikePaint extends Component{
                 d3.select(this.refs.content).select('#bubbleEventTooltip')
                 .attr('visibility', 'visible')
                 .attr('x',pos[0]+10)
-                .attr('y',pos[1]-130)
+                .attr('y',pos[1]-110)
             })
             .on('mouseout',()=>{
                 d3.select(this.refs.content).select('#bubbleEventTooltip').attr('visibility','hidden');

@@ -17,7 +17,7 @@ class StateManager{
     })
 
     @observable type2p = {
-        '其他': 1,
+        '其它': 1,
         '军事': 1,
         '学术': 1,
         '宗教': 1,
