@@ -67,6 +67,7 @@ class InferSunBurst extends React.Component{
             mouse_postion: [0,0],
             sunbursts: [],
         }
+        this.allPage = 0;
     }
 
 
@@ -179,7 +180,7 @@ class InferSunBurst extends React.Component{
         let now_sunburst = this.sunbursts[this.now_part_index]
         // console.log(now_sunburst, this.sunbursts, this.now_part_index)
         return (
-            <div 
+            <div ref="inferSun"
                 className='trigger_sunburst_graph' 
                 style={{width: width, height: height, position: 'absolute', 
                 }}>
@@ -234,6 +235,18 @@ class InferSunBurst extends React.Component{
                             if (now_graph) {
                                 let events = now_graph.all_events
                                 stateManager.setMapEvents(events)
+                            }
+                        }}/>
+                        <img alt='' className='toother_graph_button' src={missing_icon}
+                        onClick={event=>{
+                            const node = this.refs.inferSun;
+                            if(!this.allPage){
+                                node.classList.add('allPage');
+                                this.allPage = 1;
+                            }
+                            else{
+                                node.classList.remove('allPage');
+                                this.allPage = 0;
                             }
                         }}/>
                     </div>
