@@ -6,7 +6,7 @@ export default class BubbleChart extends React.Component {
     super();
     this.rscale=d3.scaleLinear()
                   .domain([0,1])
-                  .range([1,11]);
+                  .range([1,8]);
     this.bubbleColor=d3.scaleLinear();
     this.openEvent = new Set();
     this.openEventCircle = -1;
@@ -55,7 +55,7 @@ export default class BubbleChart extends React.Component {
   }
 
   renderBubble() {
-    console.log('rerender bubble')
+    console.log('rerender bubble',this.props.data)
     let node=this.refs.bubble;
     let {data,xscale,onEventClick,onMouseClick,width,areaHeight} =this.props;
     let rscale=this.rscale;
@@ -95,7 +95,7 @@ export default class BubbleChart extends React.Component {
         });
       }
     }
-
+    console.log(bubbles);
     let newBubble = d3.select(node).selectAll('.bubbleWhole').data(bubbles,d=>d.id);
     newBubble.attr('cx',d=>{
       return d.x;

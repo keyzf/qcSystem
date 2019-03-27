@@ -72,7 +72,7 @@ class LifeLikePaint extends Component{
             let life_refresh = stateManager.life_refresh
             // console.log(this.type2p)
             this.loadLifeLineData()
-            // this.loadInferMarkData()
+            this.loadInferMarkData()
             // this.getRelationLine()
         }
     })
@@ -88,6 +88,7 @@ class LifeLikePaint extends Component{
         net_work.require('getPersonEvents', {person_id:selected_person.id})
         .then(data=>{
             if(data){
+                console.log(data);
                 data = dataStore.processResults(data)
                 this.all_events = dataStore.dict2array(data.events)
                 // console.log(data)
@@ -201,10 +202,12 @@ class LifeLikePaint extends Component{
         let {all_events} = this
         all_events = filtEvents(all_events)
         all_events = all_events.filter(event=> !event.isTimeCertain())
-        let year2events = {}
+        console.log(all_events);
+        let year2events = {};
+
         all_events.forEach(event=>{
-            let {prob_year} = event
-            // console.log(prob_year, event)
+            let {prob_year} = event;
+            console.log(prob_year);
             let max_prob = 0
             let max_year = -9999
             for(let year in prob_year){
@@ -221,6 +224,8 @@ class LifeLikePaint extends Component{
                 year2events[max_year].push(event)                
             }
         })
+
+        console.log(year2events);
 
         this.setState({
             prob_mark_data: year2events,

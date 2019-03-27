@@ -71,7 +71,6 @@ class InferSunBurst extends React.Component{
             mouse_postion: [0,0],
             sunbursts: [],
         }
-        this.allPage = 0;
     }
 
     onFilterChange = autorun(()=>{
