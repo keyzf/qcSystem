@@ -619,19 +619,21 @@ class OnePart{
         let links_datas = []
         this.id2link_cache = this.id2link_cache || {}
         let {id2link_cache} = this
-        let mouseover_value_object_id = mouseover_value
-        if (big_mode && node_datas.length!==0 && id2link_cache[mouseover_value_object_id]) {
-            links_datas = id2link_cache[mouseover_value_object_id]
-        }else{
-            console.log('hihih')
-            let fbundling = forceBundle()
-                            .step_size(0.01)
-                            .compatibility_threshold(0.5)
-                            .nodes(node_datas)
-                            .edges(edge_datas)
-            links_datas = fbundling()
-            if(big_mode)
-                this.id2link_cache[mouseover_value_object_id] = links_datas
+        if (mouseover_value) {
+            let mouseover_value_object_id = mouseover_value.object_id
+            if (big_mode && node_datas.length!==0 && id2link_cache[mouseover_value_object_id]) {
+                links_datas = id2link_cache[mouseover_value_object_id]
+            }else{
+                // console.log(node_datas, edge_datas)
+                let fbundling = forceBundle()
+                                .step_size(0.01)
+                                .compatibility_threshold(0.5)
+                                .nodes(node_datas)
+                                .edges(edge_datas)
+                links_datas = fbundling()
+                if(big_mode)
+                    this.id2link_cache[mouseover_value_object_id] = links_datas
+            }
         }
 
 

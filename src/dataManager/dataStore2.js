@@ -108,9 +108,15 @@ class DataStore{
       }
       
       if (Object.keys(event.prob_year).length>0) {
-        event.prob_addr = _object.prob_addr
-        event.prob_person = _object.prob_person
+        console.log(_object)
         event.prob_year = _object.prob_year
+        console.log(event)
+      }
+      if (Object.keys(event.prob_person).length>0) {
+        event.prob_person = _object.prob_person
+      }
+      if (Object.keys(event.prob_addr).length>0) {
+        event.prob_addr = _object.prob_addr
       }
 
       event.addrs.forEach(addr => {
