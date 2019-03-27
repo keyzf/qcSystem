@@ -13,7 +13,7 @@ export default class AreaLineChart extends React.Component {
     this.calculateX2 = this.calculateX2.bind(this);
     this.imp_scale = d3.scaleLinear()
                       .domain([0,0.001,0.01,0.1,1])
-                      .range([0.2,0.4,0.6,0.9,1]);
+                      .range([0.4,0.5,0.6,0.9,1]);
     this.angle_scale = d3.scaleLinear()
                       .domain([-10,0,10])
                       .range([90,0,-90]);
@@ -39,6 +39,8 @@ export default class AreaLineChart extends React.Component {
 
   calculatePos() {
     let {data,translate,viewType,selected_person} = this.props;
+    let line1 = this.area.lineY1();
+    let line0 = this.area.lineY0();
     if(this.data===0&&data.length!==0&&data[0].length!==0){
       let eventArray=[];
       console.log(data);
@@ -52,7 +54,6 @@ export default class AreaLineChart extends React.Component {
           d.events.forEach((event,j)=>{
             let score = event.getScore(selected_person);
             let imp = event.getImp(selected_person);
-            console.log(imp);
             let tmp={};
             tmp.y= y0+(y-y0)*this.imp_scale(imp);
             if(tmp.y<0.1) return tmp.y=0.1;
@@ -66,7 +67,6 @@ export default class AreaLineChart extends React.Component {
         eventArray.push(eventCircles);
       })
       this.eventArray = eventArray;
-      console.log(eventArray);
       this.data=1;
     }
   }
@@ -76,38 +76,37 @@ export default class AreaLineChart extends React.Component {
     // d3.select(this.refs.area)
     //   .selectAll('circle').remove();
     let dom;
-    console.log(this.eventArray);
     if(this.eventArray.length>0){
       let eventArray;
-      if(!viewType){
-        eventArray = [this.eventArray[0]];
-        d3.select(this.refs.area)
-          .select('.certainEventPoint')
-          .selectAll('image').attr('visibility','visible');
-        d3.select(this.refs.area)
-          .select('.certainEventPoint')
-          .selectAll('image:not(.circle0)').attr('visibility','hidden');
-      }else{
+      // if(!viewType){
+      //   eventArray = [this.eventArray[0]];
+      //   d3.select(this.refs.area)
+      //     .select('.certainEventPoint')
+      //     .selectAll('image').attr('visibility','visible');
+      //   d3.select(this.refs.area)
+      //     .select('.certainEventPoint')
+      //     .selectAll('image:not(.circle0)').attr('visibility','hidden');
+      // }else{
         eventArray = this.eventArray.slice(1);
-        d3.select(this.refs.area)
-          .select('.certainEventPoint')
-          .selectAll('image').attr('visibility','visible');
-        d3.select(this.refs.area)
-          .select('.certainEventPoint')
-          .selectAll('.circle0').attr('visibility','hidden');
-      }
+      //   d3.select(this.refs.area)
+      //     .select('.certainEventPoint')
+      //     .selectAll('image').attr('visibility','visible');
+      //   d3.select(this.refs.area)
+      //     .select('.certainEventPoint')
+      //     .selectAll('.circle0').attr('visibility','hidden');
+      // }
       eventArray.forEach((events,index)=>{
-        if(!viewType){
+        // if(!viewType){
           dom = d3.select(this.refs.area)
           .select('.certainEventPoint')
           .selectAll(`.circle${index}`)
           .data(events)
-        } else {
-          dom = d3.select(this.refs.area)
-          .select('.certainEventPoint')
-          .selectAll(`.circle${index+1}`)
-          .data(events)
-        }
+        // } else {
+        //   dom = d3.select(this.refs.area)
+        //   .select('.certainEventPoint')
+        //   .selectAll(`.circle${index+1}`)
+        //   .data(events)
+        // }
         dom.attr('x',(d,i)=>{
                 return xscale(d.x);
               })
@@ -120,9 +119,9 @@ export default class AreaLineChart extends React.Component {
            .append("svg:image")
            .attr('class',()=>{
                 if(!viewType){
-                  return `circle${index}`
+                  return `circle${index} circleimg`
                 }else{
-                  return `circle${index+1}`
+                  return `circle${index+1} circleimg`
                 }
               })
            .attr('x',(d,i)=>{
@@ -134,7 +133,8 @@ export default class AreaLineChart extends React.Component {
             .attr('width',(d)=>d.len*20)
             .attr('height',(d)=>d.len*20)
             .attr("xlink:href",mo)
-            .attr('opacity',0.5)
+            // .style('mix-blend-mode','soft-light')
+            .attr('opacity',0.3)
             .attr('transform',(d)=>`rotate(${d.k},${xscale(d.x)},${yscale(d.y)})`)
             .on('mouseover',(d)=>{
               let pos = d3.mouse(this.refs.area);
@@ -153,6 +153,8 @@ export default class AreaLineChart extends React.Component {
               let x= pos[0]+10;
               if(pos[0]+10+160>width) x = pos[0]-180;
               let y = pos[1]-100;
+              y= y-10<0? 10: y;
+              y = y+160>height? y-20: y;
               onMouseClick(d.event,[x,y]);
             });
             // dom.enter()
@@ -201,16 +203,18 @@ export default class AreaLineChart extends React.Component {
   hoverEventPoints(name){
     d3.select(this.refs.area)
             .select('.certainEventPoint')
-            .selectAll('circle')
-            .attr('fill','rgb(200,200,200)')
-            .attr('fill-opacity',(d)=>d.len)
+            .selectAll('image')
+            // .style('mix-blend-mode','soft-light')
+            .attr('opacity',0.3)
     let dom = d3.select(this.refs.area)
             .select('.certainEventPoint')
-            .selectAll('circle')
+            .selectAll('image')
             .filter((d,i)=>{
               return d.event.trigger.name === name
             })
-    dom.attr('fill','rgba(80,80,80,0.8)')
+    dom
+    // .style('mix-blend-mode','hard-light')
+    .attr('opacity',1.0)
   }
 
   renderCanvas(){

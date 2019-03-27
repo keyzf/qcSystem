@@ -179,7 +179,7 @@ class App extends Component {
           <div id="relationview">
             <div className="header">
               <div className="headerlogo">
-                <img src={reasonlogo}/>
+                <img src={reasonlogo} alt=''/>
               </div>
               <div className="headerText">
                 <span>推理视图</span>

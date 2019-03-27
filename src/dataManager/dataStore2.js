@@ -107,7 +107,7 @@ class DataStore{
         event = eventManager.create(events[event_id])
       }
       
-      if (Object.keys(event.prob_addr).length>0) {
+      if (Object.keys(event.prob_year).length>0) {
         event.prob_addr = _object.prob_addr
         event.prob_person = _object.prob_person
         event.prob_year = _object.prob_year

@@ -290,7 +290,7 @@ class RealtionMatrix extends React.Component{
         })
 
         let {events_rect_data, hint_value, color_method} = this.state
-        let hint_point_rect = [], personX, personY, label_datas
+        let hint_point_rect = [], personX, personY, label_datas = []
         const people_num = people_array.length
 
         if (color_method==='数量') {

@@ -64,13 +64,14 @@ class InferSunBurst extends React.Component{
         this.state = {
             mouseover_value: undefined,
 
-            mode: 'small',
+            big_mode: false,
             isDrag: false,  //目前话没有用到，看要不要删除
             isMousePressed: false,
 
             mouse_postion: [0,0],
             sunbursts: [],
         }
+        this.allPage = 0;
     }
 
     onFilterChange = autorun(()=>{
@@ -84,7 +85,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:1000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:10000})
             .then(data=>{
                 data = dataStore.processResults(data.data)
                 let {events} = data
@@ -157,8 +158,8 @@ class InferSunBurst extends React.Component{
         // console.log(this.state.sunbursts)
         // console.log(this.state)
         // console.log('render triggerSunBurst')
-        const {width, height} = this.props
-        let {isMousePressed, sunbursts} = this.state
+        let {width, height} = this.props
+        let {isMousePressed, sunbursts, big_mode} = this.state
         let {center_event} = this
 
 
@@ -166,11 +167,12 @@ class InferSunBurst extends React.Component{
         // 这几个都可以移出去
         const r = 1
         this.r = r  //圆的大小
-        const graph_width = 5000 // width<height?width: height
+        const graph_width = (big_mode?10000:5000) // width<height?width: height
 
         const title_height = 50
-        const control_bar_height = 100
-        const graph_height = height-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        // const control_bar_height = 100
+        width = big_mode?1920:width
+        const graph_height = (big_mode?1080:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
@@ -178,7 +180,7 @@ class InferSunBurst extends React.Component{
         let now_sunburst = this.sunbursts[this.now_part_index]
         // console.log(now_sunburst, this.sunbursts, this.now_part_index)
         return (
-            <div 
+            <div ref="inferSun"
                 className='trigger_sunburst_graph' 
                 style={{width: width, height: height, position: 'absolute', 
                 }}>
@@ -210,7 +212,7 @@ class InferSunBurst extends React.Component{
                                     events = [...people_events, ...events]
                                 })
                                 events = [...new Set(events)]
-                                console.log(events)
+                                // console.log(events)
                                 // let events = now_graph.all_events
                                 stateManager.setRelationEvents(events)
                             }
@@ -235,9 +237,19 @@ class InferSunBurst extends React.Component{
                                 stateManager.setMapEvents(events)
                             }
                         }}/>
-                        <img alt='' className='toother_graph_button' src={amplify_icon} 
+                        <img alt='' className='toother_graph_button' src={amplify_icon}
                         onClick={event=>{
-                            this.setState({mode:'big'})
+                            const node = this.refs.inferSun;
+                            if(!this.allPage){
+                                node.classList.add('allPage');
+                                this.allPage = 1;
+                                this.setState({big_mode: true})
+                            }
+                            else{
+                                node.classList.remove('allPage');
+                                this.allPage = 0;
+                                this.setState({big_mode: false})
+                            }
                         }}/>
                     </div>
                 </div>
@@ -277,6 +289,7 @@ class InferSunBurst extends React.Component{
                             let {isDrag} = this.state
                             let graph_x = trueX2X(layerX), graph_y = trueY2Y(layerY)
                             this.mouse_postion = [graph_x, graph_y]
+                            // console.log(isMousePressed)
                             if (isMousePressed) {
                                 this.setState({mouse_postion: [graph_x, graph_y]})
                             }
@@ -391,6 +404,7 @@ class OnePart{
             isDrag, 
             mouseover_value,
             isMousePressed,
+            big_mode,
         } = this.getState()
         let ruleManager_mark = ruleManager.getNodeInGraph()
 
@@ -417,7 +431,7 @@ class OnePart{
 
         let {former_isMousePressed} = this
 
-        // console.log(mouseover_value)
+        
         // 可以放到监听函数中
         if (isMousePressed) {
             // 判断实在哪个当中
@@ -425,7 +439,7 @@ class OnePart{
             let index = (mouse_x+r)/3.5
             parent_component.now_part_index = Math.floor(index)
         }
-        if (this.all_values.includes(mouseover_value)) {
+        if (this.all_values.includes(mouseover_value) || this.drag_value) {
             if (isMousePressed) {
                 this.mouse_press_value = mouseover_value
                 // 第一次点击
@@ -439,9 +453,11 @@ class OnePart{
                     }
                 }
                 const {drag_value}  = this
+                // console.log(mouseover_value, this.drag_value, former_isMousePressed ,isMousePressed)
                 if(drag_value && former_isMousePressed && parent_component.mouse_postion){
                     drag_value.x = parent_component.mouse_postion[0]
-                    drag_value.y = parent_component.mouse_postion[1]              
+                    drag_value.y = parent_component.mouse_postion[1]   
+                    // console.log(drag_value)           
                 }
                 this.former_isMousePressed = true   
             }else{
@@ -457,7 +473,7 @@ class OnePart{
                             filter_value.node_type = 'filter_value'
                             filter_values.push(filter_value)
                             filter_value.rotation = 0
-                            filter_value.x = center_x + r  + 0.1*filter_values.length  //一列也什么了几个地方
+                            filter_value.x = center_x + r  + 0.1*filter_values.length
                             filter_value.y = center_y + r - 0.2*filter_values.length-0.3
                             this.all_values.push(filter_value)
                             filter_value._index = this.all_values.length-1
@@ -564,7 +580,7 @@ class OnePart{
             key={part_index+'-filter_objects'}
             labelAnchorX = 'start'
             labelAnchorY = 'start'
-            animation
+            // animation
             data={filter_values}
             onValueMouseOver={handleLabelDataOver}
             onValueMouseOut={handleLabelDataOut}
@@ -576,7 +592,7 @@ class OnePart{
         let edge_datas = []
         // 实体之间的连线
         let show_event_mark_data = []
-        if (mouseover_value && (mouseover_value.node_type==='filter_value' ||  mouseover_value.node_type==='related_value')) {
+        if (!this.drag_value && mouseover_value && (mouseover_value.node_type==='filter_value' ||  mouseover_value.node_type==='related_value')) {
             let mouseover_object = objectManager.get(mouseover_value.object_id)
             event_mark_data.forEach(elm=>{
                 let links = elm.links
@@ -600,16 +616,25 @@ class OnePart{
                 }
             })
         }
-        // console.log(node_datas, edge_datas)
-        let fbundling = forceBundle()
-                        .step_size(0.001)
-                        .compatibility_threshold(0.5)
-                        .nodes(node_datas)
-                        .edges(edge_datas);
-        let links_datas = fbundling();
+        let links_datas = []
+        this.id2link_cache = this.id2link_cache || {}
+        let {id2link_cache} = this
+        let mouseover_value_object_id = mouseover_value
+        if (big_mode && node_datas.length!==0 && id2link_cache[mouseover_value_object_id]) {
+            links_datas = id2link_cache[mouseover_value_object_id]
+        }else{
+            console.log('hihih')
+            let fbundling = forceBundle()
+                            .step_size(0.01)
+                            .compatibility_threshold(0.5)
+                            .nodes(node_datas)
+                            .edges(edge_datas)
+            links_datas = fbundling()
+            if(big_mode)
+                this.id2link_cache[mouseover_value_object_id] = links_datas
+        }
 
-        // console.log(results)
-        // console.log(links_datas)
+
         component_array.push(
             links_datas.map((elm,index)=>
                 <LineSeries
@@ -652,7 +677,7 @@ class OnePart{
             labelAnchorX = 'start'
             labelAnchorY = 'start'
             key={part_index+'-label_data1'}
-            animation
+            // animation
             data={label_data.filter(elm=> elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
@@ -665,7 +690,7 @@ class OnePart{
             labelAnchorX = 'end'
             labelAnchorY = 'end'
             key={part_index+'-label_data2'}
-            animation
+            // animation
             data={label_data.filter(elm=> !elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
@@ -682,7 +707,8 @@ class OnePart{
             key={part_index+'-center_event_mark_data'}
             data={[{x: center_x, y: center_y, label: center_event.toText()}]}
             allowOffsetToBeReversed
-            animation/>
+            // animation
+            />
         )
         
         // 上面那个控制面板
@@ -782,7 +808,7 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 15
+        const show_object_num = 100
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -918,7 +944,6 @@ class OnePart{
 
                 // vecs = [...vecs, ...parent_types.map(elm=> parent_trigger2vec[elm])]  //, ...types.map(elm=> parent_trigger2vec[elm])
             }
-            // console.log(vecs)
 
             let angles = myTsne(vecs).map(elm=> elm[0])
             let min_angle = Math.min(...angles),
@@ -1021,8 +1046,6 @@ class OnePart{
         let year_label_data = objects2Vec(all_years, stack_angle, stack_angle += year_num*angle_per_object, center_event.vec, [center_event.vec],'year', '#e29cae')
         
         let label_data = [...trigger_label_data, ...people_label_data, ...addr_label_data, ...year_label_data]
-
-
 
         let id2label = {}
         label_data.forEach(elm=>{
@@ -1161,12 +1184,6 @@ class RuleManager{
             }
         }).filter(elm=>elm!==this)
 
-        // console.log(related_objects)
-        // related_objects.forEach(elm=>{
-        //     if (elm.node_type==='filter_value') {
-        //         this.rules = this.rules.filter(rule=>  !(rule.related_objects.length===1 && rule.related_objects[0]===elm))
-        //     }
-        // })
         let new_rule = new Rule(related_objects, this)
         let find = this.rules.find(elm=> elm.equal(new_rule))
         if (find) {
