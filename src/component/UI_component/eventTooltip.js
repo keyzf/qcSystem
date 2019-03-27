@@ -43,7 +43,7 @@ export default class EventTooltip extends React.Component{
   render(){
     let {event,name,closePopup,width,height} = this.props;
     let {isEventArray} =this.state;
-    let time=[],addr=[],person=[],trigger='',from='';
+    let time=[],addr=[],person=[],trigger='',from='',detail='';
     let tipname=name;
     let ismultiple = 0;
     if(isEventArray){
@@ -54,6 +54,7 @@ export default class EventTooltip extends React.Component{
         addr = event.addrs.map((d)=>d.name);
         person = event.roles.map((dd)=>dd.person.name);
         trigger = event.trigger.name;
+        detail = event.detail;
         from = event.source;
         if(from==='') from = '未详'
       }else{
@@ -66,6 +67,7 @@ export default class EventTooltip extends React.Component{
       addr = event.addrs.map((d)=>d.name);
       person = event.roles.map((dd)=>dd.person.name);
       trigger = event.trigger.name;
+      detail = event.detail;
       from = event.source;
       if(from==='') from = '未详'
     }
@@ -96,7 +98,7 @@ export default class EventTooltip extends React.Component{
             <div className="rowdiv"><div><img src={timeIcon}></img></div><div><span>{time.join('-')}</span></div></div>
             <div className="rowdiv"><div><img src={placeIcon}></img></div><div><span>{addr.join(',')}</span></div></div>
             <div className="rowdiv"><div><img src={personIcon}></img></div><div><span>{person.join(',')}</span></div></div>
-            <div className="rowdiv"><div><img src={eventIcon}></img></div><div><span>{trigger}</span></div></div>
+            <div className="rowdiv"><div><img src={eventIcon}></img></div><div><span>{trigger+detail}</span></div></div>
             <div className="rowdiv"><div><img src={fromIcon}></img></div><div><span>{from}</span></div></div>
           </div>)}
         </div>

@@ -202,12 +202,10 @@ class LifeLikePaint extends Component{
         let {all_events} = this
         all_events = filtEvents(all_events)
         all_events = all_events.filter(event=> !event.isTimeCertain())
-        console.log(all_events);
         let year2events = {};
 
         all_events.forEach(event=>{
             let {prob_year} = event;
-            console.log(prob_year);
             let max_prob = 0
             let max_year = -9999
             for(let year in prob_year){
