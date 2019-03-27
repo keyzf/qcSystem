@@ -33,7 +33,7 @@ export default class Places extends React.Component{
   }
   componentDidMount(){
     this.renderPlaces();
-    // this.renderLines();
+    this.renderLines();
   }
   componentWillReceiveProps(nextProps){
     let {selected_person} = nextProps;
@@ -50,7 +50,7 @@ export default class Places extends React.Component{
   }
   componentDidUpdate(){
     this.renderPlaces();
-    // this.renderLines();
+    this.renderLines();
   }
   getAddrData(events){
     // let places_with_time=[];
@@ -81,6 +81,7 @@ export default class Places extends React.Component{
           tmp.events=[d];
           if(d.time_range[0]===-9999||d.time_range[1]===9999){
             tmp.certain_time = 1;
+            places_con.push(tmp);
           }else{
             tmp.uncertain_time = 1;
           }
@@ -156,9 +157,9 @@ export default class Places extends React.Component{
     //     }
     //   }
     // })
-    // places_con.sort((a,b)=>{
-    //   return a.event[0].time_range[0]-b.event[0].time_range[0]
-    // })
+    places_con.sort((a,b)=>{
+      return a.events[0].time_range[0]-b.events[0].time_range[0]
+    })
     // // console.log(places_with_time,places_without_time);
     // places_with_time.forEach((d,i)=>{
     //   d.event.sort((a,b)=>{
@@ -172,15 +173,23 @@ export default class Places extends React.Component{
     // })
     console.log(places);
     places = places.filter(d=>d.events.length>1);
-    
+    places.forEach((place)=>{
+      place.events.sort((a,b)=>{
+        if(a.addrs.length>0) return -1;
+        else{
+          return Object.values(b.prob_addr)[0]-Object.values(a.prob_addr)[0];
+        }
+      })
+    })
     console.log(places);
     this.setState({
-      places:places
+      places:places,
+      places_con:places_con
     })
   }
   renderLines(){
     let {places_con} = this.state;
-    let {path,color,isonly} = this.props;
+    let {path,color,isonly,index} = this.props;
     let node = this.refs.place;
     let lineData={'type':"LineString"};
     let coordinates=[];
@@ -199,68 +208,50 @@ export default class Places extends React.Component{
       .attr('class','route')
       .attr('d',path)
       .attr('stroke',()=>{
-        if(isonly) return '#a2a4bf';
+        if(index===0) return '#a2a4bf';
         else return color;
       })
       .attr('fill','none');
   }
   renderPlace(){
     let node = this.refs.place;
-    let {projection,color,rscale,isonly} = this.props;
-    let {places_with_time,places_without_time} = this.state;
+    let {projection,color,rscale,isonly,index} = this.props;
+    let {places} = this.state;
     d3.select(node).selectAll('.certain').remove()
     d3.select(node).selectAll(`.certain`)
-      .data(places_with_time)
+      .data(places)
       .enter()
       .append('circle')
       .attr('class','certain')
-      .attr('r',d=>rscale(d.count))
+      .attr('r',d=>this.rscale(d.events.length))
       .attr('transform',d=>"translate(" + projection([
         d.addr.x,
         d.addr.y
         ]) + ")")
       .attr('fill',()=>{
-        if(isonly) return '#a2a4bf';
+        if(index===0) return '#a2a4bf';
         else return color;
       })
-      .attr('stroke','#898989');
-    d3.select(node).selectAll('.uncertain').remove()
-    d3.select(node).selectAll('.uncertain')
-      .data(places_without_time)
-      .enter()
-      .append('circle')
-      .attr('class','uncertain')
-      .attr('r',d=>rscale(d.count))
-      .attr('transform',d=>"translate(" + projection([
-        d.addr.x,
-        d.addr.y
-        ]) + ")")
-      .attr('fill',()=>{
-        if(isonly) return '#a2a4bf';
-        else return color;
-      })
-      .attr('opacity',0.4)
       .attr('stroke','#898989');
   }
   renderPlaces(){
     let node = this.refs.place;
-    let {projection,color,isonly} = this.props;
+    let {projection,color,isonly,index} = this.props;
     let {places} = this.state;
     let doms = d3.select(node).selectAll('.placeCircle')
       .data(places).enter().append('g')
     doms.append('circle')
         .attr('class','placeCircle')
         .attr('r',d=>{
-          return this.rscale(d.events.length)+1
+          return this.rscale(d.events.length)
         })
         .attr('transform',d=>{
-          console.log(d);
           return "translate(" + projection([
           d.addr.x,
           d.addr.y
           ]) + ")"})
         .attr('fill',()=>{
-          if(isonly) return '#a2a4bf';
+          if(index===0) return '#a2a4bf';
           else return color;
         })
         .attr('fill-opacity',0.4)
@@ -286,7 +277,7 @@ export default class Places extends React.Component{
           d.addr.y
           ]) + ")"})
         .attr('fill',()=>{
-          if(isonly) return '#a2a4bf';
+          if(index===0) return '#a2a4bf';
           else return color;
         })
   }

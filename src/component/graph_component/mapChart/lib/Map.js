@@ -33,13 +33,13 @@ class Map extends React.Component {
       this.colors = d3.scaleOrdinal(d3.schemeSet3);
       this.handleMouseOver = this.handleMouseOver.bind(this);
       this.closePopup = this.closePopup.bind(this);
+      this.selected = 0;
   }
   _getSelectedEvent = autorun(()=>{
     if(stateManager.is_ready){
       let selected_people = stateManager.selected_people;
       let event_id = stateManager.selected_event_id.get()
       let event = eventManager.get(event_id)
-      console.log(event);
       this.setState({
         event: event,
         selected_people: selected_people
@@ -56,10 +56,6 @@ class Map extends React.Component {
               .on("zoom", function(){
                 d3.select(map).select('.child').attr('transform',d3.event.transform)
             }))
-  }
-
-  componentDidUpdate(){
-
   }
   
   static get defaultProps() {
@@ -108,13 +104,34 @@ class Map extends React.Component {
         }
       })
       .on('mouseout',()=>{
-        d3.select('#geomap').select('#mapEventTooltip')
-          .attr('visibility','hidden')
+        if(this.selected===0){
+          d3.select('#geomap').select('#mapEventTooltip')
+            .attr('visibility','hidden')
+        }
+      })
+      .on('mousedown',()=>{
+        let target = d3.select(d3.event.srcElement);
+        if(target.node().tagName==='circle'||target.node().tagName==='rect'){
+          let targetdata = target.datum();
+          let pos = d3.mouse(node);
+          this.setState({
+            chooseEvent : targetdata.events,
+            selectAddr : targetdata.addr.name
+          })
+          if(pos[0]>this.props.width-190) pos[0]=pos[0]-190;
+          if(pos[1]>this.props.height-targetdata.event*30) pos[1]=pos[1]-targetdata.event*30;
+          d3.select('#geomap').select('#mapEventTooltip')
+            .attr('visibility', 'visible')
+            .attr('x',pos[0])
+            .attr('y', pos[1])
+        }
+        this.selected = 1;
       })
   }
 
   closePopup(){
     d3.select('#geomap').select('#mapEventTooltip').attr('visibility','hidden');
+    this.selected = 0;
   }
 
   render () {
@@ -134,7 +151,7 @@ class Map extends React.Component {
               </g>
               <g ref="places">
                 {selected_people.map((person,i)=>{
-                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} isonly={isonly}/>
+                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} index={i}/>
                 })}
               </g>
             </g>

@@ -29,7 +29,7 @@
     display:grid;
     li{
       list-style-type:none;
-      list-style-image: url('./static/white6.png');
+      list-style-image: url('../../static/white6.png');
       span{
         // text-decoration-line: underline;
         padding: 2px;
@@ -57,7 +57,7 @@
     }
   }
   .tipContent.tiplist{
-    max-height: 200px;
+    // max-height: 200px;
     li{
       div{
         display: inline;
@@ -74,9 +74,10 @@
           padding: 0;
         }
         div:first-child{
-          // margin-left: -8px;
+          margin-left: -8px;
           padding:0;
           margin:0;
+          margin-right: 2px;
         }
       }
     }

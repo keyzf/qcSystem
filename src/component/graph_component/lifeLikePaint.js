@@ -10,6 +10,7 @@ import Axis from './Axis';
 import AreaLineChart from './AreaLineChart';
 import BubbleChart from './BubbleChart';
 import EventChart from './EventChart';
+import MountainView from './MountainView';
 import MountainChart from './MountainChart';
 import EventTooltip from '../UI_component/eventTooltip';
 import './lifeLikePaint.scss';
@@ -518,7 +519,8 @@ class LifeLikePaint extends Component{
                 <g ref="content" transform={transform}>
                     <text className="personName" x={20} y={20}>{selected_person.name}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width} birth={this.birth_year} death={this.death_year}></Axis>
-                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart>
+                    <MountainView  data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}/>
+                    {/* <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart> */}
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
                     <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
                         {this.triggerArray.map((d,i)=>{

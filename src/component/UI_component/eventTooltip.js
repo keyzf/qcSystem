@@ -72,7 +72,8 @@ export default class EventTooltip extends React.Component{
       if(from==='') from = '未详'
     }
     if(ismultiple){
-      height = 26 * event.length + 24;
+      height = 25 * event.length + 24;
+      if(height>190) height=190;
       width = 200;
     }
     person = person.filter(i => person.indexOf(i) === person.lastIndexOf(i));
@@ -84,7 +85,7 @@ export default class EventTooltip extends React.Component{
                 {event.map((d,i)=>
                   <li key={i}>
                     <div>
-                    <div style={{width:'18%'}}><span> 
+                    <div style={{width:'20%'}}><span> 
                     {/* {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon} style={{ filter: 'brightness(100)'}}></img>: */}
                     {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?'未详':d.time_range.join('-'))}</span></div>
                     <div style={{width:'26%'}}><span>{d.roles.map((dd)=>dd.person.name)}</span></div>

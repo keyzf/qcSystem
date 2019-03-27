@@ -67,6 +67,9 @@ export default class EventTable extends React.Component{
                 tmp.from = d.source;
                 events.push(tmp);
               })
+              // events.sort((a,b)=>{
+              //   if(a.)
+              // })
               this.setState({
                 data:events,
                 selected_people: selected_people,
