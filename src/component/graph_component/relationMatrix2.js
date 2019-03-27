@@ -8,9 +8,6 @@ import {autorun, set} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
 import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy, ruleFilter } from '../../dataManager/dataStore2'
-import {MyBrush} from '../UI_component/myUIComponents'
-import { relative } from 'path';
-import { runInThisContext } from 'vm';
 
 // 3/21 根据pagerank修建
 class RealtionMatrix extends React.Component{
@@ -233,34 +230,6 @@ class RealtionMatrix extends React.Component{
                         continue
                     }
                     const center_x = personScale(p1), center_y = personScale(p2)
-                    // let type2color = {
-                    //     '其它': '#667db6',
-                    //     '学术': '#2C5364',
-                    //     '政治': '#FDC830',
-                    //     '社交': '#ffc3a0',
-                    //     '著述': '#c0c0aa',
-                    //     '迁徙': '#FFEFBA',
-                    //     // '#ACB6E5'
-                    // }
-                    // let types = Object.keys(type2color)
-                    // let parent_types = events.map(elm=> elm.trigger.parent_type)
-                    // let counts = {}
-                    // parent_types.forEach(elm=>{
-                    //     counts[elm]= counts[elm] || 0
-                    //     counts[elm]++
-                    // })
-  
-                    // let max_type = parent_types[0]
-                    // parent_types.forEach(elm=>{
-                    //     if(counts[max_type]<counts[elm]){
-                    //         max_type = elm
-                    //     }
-                    // })
-                    // console.log(counts, max_type)
-                    // let main_types = 
-                    // main_types =  types[Math.floor(main_types+0.5)]
-                    // console.log(main_types, type2color[main_types])
-                    // color(type2color[max_type]) //
                     const color = d3.rgb(200, 200, 200)
                     let rect_data = {
                         x: center_x - rect_width/2,  //为啥要平移一格呀
@@ -325,11 +294,54 @@ class RealtionMatrix extends React.Component{
         const people_num = people_array.length
 
         if (color_method==='数量') {
-            
+            const color = d3.rgb(200, 200, 200)
+            events_rect_data.forEach(elm=>{
+                // let events = elm.event_ids.map(id=> eventManager.get(id))
+                elm.color = color.darker([elm.event_ids.length/3+0.25])
+            })
         }else if(color_method==='类型'){
-
+            const type2color = {
+                '其它': '#667db6',
+                '学术': '#2C5364',
+                '政治': '#FDC830',
+                '社交': '#ffc3a0',
+                '著述': '#c0c0aa',
+                '迁徙': '#FFEFBA',
+                // '#ACB6E5'
+            }
+            const types = Object.keys(type2color)
+            events_rect_data.forEach(elm=>{
+                let events = elm.event_ids.map(id=> eventManager.get(id))
+                let parent_types = events.map(elm=> elm.trigger.parent_type)
+                let counts = {}
+                parent_types.forEach(elm=>{
+                    counts[elm]= counts[elm] || 0
+                    counts[elm]++
+                })
+    
+                let max_type = parent_types[0]
+                parent_types.forEach(elm=>{
+                    if(counts[max_type]<counts[elm]){
+                        max_type = elm
+                    }
+                })
+                elm.color = d3.color(type2color[max_type])
+            })
         }else if(color_method==='正负向'){
-            
+            const green = d3.rgb(66,251,75);	//浅绿
+            const red = d3.rgb(212,42,42);		//深绿
+            const color = d3.interpolate(green,red);		//颜色插值函数
+            const colorLiner = d3.scaleLinear()
+                                .domain([-10,10])
+                                .range([0,1])
+            events_rect_data.forEach(elm=>{
+                let events = elm.event_ids.map(id=> eventManager.get(id))
+                let score = events.reduce((total, event)=>{
+                    let people = event.getPeople()
+                    return people.reduce((total, person)=> event.getScore(person), 0)/people.length
+                }, 0)>0?10:-10
+                elm.color = color(colorLiner(score))
+            })
         }
 
         if (hint_value && people_num>17) {
@@ -388,35 +400,14 @@ class RealtionMatrix extends React.Component{
                     }}/>
                     <div><span style={{fontFamily:'STKaiti',fontSize:'12px',marginLeft:'5px',fontWeight:600,marginTop:'5px',display:'block'}}>{this.max_people_num}</span></div>
                     <label><input type="checkbox" onChange={(event)=>{
-                        const color = d3.rgb(200, 200, 200)
-                        events_rect_data.forEach(elm=>{
-                            let events = elm.event_ids.map(id=> eventManager.get(id))
-                            elm.color = color.darker([events.length/3+0.25])
-                        })
-                        this.setState({color_method: '数量', events_rect_data: events_rect_data})
-                    }}/>数量</label> 
+                        this.setState({color_method: '数量'})
+                    }} checked={color_method==='数量'}/>数量</label> 
                     <label><input type="checkbox"onChange={(event)=>{
-                        const green = d3.rgb(66,251,75);	//浅绿
-                        const red = d3.rgb(212,42,42);		//深绿
-                        const color = d3.interpolate(green,red);		//颜色插值函数
-                        const colorLiner = d3.scaleLinear()
-                                            .domain([-10,10])
-                                            .range([0,1])
-                        events_rect_data.forEach(elm=>{
-                            let events = elm.event_ids.map(id=> eventManager.get(id))
-                            // console.log(elm, elm.event_ids, events)
-                            let score = events.reduce((total, event)=>{
-                                // console.log(event)
-                                let people = event.getPeople()
-                                return people.reduce((total, person)=> event.getScore(person), 0)/people.length
-                            }, 0)>0?10:-10
-                            elm.color = color(colorLiner(score))
-                        })
                         this.setState({color_method: '正负向', events_rect_data: events_rect_data})
-                    }}/>正负向</label> 
+                    }} checked={color_method==='正负向'}/>正负向</label> 
                     <label><input type="checkbox"onChange={(event)=>{
                         this.setState({color_method: '类型'})
-                    }}/>类型</label> 
+                    }} checked={color_method==='类型'}/>类型</label> 
                     </div>
                 </div>
                 <div style={{width:svg_width, height:svg_height}}>

@@ -12,7 +12,8 @@ import union_icon from '../../static/infer_icon/4.png'
 import back_icon from '../../static/infer_icon/5.png'
 import lifeview_icon from '../../static/infer_icon/6.png'
 import relation_icon from '../../static/infer_icon/7.png'
-import missing_icon from '../../static/infer_icon/8.png'
+// import missing_icon from '../../static/infer_icon/8.png'
+import amplify_icon from '../../static/infer_icon/amplify.png'
 
 import forceBundle from '../../dataManager/forceBundle'
 
@@ -63,6 +64,7 @@ class InferSunBurst extends React.Component{
         this.state = {
             mouseover_value: undefined,
 
+            mode: 'small',
             isDrag: false,  //目前话没有用到，看要不要删除
             isMousePressed: false,
 
@@ -232,6 +234,10 @@ class InferSunBurst extends React.Component{
                                 let events = now_graph.all_events
                                 stateManager.setMapEvents(events)
                             }
+                        }}/>
+                        <img alt='' className='toother_graph_button' src={amplify_icon} 
+                        onClick={event=>{
+                            this.setState({mode:'big'})
                         }}/>
                     </div>
                 </div>
