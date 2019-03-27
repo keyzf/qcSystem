@@ -19,7 +19,7 @@ import id2social_status from '../data/data_v3_20/社会区分.json'
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = true;
+var IS_EN = false;
 
 class DataStore{
   constructor(){
