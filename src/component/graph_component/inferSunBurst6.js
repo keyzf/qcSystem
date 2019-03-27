@@ -288,13 +288,14 @@ class InferSunBurst extends React.Component{
                             let {isDrag} = this.state
                             let graph_x = trueX2X(layerX), graph_y = trueY2Y(layerY)
                             this.mouse_postion = [graph_x, graph_y]
+                            console.log(this.mouse_postion, layerX, layerY, event)
                             // console.log(isMousePressed)
                             if (isMousePressed) {
                                 this.setState({mouse_postion: [graph_x, graph_y]})
                             }
                         }}/>
-                        {/* <XAxis/>
-                        <YAxis/> */}
+                        <XAxis/>
+                        <YAxis/>
                     </XYPlot>
 
                 </div>
@@ -498,7 +499,15 @@ class OnePart{
                 this.mouse_press_value = undefined
             }            
         }
-
+        // filter_values.forEach((filter_value,index)=>{
+        //     if (big_mode) {
+        //         filter_value.x = center_x + r  + 0.05*index
+        //         filter_value.y = center_y + r - 0.1*index-0.15
+        //     }else{
+        //         filter_value.x = center_x + r  + 0.1*index
+        //         filter_value.y = center_y + r - 0.2*index-0.3
+        //     }
+        // })
 
         const handleLabelDataOver = value=>{
             value = this.all_values[value._index]
@@ -615,25 +624,12 @@ class OnePart{
                 }
             })
         }
-        let links_datas = []
-        this.id2link_cache = this.id2link_cache || {}
-        let {id2link_cache} = this
-        if (mouseover_value) {
-            let mouseover_value_object_id = mouseover_value.object_id
-            if (big_mode && node_datas.length!==0 && id2link_cache[mouseover_value_object_id]) {
-                links_datas = id2link_cache[mouseover_value_object_id]
-            }else{
-                // console.log(node_datas, edge_datas)
-                let fbundling = forceBundle()
-                                .step_size(0.01)
-                                .compatibility_threshold(0.5)
-                                .nodes(node_datas)
-                                .edges(edge_datas)
-                links_datas = fbundling()
-                if(big_mode)
-                    this.id2link_cache[mouseover_value_object_id] = links_datas
-            }
-        }
+        let fbundling = forceBundle()
+                        .step_size(0.01)
+                        .compatibility_threshold(0.5)
+                        .nodes(node_datas)
+                        .edges(edge_datas)
+        let links_datas = fbundling()
 
 
         component_array.push(
