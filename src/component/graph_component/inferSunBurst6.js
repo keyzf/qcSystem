@@ -12,7 +12,10 @@ import union_icon from '../../static/infer_icon/4.png'
 import back_icon from '../../static/infer_icon/5.png'
 import lifeview_icon from '../../static/infer_icon/6.png'
 import relation_icon from '../../static/infer_icon/7.png'
-import missing_icon from '../../static/infer_icon/8.png'
+// import missing_icon from '../../static/infer_icon/8.png'
+import amplify_icon from '../../static/infer_icon/amplify.png'
+
+import forceBundle from '../../dataManager/forceBundle'
 
 import {
     XYPlot,
@@ -61,6 +64,7 @@ class InferSunBurst extends React.Component{
         this.state = {
             mouseover_value: undefined,
 
+            big_mode: false,
             isDrag: false,  //目前话没有用到，看要不要删除
             isMousePressed: false,
 
@@ -68,7 +72,6 @@ class InferSunBurst extends React.Component{
             sunbursts: [],
         }
     }
-
 
     onFilterChange = autorun(()=>{
         if (stateManager.is_ready) {
@@ -83,7 +86,6 @@ class InferSunBurst extends React.Component{
             let selected_event_id = stateManager.selected_event_id.get()
             net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:10000})
             .then(data=>{
-                // console.log(data)
                 data = dataStore.processResults(data.data)
                 let {events} = data
                 let center_event = eventManager.get(selected_event_id)
@@ -97,7 +99,6 @@ class InferSunBurst extends React.Component{
                 all_events.forEach(event=>{
                     all_times = [...all_times, ...event.time_range.map(year=> timeManager.get(year))]
                     all_addrs = [...all_addrs, ...event.addrs]
-                    // console.log(all_people, event.getPeople())
                     all_people = [...all_people, ...event.getPeople()]
                     all_triggers.add(event.trigger)
                 })
@@ -156,8 +157,8 @@ class InferSunBurst extends React.Component{
         // console.log(this.state.sunbursts)
         // console.log(this.state)
         // console.log('render triggerSunBurst')
-        const {width, height,toggleLayout} = this.props
-        let {isMousePressed, sunbursts} = this.state
+        let {width, height} = this.props
+        let {isMousePressed, sunbursts, big_mode} = this.state
         let {center_event} = this
 
 
@@ -165,16 +166,15 @@ class InferSunBurst extends React.Component{
         // 这几个都可以移出去
         const r = 1
         this.r = r  //圆的大小
-        const graph_width = 5000 // width<height?width: height
+        const graph_width = (big_mode?10000:5000) // width<height?width: height
 
         const title_height = 50
-        const control_bar_height = 100
-        const graph_height = height-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        // const control_bar_height = 100
+        width = big_mode?1920:width
+        const graph_height = (big_mode?1080:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
-
-
 
         let now_sunburst = this.sunbursts[this.now_part_index]
         // console.log(now_sunburst, this.sunbursts, this.now_part_index)
@@ -211,7 +211,7 @@ class InferSunBurst extends React.Component{
                                     events = [...people_events, ...events]
                                 })
                                 events = [...new Set(events)]
-                                console.log(events)
+                                // console.log(events)
                                 // let events = now_graph.all_events
                                 stateManager.setRelationEvents(events)
                             }
@@ -236,8 +236,20 @@ class InferSunBurst extends React.Component{
                                 stateManager.setMapEvents(events)
                             }
                         }}/>
-                        <img alt='' className='toother_graph_button' src={missing_icon}
-                        onClick={toggleLayout}/>
+                        <img alt='' className='toother_graph_button' src={amplify_icon}
+                        onClick={event=>{
+                            const node = this.refs.inferSun;
+                            if(!this.allPage){
+                                node.classList.add('allPage');
+                                this.allPage = 1;
+                                this.setState({big_mode: true})
+                            }
+                            else{
+                                node.classList.remove('allPage');
+                                this.allPage = 0;
+                                this.setState({big_mode: false})
+                            }
+                        }}/>
                     </div>
                 </div>
                 {/* <div style={{height: control_bar_height, width: width}}>
@@ -276,6 +288,7 @@ class InferSunBurst extends React.Component{
                             let {isDrag} = this.state
                             let graph_x = trueX2X(layerX), graph_y = trueY2Y(layerY)
                             this.mouse_postion = [graph_x, graph_y]
+                            // console.log(isMousePressed)
                             if (isMousePressed) {
                                 this.setState({mouse_postion: [graph_x, graph_y]})
                             }
@@ -296,7 +309,7 @@ class OnePart{
         // const graph_width = 2
         this.ruleManager = new RuleManager(this)
         this.center_x = center_x
-        this.center_y = center_y
+        this.center_y = center_y-0.05
         this.all_events=  [...all_events]
         this.part_index = index  //第几个
         this.center_event = center_event
@@ -390,6 +403,7 @@ class OnePart{
             isDrag, 
             mouseover_value,
             isMousePressed,
+            big_mode,
         } = this.getState()
         let ruleManager_mark = ruleManager.getNodeInGraph()
 
@@ -403,7 +417,7 @@ class OnePart{
         // 高亮
         this.all_values.forEach(elm=> {
             // console.log(elm)
-            if (mouseover_value && (elm===mouseover_value || (elm.object_id===mouseover_value.object_id && elm.node_type!=='rule'))) {
+            if (mouseover_value && elm.object_id===mouseover_value.object_id) {
                 elm.opacity = 1
                 elm.style = elm.style || {}
                 elm.style.opacity = 1
@@ -416,7 +430,7 @@ class OnePart{
 
         let {former_isMousePressed} = this
 
-        // console.log(mouseover_value)
+        
         // 可以放到监听函数中
         if (isMousePressed) {
             // 判断实在哪个当中
@@ -424,7 +438,7 @@ class OnePart{
             let index = (mouse_x+r)/3.5
             parent_component.now_part_index = Math.floor(index)
         }
-        if (this.all_values.includes(mouseover_value)) {
+        if (this.all_values.includes(mouseover_value) || this.drag_value) {
             if (isMousePressed) {
                 this.mouse_press_value = mouseover_value
                 // 第一次点击
@@ -438,9 +452,11 @@ class OnePart{
                     }
                 }
                 const {drag_value}  = this
+                // console.log(mouseover_value, this.drag_value, former_isMousePressed ,isMousePressed)
                 if(drag_value && former_isMousePressed && parent_component.mouse_postion){
                     drag_value.x = parent_component.mouse_postion[0]
-                    drag_value.y = parent_component.mouse_postion[1]              
+                    drag_value.y = parent_component.mouse_postion[1]   
+                    // console.log(drag_value)           
                 }
                 this.former_isMousePressed = true   
             }else{
@@ -456,7 +472,7 @@ class OnePart{
                             filter_value.node_type = 'filter_value'
                             filter_values.push(filter_value)
                             filter_value.rotation = 0
-                            filter_value.x = center_x + r //  + 0.1*filter_values.length  //一列也什么了几个地方
+                            filter_value.x = center_x + r  + 0.1*filter_values.length
                             filter_value.y = center_y + r - 0.2*filter_values.length-0.3
                             this.all_values.push(filter_value)
                             filter_value._index = this.all_values.length-1
@@ -472,17 +488,9 @@ class OnePart{
                 }else if (former_isMousePressed) {
                     if (mouseover_value===this.mouse_press_value && ['rule', 'filter_value'].includes(mouseover_value.node_type) ) {
                         console.log('click', mouseover_value)
-                        // this.former_click_values.push(mouseover_value)
                         if (former_click_values[former_click_values.length-1]!==mouseover_value) {
                             this.former_click_values.push(mouseover_value)
                         }
-                        // else{
-                        //     // // 双击
-                        //     // let last_index = former_click_values.length-1
-                        //     // former_click_values[last_index] = former_click_values[last_index-1]
-                        //     // former_click_values[last_index-1] = undefined
-                        // }
-                        // this.former_click_values.push(mouseover_value)
                     }
                 }
                 this.drag_value = undefined  
@@ -508,21 +516,6 @@ class OnePart{
         let now_click_value = this.former_click_values[former_click_values.length-1]
         let component_array = []
 
-
-        // let wrap_line_data = [
-        //     {x: center_x-r, y: center_y-r},
-        //     {x: center_x-r, y: center_y+r},
-        //     {x: center_x + 3.5 - r, y: center_y+r},
-        //     {x: center_x + 3.5 - r, y: center_y-r},
-        // ]
-        // console.log(parent_component.now_part_index, part_index)
-        // component_array.push(
-        //     <LineSeries
-        //     key={part_index+'wrap_line'}
-        //     stroke='#c3c3c3'
-        //     strokeWidth={parent_component.now_part_index===part_index?5:2}
-        //     data={wrap_line_data}/>
-        // )
 
         // 规则和筛选实体之间连线
         component_array.push(
@@ -586,46 +579,61 @@ class OnePart{
             key={part_index+'-filter_objects'}
             labelAnchorX = 'start'
             labelAnchorY = 'start'
-            animation
+            // animation
             data={filter_values}
             onValueMouseOver={handleLabelDataOver}
             onValueMouseOut={handleLabelDataOut}
             color='literal'
             allowOffsetToBeReversed/>
         )
-
+        
+        let node_datas = {}
+        let edge_datas = []
         // 实体之间的连线
-        let links_datas = []
         let show_event_mark_data = []
-        if (mouseover_value && (mouseover_value.node_type==='filter_value' ||  mouseover_value.node_type==='related_value')) {
+        if (!this.drag_value && mouseover_value && (mouseover_value.node_type==='filter_value' ||  mouseover_value.node_type==='related_value')) {
             let mouseover_object = objectManager.get(mouseover_value.object_id)
             event_mark_data.forEach(elm=>{
                 let links = elm.links
                 let link_ids = links.map(elm=> elm.object_id)
                 if (mouseover_object && link_ids.includes(mouseover_object.id)) {
-                    show_event_mark_data.push(elm)
+                    show_event_mark_data.push(elm)  //事件点
                     let {x,y} = elm
+                    // console.log(elm)
+                    node_datas[elm.object_id] = elm
                     links.forEach(node=>{
                         node.style.opacity = 1
                         if (node.object_id !== mouseover_value.object_id) {
-                            let random = Math.abs(y*10000)%10/10 * 0.2 + 0.4
-
-                            let random_x = x*random+node.x*(1-random),
-                                random_y = y*random+node.y*(1-random)
-
-                            random = Math.abs(y*1000)%10/10
-                            random_y += random*Math.abs(y-node.y) * (x*100000%2===0?-1:1)/Math.sqrt(Math.abs((node.y-y)/(node.x-x)))  //Math.log())
-                            links_datas.push([
-                                {x:x, y:y},
-                                {x: random_x, y:random_y},
-                                {x:node.x, y:node.y}
-                            ])                         
+                            let id = node.object_id
+                            node_datas[id] = node
+                            edge_datas.push({
+                                source: elm.object_id,
+                                target: id,
+                            })
                         }
                     })
                 }
             })
         }
-        // console.log(links_datas)
+        let links_datas = []
+        this.id2link_cache = this.id2link_cache || {}
+        let {id2link_cache} = this
+        let mouseover_value_object_id = mouseover_value
+        if (big_mode && node_datas.length!==0 && id2link_cache[mouseover_value_object_id]) {
+            links_datas = id2link_cache[mouseover_value_object_id]
+        }else{
+            console.log('hihih')
+            let fbundling = forceBundle()
+                            .step_size(0.01)
+                            .compatibility_threshold(0.5)
+                            .nodes(node_datas)
+                            .edges(edge_datas)
+            links_datas = fbundling()
+            if(big_mode)
+                this.id2link_cache[mouseover_value_object_id] = links_datas
+        }
+
+
         component_array.push(
             links_datas.map((elm,index)=>
                 <LineSeries
@@ -636,7 +644,8 @@ class OnePart{
                     pointerEvents: isDrag ? 'none' : '',
                     lineerEvents: isDrag ? 'none' : ''
                 }}
-                curve={d3.curveCatmullRom.alpha(0.001)}/>
+                // curve={d3.curveCatmullRom}
+                />
             )
         )
 
@@ -661,13 +670,13 @@ class OnePart{
         )
 
         // 中心事件周围的实体(要跟rotation改end 和 start)
-        label_data = label_data.filter(elm=> !filter_values.find(elm2=> elm2.object_id===elm.object_id))
+        // label_data = label_datafilter(elm=> !filter_values.find(elm2=> elm2.object_id===elm.object_id))
         component_array.push(
             <LabelSeries
             labelAnchorX = 'start'
             labelAnchorY = 'start'
             key={part_index+'-label_data1'}
-            animation
+            // animation
             data={label_data.filter(elm=> elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
@@ -680,7 +689,7 @@ class OnePart{
             labelAnchorX = 'end'
             labelAnchorY = 'end'
             key={part_index+'-label_data2'}
-            animation
+            // animation
             data={label_data.filter(elm=> !elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
@@ -697,7 +706,8 @@ class OnePart{
             key={part_index+'-center_event_mark_data'}
             data={[{x: center_x, y: center_y, label: center_event.toText()}]}
             allowOffsetToBeReversed
-            animation/>
+            // animation
+            />
         )
         
         // 上面那个控制面板
@@ -712,15 +722,20 @@ class OnePart{
                         <div style={{width:bar_width, background:'#ebebeb', padding: 5, height:38 }}>
                             <img className='control_logical_button' alt='intersection' src={inter_icon}
                                 onClick={event=>{
+                                    event.preventDefault()
                                     let {former_click_values} = this
                                     let former_click_value = former_click_values[former_click_values.length-2]
                                     let now_click_value = former_click_values[former_click_values.length-1]
+                                    // console.log(now_click_value, former_click_value)
+                                    if (!former_click_value || !now_click_value) {
+                                        console.warn('错误点击')
+                                        return
+                                    }
                                     const can_types = ['filter_value', 'rule']
                                     // console.log(now_click_value, former_click_value)
                                     if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
                                         let new_rule = ruleManager.create([now_click_value, former_click_value])
                                         new_rule.setType('and')
-                                        // console.log('建立连接')
                                     }
                                     this.former_click_values.push(undefined)
                                     this.former_click_values.push(undefined)
@@ -728,11 +743,16 @@ class OnePart{
                             }}/>
                             <img className='control_logical_button' alt='union' src={union_icon}
                                 onClick={event=>{
+                                    event.preventDefault()
                                     let {former_click_values} = this
                                     let former_click_value = former_click_values[former_click_values.length-2]
                                     let now_click_value = former_click_values[former_click_values.length-1]
                                     const can_types = ['filter_value', 'rule']
-                                    console.log(now_click_value, former_click_value)
+                                    // console.log(now_click_value, former_click_value)
+                                    if (!former_click_value || !now_click_value) {
+                                        console.warn('错误点击')
+                                        return
+                                    }
                                     if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
                                         let new_rule = ruleManager.create([now_click_value, former_click_value])
                                         new_rule.setType('or')
@@ -787,7 +807,7 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 15
+        const show_object_num = 100
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -923,7 +943,6 @@ class OnePart{
 
                 // vecs = [...vecs, ...parent_types.map(elm=> parent_trigger2vec[elm])]  //, ...types.map(elm=> parent_trigger2vec[elm])
             }
-            // console.log(vecs)
 
             let angles = myTsne(vecs).map(elm=> elm[0])
             let min_angle = Math.min(...angles),
@@ -1027,8 +1046,6 @@ class OnePart{
         
         let label_data = [...trigger_label_data, ...people_label_data, ...addr_label_data, ...year_label_data]
 
-
-
         let id2label = {}
         label_data.forEach(elm=>{
             id2label[elm.object_id] = elm
@@ -1073,8 +1090,8 @@ class OnePart{
             let y = links.reduce((total,elm)=> total+elm.y, 0)/links.length
             let dist = eucDist([x,y], [center_x, center_y])
             if (dist> inner_radius) {
-                x = (x-center_x) *inner_radius/dist * (1-Math.random()/3) + center_x
-                y = (y-center_y) *inner_radius/dist * (1-Math.random()/3) + center_y
+                x = (x-center_x) *inner_radius/dist * (1-Math.random()/2) + center_x
+                y = (y-center_y) *inner_radius/dist * (1-Math.random()/2) + center_y
             }
             if (event===center_event) {
                 x = center_x
@@ -1166,12 +1183,6 @@ class RuleManager{
             }
         }).filter(elm=>elm!==this)
 
-        // console.log(related_objects)
-        // related_objects.forEach(elm=>{
-        //     if (elm.node_type==='filter_value') {
-        //         this.rules = this.rules.filter(rule=>  !(rule.related_objects.length===1 && rule.related_objects[0]===elm))
-        //     }
-        // })
         let new_rule = new Rule(related_objects, this)
         let find = this.rules.find(elm=> elm.equal(new_rule))
         if (find) {
@@ -1424,10 +1435,11 @@ class Rule{
         if (related_objects.length===0 && related_objects[0].node_type==='filter_value') {
             return related_objects[0]
         }
-        this.x = Math.max(...related_objects.map(elm=> elm.x)) + 0.18 //sub_nodes.reduce((total, elm)=>  total+elm.x, 0)/sub_nodes.length + 0.1
+        this.x = Math.max(...related_objects.map(elm=> elm.x))
+        this.x += 0.15
+        
         this.y = related_objects.reduce((total, elm)=>  total+elm.y, 0)/related_objects.length
         this.color = Rule.type2color[this.type]
-        // this.color = this.
         return this 
     }
 }

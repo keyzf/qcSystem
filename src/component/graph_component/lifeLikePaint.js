@@ -207,6 +207,7 @@ class LifeLikePaint extends Component{
 
         all_events.forEach(event=>{
             let {prob_year} = event;
+            console.log(prob_year);
             let max_prob = 0
             let max_year = -9999
             for(let year in prob_year){
