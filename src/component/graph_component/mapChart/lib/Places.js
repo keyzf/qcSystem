@@ -10,12 +10,14 @@ export default class Places extends React.Component{
     this.state={
       places_with_time:[],
       places_without_time:[],
-      places_con:[]
+      places_con:[],
+      places:[]
     }
     
     this.getAddrData = this.getAddrData.bind(this);
     this.renderPlace = this.renderPlace.bind(this);
     this.renderLines = this.renderLines.bind(this);
+    this.renderPlaces = this.renderPlaces.bind(this);
   }
   componentWillMount(){
     let {selected_person} = this.props;
@@ -29,7 +31,7 @@ export default class Places extends React.Component{
     })
   }
   componentDidMount(){
-    // this.renderPlace();
+    // this.renderPlaces();
     // this.renderLines();
   }
   componentWillReceiveProps(nextProps){
@@ -46,7 +48,7 @@ export default class Places extends React.Component{
     }
   }
   componentDidUpdate(){
-    // this.renderPlace();
+    // this.renderPlaces();
     // this.renderLines();
   }
   getAddrData(events){
@@ -165,6 +167,11 @@ export default class Places extends React.Component{
     //   places_without_time:places_without_time,
     //   places_con:places_con
     // })
+    places.filter((d)=>d.addr.x!==-1)
+    console.log(places);
+    this.setState({
+      places:places
+    })
   }
   renderLines(){
     let {places_con} = this.state;
@@ -229,6 +236,25 @@ export default class Places extends React.Component{
       })
       .attr('opacity',0.4)
       .attr('stroke','#898989');
+  }
+  renderPlaces(){
+    let node = this.refs.place;
+    let {projection,color,rscale,isonly} = this.props;
+    let {places} = this.state;
+    let doms = d3.select(node).selectAll('.placeCircle')
+      .data(places)
+    doms.enter()
+        .append('circle')
+        .attr('class','placeCircle')
+        .attr('r',d=>rscale(d.count))
+        .attr('transform',d=>"translate(" + projection([
+          d.addr.x,
+          d.addr.y
+          ]) + ")")
+        .attr('fill',()=>{
+          if(isonly) return '#a2a4bf';
+          else return color;
+        })
   }
   render(){
     return (

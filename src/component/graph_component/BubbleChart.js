@@ -5,8 +5,8 @@ export default class BubbleChart extends React.Component {
   constructor(){
     super();
     this.rscale=d3.scaleLinear()
-                  .domain([0,1])
-                  .range([1,8]);
+                  .domain([0,0.5,1])
+                  .range([1,3,8]);
     this.bubbleColor=d3.scaleLinear();
     this.openEvent = new Set();
     this.openEventCircle = -1;
