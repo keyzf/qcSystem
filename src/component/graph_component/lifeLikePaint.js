@@ -100,6 +100,10 @@ class LifeLikePaint extends Component{
     }
 
     componentWillReceiveProps(nextProps){
+        let {index} = nextProps;
+        this.setState({
+            vis:index===0?'visible':'hidden'
+        })
         this.loadLifeLineData();
         this.getRelationLine();
     }

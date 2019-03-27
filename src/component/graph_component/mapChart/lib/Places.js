@@ -13,7 +13,8 @@ export default class Places extends React.Component{
       places_con:[],
       places:[]
     }
-    
+    this.rscale = d3.scaleLinear()
+                    .range([6,12])
     this.getAddrData = this.getAddrData.bind(this);
     this.renderPlace = this.renderPlace.bind(this);
     this.renderLines = this.renderLines.bind(this);
@@ -31,7 +32,7 @@ export default class Places extends React.Component{
     })
   }
   componentDidMount(){
-    // this.renderPlaces();
+    this.renderPlaces();
     // this.renderLines();
   }
   componentWillReceiveProps(nextProps){
@@ -48,7 +49,7 @@ export default class Places extends React.Component{
     }
   }
   componentDidUpdate(){
-    // this.renderPlaces();
+    this.renderPlaces();
     // this.renderLines();
   }
   getAddrData(events){
@@ -106,6 +107,8 @@ export default class Places extends React.Component{
         }
       }
     })
+    let max = Math.max(...places.map(d=>d.events.length));
+    this.rscale.domain([1,max])
       // console.log(prob_addr,d)
     //   if(d.addrs.length!==0){
     //     if(d.time_range[0]===d.time_range[1]){
@@ -167,7 +170,9 @@ export default class Places extends React.Component{
     //   places_without_time:places_without_time,
     //   places_con:places_con
     // })
-    places.filter((d)=>d.addr.x!==-1)
+    console.log(places);
+    places = places.filter(d=>d.events.length>1);
+    
     console.log(places);
     this.setState({
       places:places
@@ -239,18 +244,47 @@ export default class Places extends React.Component{
   }
   renderPlaces(){
     let node = this.refs.place;
-    let {projection,color,rscale,isonly} = this.props;
+    let {projection,color,isonly} = this.props;
     let {places} = this.state;
     let doms = d3.select(node).selectAll('.placeCircle')
-      .data(places)
-    doms.enter()
-        .append('circle')
+      .data(places).enter().append('g')
+    doms.append('circle')
         .attr('class','placeCircle')
-        .attr('r',d=>rscale(d.count))
-        .attr('transform',d=>"translate(" + projection([
+        .attr('r',d=>{
+          return this.rscale(d.events.length)+1
+        })
+        .attr('transform',d=>{
+          console.log(d);
+          return "translate(" + projection([
           d.addr.x,
           d.addr.y
-          ]) + ")")
+          ]) + ")"})
+        .attr('fill',()=>{
+          if(isonly) return '#a2a4bf';
+          else return color;
+        })
+        .attr('fill-opacity',0.4)
+        .attr('stroke','#898989')
+    doms.append('rect')
+        .attr('class','placeRect')
+        .attr('width',d=>{
+          return (d.certain_time+d.uncertain_time)/d.events.length*this.rscale(d.events.length)*2;
+        })
+        .attr('height',d=>this.rscale(d.events.length)*2)
+        .attr('x',d=>-this.rscale(d.events.length))
+        .attr('y',d=>-this.rscale(d.events.length))
+        .style('clip-path',(d,i)=>{
+          return  `circle(${this.rscale(d.events.length)}px at ${this.rscale(d.events.length)}px ${this.rscale(d.events.length)}px)`
+        })
+        .attr('transform',d=>{
+          let pos = projection([
+            d.addr.x,
+            d.addr.y
+            ]);
+          return "translate(" + projection([
+          d.addr.x,
+          d.addr.y
+          ]) + ")"})
         .attr('fill',()=>{
           if(isonly) return '#a2a4bf';
           else return color;

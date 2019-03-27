@@ -134,7 +134,7 @@ export default class AreaLineChart extends React.Component {
             .attr('height',(d)=>d.len*20)
             .attr("xlink:href",mo)
             // .style('mix-blend-mode','soft-light')
-            .attr('opacity',0.3)
+            .attr('opacity',0.1)
             .attr('transform',(d)=>`rotate(${d.k},${xscale(d.x)},${yscale(d.y)})`)
             .on('mouseover',(d)=>{
               let pos = d3.mouse(this.refs.area);
@@ -205,7 +205,7 @@ export default class AreaLineChart extends React.Component {
             .select('.certainEventPoint')
             .selectAll('image')
             // .style('mix-blend-mode','soft-light')
-            .attr('opacity',0.3)
+            .attr('opacity',0.1)
     let dom = d3.select(this.refs.area)
             .select('.certainEventPoint')
             .selectAll('image')
