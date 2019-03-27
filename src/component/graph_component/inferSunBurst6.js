@@ -67,7 +67,6 @@ class InferSunBurst extends React.Component{
             mouse_postion: [0,0],
             sunbursts: [],
         }
-        this.allPage = 0;
     }
 
 
@@ -157,7 +156,7 @@ class InferSunBurst extends React.Component{
         // console.log(this.state.sunbursts)
         // console.log(this.state)
         // console.log('render triggerSunBurst')
-        const {width, height} = this.props
+        const {width, height,toggleLayout} = this.props
         let {isMousePressed, sunbursts} = this.state
         let {center_event} = this
 
@@ -238,17 +237,7 @@ class InferSunBurst extends React.Component{
                             }
                         }}/>
                         <img alt='' className='toother_graph_button' src={missing_icon}
-                        onClick={event=>{
-                            const node = this.refs.inferSun;
-                            if(!this.allPage){
-                                node.classList.add('allPage');
-                                this.allPage = 1;
-                            }
-                            else{
-                                node.classList.remove('allPage');
-                                this.allPage = 0;
-                            }
-                        }}/>
+                        onClick={toggleLayout}/>
                     </div>
                 </div>
                 {/* <div style={{height: control_bar_height, width: width}}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import stateManager from '../../../../dataManager/stateManager';
-import dataStore, {eventManager} from '../../../../dataManager/dataStore2'
+import dataStore, {addrManager} from '../../../../dataManager/dataStore2'
 import net_work from '../../../../dataManager/netWork';
 import * as d3 from 'd3';
 
@@ -22,14 +22,15 @@ export default class Places extends React.Component{
     net_work.require('getPersonEvents', {person_id:selected_person})
     .then(data=>{
       if(data){
+        console.log(data);
         data = dataStore.processResults(data);
-        this.getAddrData(data.events);
+        // this.getAddrData(data.events);
       }
     })
   }
   componentDidMount(){
-    this.renderPlace();
-    this.renderLines();
+    // this.renderPlace();
+    // this.renderLines();
   }
   componentWillReceiveProps(nextProps){
     let {selected_person} = nextProps;
@@ -37,82 +38,133 @@ export default class Places extends React.Component{
       net_work.require('getPersonEvents', {person_id:selected_person})
       .then(data=>{
         if(data){
+          console.log(data);
           data = dataStore.processResults(data)
-          this.getAddrData(data.events);
+          // this.getAddrData(data.events);
         }
       })
     }
   }
   componentDidUpdate(){
-    this.renderPlace();
-    this.renderLines();
+    // this.renderPlace();
+    // this.renderLines();
   }
   getAddrData(events){
-    let places_with_time=[];
-    let places_without_time=[];
+    // let places_with_time=[];
+    // let places_without_time=[];
     let places_con = [];
+    let places = [];
+    let placeMap = new Map();
+    let addr_id,index,addr_len=0;
     Object.keys(events).forEach((key,i)=>{
       let d = events[key];
       if(d.addrs.length!==0){
-        if(d.time_range[0]===d.time_range[1]){
-          d.addrs.forEach((dd)=>{
-            let flag=0;
-            places_with_time.forEach((place,index)=>{
-              if(place.addr.id===dd.id){
-                places_with_time[index].event.push(d);
-                places_with_time[index].count++;
-                flag=1;
-              }
-            })
-            if(dd.x!==-1){
-              let tmp={};
-              tmp.event=[];
-              tmp.addr=dd;
-              tmp.count=1;
-              tmp.event.push(d);
-              
-              places_con.push(tmp);
-              if(!flag){
-                places_with_time.push(tmp);
-              }
-            }
-          })
+        let addr = d.addrs[0];
+        let addr_id = addr.id;
+        index = placeMap.get(addr_id);
+        if(index){
+          if(d.time_range[0]===-9999||d.time_range[1]===9999){
+            places[index].certain_time++;
+          }else{
+            places[index].uncertain_time++;
+          }
+          places[index].events.push(d);
         }else{
-          d.addrs.forEach((dd)=>{
-            let flag=0;
-            places_without_time.forEach((place,index)=>{
-              if(place.addr.id===dd.id){
-                places_without_time[index].event.push(d);
-                places_without_time[index].count++;
-                flag=1;
-              }
-            })
-            if(!flag&&dd.x!==-1){
-              let tmp={};
-              tmp.event=[];
-              tmp.addr=dd;
-              tmp.count=1;
-              tmp.event.push(d);
-              places_without_time.push(tmp);
-            }
-          })
+          let tmp = {};
+          tmp.uncertain_addr = 0;
+          tmp.certain_time = 0;
+          tmp.uncertain_time = 0;
+          tmp.addr = addr;
+          tmp.events=[d];
+          if(d.time_range[0]===-9999||d.time_range[1]===9999){
+            tmp.certain_time = 1;
+          }else{
+            tmp.uncertain_time = 1;
+          }
+          placeMap.set(addr_id,addr_len++);
+          places.push(tmp);
+        }
+      }else{
+        let {prob_addr} = d;
+        addr_id = Object.keys(prob_addr)[0];
+        let addr = addrManager.get(addr_id);
+        index = placeMap.get(addr_id);
+        if(index){
+          places[index].uncertain_addr++;
+          places[index].events.push(d);
+        }else{
+          let tmp = {};
+          tmp.uncertain_addr = 1;
+          tmp.certain_time = 0;
+          tmp.uncertain_time = 0;
+          tmp.addr = addr;
+          tmp.events=[d];
+          placeMap.set(addr_id,addr_len++);
+          places.push(tmp);
         }
       }
     })
-    places_con.sort((a,b)=>{
-      return a.event[0].time_range[0]-b.event[0].time_range[0]
-    })
-    // console.log(places_with_time,places_without_time);
-    places_with_time.forEach((d,i)=>{
-      d.event.sort((a,b)=>{
-        return a.time_range[0]-b.time_range[0];
-      })
-    })
-    this.setState({
-      places_with_time:places_with_time,
-      places_without_time:places_without_time,
-      places_con:places_con
-    })
+      // console.log(prob_addr,d)
+    //   if(d.addrs.length!==0){
+    //     if(d.time_range[0]===d.time_range[1]){
+    //       d.addrs.forEach((dd)=>{
+    //         let flag=0;
+    //         places_with_time.forEach((place,index)=>{
+    //           if(place.addr.id===dd.id){
+    //             places_with_time[index].event.push(d);
+    //             places_with_time[index].count++;
+    //             flag=1;
+    //           }
+    //         })
+    //         if(dd.x!==-1){
+    //           let tmp={};
+    //           tmp.event=[];
+    //           tmp.addr=dd;
+    //           tmp.count=1;
+    //           tmp.event.push(d);
+              
+    //           places_con.push(tmp);
+    //           if(!flag){
+    //             places_with_time.push(tmp);
+    //           }
+    //         }
+    //       })
+    //     }else{
+    //       d.addrs.forEach((dd)=>{
+    //         let flag=0;
+    //         places_without_time.forEach((place,index)=>{
+    //           if(place.addr.id===dd.id){
+    //             places_without_time[index].event.push(d);
+    //             places_without_time[index].count++;
+    //             flag=1;
+    //           }
+    //         })
+    //         if(!flag&&dd.x!==-1){
+    //           let tmp={};
+    //           tmp.event=[];
+    //           tmp.addr=dd;
+    //           tmp.count=1;
+    //           tmp.event.push(d);
+    //           places_without_time.push(tmp);
+    //         }
+    //       })
+    //     }
+    //   }
+    // })
+    // places_con.sort((a,b)=>{
+    //   return a.event[0].time_range[0]-b.event[0].time_range[0]
+    // })
+    // // console.log(places_with_time,places_without_time);
+    // places_with_time.forEach((d,i)=>{
+    //   d.event.sort((a,b)=>{
+    //     return a.time_range[0]-b.time_range[0];
+    //   })
+    // })
+    // this.setState({
+    //   places_with_time:places_with_time,
+    //   places_without_time:places_without_time,
+    //   places_con:places_con
+    // })
   }
   renderLines(){
     let {places_con} = this.state;

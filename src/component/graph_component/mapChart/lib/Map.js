@@ -9,6 +9,7 @@ import EventTooltip from '../../../UI_component/eventTooltip';
 import route from './static/route.png';
 import legend from './static/legend.png';
 import './style/map.scss';
+import { IS_EN } from '../../../../dataManager/dataStore2';
 
 class Map extends React.Component {
   constructor (props) {
@@ -34,7 +35,7 @@ class Map extends React.Component {
       this.closePopup = this.closePopup.bind(this);
       this.rscale = d3.scaleLinear()
                       .domain([1,20])
-                      .range([2,8])
+                      .range([6,8])
   }
   _getSelectedEvent = autorun(()=>{
     if(stateManager.is_ready){
@@ -101,8 +102,8 @@ class Map extends React.Component {
             chooseEvent : targetdata.event,
             selectAddr : targetdata.addr.name
           })
-          if(pos[0]>this.props.width-190) pos[0]=pos[0]-200;
-          if(pos[1]>this.props.height-170) pos[1]=pos[1]-180;
+          if(pos[0]>this.props.width-190) pos[0]=pos[0]-190;
+          if(pos[1]>this.props.height-targetdata.event*30) pos[1]=pos[1]-targetdata.event*30;
           d3.select('#geomap').select('#mapEventTooltip')
             .attr('visibility', 'visible')
             .attr('x',pos[0])
@@ -143,11 +144,11 @@ class Map extends React.Component {
           </g>
           <foreignObject id="mapLegend" x="10" y="5" width="140" height="80">
             <div>
-              <div><img src={legend}/><span>事件次数</span></div>
-              <div><span>行进路线</span><img src={route}/></div>
+              <div><img src={legend}/><span>{IS_EN?'Events':'事件次数'}</span></div>
+              <div><span>{IS_EN?'Route':'行进路线'}</span><img src={route}/></div>
             </div>
           </foreignObject >
-          <foreignObject id="mapEventTooltip" x="20" y="22" width="200" height="190" visibility={'hidden'}>
+          <foreignObject id="mapEventTooltip" x="0" y="0" width="200" height="190" visibility={'hidden'}>
             <EventTooltip event={chooseEvent} closePopup={this.closePopup} name={selectAddr}/>
           </foreignObject>
         </svg>

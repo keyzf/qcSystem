@@ -5,6 +5,7 @@ import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import { black } from 'ansi-colors';
 import './EventFilter.scss';
+import { IS_EN } from '../../dataManager/dataStore2';
 
 class EventFilter  extends Component {
     constructor(){

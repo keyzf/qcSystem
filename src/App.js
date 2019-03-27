@@ -52,6 +52,8 @@ class App extends Component {
       calcualte_method: this.calcualte_method_option[0].value
     }
     this.changeSelectPeople=this.changeSelectPeople.bind(this);
+    this.allPage = 0;
+    this.toggleLayout = this.toggleLayout.bind(this);
   }
 
   _loadData = autorun(()=>{
@@ -109,6 +111,18 @@ class App extends Component {
         selected_people:[this.defaultPerson]
       })
     }
+  }
+
+  toggleLayout(e){
+      const node = this.refs.inferSun;
+      if(!this.allPage){
+          node.classList.add('allPage');
+          this.allPage = 1;
+      }
+      else{
+          node.classList.remove('allPage');
+          this.allPage = 0;
+      }
   }
 
   render() {
@@ -176,7 +190,7 @@ class App extends Component {
             </div>
             <Map selected_people={this.state.selected_people}/>
           </div>
-          <div id="relationview">
+          <div id="relationview" ref="inferSun">
             <div className="header">
               <div className="headerlogo">
                 <img src={reasonlogo}/>
@@ -186,7 +200,7 @@ class App extends Component {
                 <span>Uncertainty Reasoning View</span>
               </div>
             </div>
-            <InferSunBurst height={465} width={1000}/>
+            <InferSunBurst height={465} width={1000} toggleLayout={this.toggleLayout}/>
           </div>
           <div id="matrixview">
             <div className="header">

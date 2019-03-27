@@ -17,6 +17,7 @@ import peopleIcon from './static/icon 9.png';
 import eventIcon from './static/icon 10.png';
 import fromIcon from './static/icon 11.png';
 import sortIcon from './static/icon 12.png';
+import { IS_EN } from '../../dataManager/dataStore2';
 
 export default class EventTable extends React.Component{
   constructor(){
@@ -121,11 +122,11 @@ export default class EventTable extends React.Component{
         <div className="listHeader">
           <h3>年谱列表</h3>
           <div>
-            <div><img src={modifyIcon}/><div>修改</div></div>
-            <div><img src={errorIcon}/><div>错误</div></div>
-            <div><img src={lackIcon}/><div>缺失</div></div>
-            <div><img src={conflictIcon}/><div>冲突</div></div>
-            <div><img src={variationIcon}/><div>多样</div></div>
+            <div><img src={modifyIcon}/><div>{IS_EN?'modify':'修改'}</div></div>
+            <div><img src={errorIcon}/><div>{IS_EN?'error':'错误'}</div></div>
+            <div><img src={lackIcon}/><div>{IS_EN?'absence':'缺失'}</div></div>
+            <div><img src={conflictIcon}/><div>{IS_EN?'conflict':'冲突'}</div></div>
+            <div><img src={variationIcon}/><div>{IS_EN?'multiple':'多样'}</div></div>
           </div>
         </div>
         <div className="listTable">

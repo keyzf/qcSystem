@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LifeLikePaint from '../graph_component/lifeLikePaint'
 // import InferContour from './component/test_component/inferContour1'
-import dataStore, { eventManager, personManager, isValidYear } from '../../dataManager/dataStore2'
+import dataStore, { eventManager, personManager, isValidYear, IS_EN } from '../../dataManager/dataStore2'
 // import { values } from 'mobx';
 import './mainPanel.scss';
 import * as d3 from 'd3';
@@ -30,7 +30,6 @@ class MainPanel extends Component {
     this.changeViewType=this.changeViewType.bind(this);
     this.handleEventMarkClick = this.handleEventMarkClick.bind(this);
     this.all_events=[];
-
   }
 
   _changeShowPeople = autorun(()=>{
@@ -144,7 +143,7 @@ class MainPanel extends Component {
           </div>
           <div className="toggleView">
             <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
-            <label>分类视图</label>
+            <label>{IS_EN?'Category View':'分类视图'}</label>
           </div>
         </div>
           <div className="lineChart" style={{height:height}}>

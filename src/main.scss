@@ -123,9 +123,9 @@ body{
       height: 540px;
       border-right: 2px solid rgba($color: #CBCBCB, $alpha: 0.5);
       .title{
-          height: 140px;
+          height: 150px;
           margin: 10px 15px;
-          margin-top: 20px;
+          margin-top: 14px;
           padding-bottom:10px;
           border-bottom: 2px solid rgba($color: #CBCBCB, $alpha: 0.8);
       }
@@ -268,4 +268,19 @@ body{
 .menu::-webkit-scrollbar-thumb {
     background: #787878;
     border-radius: 2px;
+}
+
+.allPage{
+  // position: absolute !important;
+  width: 1920px !important;
+  height: 1080px !important;
+  margin: 0 auto;
+  // left: 1px;
+  // top:30px;
+  transform: translate(-450px,-540px);
+  border: 2px solid rgba($color: #CBCBCB, $alpha: 0.5);
+  background: #ffffff;
+  z-index: 100;
+  padding: 0px 10px;
+  transition: transform 2s,width 2s,height 2s;
 }

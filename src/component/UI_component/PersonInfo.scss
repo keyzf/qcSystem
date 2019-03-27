@@ -1,6 +1,6 @@
 .personInfo{
   display:grid;
-  grid-template-columns: 50px 1fr;
+  grid-template-columns: 46px 1fr;
   height: 100%;
   margin-bottom: 10px;
   .nameLabel{
@@ -20,7 +20,7 @@
     h3{
       font-family:'DFPSongW9';
       font-size:14px;
-      color:#858585;
+      color:#656565;
       letter-spacing:-0.39px;
       text-align:justify;
       line-height:25px;
@@ -29,20 +29,22 @@
     p{
       font-family: 'STKaiti';
       font-size:9px;
-      color:#757575;
+      color:#858585;
       letter-spacing:-0.25px;
-      text-align:justify;
       line-height:17px;
       margin: 0;
       span{
         margin:0;
-        font-weight: 500;
+        font-weight: 600;
+        text-align:justify;
       }
       .nameString{
         font-weight: 600;
+        text-align: left;
       }
       span:first-child{
         font-weight: 700;
+        color: #343434;
       }
     }
   }

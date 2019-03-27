@@ -19,7 +19,7 @@ import id2social_status from '../data/data_v3_20/社会区分.json'
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = false
+var IS_EN = true;
 
 class DataStore{
   constructor(){
@@ -106,7 +106,7 @@ class DataStore{
       if (!event) {
         event = eventManager.create(events[event_id])
       }
-      
+      // console.log(event, _object)
       if (Object.keys(event.prob_addr).length>0) {
         event.prob_addr = _object.prob_addr
         event.prob_person = _object.prob_person
@@ -124,6 +124,7 @@ class DataStore{
       results.triggers[event.trigger.id] = event.trigger
       events[event_id] = event
     }
+
     return results
   }
 
