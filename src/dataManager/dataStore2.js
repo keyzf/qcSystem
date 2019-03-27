@@ -107,10 +107,16 @@ class DataStore{
         event = eventManager.create(events[event_id])
       }
       
-      if (Object.keys(event.prob_year).length>0) {
-        event.prob_addr = _object.prob_addr
-        event.prob_person = _object.prob_person
+      if (Object.keys(_object.prob_year).length>0) {
+        // console.log(_object)
         event.prob_year = _object.prob_year
+        // console.log(event)
+      }
+      if (Object.keys(_object.prob_person).length>0) {
+        event.prob_person = _object.prob_person
+      }
+      if (Object.keys(_object.prob_addr).length>0) {
+        event.prob_addr = _object.prob_addr
       }
 
       event.addrs.forEach(addr => {
