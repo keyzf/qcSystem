@@ -33,9 +33,6 @@ class Map extends React.Component {
       this.colors = d3.scaleOrdinal(d3.schemeSet3);
       this.handleMouseOver = this.handleMouseOver.bind(this);
       this.closePopup = this.closePopup.bind(this);
-      this.rscale = d3.scaleLinear()
-                      .domain([1,20])
-                      .range([6,8])
   }
   _getSelectedEvent = autorun(()=>{
     if(stateManager.is_ready){
@@ -95,11 +92,11 @@ class Map extends React.Component {
     d3.select(node)
       .on('mouseover',()=>{
         let target = d3.select(d3.event.srcElement);
-        if(target.node().tagName==='circle'){
+        if(target.node().tagName==='circle'||target.node().tagName==='rect'){
           let targetdata = target.datum();
           let pos = d3.mouse(node);
           this.setState({
-            chooseEvent : targetdata.event,
+            chooseEvent : targetdata.events,
             selectAddr : targetdata.addr.name
           })
           if(pos[0]>this.props.width-190) pos[0]=pos[0]-190;
@@ -137,7 +134,7 @@ class Map extends React.Component {
               </g>
               <g ref="places">
                 {selected_people.map((person,i)=>{
-                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} rscale={this.rscale} isonly={isonly}/>
+                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} isonly={isonly}/>
                 })}
               </g>
             </g>
