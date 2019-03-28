@@ -173,7 +173,6 @@ export default class Places extends React.Component{
     //     }
     //   }
     // })
-    console.log(places_con);
     places_con.sort((a,b)=>{
       return a.time_range[0]-b.time_range[0]
     })
@@ -188,7 +187,6 @@ export default class Places extends React.Component{
     //   places_without_time:places_without_time,
     //   places_con:places_con
     // })
-    console.log(places);
     places = places.filter(d=>{
       if(d.certain_time>0) return true;
       else if(d.events.length>1){
@@ -206,7 +204,6 @@ export default class Places extends React.Component{
         }
       })
     })
-    console.log(places);
     this.setState({
       places:places,
       places_con:places_con
@@ -272,7 +269,6 @@ export default class Places extends React.Component{
           return this.rscale(d.events.length)
         })
         .attr('transform',d=>{
-          console.log(d);
           return "translate(" + projection([
           d.addr.x,
           d.addr.y
