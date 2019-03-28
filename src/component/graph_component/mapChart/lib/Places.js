@@ -27,7 +27,7 @@ export default class Places extends React.Component{
     net_work.require('getPersonEvents', {person_id:selected_person.id})
     .then(data=>{
       if(data){
-        console.log(data);
+        // console.log(data);
         data = dataStore.processResults(data);
         this.getAddrData(data.events);
       }
@@ -77,9 +77,9 @@ export default class Places extends React.Component{
         index = placeMap.get(addr_id);
         if(index){
           if(d.time_range[0]===-9999||d.time_range[1]===9999){
-            places[index].certain_time++;
-          }else{
             places[index].uncertain_time++;
+          }else{
+            places[index].certain_time++;
           }
           places[index].events.push(d);
         }else{
@@ -90,10 +90,10 @@ export default class Places extends React.Component{
           tmp.addr = addr;
           tmp.events=[d];
           if(d.time_range[0]===-9999||d.time_range[1]===9999){
+            tmp.uncertain_time = 1;
+          }else{
             tmp.certain_time = 1;
             places_con.push(tmp);
-          }else{
-            tmp.uncertain_time = 1;
           }
           placeMap.set(addr_id,addr_len++);
           places.push(tmp);
@@ -169,6 +169,7 @@ export default class Places extends React.Component{
     //     }
     //   }
     // })
+    console.log(places_con);
     places_con.sort((a,b)=>{
       return a.events[0].time_range[0]-b.events[0].time_range[0]
     })
@@ -183,7 +184,7 @@ export default class Places extends React.Component{
     //   places_without_time:places_without_time,
     //   places_con:places_con
     // })
-    console.log(places);
+    // console.log(places);
     places = places.filter(d=>d.events.length>1);
     places.forEach((place)=>{
       place.events.sort((a,b)=>{
@@ -193,7 +194,7 @@ export default class Places extends React.Component{
         }
       })
     })
-    console.log(places);
+    // console.log(places);
     this.setState({
       places:places,
       places_con:places_con
@@ -258,7 +259,7 @@ export default class Places extends React.Component{
           return this.rscale(d.events.length)
         })
         .attr('transform',d=>{
-          console.log(d);
+          // console.log(d);
           return "translate(" + projection([
           d.addr.x,
           d.addr.y

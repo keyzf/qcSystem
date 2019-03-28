@@ -82,7 +82,7 @@ class Map extends React.Component {
       })
       .attr("d", this.path);
     let pos = this.projection([112, 31]);
-    console.log(pos);
+    // console.log(pos);
     d3.select(node)
       .append('text')
       .text(()=>{

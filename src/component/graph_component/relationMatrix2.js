@@ -338,8 +338,10 @@ class RealtionMatrix extends React.Component{
                 let events = elm.event_ids.map(id=> eventManager.get(id))
                 let score = events.reduce((total, event)=>{
                     let people = event.getPeople()
-                    return people.reduce((total, person)=> event.getScore(person), 0)/people.length
-                }, 0)>0?10:-10
+                    return total + people.reduce((total, person)=> event.getScore(person)+total, 0)/people.length
+                }, 0)
+                console.log(events, score)
+                score = score>=0?10:-10
                 elm.color = color(colorLiner(score))
             })
         }

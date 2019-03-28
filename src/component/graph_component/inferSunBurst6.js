@@ -1,4 +1,4 @@
-import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec, intersect, union, difference, IS_EN } from '../../dataManager/dataStore2'
+import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec, intersect, union, difference, IS_EN, isValidYear } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
 import net_work from '../../dataManager/netWork'
@@ -37,6 +37,7 @@ import cos_dist from 'compute-cosine-distance'
 import { stat } from 'fs';
 import { all } from 'q';
 import './inferSunBurst.scss';
+import continuousSizeLegend from 'react-vis/dist/legends/continuous-size-legend';
 
 const PI = Math.PI
 const inner_radius = 0.3 //圆的内轮廓
@@ -88,6 +89,7 @@ class InferSunBurst extends React.Component{
             let selected_event_id = stateManager.selected_event_id.get()
             net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:10000})
             .then(data=>{
+                console.log(data)
                 data = dataStore.processResults(data.data)
                 let {events} = data
                 let center_event = eventManager.get(selected_event_id)
@@ -113,7 +115,7 @@ class InferSunBurst extends React.Component{
                     return {
                         value: elm.id,
                         key: elm.id,
-                        text: elm.getName(),
+                        text: simplStr(elm.getName(), 5),
                         elm: elm
                     }
                 }
@@ -173,7 +175,7 @@ class InferSunBurst extends React.Component{
         const title_height = 50
         // const control_bar_height = 100
         width = big_mode?1920:width
-        const graph_height = (big_mode?1060:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        const graph_height = (big_mode?1000:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
@@ -193,6 +195,7 @@ class InferSunBurst extends React.Component{
                             trigger_options={now_sunburst.trigger_options}
                             addr_options={now_sunburst.addr_options} 
                             time_options={now_sunburst.time_options}
+                            parent_component={this}
                             people_options={now_sunburst.people_options}/>
      
                     }
@@ -202,19 +205,21 @@ class InferSunBurst extends React.Component{
                             let {now_part_index} = this
                             let now_graph = this.sunbursts[now_part_index]
                             if (now_graph) {
-                                let people = now_graph.all_people
-                                let events = []
-                                people.forEach(person=>{
-                                    let people_events = person.events
-                                    people_events = people_events.filter(elm=> {
-                                        let role = elm.getPeople().filter(elm=> elm!==person)
-                                        return people.includes(role[0]) || people.includes(role[1]) 
-                                    })
-                                    events = [...people_events, ...events]
-                                })
-                                events = [...new Set(events)]
+                                // let people = now_graph.all_people
+                                // let events = []
+                                // people.forEach(person=>{
+                                //     let people_events = person.events
+                                //     people_events = people_events.filter(elm=> {
+                                //         let role = elm.getPeople().filter(elm=> elm!==person)
+                                //         return people.includes(role[0]) || people.includes(role[1]) 
+                                //     })
+                                //     events = [...people_events, ...events]
+                                // })
+                                // events = [...new Set(events)]
                                 // console.log(events)
-                                // let events = now_graph.all_events
+                                console.log( now_graph.all_events)
+                                let events = now_graph.all_events
+
                                 stateManager.setRelationEvents(events)
                             }
                         }}/>
@@ -412,7 +417,7 @@ class OnePart{
     show_event_mark_data = []
     render( ){
         const small_show_num = 15
-        const {center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
+        const {all_events, center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
         let former_click_values = this.former_click_values 
         let {
             label_data, 
@@ -425,7 +430,7 @@ class OnePart{
         let ruleManager_mark = ruleManager.getNodeInGraph()
 
         let rules = ruleManager.rules
-        
+        // console.log(part_index, this.all_events)
 
         this.all_values = [...label_data, ...event_mark_data, ...filter_values, ...rules, ruleManager_mark]
         this.all_values.forEach((elm,index)=>{
@@ -612,15 +617,16 @@ class OnePart{
             allowOffsetToBeReversed/>
         )
         
+
         let node_datas = {}
         let edge_datas = []
         // 实体之间的连线
         let show_event_mark_data = []
-        if (!this.drag_value && mouseover_value && (mouseover_value.node_type==='filter_value' ||  mouseover_value.node_type==='related_value')) {
+        if (!this.drag_value && mouseover_value && (mouseover_value.node_type==='filter_value' ||  mouseover_value.node_type==='related_value') && mouseover_value.belong_to===part_index) {
             let mouseover_object = objectManager.get(mouseover_value.object_id)
             event_mark_data.forEach(elm=>{
                 let links = elm.links
-                links = links.filter(elm=> elm.object_index<small_show_num)
+                links = links.filter(elm=> big_mode || elm.object_index<small_show_num)
                 let link_ids = links.map(elm=> elm.object_id)
                 if (mouseover_object && link_ids.includes(mouseover_object.id) && links.length>1) {
                     show_event_mark_data.push(elm)  //事件点
@@ -790,25 +796,34 @@ class OnePart{
                             <img className='control_logical_button' alt='infer' src={infer_icon} 
                                 onClick= {event=>{
                                     let now_click_value = this.former_click_values[former_click_values.length-1]
-                                    if(now_click_value.node_type==='rule'){
-                                        // let events = now_click_value.filter(this.all_events)
-                                        let sunburst = now_click_value.getSunBurst()
-                                        // let now_index = part_index
-                                        let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
-                                        temp_sunbursts.push(sunburst)
-                                        parent_component.sunbursts = temp_sunbursts
-                                        this.setStateLater({sunbursts: temp_sunbursts})
-                                    }else if(now_click_value.node_type==='filter_value'){
-                                        // let events = now_click_value.filter(this.all_events)
-                                        // console.log(this.ruleManager.rules, now_click_value)
-                                        let rule = this.ruleManager.rules.find(elm=> elm.related_objects.length===1 &&  elm.related_objects[0]===now_click_value)
-                                        let sunburst = rule.getSunBurst()
-                                        // let now_index = part_index
+                                    if (now_click_value) {
+                                        if(now_click_value.node_type==='rule'){
+                                            // let events = now_click_value.filter(this.all_events)
+                                            let sunburst = now_click_value.getSunBurst()
+                                            // let now_index = part_index
+                                            let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
+                                            temp_sunbursts.push(sunburst)
+                                            parent_component.sunbursts = temp_sunbursts
+                                            this.setStateLater({sunbursts: temp_sunbursts})
+                                        }else if(now_click_value.node_type==='filter_value'){
+                                            // let events = now_click_value.filter(this.all_events)
+                                            // console.log(this.ruleManager.rules, now_click_value)
+                                            let rule = this.ruleManager.rules.find(elm=> elm.related_objects.length===1 &&  elm.related_objects[0]===now_click_value)
+                                            let sunburst = rule.getSunBurst()
+                                            // let now_index = part_index
+                                            let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
+                                            temp_sunbursts.push(sunburst)
+                                            parent_component.sunbursts = temp_sunbursts
+                                            this.setStateLater({sunbursts: temp_sunbursts})
+                                        }                                        
+                                    }else{
+                                        let sunburst = this.ruleManager.getSunBurst()
                                         let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
                                         temp_sunbursts.push(sunburst)
                                         parent_component.sunbursts = temp_sunbursts
                                         this.setStateLater({sunbursts: temp_sunbursts})
                                     }
+
                             }}/>
                             <img className='control_logical_button' alt='union' src={back_icon} onClick={event=>{}}/>
                         </div>
@@ -831,7 +846,7 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 50
+        const show_object_num = 70
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -841,6 +856,19 @@ class OnePart{
         let {prob_year} = center_event
         const center_people = center_event.getPeople()
 
+    
+        let center_people_vec = meanVec(center_people)
+
+        let center_addr_vec = center_event.vec
+        if (center_event.addrs.length>0) {
+            center_addr_vec = meanVec(center_event.addrs)
+        }
+        let center_time_vec = center_event.vec
+        let time_range = center_event.time_range.filter(elm => elm!==-9999&&elm!==9999)
+        if (time_range.length!=0) {
+            center_time_vec = meanVec(time_range.map(elm=> timeManager.get(elm)))
+        }
+        
         let all_triggers = [...new Set(all_events.map(event=> event.trigger))]
         let trigger2sim = {}
         all_triggers.forEach(trigger=>{
@@ -889,9 +917,14 @@ class OnePart{
             all_years.add(event.time_range[0])
             all_years.add(event.time_range[1])
         })
-        all_years = [...all_years].map(year=> timeManager.get(year))
-        // console.warn('这里还要改呀 不要用prob_year了')
-        all_years = all_years.sort((a,b)=> parseFloat(prob_year[b])-parseFloat(prob_year[a])).slice(0,show_object_num)
+        all_years = [...all_years].filter(elm=> isValidYear(elm)).map(year=> timeManager.get(year))
+        let year2sim = {}
+        all_years.forEach(year=>{
+            year2sim[year.id] = cos_dist(center_time_vec, year.vec)
+        })
+        all_years =all_years.sort((a,b)=> year2sim[a.id]-year2sim[b.id]).slice(0,show_object_num)
+        // console.log(all_years)
+        // all_years = all_years.sort((a,b)=> parseFloat(prob_year[b])-parseFloat(prob_year[a])).slice(0,show_object_num)
 
         this.all_addrs = all_addrs
         this.all_people = all_people
@@ -902,7 +935,7 @@ class OnePart{
             return {
                 value: elm.id,
                 key: elm.id,
-                text: elm.getName(),
+                text: simplStr(elm.getName(), 4),
                 elm: elm
             }
         }
@@ -931,7 +964,6 @@ class OnePart{
 
         const objects2Vec = (all_objects, start_angle, end_angle, center_vec = undefined, compare_vecs = [], object_type, color) =>{
             color = '#151515' //字体颜色先失效吧
-
             start_angle += PI/20
             end_angle -= PI/20
             let center_index
@@ -1057,19 +1089,11 @@ class OnePart{
         let stack_angle = 0
         let trigger_num = all_triggers.length, addr_num = all_addrs.length,  people_num = all_people.length, year_num = all_years.length
         let angle_per_object = total_angle/(trigger_num+addr_num+people_num+year_num)
-    
-        let center_people_vec = meanVec(center_people)
-        // console.log(center_people.map(elm=> elm.vec), center_people_vec)
-
-        let center_addr_vec = center_event.vec
-        if (center_event.addrs.length>0) {
-            center_addr_vec = meanVec(center_event.addrs)
-        }
 
         let trigger_label_data = objects2Vec(all_triggers, stack_angle, stack_angle += trigger_num*angle_per_object, center_event.trigger.vec, [center_event.trigger.vec],'trigger', '#f4cea3')
         let people_label_data = objects2Vec(all_people, stack_angle, stack_angle += people_num*angle_per_object, center_people_vec, center_people.map(elm=> elm.vec),'people', '#9a8bb9')
-        let addr_label_data = objects2Vec(all_addrs, stack_angle, stack_angle += addr_num*angle_per_object, center_addr_vec, [center_event.vec],'addr', '#bfdda8')
-        let year_label_data = objects2Vec(all_years, stack_angle, stack_angle += year_num*angle_per_object, center_event.vec, [center_event.vec],'year', '#e29cae')
+        let addr_label_data = objects2Vec(all_addrs, stack_angle, stack_angle += addr_num*angle_per_object, center_addr_vec, [center_addr_vec],'addr', '#bfdda8')
+        let year_label_data = objects2Vec(all_years, stack_angle, stack_angle += year_num*angle_per_object, center_time_vec, [center_time_vec],'year', '#e29cae')
         
         let label_data = [...trigger_label_data, ...people_label_data, ...addr_label_data, ...year_label_data]
 
@@ -1269,7 +1293,7 @@ class ChangeEventPanel extends React.Component{
     }
     render(){
         let change_event_index = 0 
-        let {trigger_options, addr_options, people_options, time_options, center_event} = this.props
+        let {trigger_options, addr_options, people_options, time_options, center_event, parent_component} = this.props
         return (
             <div className='change_event_bar'>
             <div className='change_event_div'>
@@ -1283,6 +1307,7 @@ class ChangeEventPanel extends React.Component{
                     if (center_event.trigger!==value) {
                         center_event.trigger = trigger
                         this.setState({hi: !this.state.hi})
+                        parent_component.state.sunbursts[0].loadSunBurstData()
                         stateManager.refresh()
                     }
                 }}/>
@@ -1296,9 +1321,10 @@ class ChangeEventPanel extends React.Component{
                 value = {center_event.time_range[1].toString()}
                 onChange={(event,{value})=>{
                     let time = parseFloat(value)
-                    if (time!==center_event.time_range[0]) {
+                    if (time!==center_event.time_range[1]) {
                         center_event.time_range[1] = time
                         this.setState({hi: !this.state.hi})
+                        parent_component.state.sunbursts[0].loadSunBurstData()
                         stateManager.refresh()
                     }
                 }}/>
@@ -1315,6 +1341,7 @@ class ChangeEventPanel extends React.Component{
                     if (time!==center_event.time_range[0]) {
                         center_event.time_range[0] = time
                         this.setState({hi: !this.state.hi})
+                        parent_component.state.sunbursts[0].loadSunBurstData()
                         stateManager.refresh()
                     }
                 }}/>
@@ -1340,6 +1367,7 @@ class ChangeEventPanel extends React.Component{
                                 if (elm.role===role && person!==elm.person) {
                                     elm.person = person
                                     this.setState({hi: !this.state.hi})
+                                    parent_component.state.sunbursts[0].loadSunBurstData()
                                     stateManager.refresh()
                                 }
                             })
