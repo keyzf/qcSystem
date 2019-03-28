@@ -29,7 +29,7 @@ export default class Places extends React.Component{
       if(data){
         console.log(data);
         data = dataStore.processResults(data);
-        // this.getAddrData(data.events);
+        this.getAddrData(data.events);
       }
     })
   }
@@ -53,7 +53,7 @@ export default class Places extends React.Component{
         if(data){
           console.log(data);
           data = dataStore.processResults(data)
-          // this.getAddrData(data.events);
+          this.getAddrData(data.events);
         }
       })
     }
@@ -102,19 +102,21 @@ export default class Places extends React.Component{
         let {prob_addr} = d;
         addr_id = Object.keys(prob_addr)[0];
         let addr = addrManager.get(addr_id);
+        if(addr){
         index = placeMap.get(addr_id);
-        if(index){
-          places[index].uncertain_addr++;
-          places[index].events.push(d);
-        }else{
-          let tmp = {};
-          tmp.uncertain_addr = 1;
-          tmp.certain_time = 0;
-          tmp.uncertain_time = 0;
-          tmp.addr = addr;
-          tmp.events=[d];
-          placeMap.set(addr_id,addr_len++);
-          places.push(tmp);
+          if(index){
+            places[index].uncertain_addr++;
+            places[index].events.push(d);
+          }else{
+            let tmp = {};
+            tmp.uncertain_addr = 1;
+            tmp.certain_time = 0;
+            tmp.uncertain_time = 0;
+            tmp.addr = addr;
+            tmp.events=[d];
+            placeMap.set(addr_id,addr_len++);
+            places.push(tmp);
+          }
         }
       }
     })
@@ -256,6 +258,7 @@ export default class Places extends React.Component{
           return this.rscale(d.events.length)
         })
         .attr('transform',d=>{
+          console.log(d);
           return "translate(" + projection([
           d.addr.x,
           d.addr.y
