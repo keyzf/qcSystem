@@ -123,6 +123,9 @@
             white-space: nowrap;
             text-overflow: ellipsis;
           }
+          .changed{
+            color: #CE0000;
+          }
         }
       }
     }
@@ -160,4 +163,16 @@
 .tbody::-webkit-scrollbar-thumb {
     background: #787878;
     border-radius: 2px;
+}
+
+#table-popup{
+  position: absolute;
+  max-width: 150px;
+  font-size: 10px;
+  font-family: 'STKaiti';
+  font-weight: 600;
+  background: #efefef;
+  border-radius: 2px;
+  padding: 3px;
+  border: 1px solid #454545;
 }

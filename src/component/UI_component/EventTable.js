@@ -71,9 +71,15 @@ export default class EventTable extends React.Component{
                 tmp.place = d.addrs.map((dd)=>dd.getName());
                 tmp.people = d.roles.map((dd)=>dd.person.getName());
                 tmp.event = d.trigger.getName();
-                tmp.from = d.text;
+                if(d.text!=='[na]'){
+                  tmp.from = d.text;
+                }
                 tmp.prob_year = d.prob_year;
                 tmp.prob_addr = d.prob_addr;
+                tmp.is_change_people = d.is_change_people;
+                tmp.is_change_place = d.is_change_place;
+                tmp.is_change_time = d.is_change_time;
+                tmp.is_change_trigger = d.is_change_trigger;
                 events.push(tmp);
               })
               // events.sort((a,b)=>{
@@ -88,10 +94,6 @@ export default class EventTable extends React.Component{
       })           
     }
   })
-
-  handleHover(){
-    
-  }
 
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state
@@ -132,11 +134,27 @@ export default class EventTable extends React.Component{
 
   handleMouseOver(e){
     e.target.parentNode.classList.add('hoverTr');
-    
+    let text = e.target.textContent;
+    if(text){
+      d3.select(this.refs.eventList)
+      .select('#table-popup')
+      .style('visibility','visible')
+      .style('top',`${e.clientY+8}px`)
+      .style('left',`${e.clientX-20}px`)
+      .select('p')
+      .text(text)
+    }else{
+      d3.select(this.refs.eventList)
+      .select('#table-popup')
+      .style('visibility','hidden')
+    }
   }
 
   handleMouseOut(e){
     e.target.parentNode.classList.remove('hoverTr');
+    d3.select(this.refs.eventList)
+    .select('#table-popup')
+    .style('visibility','hidden')
   }
   render(){
     const { column, data, direction } = this.state;
@@ -144,7 +162,7 @@ export default class EventTable extends React.Component{
     let handleMouseOver = this.handleMouseOver;
     let handleMouseOut = this.handleMouseOut;
     return (
-      <div className="eventList">
+      <div className="eventList" ref="eventList">
         <div className="listHeader">
           <h3>年谱列表</h3>
           <div>
@@ -200,15 +218,18 @@ export default class EventTable extends React.Component{
         <tbody className="tbody">
         {data.map((d) => {
            return (<tr key={d.id} id={`tr_${d.id}`} onClick={function(e){handleEventClick(d,e)}} onMouseOver={(e)=>handleMouseOver(e)} onMouseOut={(e)=>handleMouseOut(e)}>
-              <td width="14%">{d.time?d.time:<img src={lackIcon}></img>}</td>
-              <td width="16%">{d.place.join()?d.place.join():<img src={lackIcon}></img>}</td>
-              <td width="24%">{d.people.join()?d.people.join():<img src={lackIcon}></img>}</td>
-              <td width="24%">{d.event?d.event:<img src={lackIcon}></img>}</td>
+              <td width="14%" className={d.is_change_time?'changed':''}>{d.time?d.time:<img src={lackIcon}></img>}</td>
+              <td width="16%" className={d.is_change_place?'changed':''}>{d.place.join()?d.place.join():<img src={lackIcon}></img>}</td>
+              <td width="24%" className={d.is_change_people?'changed':''}>{d.people.join()?d.people.join():<img src={lackIcon}></img>}</td>
+              <td width="24%" className={d.is_change_trigger?'changed':''}>{d.event?d.event:<img src={lackIcon}></img>}</td>
               <td width="22%">{d.from?d.from:<img src={lackIcon}></img>}</td>
             </tr>);
         })}
         </tbody>
-      </table>
+        </table>
+        <div id="table-popup">
+          <p></p>
+        </div>
       </div>
     </div>
     )

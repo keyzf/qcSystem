@@ -397,6 +397,12 @@ class Event extends _object{
 
     this.source = _object.source
     this.text = _object.text
+
+    this.is_change = false;
+    this.is_change_time = false;
+    this.is_change_trigger = false;
+    this.is_change_people = false;
+    this.is_change_place = false;
     // console.log(this.source, this.text)
     // console.log(this.prob_year, this.prob_addr, this.prob_person, _object)
   }

@@ -54,6 +54,8 @@ export default class Places extends React.Component{
           console.log(data);
           data = dataStore.processResults(data)
           this.getAddrData(data.events);
+          this.renderPlaces();
+          this.renderLines();
         }
       })
     }
@@ -71,6 +73,9 @@ export default class Places extends React.Component{
     let addr_id,index,addr_len=0;
     Object.keys(events).forEach((key,i)=>{
       let d = events[key];
+      if(d.addrs.length!==0&&d.time_range[0]!==-9999&&d.time_range[1]!==9999){
+        places_con.push(d);
+      }
       if(d.addrs.length!==0){
         let addr = d.addrs[0];
         let addr_id = addr.id;
@@ -93,7 +98,10 @@ export default class Places extends React.Component{
             tmp.uncertain_time = 1;
           }else{
             tmp.certain_time = 1;
+<<<<<<< HEAD
             places_con.push(tmp);
+=======
+>>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
           }
           placeMap.set(addr_id,addr_len++);
           places.push(tmp);
@@ -171,7 +179,7 @@ export default class Places extends React.Component{
     // })
     console.log(places_con);
     places_con.sort((a,b)=>{
-      return a.events[0].time_range[0]-b.events[0].time_range[0]
+      return a.time_range[0]-b.time_range[0]
     })
     // // console.log(places_with_time,places_without_time);
     // places_with_time.forEach((d,i)=>{
@@ -184,8 +192,20 @@ export default class Places extends React.Component{
     //   places_without_time:places_without_time,
     //   places_con:places_con
     // })
+<<<<<<< HEAD
     // console.log(places);
     places = places.filter(d=>d.events.length>1);
+=======
+    places = places.filter(d=>{
+      if(d.certain_time>0) return true;
+      else if(d.events.length>1){
+        return true;
+      }
+      else{
+        return false;
+      }
+    });
+>>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
     places.forEach((place)=>{
       place.events.sort((a,b)=>{
         if(a.addrs.length>0) return -1;
@@ -194,7 +214,10 @@ export default class Places extends React.Component{
         }
       })
     })
+<<<<<<< HEAD
     // console.log(places);
+=======
+>>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
     this.setState({
       places:places,
       places_con:places_con
@@ -208,8 +231,8 @@ export default class Places extends React.Component{
     let coordinates=[];
     places_con.forEach((d)=>{
       let tmp=[
-        d.addr.x,
-        d.addr.y
+        d.addrs[0].x,
+        d.addrs[0].y
         ];
       coordinates.push(tmp);
     })
@@ -251,15 +274,19 @@ export default class Places extends React.Component{
     let node = this.refs.place;
     let {projection,color,isonly,index} = this.props;
     let {places} = this.state;
-    let doms = d3.select(node).selectAll('.placeCircle')
-      .data(places).enter().append('g')
+    d3.select(node).selectAll('.hh').remove();
+    let doms = d3.select(node).selectAll('.hh')
+      .data(places).enter().append('g').attr('class','hh')
     doms.append('circle')
         .attr('class','placeCircle')
         .attr('r',d=>{
           return this.rscale(d.events.length)
         })
         .attr('transform',d=>{
+<<<<<<< HEAD
           // console.log(d);
+=======
+>>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
           return "translate(" + projection([
           d.addr.x,
           d.addr.y
