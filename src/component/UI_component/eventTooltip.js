@@ -51,12 +51,11 @@ export default class EventTooltip extends React.Component{
         event = event[0];
         time = event.time_range;
         if(time[0]===time[1]) time=[time[0]];
-        addr = event.addrs.map((d)=>d.name);
-        person = event.roles.map((dd)=>dd.person.name);
-        trigger = event.trigger.name;
+        addr = event.addrs.map((d)=>d.getName());
+        person = event.roles.map((dd)=>dd.person.getName());
+        trigger = event.trigger.getName();
         detail = event.detail;
         from = event.source;
-        if(from==='') from = '未详'
       }else{
         ismultiple=1;
       }
@@ -64,15 +63,15 @@ export default class EventTooltip extends React.Component{
     else if(event){
       time = event.time_range;
       if(time[0]===time[1]) time=[time[0]];
-      addr = event.addrs.map((d)=>d.name);
-      person = event.roles.map((dd)=>dd.person.name);
-      trigger = event.trigger.name;
+      addr = event.addrs.map((d)=>d.getName());
+      person = event.roles.map((dd)=>dd.person.getName());
+      trigger = event.trigger.getName();
       detail = event.detail;
       from = event.source;
-      if(from==='') from = '未详'
     }
     if(ismultiple){
-      height = 26 * event.length + 24;
+      height = 25 * event.length + 24;
+      if(height>190) height=190;
       width = 200;
     }
     person = person.filter(i => person.indexOf(i) === person.lastIndexOf(i));
@@ -84,22 +83,22 @@ export default class EventTooltip extends React.Component{
                 {event.map((d,i)=>
                   <li key={i}>
                     <div>
-                    <div style={{width:'18%'}}><span> 
+                    <div style={{width:'20%'}}><span> 
                     {/* {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon} style={{ filter: 'brightness(100)'}}></img>: */}
-                    {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?'未详':d.time_range.join('-'))}</span></div>
-                    <div style={{width:'26%'}}><span>{d.roles.map((dd)=>dd.person.name)}</span></div>
-                    <div style={{width:'20%'}}><span>{d.trigger.name}</span></div>
-                    <div style={{width:'18%'}}><span>{d.source===''?'未详':d.source}</span></div>
+                    {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon}/>:d.time_range.join('-'))}</span></div>
+                    <div style={{width:'26%'}}><span>{d.roles.map((dd)=>dd.person.getName())}</span></div>
+                    <div style={{width:'20%'}}><span>{d.trigger.getName()}</span></div>
+                    <div style={{width:'18%'}}><span>{d.source===''?<img src={lackIcon}/>:d.source}</span></div>
                     </div>
                   </li>
                 )}
               </div>
             ):(<div className="tipContent">
-            <div className="rowdiv"><div><img src={timeIcon}></img></div><div><span>{time.join('-')}</span></div></div>
-            <div className="rowdiv"><div><img src={placeIcon}></img></div><div><span>{addr.join(',')}</span></div></div>
-            <div className="rowdiv"><div><img src={personIcon}></img></div><div><span>{person.join(',')}</span></div></div>
-            <div className="rowdiv"><div><img src={eventIcon}></img></div><div><span>{trigger+detail}</span></div></div>
-            <div className="rowdiv"><div><img src={fromIcon}></img></div><div><span>{from}</span></div></div>
+            <div className="rowdiv"><div><img src={timeIcon} className="rowIcon"></img></div><div><span>{time[0]===time[1]?time[0]:(time[0]===-9999&&time[1]===9999?<img src={lackIcon}/>:time.join('-'))}</span></div></div>
+            <div className="rowdiv"><div><img src={placeIcon} className="rowIcon"></img></div><div><span>{addr.join(',').trim()===''?<img src={lackIcon}/>:addr.join(',')}</span></div></div>
+            <div className="rowdiv"><div><img src={personIcon} className="rowIcon"></img></div><div><span>{person.join(',')}</span></div></div>
+            <div className="rowdiv"><div><img src={eventIcon} className="rowIcon"></img></div><div><span>{trigger+detail}</span></div></div>
+            <div className="rowdiv"><div><img src={fromIcon} className="rowIcon"></img></div><div><span>{from===''?<img src={lackIcon}/>:from}</span></div></div>
           </div>)}
         </div>
     )

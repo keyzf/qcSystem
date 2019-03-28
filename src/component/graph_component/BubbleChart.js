@@ -142,7 +142,7 @@ export default class BubbleChart extends React.Component {
         if(pos[0]+10+160>width) x = pos[0]-180;
         let y = pos[1]+areaHeight-110;
         onMouseOver(target.data()[0],[x,y])
-        target.attr('fill','#F37335').raise();
+        target.attr('fill','#975301').raise();
       }
     })
     .on('mouseout',function(){

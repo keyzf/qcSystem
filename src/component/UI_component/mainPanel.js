@@ -9,6 +9,7 @@ import logo from './static/mountain.png';
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager';
 import HistoryEvent from '../graph_component/HistoryEvent';
+import legend from './static/legend.png';
 
 // 界面的上半部分
 // @observer
@@ -149,40 +150,40 @@ class MainPanel extends Component {
           <div className="lineChart" style={{height:height}}>
             <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)+20}>
               <defs>
-              <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
+                <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#222222" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear0" x1="0%" y1="100%" x2="0%" y2="0%">
                 <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="#222222" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear0" x1="0%" y1="100%" x2="0%" y2="0%">
-              <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#0F3F53" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear1" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#1B5D59" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear2" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#AB8E52" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear3" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#92AA84" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear4" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#DBB397" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear5" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%"   stopColor="#57A399" stopOpacity="1.0" />
-              </linearGradient>
-              <linearGradient id="linear6" x1="0%" y1="100%" x2="0%" y2="0%">
-                <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="#DDB56D" stopOpacity="1.0" />
-              </linearGradient>
-            </defs>
-            <g transform={'translate(0,25)'}>
+                  <stop offset="100%"   stopColor="#0F3F53" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear1" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#1B5D59" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear2" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#AB8E52" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear3" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#92AA84" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear4" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#DBB397" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear5" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#57A399" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear6" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#DDB56D" stopOpacity="1.0" />
+                </linearGradient>
+              </defs>
+              <g transform={'translate(0,25)'}>
               {
                 selected_people.map((person, index)=>
                   person &&
@@ -207,6 +208,7 @@ class MainPanel extends Component {
               }
               </g>
               <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
+              <image href={legend} x={0} y={50} height="140px" width="120px"/>
             </svg>
           </div>
       </div>

@@ -22,6 +22,7 @@ export default class MountainView extends React.Component {
 
   renderArea() {
     let {data,xscale,yscale,translate,viewType,selected_person} = this.props;
+    let colors = ['#454545','#0F3F53','#1B5D59','#AB8E52','#92AA84','#DBB397']
     if(data[0]){
     console.log(data);
       if(viewType){
@@ -36,14 +37,14 @@ export default class MountainView extends React.Component {
       const rc = rough.svg(d3.select(node));
       d3.select(node).selectAll('g').remove();
       DataArray.line.forEach((lineData,i)=>{
-        let rec = rc.path(this.line(lineData),{hachureGap:1.5,roughness:0.8,bowing: 3, strokeWidth: 1.2, stroke: 'rgba(80,80,80,1)'}); // x, y, width, height
+        let rec = rc.path(this.line(lineData),{hachureGap:1.5,roughness:0.8,bowing: 1, strokeWidth: 2, stroke: colors[i]}); // x, y, width, height
         d3.select(rec).attr('filter',"url(#dropshadow)")
         node.appendChild(rec);
       });
       DataArray.events.forEach((eventArray,i)=>{
         eventArray.forEach((event,j)=>{
           let rec = rc.line(xscale(event.x1),yscale(event.y1),xscale(event.x2),yscale(event.y2),{hachureGap:1.5,roughness:0.8,bowing: 3, strokeWidth: 1.2, stroke: 'rgba(80,80,80,1)'}); // x, y, width, height
-          // d3.select(rec).attr('filter',"url(#dropshadow)")
+          d3.select(rec).attr('filter',"url(#dropshadow)")
           node.appendChild(rec);
         })
       })
@@ -89,8 +90,8 @@ export default class MountainView extends React.Component {
                           .domain([-10,0])
                           .range([-3,-0.2]);
         let len_scale = d3.scaleLinear()
-                          .domain([0,0.0000001,0.001,1])
-                          .range([0,0.16,0.25,0.36]);
+                          .domain([0,0.0000001,0.01,1])
+                          .range([0,0.1,0.5,1]);
         let eventData=[];
         data[i].events.forEach((event,i)=>{
           let tmp={};
@@ -99,6 +100,7 @@ export default class MountainView extends React.Component {
           if(score>=0) tmp.k=pox_scale(score)
           else tmp.k=neg_scale(score);
           tmp.len = len_scale(imp);
+          tmp.y = y;
           tmp.year=x;
           tmp.event=event;
           eventData.push(tmp);
@@ -109,14 +111,14 @@ export default class MountainView extends React.Component {
           else if(a.k>=0&&b.k<0) return -1;
           else return 1;
         })
-        let len= eventData.length;
         eventData.forEach((d,i)=>{
           let stopy2;
           let level = i/15;
           let num = i%15;
           if(num<8){
-            d.x1 = d.year-0.5+num/15.0;
-            d.y1 = (k0*d.x1+b0)-level*y*0.05;
+            d.x1 = d.year-0.5+Math.random();
+            d.y1 = d.y*Math.random();
+            // d.y1 = (k0*d.x1+b0)-level*y*0.05;
             d.x2 = this.calculateX2(d.len,d.k,d.x1);
             d.y2 = d.k*(d.x2-d.x1)+d.y1;
             stopy2 = k0*d.x2+b0-0.12;
@@ -125,8 +127,9 @@ export default class MountainView extends React.Component {
               d.y2 = d.y2-(d.y2-stopy2);
             }
           }else{
-            d.x1 = d.year-0.5+num/15.0;
-            d.y1 = (k1*d.x1+b1)-level*y*0.05;
+            d.x1 = d.year-0.5+Math.random();
+            d.y1=d.y*Math.random();;
+            // d.y1 = (k1*d.x1+b1)-level*y*0.05;
             d.x2 = this.calculateX2(d.len,d.k,d.x1);
             d.y2 = d.k*(d.x2-d.x1)+d.y1;
             stopy2 = k1*d.x2+b1-0.12;
