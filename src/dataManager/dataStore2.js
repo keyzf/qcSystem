@@ -9,7 +9,7 @@ import net_work from './netWork'
 // import { convertPatternsToTasks } from 'fast-glob/out/managers/tasks';
 // import { set, _isComputingDerivation } from 'mobx';
 import guanzhi_pingji from '../data/data_v2_13/官职品级.json'
-import pqsort from 'pqsort'
+// import pqsort from 'pqsort'
 import cos_dist from 'compute-cosine-distance'
 import id2tribe from '../data/data_v3_20/种族.json'
 import id2social_status from '../data/data_v3_20/社会区分.json'
@@ -19,7 +19,7 @@ import id2social_status from '../data/data_v3_20/社会区分.json'
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = true;
+var IS_EN = false;
 
 class DataStore{
   constructor(){
@@ -433,6 +433,9 @@ class Event extends _object{
 
     let parent_type = this.trigger.parent_type
     let type_p = stateManager.type2p[parent_type]
+    if (parent_type!=='政治') {
+      type_p *= 20
+    }
     // type_p = type_p || 1
     if (trigger_imp[trigger_id]) {
       trigger_imp = trigger_imp[trigger_id]

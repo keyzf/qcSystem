@@ -55,7 +55,7 @@ export default class BubbleChart extends React.Component {
   }
 
   renderBubble() {
-    console.log('rerender bubble',this.props.data)
+    // console.log('rerender bubble',this.props.data)
     let node=this.refs.bubble;
     let {data,xscale,onEventClick,onMouseClick,width,areaHeight} =this.props;
     let rscale=this.rscale;
@@ -95,7 +95,7 @@ export default class BubbleChart extends React.Component {
         });
       }
     }
-    console.log(bubbles);
+    // console.log(bubbles);
     let newBubble = d3.select(node).selectAll('.bubbleWhole').data(bubbles,d=>d.id);
     newBubble.attr('cx',d=>{
       return d.x;

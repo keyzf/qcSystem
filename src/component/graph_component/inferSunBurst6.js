@@ -70,6 +70,8 @@ class InferSunBurst extends React.Component{
 
             mouse_postion: [0,0],
             sunbursts: [],
+
+            show_event_hint_value: undefined
         }
     }
 
@@ -158,7 +160,7 @@ class InferSunBurst extends React.Component{
         // console.log(this.state)
         // console.log('render triggerSunBurst')
         let {width, height} = this.props
-        let {isMousePressed, sunbursts, big_mode} = this.state
+        let {isMousePressed, sunbursts, big_mode, show_event_hint_value, mouseover_value} = this.state
         let {center_event} = this
 
 
@@ -171,7 +173,7 @@ class InferSunBurst extends React.Component{
         const title_height = 50
         // const control_bar_height = 100
         width = big_mode?1920:width
-        const graph_height = (big_mode?1080:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        const graph_height = (big_mode?1060:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
@@ -284,15 +286,27 @@ class InferSunBurst extends React.Component{
                         size={0}
                         data={[{x:0,y:0, size:0}]}
                         onNearestXY={(value, {event})=>{
-                            let {layerX, layerY} = event
+                            let {layerX, layerY, offsetX, offsetY} = event
                             let {isDrag} = this.state
-                            let graph_x = trueX2X(layerX), graph_y = trueY2Y(layerY)
+                            let graph_x = trueX2X(offsetX), graph_y = trueY2Y(offsetY)
                             this.mouse_postion = [graph_x, graph_y]
+                            // console.log(this.mouse_postion, layerX, layerY, event, graph_height, graph_width)
                             // console.log(isMousePressed)
                             if (isMousePressed) {
                                 this.setState({mouse_postion: [graph_x, graph_y]})
                             }
                         }}/>
+                        {
+                            show_event_hint_value &&
+                            <Hint value={show_event_hint_value}>
+                                <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
+                                    {show_event_hint_value.label}
+                                </div>
+                            </Hint>
+                        }
+                        {/* <Hint>
+
+                        </Hint> */}
                         {/* <XAxis/>
                         <YAxis/> */}
                     </XYPlot>
@@ -394,7 +408,10 @@ class OnePart{
     
     former_click_values = []
 
+    links_datas = []
+    show_event_mark_data = []
     render( ){
+        const small_show_num = 15
         const {center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
         let former_click_values = this.former_click_values 
         let {
@@ -498,7 +515,15 @@ class OnePart{
                 this.mouse_press_value = undefined
             }            
         }
-
+        filter_values.forEach((filter_value,index)=>{
+            if (big_mode) {
+                filter_value.x = center_x + r  + 0.05*index
+                filter_value.y = center_y + r - 0.1*index-0.3
+            }else{
+                filter_value.x = center_x + r  + 0.1*index
+                filter_value.y = center_y + r - 0.2*index-0.5
+            }
+        })
 
         const handleLabelDataOver = value=>{
             value = this.all_values[value._index]
@@ -595,8 +620,9 @@ class OnePart{
             let mouseover_object = objectManager.get(mouseover_value.object_id)
             event_mark_data.forEach(elm=>{
                 let links = elm.links
+                links = links.filter(elm=> elm.object_index<small_show_num)
                 let link_ids = links.map(elm=> elm.object_id)
-                if (mouseover_object && link_ids.includes(mouseover_object.id)) {
+                if (mouseover_object && link_ids.includes(mouseover_object.id) && links.length>1) {
                     show_event_mark_data.push(elm)  //事件点
                     let {x,y} = elm
                     // console.log(elm)
@@ -615,24 +641,19 @@ class OnePart{
                 }
             })
         }
-        let links_datas = []
-        this.id2link_cache = this.id2link_cache || {}
-        let {id2link_cache} = this
-        if (mouseover_value) {
-            let mouseover_value_object_id = mouseover_value.object_id
-            if (big_mode && node_datas.length!==0 && id2link_cache[mouseover_value_object_id]) {
-                links_datas = id2link_cache[mouseover_value_object_id]
-            }else{
-                // console.log(node_datas, edge_datas)
-                let fbundling = forceBundle()
-                                .step_size(0.01)
-                                .compatibility_threshold(0.5)
-                                .nodes(node_datas)
-                                .edges(edge_datas)
-                links_datas = fbundling()
-                if(big_mode)
-                    this.id2link_cache[mouseover_value_object_id] = links_datas
-            }
+        let fbundling = forceBundle()
+                        .step_size(big_mode?0.005:0.001)
+                        .compatibility_threshold(0.6)
+                        .nodes(node_datas)
+                        .edges(edge_datas)
+        let links_datas = fbundling()
+
+        if (show_event_mark_data.length>1 || mouseover_value) {
+            this.show_event_mark_data = show_event_mark_data
+            this.links_datas = links_datas            
+        }else{
+            links_datas = this.links_datas
+            show_event_mark_data = this.show_event_mark_data
         }
 
 
@@ -641,12 +662,13 @@ class OnePart{
                 <LineSeries
                 key={part_index+ 'related_value_links'+index}
                 color='#1234'
+                strokeWidth={1}
                 data={elm}
                 style={{
                     pointerEvents: isDrag ? 'none' : '',
                     lineerEvents: isDrag ? 'none' : ''
                 }}
-                // curve={d3.curveCatmullRom}
+                curve={'curveMonotoneX'}
                 />
             )
         )
@@ -663,7 +685,7 @@ class OnePart{
             <MarkSeries
             data={show_event_mark_data}
             key={part_index+'-event_mark_data'}
-            // onValueMouseOver={value=> this.setState({show_event_hint_value:value})}
+            onValueMouseOver={value=> parent_component.setState({show_event_hint_value:value})}
             sizeRange={[2,5]}
             style={{
                 pointerEvents: isDrag ? 'none' : '',
@@ -679,7 +701,7 @@ class OnePart{
             labelAnchorY = 'start'
             key={part_index+'-label_data1'}
             // animation
-            data={label_data.filter(elm=> elm.text_anchor)}
+            data={label_data.filter(elm=> elm.text_anchor).filter(elm => big_mode || elm.object_index<small_show_num)}
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
@@ -692,7 +714,7 @@ class OnePart{
             labelAnchorY = 'end'
             key={part_index+'-label_data2'}
             // animation
-            data={label_data.filter(elm=> !elm.text_anchor)}
+            data={label_data.filter(elm=> !elm.text_anchor).filter(elm => big_mode || elm.object_index<small_show_num)}
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
@@ -809,7 +831,7 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 100
+        const show_object_num = 50
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -964,12 +986,9 @@ class OnePart{
                 let dist_length = dists.length
                 return index/dist_length
             })
+
             dists = dists.map(dist=> {
-                if (dist<0.5) {
-                    return dist * 1.5
-                }else{
-                    return (dist-0.5)*0.5+0.5
-                }
+                return Math.sqrt(dist)
             })
             dists = dists.map(dist=> dist*1.1)
 
@@ -978,6 +997,12 @@ class OnePart{
             // console.log(angles, sort_angles)
             angles = angles.map(angle=> sort_angles.findIndex(elm=> elm===angle)/angles.length)
             // console.log(angles)
+            
+            let sort_all_objects = [...all_objects].sort((a,b)=> {
+                let index_a = all_objects.findIndex(elm=> elm===a)
+                let index_b = all_objects.findIndex(elm=> elm===b)
+                return dists[index_a] - dists[index_b]
+            })
 
             // 整理点和字
             let label_data = all_objects.map((elm, index)=>{
@@ -998,9 +1023,9 @@ class OnePart{
                     origin_x: x,
                     origin_y: y,
                     is_parent: parent_types.includes(elm.getName()),
-
+                    object_index: sort_all_objects.findIndex(elm2=> elm2===elm),
                     rotation: text_rotate,
-                    label: simplStr(elm.getName(), IS_EN?10:4),
+                    label: simplStr(elm.getName(), IS_EN?20:5),
                     total_label: elm.getName(),
                     object_id: elm.id,
                     vec: vecs[index],
@@ -1092,8 +1117,8 @@ class OnePart{
             let y = links.reduce((total,elm)=> total+elm.y, 0)/links.length
             let dist = eucDist([x,y], [center_x, center_y])
             if (dist> inner_radius) {
-                x = (x-center_x) *inner_radius/dist * (1-Math.random()/2) + center_x
-                y = (y-center_y) *inner_radius/dist * (1-Math.random()/2) + center_y
+                x = (x-center_x) * (1-Math.random()/2) * inner_radius/dist + center_x 
+                y = (y-center_y) * (1-Math.random()/2) * inner_radius/dist + center_y 
             }
             if (event===center_event) {
                 x = center_x
