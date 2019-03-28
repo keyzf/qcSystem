@@ -508,13 +508,14 @@ class LifeLikePaint extends Component{
 
     render(){
         const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, index,uncertainHeight, handleEventMarkClick} = this.props
-        console.log('render lifeLikePaint 主视图', area_datas)
+        console.log('render lifeLikePaint 主视图')
         let {selectTrigger,area_datas, relationLines, prob_mark_data, triggerName, chooseEvent, vis } = this.state
         this.yscale.domain([0,this.maxy_sum])
                    .range([height-uncertainHeight,30]);
         area_datas = area_datas.sort(this.sortType);
         let maxTriggerCount = Math.max(...Object.values(triggerName));
         this.grayScale.domain([0,maxTriggerCount]);
+        console.log(area_datas);
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>

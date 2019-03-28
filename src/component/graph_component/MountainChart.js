@@ -1,5 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
+import stateManager from '../../dataManager/stateManager'
+import { autorun } from 'mobx';
 import mo from '../../static/mo.png';
 
 // 3/16 直接画短线段
@@ -8,7 +10,6 @@ export default class AreaLineChart extends React.Component {
     super();
     this.area= d3.area()
                 .curve(d3.curveMonotoneX)
-    this.data = 0;
     this.eventArray=[];
     this.calculateX2 = this.calculateX2.bind(this);
     this.imp_scale = d3.scaleLinear()
@@ -19,31 +20,32 @@ export default class AreaLineChart extends React.Component {
                       .range([90,0,-90]);
   }
   componentDidMount() {
-    this.calculatePos();
+    this.calculatePos(this.props.data);
     this.renderCircles();
     // this.renderCanvas();
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if(nextProps.data.toString()!==this.data.toString()){
-  //     this.data = nextProps.data;
-  //     this.calculatePos();
+
+  // _onEventFilterChange = autorun(()=>{
+  //   if (stateManager.is_ready) {
+  //       let used_types = stateManager.used_types
+  //       let need_refesh = stateManager.need_refresh
+  //       this.calculatePos();
+  //       this.renderCircles();
   //   }
-  // }
+  // })
 
-  componentDidUpdate() {
-    this.calculatePos();
+  componentWillReceiveProps(nextProps){
+    if(nextProps.data.toString()!==this.props.data.toString()){
+      this.calculatePos(nextProps.data);
+    }
     this.renderCircles();
-    // this.renderCanvas();
   }
 
-  calculatePos() {
-    let {data,translate,viewType,selected_person} = this.props;
-    let line1 = this.area.lineY1();
-    let line0 = this.area.lineY0();
-    if(this.data===0&&data.length!==0&&data[0].length!==0){
+  calculatePos(data) {
+    let {selected_person} = this.props;
+    if(data.length!==0&&data[0].length!==0){
       let eventArray=[];
-      console.log(data);
       data.forEach((data,index)=>{
         let eventCircles = [];
         data.forEach((d,i)=>{
@@ -57,17 +59,17 @@ export default class AreaLineChart extends React.Component {
             let tmp={};
             tmp.y= y0+(y-y0)*this.imp_scale(imp);
             if(tmp.y<0.1) return tmp.y=0.1;
-            tmp.x = x-0.5+Math.random();
+            tmp.x = x-0.5+j/len;
             tmp.k = this.angle_scale(score);
             tmp.len = this.imp_scale(imp);
             tmp.event=event;
+            tmp.id=event.id;
             eventCircles.push(tmp);
           })
         })
         eventArray.push(eventCircles);
       })
       this.eventArray = eventArray;
-      this.data=1;
     }
   }
 
@@ -101,7 +103,7 @@ export default class AreaLineChart extends React.Component {
           dom = d3.select(this.refs.area)
           .select('.certainEventPoint')
           .selectAll(`.circle${index}`)
-          .data(events)
+          .data(events,(d)=>d.id)
         // } else {
         //   dom = d3.select(this.refs.area)
         //   .select('.certainEventPoint')
@@ -118,11 +120,11 @@ export default class AreaLineChart extends React.Component {
         dom.exit().remove();
         dom.enter()
            .append("svg:image")
-           .attr('class',()=>{
-                if(!viewType){
-                  return `circle${index} circleimg`
+           .attr('class',(d)=>{
+                if(d.event.is_change){
+                  return `circle${index} circleimg change`
                 }else{
-                  return `circle${index+1} circleimg`
+                  return `circle${index} circleimg`
                 }
               })
            .attr('x',(d,i)=>{
@@ -134,7 +136,6 @@ export default class AreaLineChart extends React.Component {
             .attr('width',(d)=>d.len*20)
             .attr('height',(d)=>d.len*20)
             .attr("xlink:href",mo)
-            // .style('mix-blend-mode','soft-light')
             .attr('opacity',0.1)
             .attr('transform',(d)=>`rotate(${d.k},${xscale(d.x)},${yscale(d.y)})`)
             .on('mouseover',function(d){

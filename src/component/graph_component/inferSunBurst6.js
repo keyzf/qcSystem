@@ -1256,7 +1256,9 @@ class ChangeEventPanel extends React.Component{
                 onChange={(event,{value})=>{
                     let trigger = triggerManager.get(value)
                     if (center_event.trigger!==value) {
-                        center_event.trigger = trigger
+                        center_event.trigger = trigger;
+                        center_event.is_change = true;
+                        center_event.is_change_trigger = true;
                         this.setState({hi: !this.state.hi})
                         stateManager.refresh()
                     }
@@ -1272,7 +1274,9 @@ class ChangeEventPanel extends React.Component{
                 onChange={(event,{value})=>{
                     let time = parseFloat(value)
                     if (time!==center_event.time_range[0]) {
-                        center_event.time_range[1] = time
+                        center_event.time_range[1] = time;
+                        center_event.is_change = true;
+                        center_event.is_change_time = true;
                         this.setState({hi: !this.state.hi})
                         stateManager.refresh()
                     }
@@ -1288,7 +1292,9 @@ class ChangeEventPanel extends React.Component{
                 onChange={(event,{value})=>{
                     let time = parseFloat(value)
                     if (time!==center_event.time_range[0]) {
-                        center_event.time_range[0] = time
+                        center_event.time_range[0] = time;
+                        center_event.is_change = true;
+                        center_event.is_change_time = true;
                         this.setState({hi: !this.state.hi})
                         stateManager.refresh()
                     }
@@ -1313,7 +1319,9 @@ class ChangeEventPanel extends React.Component{
                             // console.log(role, person)
                             center_event.roles.forEach(elm=>{
                                 if (elm.role===role && person!==elm.person) {
-                                    elm.person = person
+                                    elm.person = person;
+                                    center_event.is_change = true;
+                                    center_event.is_change_people = true;
                                     this.setState({hi: !this.state.hi})
                                     stateManager.refresh()
                                 }
@@ -1333,7 +1341,9 @@ class ChangeEventPanel extends React.Component{
                 onChange={(event,{value})=>{
                     let addrs = value.map(elm=> addrManager.get(elm))
                     if (difference(addrs, center_event.addrs).length>0) {
-                        center_event.addrs = addrs
+                        center_event.addrs = addrs;
+                        center_event.is_change = true;
+                        center_event.is_change_place = true;
                         this.setState({hi: !this.state.hi})
                         stateManager.refresh()
                     }
