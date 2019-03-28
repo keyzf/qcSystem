@@ -86,7 +86,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:10000})
             .then(data=>{
                 data = dataStore.processResults(data.data)
                 let {events} = data
@@ -160,7 +160,7 @@ class InferSunBurst extends React.Component{
         // console.log(this.state)
         // console.log('render triggerSunBurst')
         let {width, height} = this.props
-        let {isMousePressed, sunbursts, big_mode, show_event_hint_value} = this.state
+        let {isMousePressed, sunbursts, big_mode, show_event_hint_value, mouseover_value} = this.state
         let {center_event} = this
 
 
@@ -173,7 +173,7 @@ class InferSunBurst extends React.Component{
         const title_height = 50
         // const control_bar_height = 100
         width = big_mode?1920:width
-        const graph_height = (big_mode?1080:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        const graph_height = (big_mode?1060:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
@@ -297,7 +297,7 @@ class InferSunBurst extends React.Component{
                             }
                         }}/>
                         {
-                            show_event_hint_value && 
+                            show_event_hint_value &&
                             <Hint value={show_event_hint_value}>
                                 <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
                                     {show_event_hint_value.label}
@@ -518,10 +518,10 @@ class OnePart{
         filter_values.forEach((filter_value,index)=>{
             if (big_mode) {
                 filter_value.x = center_x + r  + 0.05*index
-                filter_value.y = center_y + r - 0.1*index-0.15
+                filter_value.y = center_y + r - 0.1*index-0.3
             }else{
                 filter_value.x = center_x + r  + 0.1*index
-                filter_value.y = center_y + r - 0.2*index-0.3
+                filter_value.y = center_y + r - 0.2*index-0.5
             }
         })
 
@@ -642,8 +642,8 @@ class OnePart{
             })
         }
         let fbundling = forceBundle()
-                        .step_size(0.005)
-                        .compatibility_threshold(0.5)
+                        .step_size(big_mode?0.005:0.001)
+                        .compatibility_threshold(0.6)
                         .nodes(node_datas)
                         .edges(edge_datas)
         let links_datas = fbundling()
@@ -723,16 +723,16 @@ class OnePart{
         
         
         // 中间显示事件
-        // component_array.push(
-        //     <LabelSeries
-        //     labelAnchorX = 'middle'
-        //     labelAnchorY = 'middle'
-        //     key={part_index+'-center_event_mark_data'}
-        //     data={[{x: center_x, y: center_y, label: center_event.toText()}]}
-        //     allowOffsetToBeReversed
-        //     // animation
-        //     />
-        // )
+        component_array.push(
+            <LabelSeries
+            labelAnchorX = 'middle'
+            labelAnchorY = 'middle'
+            key={part_index+'-center_event_mark_data'}
+            data={[{x: center_x, y: center_y, label: center_event.toText()}]}
+            allowOffsetToBeReversed
+            // animation
+            />
+        )
         
         // 上面那个控制面板
         const panel_data = [
@@ -1025,7 +1025,7 @@ class OnePart{
                     is_parent: parent_types.includes(elm.getName()),
                     object_index: sort_all_objects.findIndex(elm2=> elm2===elm),
                     rotation: text_rotate,
-                    label: simplStr(elm.getName(), IS_EN?10:4),
+                    label: simplStr(elm.getName(), IS_EN?20:5),
                     total_label: elm.getName(),
                     object_id: elm.id,
                     vec: vecs[index],
@@ -1117,8 +1117,8 @@ class OnePart{
             let y = links.reduce((total,elm)=> total+elm.y, 0)/links.length
             let dist = eucDist([x,y], [center_x, center_y])
             if (dist> inner_radius) {
-                x = (x-center_x) * (1-Math.random()/2) + center_x *inner_radius/dist 
-                y = (y-center_y) * (1-Math.random()/2) + center_y *inner_radius/dist
+                x = (x-center_x) * (1-Math.random()/2) * inner_radius/dist + center_x 
+                y = (y-center_y) * (1-Math.random()/2) * inner_radius/dist + center_y 
             }
             if (event===center_event) {
                 x = center_x

@@ -522,6 +522,7 @@ class LifeLikePaint extends Component{
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
                     <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
                         {this.triggerArray.map((d,i)=>{
+                            // console.log(d)
                             return (<text x={-i*20} key={i} fill={'none'} stroke={this.grayScale(triggerName[d])} onMouseOver={()=>this.handleTriggerMouseOver(d)} onMouseOut={this.handleTriggerMouseOut}>{d}</text>)
                         })}
                     </g>
