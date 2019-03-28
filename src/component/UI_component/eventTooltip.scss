@@ -24,6 +24,10 @@
     }
   }
   .tipContent{
+    img{
+      filter: brightness(100);
+      vertical-align: middle;
+    }
     padding: 5px 8px;
     overflow-y: auto;
     display:grid;
@@ -39,7 +43,7 @@
       height: 20px;
       display: grid;
       grid-template-columns: 30px 1fr;
-      img{
+      .rowIcon{
         height: 16px;
         width: 14px;
         vertical-align: middle;

@@ -73,6 +73,7 @@ export default class AreaLineChart extends React.Component {
 
   renderCircles(){
     let {yscale,xscale,onMouseOver,onMouseOut,onMouseClick,width,height,viewType} = this.props;
+    const node = this.refs.area;
     // d3.select(this.refs.area)
     //   .selectAll('circle').remove();
     let dom;
@@ -136,20 +137,22 @@ export default class AreaLineChart extends React.Component {
             // .style('mix-blend-mode','soft-light')
             .attr('opacity',0.1)
             .attr('transform',(d)=>`rotate(${d.k},${xscale(d.x)},${yscale(d.y)})`)
-            .on('mouseover',(d)=>{
-              let pos = d3.mouse(this.refs.area);
+            .on('mouseover',function(d){
+              let pos = d3.mouse(node);
               let x= pos[0]+10;
               if(pos[0]+10+160>width) x = pos[0]-180;
               let y = pos[1]-100;
               y= y-10<0? 10: y;
               y = y+160>height? y-20: y;
               onMouseOver(d.event,[x,y]);
+              d3.select(this).attr('opacity',1.0);
             })
-            .on('mouseout',(d)=>{
+            .on('mouseout',function(d){
               onMouseOut();
+              d3.select(this).attr('opacity',0.1)
             })
-            .on('mousedown',(d)=>{
-              let pos = d3.mouse(this.refs.area);
+            .on('mousedown',function(d){
+              let pos = d3.mouse(node);
               let x= pos[0]+10;
               if(pos[0]+10+160>width) x = pos[0]-180;
               let y = pos[1]-100;
@@ -208,9 +211,9 @@ export default class AreaLineChart extends React.Component {
             .attr('opacity',0.1)
     let dom = d3.select(this.refs.area)
             .select('.certainEventPoint')
-            .selectAll('image')
+   .selectAll('image')         
             .filter((d,i)=>{
-              return d.event.trigger.name === name
+              return d.event.trigger.getName() === name
             })
     dom
     // .style('mix-blend-mode','hard-light')

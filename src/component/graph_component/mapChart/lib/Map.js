@@ -37,6 +37,8 @@ class Map extends React.Component {
   }
   _getSelectedEvent = autorun(()=>{
     if(stateManager.is_ready){
+      let used_types = stateManager.used_types
+      let need_refesh = stateManager.need_refresh
       let selected_people = stateManager.selected_people;
       let event_id = stateManager.selected_event_id.get()
       let event = eventManager.get(event_id)
@@ -79,6 +81,16 @@ class Map extends React.Component {
         else return '#ffffff';
       })
       .attr("d", this.path);
+    let pos = this.projection([112, 31]);
+    console.log(pos);
+    d3.select(node)
+      .append('text')
+      .text(()=>{
+        if(IS_EN) return 'Song';
+        else return '宋';
+      })
+      .attr('x',pos[0])
+      .attr('y',pos[1])
   }
   componentDidUpdate(){
     this.handleMouseOver();
@@ -93,10 +105,12 @@ class Map extends React.Component {
           let pos = d3.mouse(node);
           this.setState({
             chooseEvent : targetdata.events,
-            selectAddr : targetdata.addr.name
+            selectAddr : targetdata.addr.getName()
           })
+          pos[0]=pos[0]+10;
+          pos[1]=pos[1]+10;
           if(pos[0]>this.props.width-190) pos[0]=pos[0]-190;
-          if(pos[1]>this.props.height-targetdata.event*30) pos[1]=pos[1]-targetdata.event*30;
+          if(pos[1]>this.props.height-targetdata.events.length*30) pos[1]=pos[1]-targetdata.event*30;
           d3.select('#geomap').select('#mapEventTooltip')
             .attr('visibility', 'visible')
             .attr('x',pos[0])
@@ -116,10 +130,12 @@ class Map extends React.Component {
           let pos = d3.mouse(node);
           this.setState({
             chooseEvent : targetdata.events,
-            selectAddr : targetdata.addr.name
+            selectAddr : targetdata.addr.getName()
           })
+          pos[0]=pos[0]+10;
+          pos[1]=pos[1]+10;
           if(pos[0]>this.props.width-190) pos[0]=pos[0]-190;
-          if(pos[1]>this.props.height-targetdata.event*30) pos[1]=pos[1]-targetdata.event*30;
+          if(pos[1]>this.props.height-targetdata.events.length*30) pos[1]=pos[1]-targetdata.event*30;
           d3.select('#geomap').select('#mapEventTooltip')
             .attr('visibility', 'visible')
             .attr('x',pos[0])
@@ -151,7 +167,7 @@ class Map extends React.Component {
               </g>
               <g ref="places">
                 {selected_people.map((person,i)=>{
-                  return person&&<Places key={i} selected_person={person.id} projection={this.projection} color={this.colors(i)} path={this.path} index={i}/>
+                  return person&&<Places key={i} selected_person={person} projection={this.projection} color={this.colors(i)} path={this.path} index={i}/>
                 })}
               </g>
             </g>

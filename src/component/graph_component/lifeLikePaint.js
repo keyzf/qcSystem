@@ -74,7 +74,7 @@ class LifeLikePaint extends Component{
             // console.log(this.type2p)
             this.loadLifeLineData()
             this.loadInferMarkData()
-            // this.getRelationLine()
+            this.getRelationLine()
         }
     })
     componentWillMount(){
@@ -494,6 +494,7 @@ class LifeLikePaint extends Component{
     }
 
     handleTriggerMouseOver(d){
+        console.log(d);
         this.setState({
             selectTrigger:d
         })
@@ -517,10 +518,10 @@ class LifeLikePaint extends Component{
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>
-                    <text className="personName" x={20} y={20}>{selected_person.name}</text>
+                    <text className="personName" x={0} y={20}>{selected_person.getName()}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width} birth={this.birth_year} death={this.death_year}></Axis>
-                    <MountainView  data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}/>
-                    {/* <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart> */}
+                    {/* <MountainView  data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}/> */}
+                    <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart>
                     <BubbleChart data={prob_mark_data} areaHeight={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight+22})`} xscale={xscale} onEventClick={handleEventMarkClick} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} width={width}></BubbleChart>
                     <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
                         {this.triggerArray.map((d,i)=>{
@@ -533,7 +534,7 @@ class LifeLikePaint extends Component{
                         {this.death_year===9999?{}:(<g><line x1={xscale(this.death_year)} x2={xscale(this.death_year)} y1={-25} y2={30}></line><circle cx={xscale(this.death_year)} cy={-29} r={4}></circle></g>)}
                     </g> */}
                     <foreignObject id="bubbleEventTooltip" x="20" y="22" width="200" height="180" visibility={'hidden'}>
-                        <EventTooltip event={chooseEvent} name={selected_person.name} closePopup={this.closePopup}/>
+                        <EventTooltip event={chooseEvent} name={selected_person.getName()} closePopup={this.closePopup}/>
                     </foreignObject>
                 </g>
                 <g ref="relationLineDom">

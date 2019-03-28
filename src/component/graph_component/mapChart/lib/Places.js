@@ -3,6 +3,7 @@ import stateManager from '../../../../dataManager/stateManager';
 import dataStore, {addrManager} from '../../../../dataManager/dataStore2'
 import net_work from '../../../../dataManager/netWork';
 import * as d3 from 'd3';
+import {autorun} from 'mobx';
 
 export default class Places extends React.Component{
   constructor(){
@@ -22,7 +23,8 @@ export default class Places extends React.Component{
   }
   componentWillMount(){
     let {selected_person} = this.props;
-    net_work.require('getPersonEvents', {person_id:selected_person})
+    this.selected_person = selected_person;
+    net_work.require('getPersonEvents', {person_id:selected_person.id})
     .then(data=>{
       if(data){
         console.log(data);
@@ -35,10 +37,18 @@ export default class Places extends React.Component{
     this.renderPlaces();
     this.renderLines();
   }
+
+  _eventUpdate = autorun(()=>{
+    if(stateManager.is_ready){
+      let need_refesh = stateManager.need_refresh;
+      this.getAddrData(this.selected_person.events)
+    }
+  })
   componentWillReceiveProps(nextProps){
     let {selected_person} = nextProps;
-    if(selected_person !== this.props.selected_person){
-      net_work.require('getPersonEvents', {person_id:selected_person})
+    if(selected_person.id !== this.props.selected_person.id){
+      this.selected_person = selected_person;
+      net_work.require('getPersonEvents', {person_id:selected_person.id})
       .then(data=>{
         if(data){
           console.log(data);
@@ -268,10 +278,6 @@ export default class Places extends React.Component{
           return  `circle(${this.rscale(d.events.length)}px at ${this.rscale(d.events.length)}px ${this.rscale(d.events.length)}px)`
         })
         .attr('transform',d=>{
-          let pos = projection([
-            d.addr.x,
-            d.addr.y
-            ]);
           return "translate(" + projection([
           d.addr.x,
           d.addr.y

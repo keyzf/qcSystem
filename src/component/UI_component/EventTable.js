@@ -32,6 +32,7 @@ export default class EventTable extends React.Component{
     this.handleEventClick = this.handleEventClick.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.sortByCertainty = this.sortByCertainty.bind(this);
   }
 
   // _loadNewEvent = autorun(()=>{
@@ -48,6 +49,8 @@ export default class EventTable extends React.Component{
 
   _changeShowPeople = autorun(()=>{
     if (stateManager.is_ready) {
+      let used_types = stateManager.used_types
+      let need_refesh = stateManager.need_refresh
       let selected_people = stateManager.selected_people ;
       let selected_event_id = stateManager.selected_event_id.get();
       net_work.require('getPersonEvents', {person_id:selected_people[0].id})
@@ -60,11 +63,17 @@ export default class EventTable extends React.Component{
                 let tmp={};
                 tmp.id=d.id;
                 if(d.time_range[0]===d.time_range[1]) tmp.time = d.time_range[0];
-                else tmp.time='';
+                else if(d.time_range[0]===-9999&&d.time_range[1]===9999){
+                  tmp.time='';
+                }else{
+                  tmp.time = d.time_range.join('-');
+                }
                 tmp.place = d.addrs.map((dd)=>dd.getName());
                 tmp.people = d.roles.map((dd)=>dd.person.getName());
                 tmp.event = d.trigger.getName();
-                tmp.from = d.source;
+                tmp.from = d.text;
+                tmp.prob_year = d.prob_year;
+                tmp.prob_addr = d.prob_addr;
                 events.push(tmp);
               })
               // events.sort((a,b)=>{
@@ -79,6 +88,10 @@ export default class EventTable extends React.Component{
       })           
     }
   })
+
+  handleHover(){
+    
+  }
 
   handleSort = clickedColumn => () => {
     const { column, data, direction } = this.state
@@ -96,6 +109,15 @@ export default class EventTable extends React.Component{
     })
   }
 
+  sortByCertainty(){
+    const {data} = this.state;
+    this.setState({
+      data: data.sort((a,b)=>{
+        return Object.values(b.prob_addr)[0]+Object.values(b.prob_year)[0]-Object.values(a.prob_addr)[0]-Object.values(a.prob_year)[0]
+      })
+    })
+  }
+
   componentDidUpdate(){
     let {selected_event_id} = this.state;
     d3.select('.eventList').select('tbody').selectAll('tr').classed('active',false);
@@ -110,6 +132,7 @@ export default class EventTable extends React.Component{
 
   handleMouseOver(e){
     e.target.parentNode.classList.add('hoverTr');
+    
   }
 
   handleMouseOut(e){
@@ -130,6 +153,7 @@ export default class EventTable extends React.Component{
             <div><img src={lackIcon}/><div>{IS_EN?'absence':'缺失'}</div></div>
             <div><img src={conflictIcon}/><div>{IS_EN?'conflict':'冲突'}</div></div>
             <div><img src={variationIcon}/><div>{IS_EN?'multiple':'多样'}</div></div>
+            <div><button onClick={this.sortByCertainty}>{IS_EN?'SortByUncertainty':'排序'}</button></div>
           </div>
         </div>
         <div className="listTable">

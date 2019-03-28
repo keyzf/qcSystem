@@ -1258,6 +1258,7 @@ class ChangeEventPanel extends React.Component{
                     if (center_event.trigger!==value) {
                         center_event.trigger = trigger
                         this.setState({hi: !this.state.hi})
+                        stateManager.refresh()
                     }
                 }}/>
             </div>
@@ -1273,6 +1274,7 @@ class ChangeEventPanel extends React.Component{
                     if (time!==center_event.time_range[0]) {
                         center_event.time_range[1] = time
                         this.setState({hi: !this.state.hi})
+                        stateManager.refresh()
                     }
                 }}/>
             </div>
@@ -1288,6 +1290,7 @@ class ChangeEventPanel extends React.Component{
                     if (time!==center_event.time_range[0]) {
                         center_event.time_range[0] = time
                         this.setState({hi: !this.state.hi})
+                        stateManager.refresh()
                     }
                 }}/>
             </div>
@@ -1312,6 +1315,7 @@ class ChangeEventPanel extends React.Component{
                                 if (elm.role===role && person!==elm.person) {
                                     elm.person = person
                                     this.setState({hi: !this.state.hi})
+                                    stateManager.refresh()
                                 }
                             })
                         }}/>
@@ -1331,6 +1335,7 @@ class ChangeEventPanel extends React.Component{
                     if (difference(addrs, center_event.addrs).length>0) {
                         center_event.addrs = addrs
                         this.setState({hi: !this.state.hi})
+                        stateManager.refresh()
                     }
                 }}/>
             </div>

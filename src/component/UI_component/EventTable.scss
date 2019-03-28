@@ -1,6 +1,6 @@
 .eventList{
   .listHeader{
-    height: 45px;
+    height: 55px;
     h3{
       font-family:'STKaiti';
       font-size:18px;
@@ -8,15 +8,16 @@
       letter-spacing:-0.45px;
       text-align:justify;
       line-height:21px;
-      padding-top: 20px;
+      padding-top: 10px;
       padding-left: 10px;
-      display: inline-block;
+      margin-bottom: 2px;
+      // display: inline-block;
     }
     div{
       display: inline-block;
-      height: 40px;
+      height: 25px;
       vertical-align: middle;
-      margin-left: 30px;
+      margin-left: 10px;
       div{
         vertical-align: middle;
         margin:0;
@@ -30,21 +31,31 @@
           text-align:justify;
           display: inline-block;
           margin:auto 0px;
-          padding:9px 2px;
+          padding:0px 2px;
           padding-right: 3px;
           img{
             margin-right: 2px;
           }
         }
+        button{
+          font-size: 10px;
+          font-family: 'STKaiti';
+          font-weight: 600;
+          background: #efefef;
+          border-radius: 4px;
+          border: 1px dashed #999999;
+          vertical-align: text-bottom;
+          cursor: pointer;
+        }
       }
     }
   }
   .listTable{
-    height: 495px;
+    height: 485px;
     padding:0px 10px;
     padding-right: 20px;
     table{
-      height: 490px;
+      height: 485px;
       width: 100%;
       table-layout:fixed;
       border-collapse: collapse;
@@ -79,7 +90,7 @@
       }
       tbody{
         display: block;
-        height: 468px;
+        height: 460px;
         width: 100%;
         overflow-y: scroll;
         border-collapse: separate;
