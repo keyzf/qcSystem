@@ -67,6 +67,7 @@ body{
       float: right;
       margin:3px;
       line-height: 24px;
+      margin-right: 30px;
       button{
         vertical-align: middle;
         cursor: pointer;
@@ -277,10 +278,10 @@ body{
   margin: 0 auto;
   // left: 1px;
   // top:30px;
-  transform: translate(-450px,-540px);
+  transform: translate(-450px,-578px);
   border: 2px solid rgba($color: #CBCBCB, $alpha: 0.5);
   background: #ffffff;
   z-index: 100;
-  padding: 0px 10px;
+  padding: 5px 10px;
   // transition: transform 2s,width 2s,height 2s;
 }
