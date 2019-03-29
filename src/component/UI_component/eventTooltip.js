@@ -42,21 +42,22 @@ export default class EventTooltip extends React.Component{
   }
 
   handleMouseOver(e){
-    e.target.parentNode.classList.add('hoverTr');
-    let text = e.target.textContent;
-    if(text){
-      d3.select(this.refs.tip)
-      .select('#table-popup')
-      .style('visibility','visible')
-      .style('top',`${e.clientY+8}px`)
-      .style('left',`${e.clientX-20}px`)
-      .select('p')
-      .text(text)
-    }else{
-      d3.select(this.refs.eventList)
-      .select('#table-popup')
-      .style('visibility','hidden')
-    }
+    // let {event,name,closePopup,width,height} = this.props;
+    // e.target.parentNode.classList.add('hoverTr');
+    // let text = e.target.textContent;
+    // if(text){
+    //   d3.select(this.refs.tip)
+    //   .select('#table-popup')
+    //   .style('visibility','visible')
+    //   .style('top',`140px`)
+    //   .style('left',`0px`)
+    //   .select('p')
+    //   .text(text)
+    // }else{
+    //   d3.select(this.refs.tip)
+    //   .select('#table-popup')
+    //   .style('visibility','hidden')
+    // }
   }
 
   render(){
