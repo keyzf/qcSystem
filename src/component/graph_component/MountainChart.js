@@ -61,7 +61,7 @@ export default class AreaLineChart extends React.Component {
             let imp = event.getImp(selected_person);
             let tmp={};
             tmp.y= y0+(y-y0)*this.imp_scale(imp);
-            if(tmp.y<0.1) tmp.y=0.1;
+            if(tmp.y<0.2) tmp.y=0.2;
             tmp.x = x-0.5+j/len;
             tmp.k = this.angle_scale(score);
             tmp.len = this.imp_scale(imp);

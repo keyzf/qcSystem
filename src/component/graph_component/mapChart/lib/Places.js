@@ -188,8 +188,8 @@ export default class Places extends React.Component{
     //   places_con:places_con
     // })
     places = places.filter(d=>{
-      if(d.certain_time>0) return true;
-      else if(d.events.length>1){
+      if(d.certain_time>0||d.uncertain_time>0) return true;
+      else if(d.events.length>2){
         return true;
       }
       else{
