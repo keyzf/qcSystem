@@ -21,7 +21,7 @@ import { Dropdown, Input } from 'semantic-ui-react';
 import stateManager from './dataManager/stateManager';
 import {autorun} from 'mobx';
 // import LifeLineMethod from './component/UI_component/lifeLineMethod';
-import { triggerManager,personManager } from './dataManager/dataStore2'
+import { triggerManager,personManager,IS_EN } from './dataManager/dataStore2'
 import PersonInfo from './component/UI_component/PersonInfo';
 import EventFilter from './component/UI_component/EventFilter2';
 // import InferSunBurst from './component/graph_component/inferSunBurst';
@@ -152,17 +152,17 @@ class App extends Component {
               <PersonInfo/>
             </div>
             <div className="container">
-            <label>筛选人物</label>
+            <label>{IS_EN?'Select':'筛选人物'}</label>
             <Dropdown 
               fluid multiple search selection 
-              placeholder='选择人物' 
+              placeholder={IS_EN?'Select people':'选择人物'}
               className="selection_person"
               options={person_options}
               value={this.state.selected_people.map(elm=> elm.id)}
               onChange={this.changeSelectPeople}
               // loading   //可以在之后添加
             />
-            <label>评分值</label>
+            <label>{IS_EN?'Event Score':'评分值'}</label>
             <div className={'filter'}>
               <EventFilter/>
             </div>

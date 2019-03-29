@@ -72,12 +72,12 @@ class Map extends React.Component {
       .data(song.features)
       .enter().append("path")
       .attr('stroke',d=>{
-        if(d.properties.H_SUP_PROV==="Song Dynasty"||d.properties.H_SUP_PROV===null) return '#666666';
-        else return '#aaaaaa';
+        if(d.properties.H_SUP_PROV==="Song Dynasty"||d.properties.H_SUP_PROV===null) return '#999999';
+        else return '#bbbbbb';
       } )
       .attr('stroke-width', 1)
       .attr('fill', d=>{
-        if(d.properties.H_SUP_PROV==="Song Dynasty"||d.properties.H_SUP_PROV===null) return '#d7d9dd';
+        if(d.properties.H_SUP_PROV==="Song Dynasty"||d.properties.H_SUP_PROV===null) return '#efefef';
         else return '#ffffff';
       })
       .attr("d", this.path);

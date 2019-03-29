@@ -277,7 +277,7 @@ export default class Places extends React.Component{
           if(index===0) return '#a2a4bf';
           else return color;
         })
-        .attr('fill-opacity',0.4)
+        .attr('fill-opacity',0.5)
         .attr('stroke','#898989')
     doms.append('rect')
         .attr('class','placeRect')

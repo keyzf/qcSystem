@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { Checkbox, List, Image} from 'semantic-ui-react'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager } from '../../dataManager/dataStore2'
+import dataStore, {IS_EN,triggerManager } from '../../dataManager/dataStore2'
 import {autorun} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import { black } from 'ansi-colors';
 import './EventFilter.scss';
-import { IS_EN } from '../../dataManager/dataStore2';
 
 class EventFilter  extends Component {
     constructor(){
@@ -16,6 +15,15 @@ class EventFilter  extends Component {
         }
         this.onChange = this.onChange.bind(this);
         this.sortType = this.sortType.bind(this);
+        this.nameMap = new Map([
+            ['政治','Politics'],
+            ['学术','Academia'],
+            ['社交','Sociality'],
+            ['著述','Writing'],
+            ['宗教','Religion'],
+            ['军事','Military'],
+            ['其它','Other']
+        ])
     }
     son2parent ={}
     _loadData =  autorun(()=>{
@@ -121,15 +129,15 @@ class EventFilter  extends Component {
                                     <input type="checkbox" id={`squaredThree${i}`} onChange={(e)=>this.onChange(e,'parent_type',parent_type)} checked={check_box2checked[parent_type]}></input>
                                     <label htmlFor={`squaredThree${i}`} ></label>
                                 </div>
-                                <label className="labelName">{parent_type}</label>
+                                <label className="labelName">{IS_EN?this.nameMap.get(parent_type):parent_type}</label>
                                 <span id="rs-bullet" class="rs-label">0</span>
-                                <input defaultValue='1' ref={parent_type} type="range" className={'rs-range'} id="start" name="volume" min="0" max="1" step="0.1"
+                                <input defaultValue='1' ref={parent_type} type="range" className={'rs-range'} id="start" name="volume" min="0" max="10" step="1"
                                 onChange={event=>{
                                     let this_input = this.refs[parent_type]
                                     let value = parseFloat(this_input.value)
                                     stateManager.setType2p(parent_type, value)
                                 }}/>
-                                <span id="rs-bullet" class="rs-label">1</span>
+                                <span id="rs-bullet" class="rs-label">10</span>
                                 {/* <Checkbox label={parent_type} my_type='parent_type' onChange={onChange} checked={check_box2checked[parent_type]}/> */}
                                 {/* <List.Description>
                                     {triggers.map(elm=> elm.)}

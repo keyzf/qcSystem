@@ -13,7 +13,7 @@ import back_icon from '../../static/infer_icon/5.png'
 import lifeview_icon from '../../static/infer_icon/6.png'
 import relation_icon from '../../static/infer_icon/7.png'
 // import missing_icon from '../../static/infer_icon/8.png'
-import amplify_icon from '../../static/infer_icon/amplify.png'
+import amplify_icon from '../../static/infer_icon/big.png'
 
 import forceBundle from '../../dataManager/forceBundle'
 
@@ -70,8 +70,6 @@ class InferSunBurst extends React.Component{
 
             mouse_postion: [0,0],
             sunbursts: [],
-
-            show_event_hint_value: undefined
         }
     }
 
@@ -160,7 +158,7 @@ class InferSunBurst extends React.Component{
         // console.log(this.state)
         // console.log('render triggerSunBurst')
         let {width, height} = this.props
-        let {isMousePressed, sunbursts, big_mode, show_event_hint_value, mouseover_value} = this.state
+        let {isMousePressed, sunbursts, big_mode} = this.state
         let {center_event} = this
 
 
@@ -173,7 +171,7 @@ class InferSunBurst extends React.Component{
         const title_height = 50
         // const control_bar_height = 100
         width = big_mode?1920:width
-        const graph_height = (big_mode?1060:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        const graph_height = (big_mode?1080:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
@@ -185,6 +183,22 @@ class InferSunBurst extends React.Component{
                 className='trigger_sunburst_graph' 
                 style={{width: width, height: height, position: 'absolute', 
                 }}>
+                 <div className="scaleButton">
+                    <img alt='' className='toother_graph_button' src={amplify_icon}
+                    onClick={event=>{
+                        const node = this.refs.inferSun;
+                        if(!this.allPage){
+                            node.classList.add('allPage');
+                            this.allPage = 1;
+                            this.setState({big_mode: true})
+                        }
+                        else{
+                            node.classList.remove('allPage');
+                            this.allPage = 0;
+                            this.setState({big_mode: false})
+                        }
+                    }}/>
+                </div>
                 <div style={{height: title_height, width: width}}>
                     {
                         center_event && now_sunburst &&
@@ -197,6 +211,7 @@ class InferSunBurst extends React.Component{
      
                     }
                     <div className="functionButton">
+                        <div>
                         <img alt='' className='toother_graph_button' src={relation_icon}
                         onClick={event=>{
                             let {now_part_index} = this
@@ -218,6 +233,8 @@ class InferSunBurst extends React.Component{
                                 stateManager.setRelationEvents(events)
                             }
                         }}/>
+                        </div>
+                        <div>
                         <img alt='' className='toother_graph_button' src={lifeview_icon} 
                         onClick={event=>{
                             let {now_part_index} = this
@@ -229,6 +246,8 @@ class InferSunBurst extends React.Component{
                                 stateManager.setSelectedPeople([selcted_people[0], ...people.filter(elm=> elm!==selcted_people[0])])
                             }
                         }}/>
+                        </div>
+                        <div>
                         <img alt='' className='toother_graph_button' src={footpath_icon}
                         onClick={event=>{
                             let {now_part_index} = this
@@ -238,20 +257,7 @@ class InferSunBurst extends React.Component{
                                 stateManager.setMapEvents(events)
                             }
                         }}/>
-                        <img alt='' className='toother_graph_button' src={amplify_icon}
-                        onClick={event=>{
-                            const node = this.refs.inferSun;
-                            if(!this.allPage){
-                                node.classList.add('allPage');
-                                this.allPage = 1;
-                                this.setState({big_mode: true})
-                            }
-                            else{
-                                node.classList.remove('allPage');
-                                this.allPage = 0;
-                                this.setState({big_mode: false})
-                            }
-                        }}/>
+                        </div>
                     </div>
                 </div>
                 {/* <div style={{height: control_bar_height, width: width}}>
@@ -286,27 +292,15 @@ class InferSunBurst extends React.Component{
                         size={0}
                         data={[{x:0,y:0, size:0}]}
                         onNearestXY={(value, {event})=>{
-                            let {layerX, layerY, offsetX, offsetY} = event
+                            let {layerX, layerY} = event
                             let {isDrag} = this.state
-                            let graph_x = trueX2X(offsetX), graph_y = trueY2Y(offsetY)
+                            let graph_x = trueX2X(layerX), graph_y = trueY2Y(layerY)
                             this.mouse_postion = [graph_x, graph_y]
-                            // console.log(this.mouse_postion, layerX, layerY, event, graph_height, graph_width)
                             // console.log(isMousePressed)
                             if (isMousePressed) {
                                 this.setState({mouse_postion: [graph_x, graph_y]})
                             }
                         }}/>
-                        {
-                            show_event_hint_value &&
-                            <Hint value={show_event_hint_value}>
-                                <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
-                                    {show_event_hint_value.label}
-                                </div>
-                            </Hint>
-                        }
-                        {/* <Hint>
-
-                        </Hint> */}
                         {/* <XAxis/>
                         <YAxis/> */}
                     </XYPlot>
@@ -408,10 +402,7 @@ class OnePart{
     
     former_click_values = []
 
-    links_datas = []
-    show_event_mark_data = []
     render( ){
-        const small_show_num = 15
         const {center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
         let former_click_values = this.former_click_values 
         let {
@@ -515,15 +506,7 @@ class OnePart{
                 this.mouse_press_value = undefined
             }            
         }
-        filter_values.forEach((filter_value,index)=>{
-            if (big_mode) {
-                filter_value.x = center_x + r  + 0.05*index
-                filter_value.y = center_y + r - 0.1*index-0.3
-            }else{
-                filter_value.x = center_x + r  + 0.1*index
-                filter_value.y = center_y + r - 0.2*index-0.5
-            }
-        })
+
 
         const handleLabelDataOver = value=>{
             value = this.all_values[value._index]
@@ -620,9 +603,8 @@ class OnePart{
             let mouseover_object = objectManager.get(mouseover_value.object_id)
             event_mark_data.forEach(elm=>{
                 let links = elm.links
-                links = links.filter(elm=> elm.object_index<small_show_num)
                 let link_ids = links.map(elm=> elm.object_id)
-                if (mouseover_object && link_ids.includes(mouseover_object.id) && links.length>1) {
+                if (mouseover_object && link_ids.includes(mouseover_object.id)) {
                     show_event_mark_data.push(elm)  //事件点
                     let {x,y} = elm
                     // console.log(elm)
@@ -641,19 +623,24 @@ class OnePart{
                 }
             })
         }
-        let fbundling = forceBundle()
-                        .step_size(big_mode?0.005:0.001)
-                        .compatibility_threshold(0.6)
-                        .nodes(node_datas)
-                        .edges(edge_datas)
-        let links_datas = fbundling()
-
-        if (show_event_mark_data.length>1 || mouseover_value) {
-            this.show_event_mark_data = show_event_mark_data
-            this.links_datas = links_datas            
-        }else{
-            links_datas = this.links_datas
-            show_event_mark_data = this.show_event_mark_data
+        let links_datas = []
+        this.id2link_cache = this.id2link_cache || {}
+        let {id2link_cache} = this
+        if (mouseover_value) {
+            let mouseover_value_object_id = mouseover_value.object_id
+            if (big_mode && node_datas.length!==0 && id2link_cache[mouseover_value_object_id]) {
+                links_datas = id2link_cache[mouseover_value_object_id]
+            }else{
+                // console.log(node_datas, edge_datas)
+                let fbundling = forceBundle()
+                                .step_size(0.01)
+                                .compatibility_threshold(0.5)
+                                .nodes(node_datas)
+                                .edges(edge_datas)
+                links_datas = fbundling()
+                if(big_mode)
+                    this.id2link_cache[mouseover_value_object_id] = links_datas
+            }
         }
 
 
@@ -662,13 +649,12 @@ class OnePart{
                 <LineSeries
                 key={part_index+ 'related_value_links'+index}
                 color='#1234'
-                strokeWidth={1}
                 data={elm}
                 style={{
                     pointerEvents: isDrag ? 'none' : '',
                     lineerEvents: isDrag ? 'none' : ''
                 }}
-                curve={'curveMonotoneX'}
+                // curve={d3.curveCatmullRom}
                 />
             )
         )
@@ -685,7 +671,7 @@ class OnePart{
             <MarkSeries
             data={show_event_mark_data}
             key={part_index+'-event_mark_data'}
-            onValueMouseOver={value=> parent_component.setState({show_event_hint_value:value})}
+            // onValueMouseOver={value=> this.setState({show_event_hint_value:value})}
             sizeRange={[2,5]}
             style={{
                 pointerEvents: isDrag ? 'none' : '',
@@ -701,7 +687,7 @@ class OnePart{
             labelAnchorY = 'start'
             key={part_index+'-label_data1'}
             // animation
-            data={label_data.filter(elm=> elm.text_anchor).filter(elm => big_mode || elm.object_index<small_show_num)}
+            data={label_data.filter(elm=> elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
@@ -714,7 +700,7 @@ class OnePart{
             labelAnchorY = 'end'
             key={part_index+'-label_data2'}
             // animation
-            data={label_data.filter(elm=> !elm.text_anchor).filter(elm => big_mode || elm.object_index<small_show_num)}
+            data={label_data.filter(elm=> !elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
@@ -743,8 +729,8 @@ class OnePart{
                     <g className="inner-inner-component">
                         <foreignObject className="control_logical_pane;" x={0} y={0} width={bar_width} height={38}>
                         <style type="text/css">{'.control_logical_button { height:20px; cursor: pointer; margin:2px; margin-right:10px}'}</style>
-                        <div style={{width:bar_width, background:'#ebebeb', padding: 5, height:38 }}>
-                            <img className='control_logical_button' alt='intersection' src={inter_icon}
+                        <div  className={'controlPanel'} style={{width:bar_width}}>
+                            <div><img className='control_logical_button' alt='intersection' src={inter_icon}
                                 onClick={event=>{
                                     event.preventDefault()
                                     let {former_click_values} = this
@@ -764,8 +750,8 @@ class OnePart{
                                     this.former_click_values.push(undefined)
                                     this.former_click_values.push(undefined)
                                     parent_component.setState({hi: !parent_component.state.hi})
-                            }}/>
-                            <img className='control_logical_button' alt='union' src={union_icon}
+                            }}/></div>
+                            <div><img className='control_logical_button' alt='union' src={union_icon}
                                 onClick={event=>{
                                     event.preventDefault()
                                     let {former_click_values} = this
@@ -786,8 +772,8 @@ class OnePart{
                                     this.former_click_values.push(undefined)
                                     this.former_click_values.push(undefined)
                                     parent_component.setState({hi: !parent_component.state.hi})
-                            }}/>
-                            <img className='control_logical_button' alt='infer' src={infer_icon} 
+                            }}/></div>
+                            <div><img className='control_logical_button' alt='infer' src={infer_icon} 
                                 onClick= {event=>{
                                     let now_click_value = this.former_click_values[former_click_values.length-1]
                                     if(now_click_value.node_type==='rule'){
@@ -810,7 +796,8 @@ class OnePart{
                                         this.setStateLater({sunbursts: temp_sunbursts})
                                     }
                             }}/>
-                            <img className='control_logical_button' alt='union' src={back_icon} onClick={event=>{}}/>
+                            </div>
+                            <div><img className='control_logical_button' alt='union' src={back_icon} onClick={event=>{}}/></div>
                         </div>
                         </foreignObject >
                     </g>
@@ -831,7 +818,7 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 50
+        const show_object_num = 100
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -986,9 +973,12 @@ class OnePart{
                 let dist_length = dists.length
                 return index/dist_length
             })
-
             dists = dists.map(dist=> {
-                return Math.sqrt(dist)
+                if (dist<0.5) {
+                    return dist * 1.5
+                }else{
+                    return (dist-0.5)*0.5+0.5
+                }
             })
             dists = dists.map(dist=> dist*1.1)
 
@@ -997,12 +987,6 @@ class OnePart{
             // console.log(angles, sort_angles)
             angles = angles.map(angle=> sort_angles.findIndex(elm=> elm===angle)/angles.length)
             // console.log(angles)
-            
-            let sort_all_objects = [...all_objects].sort((a,b)=> {
-                let index_a = all_objects.findIndex(elm=> elm===a)
-                let index_b = all_objects.findIndex(elm=> elm===b)
-                return dists[index_a] - dists[index_b]
-            })
 
             // 整理点和字
             let label_data = all_objects.map((elm, index)=>{
@@ -1023,9 +1007,9 @@ class OnePart{
                     origin_x: x,
                     origin_y: y,
                     is_parent: parent_types.includes(elm.getName()),
-                    object_index: sort_all_objects.findIndex(elm2=> elm2===elm),
+
                     rotation: text_rotate,
-                    label: simplStr(elm.getName(), IS_EN?20:5),
+                    label: simplStr(elm.getName(), IS_EN?10:4),
                     total_label: elm.getName(),
                     object_id: elm.id,
                     vec: vecs[index],
@@ -1117,8 +1101,8 @@ class OnePart{
             let y = links.reduce((total,elm)=> total+elm.y, 0)/links.length
             let dist = eucDist([x,y], [center_x, center_y])
             if (dist> inner_radius) {
-                x = (x-center_x) * (1-Math.random()/2) * inner_radius/dist + center_x 
-                y = (y-center_y) * (1-Math.random()/2) * inner_radius/dist + center_y 
+                x = (x-center_x) *inner_radius/dist * (1-Math.random()/2) + center_x
+                y = (y-center_y) *inner_radius/dist * (1-Math.random()/2) + center_y
             }
             if (event===center_event) {
                 x = center_x
@@ -1275,7 +1259,7 @@ class ChangeEventPanel extends React.Component{
             <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection 
-                placeholder='触发词'
+                placeholder={IS_EN?'Trigger':'触发词'}
                 options={trigger_options}
                 value = {center_event.trigger.id}
                 onChange={(event,{value})=>{
@@ -1293,7 +1277,7 @@ class ChangeEventPanel extends React.Component{
             <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection
-                placeholder='时间'
+                placeholder={IS_EN?'Time':'时间'}
                 options={time_options}
                 value = {center_event.time_range[1].toString()}
                 onChange={(event,{value})=>{
@@ -1311,7 +1295,7 @@ class ChangeEventPanel extends React.Component{
             <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection
-                placeholder='时间'
+                placeholder={IS_EN?'Time':'时间'}
                 options={time_options}
                 value = {center_event.time_range[0].toString()}
                 onChange={(event,{value})=>{
@@ -1332,7 +1316,7 @@ class ChangeEventPanel extends React.Component{
                     <div key= {index} className='change_event_div' style={{left: 470+165*change_event_index++, width: 160}}>
                         <Dropdown
                         fluid search selection 
-                        placeholder='人物/角色'
+                        placeholder={IS_EN?'Role':'人物/角色'}
                         options={people_options.map(elm=> {
                             elm = dictCopy(elm)
                             elm.text += '/' + role
@@ -1346,7 +1330,7 @@ class ChangeEventPanel extends React.Component{
                                 if (elm.role===role && person!==elm.person) {
                                     elm.person = person;
                                     center_event.is_change = true;
-                                    center_event.is_change_people = true;
+                                    event.is_change_people = true;
                                     this.setState({hi: !this.state.hi})
                                     stateManager.refresh()
                                 }
@@ -1360,7 +1344,7 @@ class ChangeEventPanel extends React.Component{
             <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection  multiple
-                placeholder='地点'
+                placeholder={IS_EN?'Place':'地点'}
                 options={addr_options}
                 value = {center_event.addrs.map(elm=> elm.id)}
                 onChange={(event,{value})=>{

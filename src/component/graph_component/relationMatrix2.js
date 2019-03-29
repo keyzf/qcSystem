@@ -7,8 +7,8 @@ import * as d3 from 'd3'
 import {autorun, set} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy, ruleFilter } from '../../dataManager/dataStore2'
-
+import dataStore, { eventManager, addrManager, personManager, isValidYear, triggerManager, rangeGenrator, filtEvents, triggerFilter, dictCopy, ruleFilter, IS_EN } from '../../dataManager/dataStore2'
+import './relationMatrix.scss';
 // 3/21 根据pagerank修建
 class RealtionMatrix extends React.Component{
     all_events = []
@@ -255,10 +255,10 @@ class RealtionMatrix extends React.Component{
           width: 470,
           height: 480,
           padding:{
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0
+              top: 30,
+              bottom: 10,
+              left: 10,
+              right: 10
           }
         };
     }
@@ -390,16 +390,29 @@ class RealtionMatrix extends React.Component{
         const padding_e = people_num<=3?2:1.1
 
         return (
-            <div style={{width:width, height:height, paddingTop:padding.top, paddingBottom:padding.bottom,paddingLeft:padding.left,paddingRight:padding.right}}>
-                <div style={{display:'grid',gridTemplateColumns:'150px 50px',marginLeft:'300px'}}>
-                    <div>
-                    <input ref='show_people_num_range' className={'rs-range'} type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
-                    onChange={event=>{
-                        this.show_people_num = parseInt(this.refs.show_people_num_range.value)
-                        this.loadMatrix()
-                    }}/>
-                    <div><span style={{fontFamily:'STKaiti',fontSize:'12px',marginLeft:'5px',fontWeight:600,marginTop:'5px',display:'block'}}>{this.max_people_num}</span></div>
-                    <label><input type="checkbox" onChange={(event)=>{
+            <div style={{width:width, height:height}}>
+                <div className="relation_tip">
+                    <div className="inputrange">
+                        <span id="rs-bullet" class="rs-label">0</span>
+                        <input ref='show_people_num_range' className={'rs-range'} type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
+                        onChange={event=>{
+                            this.show_people_num = parseInt(this.refs.show_people_num_range.value)
+                            this.loadMatrix()
+                        }}/>
+                        <span id="rs-bullet" class="rs-label">{this.max_people_num}</span>
+                    </div>
+                {/* <div><span style={{fontFamily:'STKaiti',fontSize:'12px',marginLeft:'5px',fontWeight:600,marginTop:'5px',display:'block'}}></span></div> */}
+                    <div className="labels">
+                    <button onClick={(event)=>{
+                        this.setState({color_method: '数量'})
+                    }}>{IS_EN?'quantity':'数量'}</button>
+                    <button onClick={(event)=>{
+                        this.setState({color_method: '正负向', events_rect_data: events_rect_data})
+                    }}>{IS_EN?'sentiment':'正负向'}</button>
+                    <button onClick={(event)=>{
+                        this.setState({color_method: '类型'})
+                    }}>{IS_EN?'category':'类型'}</button>
+                    {/* <label><input type="checkbox" onChange={(event)=>{
                         this.setState({color_method: '数量'})
                     }} checked={color_method==='数量'}/>数量</label> 
                     <label><input type="checkbox"onChange={(event)=>{
@@ -407,9 +420,10 @@ class RealtionMatrix extends React.Component{
                     }} checked={color_method==='正负向'}/>正负向</label> 
                     <label><input type="checkbox"onChange={(event)=>{
                         this.setState({color_method: '类型'})
-                    }} checked={color_method==='类型'}/>类型</label> 
+                    }} checked={color_method==='类型'}/>类型</label>  */}
                     </div>
                 </div>
+                <div style={{paddingTop:padding.top,paddingLeft:padding.left,paddingRight:padding.right,paddingBottom:padding.bottom}}>
                 <div style={{width:svg_width, height:svg_height}}>
                     <XYPlot
                     width={svg_width}
@@ -464,6 +478,7 @@ class RealtionMatrix extends React.Component{
                         />
                     }
                     </XYPlot>
+                </div>
                 </div>
             </div>
         )
