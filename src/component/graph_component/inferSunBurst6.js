@@ -13,7 +13,7 @@ import back_icon from '../../static/infer_icon/5.png'
 import lifeview_icon from '../../static/infer_icon/6.png'
 import relation_icon from '../../static/infer_icon/7.png'
 // import missing_icon from '../../static/infer_icon/8.png'
-import amplify_icon from '../../static/infer_icon/amplify.png'
+import amplify_icon from '../../static/infer_icon/big.png'
 
 import forceBundle from '../../dataManager/forceBundle'
 
@@ -42,8 +42,9 @@ import auto2 from '../../dataManager/translator';
 
 const PI = Math.PI
 const inner_radius = 0.3 //圆的内轮廓
+const show_object_num = 60
 const small_show_num = 15
-
+const shink_p = (show_object_num-small_show_num)/show_object_num
 class InferSunBurst extends React.Component{
     id2ids = {} //记录了上一步
 
@@ -73,8 +74,6 @@ class InferSunBurst extends React.Component{
 
             mouse_postion: [0,0],
             sunbursts: [],
-
-            show_event_hint_value: undefined
         }
     }
 
@@ -164,7 +163,7 @@ class InferSunBurst extends React.Component{
         // console.log(this.state)
         // console.log('render triggerSunBurst')
         let {width, height} = this.props
-        let {isMousePressed, sunbursts, big_mode, show_event_hint_value, mouseover_value} = this.state
+        let {isMousePressed, sunbursts, big_mode} = this.state
         let {center_event} = this
 
 
@@ -180,8 +179,8 @@ class InferSunBurst extends React.Component{
         const graph_height = (big_mode?1000:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = big_mode?
             [-r,-r + 2*r/graph_height*graph_width]:
-            [-0.8*r,-0.8*r + 2*0.8*r/graph_height*graph_width], 
-            yDomain = big_mode?[-r,r]:[-0.8*r,0.8*r]
+            [-shink_p*r,-shink_p*r + 2*shink_p*r/graph_height*graph_width], 
+            yDomain = big_mode?[-r,r]:[-shink_p*r,shink_p*r]
         
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
@@ -193,6 +192,22 @@ class InferSunBurst extends React.Component{
                 className='trigger_sunburst_graph' 
                 style={{width: width, height: height, position: 'absolute', 
                 }}>
+                 <div className="scaleButton">
+                    <img alt='' className='toother_graph_button' src={amplify_icon}
+                    onClick={event=>{
+                        const node = this.refs.inferSun;
+                        if(!this.allPage){
+                            node.classList.add('allPage');
+                            this.allPage = 1;
+                            this.setState({big_mode: true})
+                        }
+                        else{
+                            node.classList.remove('allPage');
+                            this.allPage = 0;
+                            this.setState({big_mode: false})
+                        }
+                    }}/>
+                </div>
                 <div style={{height: title_height, width: width}}>
                     {
                         center_event && now_sunburst &&
@@ -206,29 +221,105 @@ class InferSunBurst extends React.Component{
      
                     }
                     <div className="functionButton">
+                        <div>
+                            <img className='toother_graph_button'  alt='' src={inter_icon} 
+                                onClick= {event=>{
+                                    event.preventDefault()
+                                    let {now_part_index} = this
+                                    let now_graph = this.sunbursts[now_part_index]
+                                    let {former_click_values, ruleManager} = now_graph
+                                    let former_click_value = former_click_values[former_click_values.length-2]
+                                    let now_click_value = former_click_values[former_click_values.length-1]
+                                    // console.log(now_click_value, former_click_value)
+                                    if (!former_click_value || !now_click_value) {
+                                        console.warn('错误点击')
+                                        return
+                                    }
+                                    const can_types = ['filter_value', 'rule']
+                                    if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
+                                        let new_rule = ruleManager.create([now_click_value, former_click_value])
+                                        new_rule.setType('and')
+                                    }
+                                    this.former_click_values.push(undefined)
+                                    this.former_click_values.push(undefined)
+                                    this.setState({hi: !this.state.hi})
+                            }}/>
+                        </div>
+                        <div>
+                            <img className='toother_graph_button'  alt='' src={union_icon} 
+                                onClick= {event=>{
+                                    event.preventDefault()
+                                    let {now_part_index} = this
+                                    let now_graph = this.sunbursts[now_part_index]
+                                    let {former_click_values, ruleManager} = now_graph
+                                    let former_click_value = former_click_values[former_click_values.length-2]
+                                    let now_click_value = former_click_values[former_click_values.length-1]
+                                    const can_types = ['filter_value', 'rule']
+                                    // console.log(now_click_value, former_click_value)
+                                    if (!former_click_value || !now_click_value) {
+                                        console.warn('错误点击')
+                                        return
+                                    }
+                                    if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
+                                        let new_rule = ruleManager.create([now_click_value, former_click_value])
+                                        new_rule.setType('or')
+                                    }
+                                    this.former_click_values.push(undefined)
+                                    this.former_click_values.push(undefined)
+                                    this.setState({hi: !this.state.hi})
+                            }}/>
+                        </div>
+                        <div>
+                            <img className='toother_graph_button'  alt='' src={infer_icon} 
+                                onClick= {event=>{
+                                    event.preventDefault()
+                                    let {now_part_index} = this
+                                    let now_graph = this.sunbursts[now_part_index]
+                                    let part_index = now_part_index
+                                    let former_click_values = now_graph.former_click_values
+                                    let now_click_value = now_graph.former_click_values[former_click_values.length-1]
+                                    let temp_sunbursts = this.state.sunbursts.slice(0, part_index+1)
+                                    if (now_click_value) {
+                                        if(now_click_value.node_type==='rule'){
+                                            let sunburst = now_click_value.getSunBurst()
+                                            temp_sunbursts.push(sunburst)
+                                            this.sunbursts = temp_sunbursts
+                                            this.setState({sunbursts: temp_sunbursts})
+                                        }else if(now_click_value.node_type==='filter_value'){
+                                            // let events = now_click_value.filter(this.all_events)
+                                            // console.log(this.ruleManager.rules, now_click_value)
+                                            let rule = this.ruleManager.rules.find(elm=> elm.related_objects.length===1 &&  elm.related_objects[0]===now_click_value)
+                                            let sunburst = rule.getSunBurst()
+                                            // let now_index = part_index
+                                            temp_sunbursts.push(sunburst)
+                                            this.sunbursts = temp_sunbursts
+                                            this.setState({sunbursts: temp_sunbursts})
+                                        }                                        
+                                    }else{
+                                        let sunburst = now_graph.ruleManager.getSunBurst()
+                                        temp_sunbursts.push(sunburst)
+                                        this.sunbursts = temp_sunbursts
+                                        this.setState({sunbursts: temp_sunbursts})
+                                    }
+                            }}/>
+                        </div>
+                        <div>
+                            <img className='toother_graph_button'  alt='infer' src={back_icon} 
+                                onClick= {event=>{
+                            }}/>
+                        </div>
+                        <div>
                         <img alt='' className='toother_graph_button' src={relation_icon}
                         onClick={event=>{
                             let {now_part_index} = this
                             let now_graph = this.sunbursts[now_part_index]
                             if (now_graph) {
-                                // let people = now_graph.all_people
-                                // let events = []
-                                // people.forEach(person=>{
-                                //     let people_events = person.events
-                                //     people_events = people_events.filter(elm=> {
-                                //         let role = elm.getPeople().filter(elm=> elm!==person)
-                                //         return people.includes(role[0]) || people.includes(role[1]) 
-                                //     })
-                                //     events = [...people_events, ...events]
-                                // })
-                                // events = [...new Set(events)]
-                                // console.log(events)
-                                console.log( now_graph.all_events)
                                 let events = now_graph.all_events
-
                                 stateManager.setRelationEvents(events)
                             }
                         }}/>
+                        </div>
+                        <div>
                         <img alt='' className='toother_graph_button' src={lifeview_icon} 
                         onClick={event=>{
                             let {now_part_index} = this
@@ -240,6 +331,8 @@ class InferSunBurst extends React.Component{
                                 stateManager.setSelectedPeople([selcted_people[0], ...people.filter(elm=> elm!==selcted_people[0])])
                             }
                         }}/>
+                        </div>
+                        <div>
                         <img alt='' className='toother_graph_button' src={footpath_icon}
                         onClick={event=>{
                             let {now_part_index} = this
@@ -248,21 +341,8 @@ class InferSunBurst extends React.Component{
                                 let events = now_graph.all_events
                                 stateManager.setMapEvents(events)
                             }
-                        }}/>
-                        <img alt='' className='toother_graph_button' src={amplify_icon}
-                        onClick={event=>{
-                            const node = this.refs.inferSun;
-                            if(!this.allPage){
-                                node.classList.add('allPage');
-                                this.allPage = 1;
-                                this.setState({big_mode: true})
-                            }
-                            else{
-                                node.classList.remove('allPage');
-                                this.allPage = 0;
-                                this.setState({big_mode: false})
-                            }
-                        }}/>
+                        }} style={{width:'28px'}}/>
+                        </div>
                     </div>
                 </div>
                 {/* <div style={{height: control_bar_height, width: width}}>
@@ -297,27 +377,16 @@ class InferSunBurst extends React.Component{
                         size={0}
                         data={[{x:0,y:0, size:0}]}
                         onNearestXY={(value, {event})=>{
-                            let {layerX, layerY, offsetX, offsetY} = event
+                            console.log(event)
+                            let {offsetX, offsetY} = event
                             let {isDrag} = this.state
                             let graph_x = trueX2X(offsetX), graph_y = trueY2Y(offsetY)
                             this.mouse_postion = [graph_x, graph_y]
-                            // console.log(this.mouse_postion, layerX, layerY, event, graph_height, graph_width)
                             // console.log(isMousePressed)
                             if (isMousePressed) {
                                 this.setState({mouse_postion: [graph_x, graph_y]})
                             }
                         }}/>
-                        {
-                            show_event_hint_value &&
-                            <Hint value={show_event_hint_value}>
-                                <div style={{ fontSize: 8, padding: '10px', color:'white', background:'black'}}>
-                                    {show_event_hint_value.label}
-                                </div>
-                            </Hint>
-                        }
-                        {/* <Hint>
-
-                        </Hint> */}
                         {/* <XAxis/>
                         <YAxis/> */}
                     </XYPlot>
@@ -418,9 +487,7 @@ class OnePart{
     mouse_press_value = undefined
     
     former_click_values = []
-
     links_datas = []
-    show_event_mark_data = []
     render( ){
         const {all_events, center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
         let former_click_values = this.former_click_values 
@@ -525,15 +592,7 @@ class OnePart{
                 this.mouse_press_value = undefined
             }            
         }
-        filter_values.forEach((filter_value,index)=>{
-            if (big_mode) {
-                filter_value.x = center_x + r  + 0.05*index
-                filter_value.y = center_y + r - 0.1*index-0.3
-            }else{
-                filter_value.x = center_x + r  + 0.1*index
-                filter_value.y = center_y + r - 0.2*index-0.5
-            }
-        })
+
 
         const handleLabelDataOver = value=>{
             value = this.all_values[value._index]
@@ -631,9 +690,10 @@ class OnePart{
             let mouseover_object = objectManager.get(mouseover_value.object_id)
             event_mark_data.forEach(elm=>{
                 let links = elm.links  
+                // console.log(elm.object_index)
                 links = links.filter(elm=>elm.object_index<small_show_num) // big_mode || 
                 let link_ids = links.map(elm=> elm.object_id)
-                if (mouseover_object && link_ids.includes(mouseover_object.id) && links.length>1) {
+                if (mouseover_object && link_ids.includes(mouseover_object.id)) {
                     show_event_mark_data.push(elm)  //事件点
                     let {x,y} = elm
                     // console.log(elm)
@@ -653,12 +713,12 @@ class OnePart{
             })
         }
         let fbundling = forceBundle()
-                        .step_size(             0.005)
+                        .step_size(0.005)
                         .compatibility_threshold(0.6)
                         .nodes(node_datas)
                         .edges(edge_datas)
         let links_datas = fbundling()
-
+        // console.log(node_datas, edge_datas, links_datas)
         if (show_event_mark_data.length>1 || mouseover_value) {
             this.show_event_mark_data = show_event_mark_data
             this.links_datas = links_datas            
@@ -673,13 +733,12 @@ class OnePart{
                 <LineSeries
                 key={part_index+ 'related_value_links'+index}
                 color='#1234'
-                strokeWidth={1}
                 data={elm}
                 style={{
                     pointerEvents: isDrag ? 'none' : '',
                     lineerEvents: isDrag ? 'none' : ''
                 }}
-                curve={'curveMonotoneX'}
+                // curve={d3.curveCatmullRom}
                 />
             )
         )
@@ -696,7 +755,7 @@ class OnePart{
             <MarkSeries
             data={show_event_mark_data}
             key={part_index+'-event_mark_data'}
-            onValueMouseOver={value=> parent_component.setState({show_event_hint_value:value})}
+            // onValueMouseOver={value=> this.setState({show_event_hint_value:value})}
             sizeRange={[2,5]}
             style={{
                 pointerEvents: isDrag ? 'none' : '',
@@ -706,13 +765,14 @@ class OnePart{
 
         // 中心事件周围的实体(要跟rotation改end 和 start)
         // label_data = label_datafilter(elm=> !filter_values.find(elm2=> elm2.object_id===elm.object_id))
+        label_data = label_data.filter(elm=>big_mode || elm.object_index<small_show_num)
         component_array.push(
             <LabelSeries
             labelAnchorX = 'start'
             labelAnchorY = 'start'
             key={part_index+'-label_data1'}
             // animation
-            data={label_data.filter(elm=> elm.text_anchor).filter(elm => big_mode || elm.object_index<small_show_num)}
+            data={label_data.filter(elm=> elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
@@ -725,7 +785,7 @@ class OnePart{
             labelAnchorY = 'end'
             key={part_index+'-label_data2'}
             // animation
-            data={label_data.filter(elm=> !elm.text_anchor).filter(elm => big_mode || elm.object_index<small_show_num)}
+            data={label_data.filter(elm=> !elm.text_anchor)}
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
@@ -744,105 +804,6 @@ class OnePart{
             // animation
             />
         )
-        
-        // 上面那个控制面板
-        const panel_data = [
-            {
-                x: center_x+r, y:big_mode?center_y+r-0.1:center_y+r*0.8-0.1, customComponent: (row, positionInPixels) => {
-                    const bar_width = 162
-                    return (
-                    <g className="inner-inner-component">
-                        <foreignObject className="control_logical_pane;" x={0} y={0} width={bar_width} height={38}>
-                        <style type="text/css">{'.control_logical_button { height:20px; cursor: pointer; margin:2px; margin-right:10px}'}</style>
-                        <div style={{width:bar_width, background:'#ebebeb', padding: 5, height:38 }}>
-                            <img className='control_logical_button' alt='intersection' src={inter_icon}
-                                onClick={event=>{
-                                    event.preventDefault()
-                                    let {former_click_values} = this
-                                    let former_click_value = former_click_values[former_click_values.length-2]
-                                    let now_click_value = former_click_values[former_click_values.length-1]
-                                    // console.log(now_click_value, former_click_value)
-                                    if (!former_click_value || !now_click_value) {
-                                        console.warn('错误点击')
-                                        return
-                                    }
-                                    const can_types = ['filter_value', 'rule']
-                                    // console.log(now_click_value, former_click_value)
-                                    if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
-                                        let new_rule = ruleManager.create([now_click_value, former_click_value])
-                                        new_rule.setType('and')
-                                    }
-                                    this.former_click_values.push(undefined)
-                                    this.former_click_values.push(undefined)
-                                    parent_component.setState({hi: !parent_component.state.hi})
-                            }}/>
-                            <img className='control_logical_button' alt='union' src={union_icon}
-                                onClick={event=>{
-                                    event.preventDefault()
-                                    let {former_click_values} = this
-                                    let former_click_value = former_click_values[former_click_values.length-2]
-                                    let now_click_value = former_click_values[former_click_values.length-1]
-                                    const can_types = ['filter_value', 'rule']
-                                    // console.log(now_click_value, former_click_value)
-                                    if (!former_click_value || !now_click_value) {
-                                        console.warn('错误点击')
-                                        return
-                                    }
-                                    if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
-                                        let new_rule = ruleManager.create([now_click_value, former_click_value])
-                                        new_rule.setType('or')
-                                        // console.log(this.ruleManager.rules)
-                                        // console.log('建立连接')
-                                    }
-                                    this.former_click_values.push(undefined)
-                                    this.former_click_values.push(undefined)
-                                    parent_component.setState({hi: !parent_component.state.hi})
-                            }}/>
-                            <img className='control_logical_button' alt='infer' src={infer_icon} 
-                                onClick= {event=>{
-                                    let now_click_value = this.former_click_values[former_click_values.length-1]
-                                    if (now_click_value) {
-                                        if(now_click_value.node_type==='rule'){
-                                            // let events = now_click_value.filter(this.all_events)
-                                            let sunburst = now_click_value.getSunBurst()
-                                            // let now_index = part_index
-                                            let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
-                                            temp_sunbursts.push(sunburst)
-                                            parent_component.sunbursts = temp_sunbursts
-                                            this.setStateLater({sunbursts: temp_sunbursts})
-                                        }else if(now_click_value.node_type==='filter_value'){
-                                            // let events = now_click_value.filter(this.all_events)
-                                            // console.log(this.ruleManager.rules, now_click_value)
-                                            let rule = this.ruleManager.rules.find(elm=> elm.related_objects.length===1 &&  elm.related_objects[0]===now_click_value)
-                                            let sunburst = rule.getSunBurst()
-                                            // let now_index = part_index
-                                            let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
-                                            temp_sunbursts.push(sunburst)
-                                            parent_component.sunbursts = temp_sunbursts
-                                            this.setStateLater({sunbursts: temp_sunbursts})
-                                        }                                        
-                                    }else{
-                                        let sunburst = this.ruleManager.getSunBurst()
-                                        let temp_sunbursts = this.parent_component.state.sunbursts.slice(0, part_index+1)
-                                        temp_sunbursts.push(sunburst)
-                                        parent_component.sunbursts = temp_sunbursts
-                                        this.setStateLater({sunbursts: temp_sunbursts})
-                                    }
-
-                            }}/>
-                            <img className='control_logical_button' alt='union' src={back_icon} onClick={event=>{}}/>
-                        </div>
-                        </foreignObject >
-                    </g>
-                    )
-                }
-            }
-        ]
-        component_array.push(
-            <CustomSVGSeries
-            key={part_index+'-panel'}
-            data={panel_data}/>
-        )
 
         // console.log('hi')
         return component_array
@@ -851,7 +812,6 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 50
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -999,22 +959,23 @@ class OnePart{
 
             
             dists = dists.map(dist=> {
-                return Math.sqrt(dist)
+                if (dist<0.5) {
+                    return dist * 1.5
+                }else{
+                    return (dist-0.5)*0.5+0.5
+                }
             })
             dists = dists.map(dist=> dist*1.1)
-
             angles[center_index] = Math.random()*(max_angle-min_angle)+min_angle
             let sort_angles = [...angles].sort((a,b)=> a-b)
             // console.log(angles, sort_angles)
             angles = angles.map(angle=> sort_angles.findIndex(elm=> elm===angle)/angles.length)
             // console.log(angles)
-            
             let sort_all_objects = [...all_objects].sort((a,b)=> {
                 let index_a = all_objects.findIndex(elm=> elm===a)
                 let index_b = all_objects.findIndex(elm=> elm===b)
                 return dists[index_a] - dists[index_b]
             })
-
             // 整理点和字
             let label_data = all_objects.map((elm, index)=>{
                 // let elm = all_objects[index]
@@ -1035,7 +996,7 @@ class OnePart{
                     origin_y: y,
                     object_index: sort_all_objects.findIndex(elm2=> elm2===elm),
                     rotation: text_rotate,
-                    label: simplStr(elm.getName(), IS_EN?20:5),
+                    label: simplStr(elm.getName(), IS_EN?10:4),
                     total_label: elm.getName(),
                     object_id: elm.id,
                     vec: vecs[index],
@@ -1119,8 +1080,8 @@ class OnePart{
             let y = links.reduce((total,elm)=> total+elm.y, 0)/links.length
             let dist = eucDist([x,y], [center_x, center_y])
             if (dist> inner_radius) {
-                x = (x-center_x) * (1-Math.random()/2) * inner_radius/dist + center_x 
-                y = (y-center_y) * (1-Math.random()/2) * inner_radius/dist + center_y 
+                x = (x-center_x) *inner_radius/dist * (1-Math.random()/2) + center_x
+                y = (y-center_y) *inner_radius/dist * (1-Math.random()/2) + center_y
             }
             if (event===center_event) {
                 x = center_x
@@ -1285,7 +1246,7 @@ class ChangeEventPanel extends React.Component{
             <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection 
-                placeholder='触发词'
+                placeholder={IS_EN?'Trigger':'触发词'}
                 options={trigger_options}
                 value = {center_event.trigger.id}
                 onChange={(event,{value})=>{
@@ -1301,10 +1262,10 @@ class ChangeEventPanel extends React.Component{
                 }}/>
             </div>
 
-            <div className='change_event_div'>
+            <div className='change_event_div'  style={{width: 80}}>
                 <Dropdown 
                 fluid search selection
-                placeholder='时间'
+                placeholder={IS_EN?'Time':'时间'}
                 options={time_options}
                 value = {center_event.time_range[1].toString()}
                 onChange={(event,{value})=>{
@@ -1320,7 +1281,7 @@ class ChangeEventPanel extends React.Component{
                 }}/>
             </div>
 
-            <div className='change_event_div'>
+            <div className='change_event_div' style={{width: 80}}>
                 <Dropdown 
                 fluid search selection
                 placeholder= {auto2('时间')}
@@ -1342,7 +1303,7 @@ class ChangeEventPanel extends React.Component{
             {
                 center_event.roles.map(({role, person}, index)=>{
                     return (
-                    <div key= {index} className='change_event_div' style={{width: 115}}>
+                    <div key= {index} className='change_event_div' style={{width: 100}}>
                         <Dropdown
                         fluid search selection 
                         placeholder= {auto2('人物/角色')} 
@@ -1359,7 +1320,7 @@ class ChangeEventPanel extends React.Component{
                                 if (elm.role===role && person!==elm.person) {
                                     elm.person = person;
                                     center_event.is_change = true;
-                                    center_event.is_change_people = true;
+                                    event.is_change_people = true;
                                     this.setState({hi: !this.state.hi})
                                     parent_component.state.sunbursts[0].loadSunBurstData()
                                     stateManager.refresh()
@@ -1371,7 +1332,7 @@ class ChangeEventPanel extends React.Component{
                 })
             }
 
-            <div className='change_event_div'>
+            <div className='change_event_div'  style={{width: 60}}>
                 <Dropdown 
                 fluid search selection  multiple
                 placeholder={auto2('地点')} 

@@ -21,7 +21,7 @@ import { Dropdown, Input } from 'semantic-ui-react';
 import stateManager from './dataManager/stateManager';
 import {autorun} from 'mobx';
 // import LifeLineMethod from './component/UI_component/lifeLineMethod';
-import { triggerManager,personManager } from './dataManager/dataStore2'
+import { triggerManager,personManager,IS_EN } from './dataManager/dataStore2'
 import PersonInfo from './component/UI_component/PersonInfo';
 import EventFilter from './component/UI_component/EventFilter2';
 // import InferSunBurst from './component/graph_component/inferSunBurst';
@@ -29,7 +29,7 @@ import EventTable from './component/UI_component/EventTable';
 import InferSunBurst from './component/graph_component/inferSunBurst6';
 import './main.scss';
 import menu from './static/menu.png';
-import songicon from './static/icon 13.png';
+import songicon from './static/logo.png';
 import maplogo from './static/maplogo.png';
 import matrixlogo from './static/matrixlogo.png';
 import reasonlogo from './static/reasonlogo.png';
@@ -138,10 +138,10 @@ class App extends Component {
       <div id="wrap" style={{width:width, height:height}}>
         <div id="mainHeader">
           <div id="toggleDyn"><img src={menu}></img></div>
-          <img src={songicon}></img>
+          <img className="mainLogo" src={songicon}></img>
           <div className="togglelanguage">
-            <button>中文</button>
-            <button>English</button>
+            <button className={IS_EN?'':'choosedLang'}>中文</button>
+            <button className={IS_EN?'choosedLang':''}>ENGLISH</button>
           </div>
         </div>
         {/* 上半部分 */}
@@ -152,17 +152,17 @@ class App extends Component {
               <PersonInfo/>
             </div>
             <div className="container">
-            <label>筛选人物</label>
+            <label>{IS_EN?'History Figures':'筛选人物'}</label>
             <Dropdown 
               fluid multiple search selection 
-              placeholder='选择人物' 
+              placeholder={IS_EN?'Select people':'选择人物'}
               className="selection_person"
               options={person_options}
               value={this.state.selected_people.map(elm=> elm.id)}
               onChange={this.changeSelectPeople}
               // loading   //可以在之后添加
             />
-            <label>评分值</label>
+            <label>{IS_EN?'Event Weight':'评分值'}</label>
             <div className={'filter'}>
               <EventFilter/>
             </div>

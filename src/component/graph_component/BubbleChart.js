@@ -11,8 +11,8 @@ export default class BubbleChart extends React.Component {
     this.openEvent = new Set();
     this.openEventCircle = -1;
     this.metaballs={
-      blurDeviation: 10,
-      colorMatrix: '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -10',
+      blurDeviation: 20,
+      colorMatrix: '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 40 -16',
     };
     this.init=this.init.bind(this);
   }

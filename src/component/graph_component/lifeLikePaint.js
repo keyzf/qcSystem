@@ -89,7 +89,6 @@ class LifeLikePaint extends Component{
         net_work.require('getPersonEvents', {person_id:selected_person.id})
         .then(data=>{
             if(data){
-                console.log(data);
                 data = dataStore.processResults(data)
                 this.all_events = dataStore.dict2array(data.events)
                 // console.log(data)
@@ -374,7 +373,6 @@ class LifeLikePaint extends Component{
             })
         }
         area_datas = area_datas.filter(line_data=> area_datas.length>0)
-        // console.log(area_datas)
         this.setState({area_datas: area_datas,triggerName:triggerName})
     }
 
@@ -509,7 +507,6 @@ class LifeLikePaint extends Component{
     }
 
     handleTriggerMouseOver(d){
-        console.log(d);
         this.setState({
             selectTrigger:d
         })
@@ -530,7 +527,6 @@ class LifeLikePaint extends Component{
         area_datas = area_datas.sort(this.sortType);
         let maxTriggerCount = Math.max(...Object.values(triggerName));
         this.grayScale.domain([0,maxTriggerCount]);
-        console.log(area_datas);
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>
@@ -542,7 +538,7 @@ class LifeLikePaint extends Component{
                     <g className="triggerName" transform={`translate(${width-10},${10})`} visibility={vis}>
                         {this.triggerArray.map((d,i)=>{
                             // console.log(d)
-                            return (<text x={-i*20} key={i} fill={'none'} stroke={this.grayScale(triggerName[d])} onMouseOver={()=>this.handleTriggerMouseOver(d)} onMouseOut={this.handleTriggerMouseOut}>{d}</text>)
+                            return (<text x={-i*20} key={i} fill={this.grayScale(triggerName[d])} onMouseOver={()=>this.handleTriggerMouseOver(d)} onMouseOut={this.handleTriggerMouseOut}>{d}</text>)
                         })}
                     </g>
                     {/* <g transform={`translate(0, ${height-uncertainHeight})`} className={'bdLine'}>

@@ -101,3 +101,20 @@
     background: #454545;
     border-radius: 2px;
 }
+
+.changed{
+  color: rgb(231, 93, 93);
+}
+
+#table-popup{
+  position: absolute;
+  max-width: 150px;
+  font-size: 10px;
+  font-family: 'STKaiti';
+  font-weight: 600;
+  background: #efefef;
+  border-radius: 2px;
+  padding: 3px;
+  border: 1px solid #454545;
+  visibility: hidden;
+}
