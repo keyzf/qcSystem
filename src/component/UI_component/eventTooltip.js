@@ -77,6 +77,7 @@ export default class EventTooltip extends React.Component{
         trigger = event.trigger.getName();
         detail = event.detail;
         from = event.text;
+        if(from='[na]') from='';
         is_change_time=event.is_change_time;
         is_change_people=event.is_change_people;
         is_change_trigger=event.is_change_trigger;
@@ -93,6 +94,7 @@ export default class EventTooltip extends React.Component{
       trigger = event.trigger.getName();
       detail = event.detail;
       from = event.text;
+      if(from='[na]') from='';
       is_change_time=event.is_change_time;
       is_change_people=event.is_change_people;
       is_change_trigger=event.is_change_trigger;
