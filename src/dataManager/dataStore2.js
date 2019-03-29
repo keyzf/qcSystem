@@ -19,7 +19,7 @@ import id2social_status from '../data/data_v3_20/社会区分.json'
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = false;
+var IS_EN = true;
 
 class DataStore{
   constructor(){
@@ -802,7 +802,10 @@ class Trigger extends _object{
       this.role2score['对象'] = -5
       // console.log(this.role2score)
     }
-
+    // console.log(name)
+    if (name==='为Y作墓志铭') {
+      this.en_name = 'wrote epitaph for' 
+    }
     this.pair_trigger = _object.pair_trigger
   }
 
