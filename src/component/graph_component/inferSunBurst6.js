@@ -256,7 +256,7 @@ class InferSunBurst extends React.Component{
                                 let events = now_graph.all_events
                                 stateManager.setMapEvents(events)
                             }
-                        }}/>
+                        }} style={{width:'28px'}}/>
                         </div>
                     </div>
                 </div>
@@ -729,8 +729,8 @@ class OnePart{
                     <g className="inner-inner-component">
                         <foreignObject className="control_logical_pane;" x={0} y={0} width={bar_width} height={38}>
                         <style type="text/css">{'.control_logical_button { height:20px; cursor: pointer; margin:2px; margin-right:10px}'}</style>
-                        <div  className={'controlPanel'} style={{width:bar_width}}>
-                            <div><img className='control_logical_button' alt='intersection' src={inter_icon}
+                        <ul  className={'controlPanel'} style={{width:bar_width}}>
+                            <li><img className='control_logical_button' alt='intersection' src={inter_icon}
                                 onClick={event=>{
                                     event.preventDefault()
                                     let {former_click_values} = this
@@ -750,8 +750,8 @@ class OnePart{
                                     this.former_click_values.push(undefined)
                                     this.former_click_values.push(undefined)
                                     parent_component.setState({hi: !parent_component.state.hi})
-                            }}/></div>
-                            <div><img className='control_logical_button' alt='union' src={union_icon}
+                            }}/></li>
+                            <li><img className='control_logical_button' alt='union' src={union_icon}
                                 onClick={event=>{
                                     event.preventDefault()
                                     let {former_click_values} = this
@@ -772,8 +772,8 @@ class OnePart{
                                     this.former_click_values.push(undefined)
                                     this.former_click_values.push(undefined)
                                     parent_component.setState({hi: !parent_component.state.hi})
-                            }}/></div>
-                            <div><img className='control_logical_button' alt='infer' src={infer_icon} 
+                            }}/></li>
+                            <li><img className='control_logical_button' alt='infer' src={infer_icon} 
                                 onClick= {event=>{
                                     let now_click_value = this.former_click_values[former_click_values.length-1]
                                     if(now_click_value.node_type==='rule'){
@@ -796,9 +796,9 @@ class OnePart{
                                         this.setStateLater({sunbursts: temp_sunbursts})
                                     }
                             }}/>
-                            </div>
-                            <div><img className='control_logical_button' alt='union' src={back_icon} onClick={event=>{}}/></div>
-                        </div>
+                            </li>
+                            <li><img className='control_logical_button' alt='union' src={back_icon} onClick={event=>{}}/></li>
+                        </ul>
                         </foreignObject >
                     </g>
                     )

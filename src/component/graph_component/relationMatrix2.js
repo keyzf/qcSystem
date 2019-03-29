@@ -393,13 +393,13 @@ class RealtionMatrix extends React.Component{
             <div style={{width:width, height:height}}>
                 <div className="relation_tip">
                     <div className="inputrange">
-                        <span id="rs-bullet" class="rs-label">0</span>
+                        <span id="rs-bullet" className="rs-label">0</span>
                         <input ref='show_people_num_range' className={'rs-range'} type='range' min="1" max={this.max_people_num} value={this.show_people_num} 
                         onChange={event=>{
                             this.show_people_num = parseInt(this.refs.show_people_num_range.value)
                             this.loadMatrix()
                         }}/>
-                        <span id="rs-bullet" class="rs-label">{this.max_people_num}</span>
+                        <span id="rs-bullet" className="rs-label">{this.max_people_num}</span>
                     </div>
                 {/* <div><span style={{fontFamily:'STKaiti',fontSize:'12px',marginLeft:'5px',fontWeight:600,marginTop:'5px',display:'block'}}></span></div> */}
                     <div className="labels">
@@ -423,6 +423,7 @@ class RealtionMatrix extends React.Component{
                     }} checked={color_method==='类型'}/>类型</label>  */}
                     </div>
                 </div>
+                <div className="inputname"><span>Showing threshold</span></div>
                 <div style={{paddingTop:padding.top,paddingLeft:padding.left,paddingRight:padding.right,paddingBottom:padding.bottom}}>
                 <div style={{width:svg_width, height:svg_height}}>
                     <XYPlot

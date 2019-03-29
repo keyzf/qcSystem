@@ -164,14 +164,14 @@ export default class EventTable extends React.Component{
     return (
       <div className="eventList" ref="eventList">
         <div className="listHeader">
-          <h3>{IS_EN?'The Chronology List':'年谱列表'}</h3>
+          <h3>{IS_EN?'Chronology List':'年谱列表'}</h3>
           <button onClick={this.sortByCertainty}>{IS_EN?'sort by uncertainty':'排序'}</button>
           <div>
             <div><img src={modifyIcon}/><div>{IS_EN?'modify':'修改'}</div></div>
             <div><img src={errorIcon}/><div>{IS_EN?'error':'错误'}</div></div>
-            <div><img src={lackIcon}/><div>{IS_EN?'absence':'缺失'}</div></div>
+            <div><img src={lackIcon}/><div>{IS_EN?'missing':'缺失'}</div></div>
             <div><img src={conflictIcon}/><div>{IS_EN?'conflict':'冲突'}</div></div>
-            <div><img src={variationIcon}/><div>{IS_EN?'multiple':'多样'}</div></div>
+            {/* <div><img src={variationIcon}/><div>{IS_EN?'multiple':'多样'}</div></div> */}
           </div>
         </div>
         <div className="listTable">

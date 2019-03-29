@@ -106,8 +106,8 @@ class MainPanel extends Component {
     let {zoomTransform,selected_people,relationLines,checked} = this.state;
     // const padding_botton = 20, padding_right = 10
     // console.log(selected_people);
-    let lifeLikePaint_height = (height-30)/(selected_people.length===0?1:selected_people.length);
-    lifeLikePaint_height = lifeLikePaint_height>170?lifeLikePaint_height:170;
+    let lifeLikePaint_height = (height-10)/(selected_people.length===0?1:selected_people.length);
+    lifeLikePaint_height = lifeLikePaint_height>175?lifeLikePaint_height:175;
     let min = 9999;
     let max = -9999;
     selected_people.forEach((person)=>{
@@ -144,11 +144,11 @@ class MainPanel extends Component {
           </div>
           <div className="toggleView">
             <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
-            <label>{IS_EN?'Category View':'分类视图'}</label>
+            <label>{IS_EN?'Category':'分类视图'}</label>
           </div>
         </div>
           <div className="lineChart" style={{height:height}}>
-            <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)+20}>
+            <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)}>
               <defs>
                 <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
                   <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
@@ -183,7 +183,7 @@ class MainPanel extends Component {
                   <stop offset="100%" stopColor="#DDB56D" stopOpacity="1.0" />
                 </linearGradient>
               </defs>
-              <g transform={'translate(0,25)'}>
+              <g transform={'translate(0,5)'}>
               {
                 selected_people.map((person, index)=>
                   person &&
@@ -207,8 +207,8 @@ class MainPanel extends Component {
                 )
               }
               </g>
-              <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
-              <image href={legend} x={0} y={50} height="140px" width="120px"/>
+              <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top+lifeLikePaint_height-uncertainHeight})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
+              <image href={legend} x={70} y={10} />
             </svg>
           </div>
       </div>

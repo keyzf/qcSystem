@@ -45,3 +45,13 @@
     background: #454545;
     border-radius: 2px;
 }
+
+.historybubble{
+  cursor: pointer;
+}
+
+.historyLine{
+  stroke:rgba(99,99,99,0.8);
+  stroke-width:1;
+  stroke-dasharray:3 2;
+}

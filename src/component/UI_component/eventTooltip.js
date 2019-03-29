@@ -16,6 +16,7 @@ export default class EventTooltip extends React.Component{
       isEventArray: 0
     }
     this.selected = 0;
+    this.handleMouseOver = this.handleMouseOver.bind(this);
   }
 
   componentWillReceiveProps(nextProps){
@@ -40,10 +41,29 @@ export default class EventTooltip extends React.Component{
     }
   }
 
+  handleMouseOver(e){
+    e.target.parentNode.classList.add('hoverTr');
+    let text = e.target.textContent;
+    if(text){
+      d3.select(this.refs.tip)
+      .select('#table-popup')
+      .style('visibility','visible')
+      .style('top',`${e.clientY+8}px`)
+      .style('left',`${e.clientX-20}px`)
+      .select('p')
+      .text(text)
+    }else{
+      d3.select(this.refs.eventList)
+      .select('#table-popup')
+      .style('visibility','hidden')
+    }
+  }
+
   render(){
     let {event,name,closePopup,width,height} = this.props;
     let {isEventArray} =this.state;
     let time=[],addr=[],person=[],trigger='',from='',detail='';
+    let is_change_time=0,is_change_people=0,is_change_trigger=0,is_change_place=0;
     let tipname=name;
     let ismultiple = 0;
     if(isEventArray){
@@ -55,7 +75,11 @@ export default class EventTooltip extends React.Component{
         person = event.roles.map((dd)=>dd.person.getName());
         trigger = event.trigger.getName();
         detail = event.detail;
-        from = event.source;
+        from = event.text;
+        is_change_time=event.is_change_time;
+        is_change_people=event.is_change_people;
+        is_change_trigger=event.is_change_trigger;
+        is_change_place=event.is_change_place;
       }else{
         ismultiple=1;
       }
@@ -67,7 +91,11 @@ export default class EventTooltip extends React.Component{
       person = event.roles.map((dd)=>dd.person.getName());
       trigger = event.trigger.getName();
       detail = event.detail;
-      from = event.source;
+      from = event.text;
+      is_change_time=event.is_change_time;
+      is_change_people=event.is_change_people;
+      is_change_trigger=event.is_change_trigger;
+      is_change_place=event.is_change_place;
     }
     if(ismultiple){
       height = 25 * event.length + 24;
@@ -83,23 +111,26 @@ export default class EventTooltip extends React.Component{
                 {event.map((d,i)=>
                   <li key={i}>
                     <div>
-                    <div style={{width:'20%'}}><span> 
+                    <div style={{width:'20%'}} className={d.is_change_time?'changed':''}><span> 
                     {/* {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon} style={{ filter: 'brightness(100)'}}></img>: */}
                     {d.time_range[0]===d.time_range[1]?d.time_range[0]:(d.time_range[0]===-9999&&d.time_range[1]===9999?<img src={lackIcon}/>:d.time_range.join('-'))}</span></div>
-                    <div style={{width:'26%'}}><span>{d.roles.map((dd)=>dd.person.getName())}</span></div>
-                    <div style={{width:'20%'}}><span>{d.trigger.getName()}</span></div>
+                    <div style={{width:'26%'}} className={d.is_change_people?'changed':''}><span>{d.roles.map((dd)=>dd.person.getName())}</span></div>
+                    <div style={{width:'20%'}} className={d.is_change_trigger?'changed':''}><span>{d.trigger.getName()}</span></div>
                     <div style={{width:'18%'}}><span>{d.source===''?<img src={lackIcon}/>:d.source}</span></div>
                     </div>
                   </li>
                 )}
               </div>
             ):(<div className="tipContent">
-            <div className="rowdiv"><div><img src={timeIcon} className="rowIcon"></img></div><div><span>{time[0]===time[1]?time[0]:(time[0]===-9999&&time[1]===9999?<img src={lackIcon}/>:time.join('-'))}</span></div></div>
-            <div className="rowdiv"><div><img src={placeIcon} className="rowIcon"></img></div><div><span>{addr.join(',').trim()===''?<img src={lackIcon}/>:addr.join(',')}</span></div></div>
-            <div className="rowdiv"><div><img src={personIcon} className="rowIcon"></img></div><div><span>{person.join(',')}</span></div></div>
-            <div className="rowdiv"><div><img src={eventIcon} className="rowIcon"></img></div><div><span>{trigger+detail}</span></div></div>
-            <div className="rowdiv"><div><img src={fromIcon} className="rowIcon"></img></div><div><span>{from===''?<img src={lackIcon}/>:from}</span></div></div>
+            <div className="rowdiv"><div><img src={timeIcon} className="rowIcon"></img></div><div className={is_change_time?'changed':''}><span>{time[0]===time[1]?time[0]:(time[0]===-9999&&time[1]===9999?<img src={lackIcon}/>:time.join('-'))}</span></div></div>
+            <div className="rowdiv"><div><img src={placeIcon} className="rowIcon"></img></div><div className={is_change_place?'changed':''}><span onMouseOver={this.handleMouseOver}>{addr.join(',').trim()===''?<img src={lackIcon}/>:addr.join(',')}</span></div></div>
+            <div className="rowdiv"><div><img src={personIcon} className="rowIcon"></img></div><div className={is_change_people?'changed':''}><span onMouseOver={this.handleMouseOver}>{person.join(',')}</span></div></div>
+            <div className="rowdiv"><div><img src={eventIcon} className="rowIcon"></img></div><div className={is_change_trigger?'changed':''}><span onMouseOver={this.handleMouseOver}>{trigger+detail}</span></div></div>
+            <div className="rowdiv"><div><img src={fromIcon} className="rowIcon"></img></div><div><span onMouseOver={this.handleMouseOver}>{from===''?<img src={lackIcon}/>:from}</span></div></div>
           </div>)}
+          <div id="table-popup">
+          <p></p>
+        </div>
         </div>
     )
   }

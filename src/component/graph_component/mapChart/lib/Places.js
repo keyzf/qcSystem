@@ -216,11 +216,13 @@ export default class Places extends React.Component{
     let lineData={'type':"LineString"};
     let coordinates=[];
     places_con.forEach((d)=>{
+      if(d.addrs[0].x&&d.addrs[0].y&&d.addrs[0].x>0&&d.addrs[0].y>0){
       let tmp=[
         d.addrs[0].x,
         d.addrs[0].y
         ];
       coordinates.push(tmp);
+      }
     })
     lineData['coordinates']=coordinates;
     d3.select(node).selectAll('.route').remove();

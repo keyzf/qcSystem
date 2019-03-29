@@ -7,7 +7,7 @@ import song from './static/song.json';
 import {autorun} from 'mobx';
 import EventTooltip from '../../../UI_component/eventTooltip';
 import route from './static/route.png';
-import legend from './static/legend.png';
+import legend from './static/legendmap.png';
 import './style/map.scss';
 import { IS_EN } from '../../../../dataManager/dataStore2';
 
@@ -172,10 +172,9 @@ class Map extends React.Component {
               </g>
             </g>
           </g>
-          <foreignObject id="mapLegend" x="10" y="5" width="140" height="80">
+          <foreignObject id="mapLegend" x="10" y="5" width="200" height="80">
             <div>
-              <div><img src={legend}/><span>{IS_EN?'Events':'事件次数'}</span></div>
-              <div><span>{IS_EN?'Route':'行进路线'}</span><img src={route}/></div>
+              <img src={legend}/>
             </div>
           </foreignObject >
           <foreignObject id="mapEventTooltip" x="0" y="0" width="200" height="190" visibility={'hidden'}>

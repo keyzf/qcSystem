@@ -36,9 +36,9 @@ export default class AreaLineChart extends React.Component {
   // })
 
   componentWillReceiveProps(nextProps){
-    if(nextProps.data.toString()!==this.props.data.toString()){
+    // if(nextProps.data.toString()!==this.props.data.toString()){
       this.calculatePos(nextProps.data);
-    }
+    // }
     this.renderCircles();
   }
 
@@ -46,26 +46,42 @@ export default class AreaLineChart extends React.Component {
     let {selected_person} = this.props;
     if(data.length!==0&&data[0].length!==0){
       let eventArray=[];
-      data.forEach((data,index)=>{
+      data.forEach((dd,index)=>{
         let eventCircles = [];
-        data.forEach((d,i)=>{
+        let lene=0;
+        dd.forEach((d,i)=>{
           let y0 = d.y0;
           let y=d.y;
           let x=d.x;
           let len = d.events.length;
-          d.events.forEach((event,j)=>{
+          lene+=len;
+          for(let j=0;j<len;j++){
+            let event = d.events[j];
             let score = event.getScore(selected_person);
             let imp = event.getImp(selected_person);
             let tmp={};
             tmp.y= y0+(y-y0)*this.imp_scale(imp);
-            if(tmp.y<0.1) return tmp.y=0.1;
+            if(tmp.y<0.1) tmp.y=0.1;
             tmp.x = x-0.5+j/len;
             tmp.k = this.angle_scale(score);
             tmp.len = this.imp_scale(imp);
             tmp.event=event;
             tmp.id=event.id;
             eventCircles.push(tmp);
-          })
+          }
+          // d.events.forEach((event,j)=>{
+          //   let score = event.getScore(selected_person);
+          //   let imp = event.getImp(selected_person);
+          //   let tmp={};
+          //   tmp.y= y0+(y-y0)*this.imp_scale(imp);
+          //   if(tmp.y<0.1) return tmp.y=0.1;
+          //   tmp.x = x-0.5+j/len;
+          //   tmp.k = this.angle_scale(score);
+          //   tmp.len = this.imp_scale(imp);
+          //   tmp.event=event;
+          //   tmp.id=event.id;
+          //   eventCircles.push(tmp);
+          // })
         })
         eventArray.push(eventCircles);
       })

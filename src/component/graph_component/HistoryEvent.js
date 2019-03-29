@@ -40,24 +40,26 @@ export default class HistoryEvent extends React.Component {
       .selectAll('.historybubble')
       .data(this.data);
     datadom.exit().remove();
-    datadom.attr('cx',d=>xscale(d.x))
+    datadom.attr('x1',d=>xscale(d.x))
+    .attr('x2',d=>xscale(d.x))
     datadom
       .enter()
-      .append('circle')
+      .append('line')
       .attr('class','historybubble')
-      .attr('cx',d=>xscale(d.x))
-      .attr('cy',8)
-      .attr('r',4)
-      .attr('fill','rgba(200,200,200,0.5)')
-      .attr('stroke','rgba(150,150,150,0.9)')
+      .attr('x1',d=>xscale(d.x))
+      .attr('x2',d=>xscale(d.x))
+      .attr('y1',-1)
+      .attr('y2',13)
+      .attr('stroke','rgba(100,100,100,0.6)')
+      .attr('stroke-dasharray',"2 1")
+      .attr('stroke-width',1)
       .on('mouseover',(d)=>{
-          d3.select(node).selectAll('line')
+          d3.select(node).select('.historyLine')
             .attr('visibility','visible')
             .attr('x1',xscale(d.x))
             .attr('x2',xscale(d.x))
-            .attr('y1',15)
-            .attr('y2',height-uncertainHeight+15)
-            .attr('style',"stroke:rgba(99,99,99,0.6);stroke-width:2;stroke-dasharray:6")
+            .attr('y1',-height)
+            .attr('y2',0)
           d3.select(node).select('foreignObject').attr('x',()=>{
             if(xscale(d.x)>780) return xscale(d.x)-480;
             else return xscale(d.x)+10;
@@ -89,13 +91,13 @@ export default class HistoryEvent extends React.Component {
       })
       .on('mouseout',(d)=>{
         if(!this.selected){
-          d3.select(node).selectAll('line')
+          d3.select(node).select('.historyLine')
             .attr('visibility','hidden');
           d3.select(node).select('foreignObject').attr('visibility','hidden');
         }
       })
       .on('mousedown',(d)=>{
-        d3.select(node).selectAll('line')
+        d3.select(node).select('.historyLine')
         .attr('visibility','visible');
         d3.select(node).select('foreignObject').attr('visibility','visible');
         this.selected = 1;
@@ -104,19 +106,19 @@ export default class HistoryEvent extends React.Component {
 
   closePopup(){
     let node = this.refs.history;
-    d3.select(node).selectAll('line')
+    d3.select(node).select('.historyLine')
       .attr('visibility','hidden');
     d3.select(node).select('foreignObject').attr('visibility','hidden');
     this.selected = 0;
   }
 
   render() {
-    let {width,translate} = this.props;
+    let {height,translate} = this.props;
     return(
     <g className="historyevents" ref="history" transform={translate}>
-      <rect width={width} height={16} x={0} y={0} fill={'#ebebeb'}></rect>
-      <line></line>
-      <foreignObject x="20" y="22" width="480" height="130" visibility="hidden">
+      {/* <rect width={width} height={16} x={0} y={0} fill={'#ebebeb'}></rect> */}
+      <line className="historyLine"></line>
+      <foreignObject x={"20"} y={-height+55} width="480" height="130" visibility="hidden">
         <div id="historytip" style={{width:470,height:125,position:'absolute',backgroundColor:'rgba(0,0,0,0.4)'}}>
           <div><span></span><img src={clear} onClick={this.closePopup}></img></div>
           <div className="historyContent"></div>
