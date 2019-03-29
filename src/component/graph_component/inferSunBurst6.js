@@ -1,4 +1,4 @@
-import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec, intersect, union, difference, IS_EN, isValidYear } from '../../dataManager/dataStore2'
+import dataStore, { personManager, triggerManager, filtEvents, eventManager, eucDist, hasSimElmIn, addrManager, timeManager, arrayAdd, simplStr, objectManager, dictCopy, sortBySimilar, ruleFilterWith, normalizeVec, ruleFilter, meanVec, intersect, union, difference, IS_EN, isValidYear, rangeGenrator } from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
 import net_work from '../../dataManager/netWork'
@@ -38,9 +38,11 @@ import { stat } from 'fs';
 import { all } from 'q';
 import './inferSunBurst.scss';
 import continuousSizeLegend from 'react-vis/dist/legends/continuous-size-legend';
+import auto2 from '../../dataManager/translator';
 
 const PI = Math.PI
 const inner_radius = 0.3 //圆的内轮廓
+const small_show_num = 15
 
 class InferSunBurst extends React.Component{
     id2ids = {} //记录了上一步
@@ -87,7 +89,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:10000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
             .then(data=>{
                 console.log(data)
                 data = dataStore.processResults(data.data)
@@ -176,7 +178,11 @@ class InferSunBurst extends React.Component{
         // const control_bar_height = 100
         width = big_mode?1920:width
         const graph_height = (big_mode?1000:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
-        const xDomain = [-r,-r + 2*r/graph_height*graph_width], yDomain = [-r,r]
+        const xDomain = big_mode?
+            [-r,-r + 2*r/graph_height*graph_width]:
+            [-0.8*r,-0.8*r + 2*0.8*r/graph_height*graph_width], 
+            yDomain = big_mode?[-r,r]:[-0.8*r,0.8*r]
+        
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
 
@@ -416,7 +422,6 @@ class OnePart{
     links_datas = []
     show_event_mark_data = []
     render( ){
-        const small_show_num = 15
         const {all_events, center_event, part_index, parent_component, center_x, center_y, r, filter_values, ruleManager} = this
         let former_click_values = this.former_click_values 
         let {
@@ -625,8 +630,8 @@ class OnePart{
         if (!this.drag_value && mouseover_value && (mouseover_value.node_type==='filter_value' ||  mouseover_value.node_type==='related_value') && mouseover_value.belong_to===part_index) {
             let mouseover_object = objectManager.get(mouseover_value.object_id)
             event_mark_data.forEach(elm=>{
-                let links = elm.links
-                links = links.filter(elm=> big_mode || elm.object_index<small_show_num)
+                let links = elm.links  
+                links = links.filter(elm=>elm.object_index<small_show_num) // big_mode || 
                 let link_ids = links.map(elm=> elm.object_id)
                 if (mouseover_object && link_ids.includes(mouseover_object.id) && links.length>1) {
                     show_event_mark_data.push(elm)  //事件点
@@ -648,7 +653,7 @@ class OnePart{
             })
         }
         let fbundling = forceBundle()
-                        .step_size(big_mode?0.005:0.001)
+                        .step_size(             0.005)
                         .compatibility_threshold(0.6)
                         .nodes(node_datas)
                         .edges(edge_datas)
@@ -743,7 +748,7 @@ class OnePart{
         // 上面那个控制面板
         const panel_data = [
             {
-                x: center_x+r, y:center_y+r-0.1, customComponent: (row, positionInPixels) => {
+                x: center_x+r, y:big_mode?center_y+r-0.1:center_y+r*0.8-0.1, customComponent: (row, positionInPixels) => {
                     const bar_width = 162
                     return (
                     <g className="inner-inner-component">
@@ -846,7 +851,7 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
-        const show_object_num = 70
+        const show_object_num = 50
         const {center_x , center_y, all_events, center_event} = this
 
         if (!center_event) {
@@ -973,33 +978,6 @@ class OnePart{
                 center_index = vecs.length-1
             }
             
-            // 加入上位属性
-            let types = [], parent_types = []
-            if (object_type==='trigger') {
-                // types = all_objects.map(elm=>elm.type)
-                parent_types = all_objects.map(elm=>elm.parent_type)
-
-                let {parent_trigger2vec} = dataStore
-                // types.forEach(elm=>{
-                //     all_objects.push({
-                //         getName: ()=> elm,
-                //         vec: parent_trigger2vec[elm],
-                //         id: elm,
-                //         sub_object:  all_objects.filter(object=> object.type===elm),
-                //     })
-                // })
-                // parent_types.forEach(elm=>{
-                //     all_objects.push({
-                //         getName: ()=> elm,  //这里还有英文的问题啊
-                //         vec: parent_trigger2vec[elm],
-                //         id: elm,
-                //         sub_object:  all_objects.filter(object=> object.parent_type===elm),
-                //     })
-                // })
-
-                // vecs = [...vecs, ...parent_types.map(elm=> parent_trigger2vec[elm])]  //, ...types.map(elm=> parent_trigger2vec[elm])
-            }
-
             let angles = myTsne(vecs).map(elm=> elm[0])
             let min_angle = Math.min(...angles),
                 max_angle = Math.max(...angles)
@@ -1019,6 +997,7 @@ class OnePart{
                 return index/dist_length
             })
 
+            
             dists = dists.map(dist=> {
                 return Math.sqrt(dist)
             })
@@ -1054,7 +1033,6 @@ class OnePart{
                     y: y,
                     origin_x: x,
                     origin_y: y,
-                    is_parent: parent_types.includes(elm.getName()),
                     object_index: sort_all_objects.findIndex(elm2=> elm2===elm),
                     rotation: text_rotate,
                     label: simplStr(elm.getName(), IS_EN?20:5),
@@ -1294,6 +1272,14 @@ class ChangeEventPanel extends React.Component{
     render(){
         let change_event_index = 0 
         let {trigger_options, addr_options, people_options, time_options, center_event, parent_component} = this.props
+        time_options = rangeGenrator(1000,1200).map(elm=>{
+            return {
+                id: elm.toString(),
+                key: elm.toString(),
+                value: elm.toString(),
+                text: elm.toString(),
+            }
+        })
         return (
             <div className='change_event_bar'>
             <div className='change_event_div'>
@@ -1323,15 +1309,10 @@ class ChangeEventPanel extends React.Component{
                 value = {center_event.time_range[1].toString()}
                 onChange={(event,{value})=>{
                     let time = parseFloat(value)
-<<<<<<< HEAD
-                    if (time!==center_event.time_range[1]) {
-                        center_event.time_range[1] = time
-=======
                     if (time!==center_event.time_range[0]) {
                         center_event.time_range[1] = time;
                         center_event.is_change = true;
                         center_event.is_change_time = true;
->>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
                         this.setState({hi: !this.state.hi})
                         parent_component.state.sunbursts[0].loadSunBurstData()
                         stateManager.refresh()
@@ -1342,7 +1323,7 @@ class ChangeEventPanel extends React.Component{
             <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection
-                placeholder='时间'
+                placeholder= {auto2('时间')}
                 options={time_options}
                 value = {center_event.time_range[0].toString()}
                 onChange={(event,{value})=>{
@@ -1361,13 +1342,13 @@ class ChangeEventPanel extends React.Component{
             {
                 center_event.roles.map(({role, person}, index)=>{
                     return (
-                    <div key= {index} className='change_event_div' style={{left: 470+165*change_event_index++, width: 160}}>
+                    <div key= {index} className='change_event_div' style={{width: 115}}>
                         <Dropdown
                         fluid search selection 
-                        placeholder='人物/角色'
+                        placeholder= {auto2('人物/角色')} 
                         options={people_options.map(elm=> {
                             elm = dictCopy(elm)
-                            elm.text += '/' + role
+                            elm.text += '/' + auto2(role)
                             return elm
                         })}
                         value = {person.id}
@@ -1393,7 +1374,7 @@ class ChangeEventPanel extends React.Component{
             <div className='change_event_div'>
                 <Dropdown 
                 fluid search selection  multiple
-                placeholder='地点'
+                placeholder={auto2('地点')} 
                 options={addr_options}
                 value = {center_event.addrs.map(elm=> elm.id)}
                 onChange={(event,{value})=>{

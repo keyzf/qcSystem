@@ -98,10 +98,6 @@ export default class Places extends React.Component{
             tmp.uncertain_time = 1;
           }else{
             tmp.certain_time = 1;
-<<<<<<< HEAD
-            places_con.push(tmp);
-=======
->>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
           }
           placeMap.set(addr_id,addr_len++);
           places.push(tmp);
@@ -192,10 +188,6 @@ export default class Places extends React.Component{
     //   places_without_time:places_without_time,
     //   places_con:places_con
     // })
-<<<<<<< HEAD
-    // console.log(places);
-    places = places.filter(d=>d.events.length>1);
-=======
     places = places.filter(d=>{
       if(d.certain_time>0) return true;
       else if(d.events.length>1){
@@ -205,7 +197,6 @@ export default class Places extends React.Component{
         return false;
       }
     });
->>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
     places.forEach((place)=>{
       place.events.sort((a,b)=>{
         if(a.addrs.length>0) return -1;
@@ -214,10 +205,6 @@ export default class Places extends React.Component{
         }
       })
     })
-<<<<<<< HEAD
-    // console.log(places);
-=======
->>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
     this.setState({
       places:places,
       places_con:places_con
@@ -283,10 +270,6 @@ export default class Places extends React.Component{
           return this.rscale(d.events.length)
         })
         .attr('transform',d=>{
-<<<<<<< HEAD
-          // console.log(d);
-=======
->>>>>>> 4858ca5924cc2947df6f927c604de3e5785b93c4
           return "translate(" + projection([
           d.addr.x,
           d.addr.y
