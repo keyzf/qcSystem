@@ -64,45 +64,45 @@ class RealtionMatrix extends React.Component{
                 // console.log(data)
                 let graph_data = dataStore.processResults(data.data)
                 let {events} = graph_data
-                this.all_events = dataStore.dict2array(events)
+                // this.all_events = dataStore.dict2array(events)
                 // // 对多个人的情况取并集
-                // let intersect_people = new Set()
-                // selected_people.forEach((person, index)=>{
-                //     let related_people = new Set( person.getRelatedPeople() )
-                //     if (index===0) {
-                //         intersect_people = related_people
-                //     }else{
-                //         intersect_people = new Set([...related_people].filter(person=> intersect_people.has(person)))
-                //     }
-                // })
-                // this.all_events = dataStore.dict2array(events).filter(event=> event.roles.length>1)
-                // selected_people.forEach(person=>{
-                //     intersect_people.add(person)
-                // })
-                // this.all_events = this.all_events.filter(event=>{
-                //     let people = event.getPeople()
-                //     let all_is_in = true
-                //     people.forEach(person=>{
-                //         if (!intersect_people.has(person)) {
-                //             all_is_in = false
-                //         }
-                //     })
-                //     return all_is_in
-                // })
+                let intersect_people = new Set()
+                selected_people.forEach((person, index)=>{
+                    let related_people = new Set( person.getRelatedPeople() )
+                    if (index===0) {
+                        intersect_people = related_people
+                    }else{
+                        intersect_people = new Set([...related_people].filter(person=> intersect_people.has(person)))
+                    }
+                })
+                this.all_events = dataStore.dict2array(events).filter(event=> event.roles.length>1)
+                selected_people.forEach(person=>{
+                    intersect_people.add(person)
+                })
+                this.all_events = this.all_events.filter(event=>{
+                    let people = event.getPeople()
+                    let all_is_in = true
+                    people.forEach(person=>{
+                        if (!intersect_people.has(person)) {
+                            all_is_in = false
+                        }
+                    })
+                    return all_is_in
+                })
 
-                // let person2person = {}
-                // this.all_events.forEach(event=>{
-                //     let people = event.getPeople()
-                //     people.forEach(person1=>{
-                //         person2person[person1.id] = person2person[person1.id] || {}
-                //         people.forEach(person2=>{
-                //             if (person1 === person2) {
-                //                 return
-                //             }
-                //             person2person[person1.id][person2.id] = 1
-                //         })
-                //     })
-                // })
+                let person2person = {}
+                this.all_events.forEach(event=>{
+                    let people = event.getPeople()
+                    people.forEach(person1=>{
+                        person2person[person1.id] = person2person[person1.id] || {}
+                        people.forEach(person2=>{
+                            if (person1 === person2) {
+                                return
+                            }
+                            person2person[person1.id][person2.id] = 1
+                        })
+                    })
+                })
 
                 this.selected_people = selected_people
                 this.loadMatrix()
@@ -256,7 +256,7 @@ class RealtionMatrix extends React.Component{
           height: 480,
           padding:{
               top: 30,
-              bottom: 10,
+              bottom: 0,
               left: 10,
               right: 10
           }
@@ -373,8 +373,8 @@ class RealtionMatrix extends React.Component{
             hint_value.y = (y+y0)/2
             if (personX && personY) {
                 label_datas = [
-                    { x: 0, y: (y+y0)/2, label: personX.name, style:{fontFamily: 'STKaiti'}},
-                    { x: (x+x0)/2+rect_width, y: people_array.length*rect_width, label: personY.name, style:{fontFamily: 'STKaiti'}}
+                    { x: 0, y: (y+y0)/2, label: personX.getName(), style:{fontFamily: 'STKaiti'}},
+                    { x: (x+x0)/2+rect_width, y: people_array.length*rect_width, label: personY.getName(), style:{fontFamily: 'STKaiti'}}
                 ]                
             }
         }
@@ -402,6 +402,7 @@ class RealtionMatrix extends React.Component{
         const padding_e = people_num<=3?2:1.1
 
         let default_domain = [-people_num*(padding_e-1), people_num*padding_e]
+        this.max_people_num = this.max_people_num>300?300:this.max_people_num
         return (
             <div style={{width:width, height:height}}>
                 <div className="relation_tip">

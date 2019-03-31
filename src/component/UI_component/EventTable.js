@@ -53,8 +53,10 @@ export default class EventTable extends React.Component{
       let need_refesh = stateManager.need_refresh
       let selected_people = stateManager.selected_people ;
       let selected_event_id = stateManager.selected_event_id.get();
+      console.log('get')
       net_work.require('getPersonEvents', {person_id:selected_people[0].id})
       .then(data=>{
+        console.log(data)
           if(data){
               data = dataStore.processResults(data)
               this.all_events = dataStore.dict2array(data.events);

@@ -91,7 +91,7 @@ class InferSunBurst extends React.Component{
         // console.log(stateManager.selected_event)
         if (stateManager.is_ready) {
             let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:20000})
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:5000})
             .then(data=>{
                 console.log(data)
                 data = dataStore.processResults(data.data)
@@ -176,7 +176,7 @@ class InferSunBurst extends React.Component{
         this.r = r  //圆的大小
         const graph_width = (big_mode?10000:5000) // width<height?width: height
 
-        const title_height = 50
+        const title_height = 30
         // const control_bar_height = 100
         width = big_mode?1920:width
         const graph_height = (big_mode?1000:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
@@ -318,6 +318,12 @@ class InferSunBurst extends React.Component{
                             let now_graph = this.sunbursts[now_part_index]
                             if (now_graph) {
                                 let events = now_graph.all_events
+                                const node = this.refs.inferSun;
+                                if(this.allPage){
+                                    node.classList.remove('allPage');
+                                    this.allPage = 0;
+                                    this.setState({big_mode: false})
+                                }
                                 stateManager.setRelationEvents(events)
                             }
                         }}/>
@@ -332,6 +338,12 @@ class InferSunBurst extends React.Component{
                                 let people = now_graph.all_people
                                 let selcted_people = stateManager.selected_people
                                 stateManager.setSelectedPeople([selcted_people[0], ...people.filter(elm=> elm!==selcted_people[0])])
+                                const node = this.refs.inferSun;
+                                if(this.allPage){
+                                    node.classList.remove('allPage');
+                                    this.allPage = 0;
+                                    this.setState({big_mode: false})
+                                }
                             }
                         }}/>
                         </div>
@@ -342,6 +354,12 @@ class InferSunBurst extends React.Component{
                             let now_graph = this.sunbursts[now_part_index]
                             if (now_graph) {
                                 let events = now_graph.all_events
+                                const node = this.refs.inferSun;
+                                if(this.allPage){
+                                    node.classList.remove('allPage');
+                                    this.allPage = 0;
+                                    this.setState({big_mode: false})
+                                }
                                 stateManager.setMapEvents(events)
                             }
                         }} style={{width:'28px'}}/>
@@ -383,7 +401,7 @@ class InferSunBurst extends React.Component{
                                 return undefined
                             }
                             return {
-                                x: index*3.25-r-0.08,
+                                x: index*3.25-r-(big_mode?0.09:0.04),
                                 y: 0, //center_x
                                 customComponent: (row, positionInPixels) => {
                                     return (
@@ -403,7 +421,7 @@ class InferSunBurst extends React.Component{
                         size={0}
                         data={[{x:0,y:0, size:0}]}
                         onNearestXY={(value, {event})=>{
-                            console.log(event)
+                            // console.log(event)
                             let {offsetX, offsetY} = event
                             let {isDrag} = this.state
                             let graph_x = trueX2X(offsetX), graph_y = trueY2Y(offsetY)
@@ -630,10 +648,10 @@ class OnePart{
         filter_values.forEach((filter_value,index)=>{
             if (big_mode) {
                 filter_value.x = center_x + r  + 0.025*index +0.05
-                filter_value.y = center_y + r - 0.1*index-0.3
+                filter_value.y = center_y + r - 0.1*index-0.4
             }else{
                 filter_value.x = center_x + r  + 0.05*index +0.05
-                filter_value.y = center_y + r - 0.15*index-0.4
+                filter_value.y = center_y + r - 0.15*index-0.5
             }
         })
 
@@ -655,11 +673,11 @@ class OnePart{
 
         let part_index_data = big_mode?
         [
-            {x: center_x-r+0.1, y: center_y+shink_p*r-0.05, label: 'Step '+(part_index+1)},
-            {x: center_x+r+0.02, y: center_y+shink_p*r-0.05, label: 'Filter '+(part_index+1)}
+            {x: center_x-r+0.1, y: center_y+shink_p*r-0.01, label: 'Step '+(part_index+1)},
+            {x: center_x+r+0.02, y: center_y+shink_p*r-0.01, label: 'Filter '+(part_index+1)}
         ]:
         [
-            {x: center_x-r+0.15, y: center_y+shink_p*r-0.1, label: 'Step '+(part_index+1)},
+            {x: center_x-r+0.25, y: center_y+shink_p*r-0.1, label: 'Step '+(part_index+1)},
             {x: center_x+r+0.05, y: center_y+shink_p*r-0.1, label: 'Filter '+(part_index+1)}
         ]
         part_index_data.forEach(elm=>
@@ -681,8 +699,8 @@ class OnePart{
         )
              
         
-        const border_r = (big_mode?0.95:0.89)*r
-        const delta_y = (big_mode?0.02:0.01)+0.02
+        const border_r = (big_mode?0.95:0.80)*r
+        const delta_y = (big_mode?0.02:0.03)+0.02
 
         component_array.push(
             <LineSeries
@@ -912,6 +930,10 @@ class OnePart{
 
     loadSunBurstData(){
         console.log('loadSunBurstData', this.part_index)
+
+        this.filter_values = []
+        this.ruleManager.rules = []
+
         let {center_x , center_y, all_events, center_event} = this
         // center_y -= 0.05
         if (!center_event) {
@@ -1029,8 +1051,8 @@ class OnePart{
 
         const objects2Vec = (all_objects, start_angle, end_angle, center_vec = undefined, compare_vecs = [], object_type, color) =>{
             color = '#151515' //字体颜色先失效吧
-            start_angle += PI/30
-            end_angle -= PI/30
+            start_angle += PI/20
+            end_angle -= PI/20
             let center_index
             let vecs = all_objects.map(elm=> elm.toVec())
             if (center_vec) {
@@ -1362,24 +1384,6 @@ class ChangeEventPanel extends React.Component{
                 }}/>
             </div>
 
-            <div className='change_event_div'  style={{width: 80}}>
-                <Dropdown 
-                fluid search selection
-                placeholder={IS_EN?'Time':'时间'}
-                options={time_options}
-                value = {center_event.time_range[1].toString()}
-                onChange={(event,{value})=>{
-                    let time = parseFloat(value)
-                    if (time!==center_event.time_range[0]) {
-                        center_event.time_range[1] = time;
-                        center_event.is_change = true;
-                        center_event.is_change_time = true;
-                        this.setState({hi: !this.state.hi})
-                        parent_component.state.sunbursts[0].loadSunBurstData()
-                        stateManager.refresh()
-                    }
-                }}/>
-            </div>
 
             <div className='change_event_div' style={{width: 80}}>
                 <Dropdown 
@@ -1391,6 +1395,24 @@ class ChangeEventPanel extends React.Component{
                     let time = parseFloat(value)
                     if (time!==center_event.time_range[0]) {
                         center_event.time_range[0] = time;
+                        center_event.is_change = true;
+                        center_event.is_change_time = true;
+                        this.setState({hi: !this.state.hi})
+                        parent_component.state.sunbursts[0].loadSunBurstData()
+                        stateManager.refresh()
+                    }
+                }}/>
+            </div>
+            <div className='change_event_div'  style={{width: 80}}>
+                <Dropdown 
+                fluid search selection
+                placeholder={IS_EN?'Time':'时间'}
+                options={time_options}
+                value = {center_event.time_range[1].toString()}
+                onChange={(event,{value})=>{
+                    let time = parseFloat(value)
+                    if (time!==center_event.time_range[1]) {
+                        center_event.time_range[1] = time;
                         center_event.is_change = true;
                         center_event.is_change_time = true;
                         this.setState({hi: !this.state.hi})

@@ -27,7 +27,7 @@ export default class Places extends React.Component{
     net_work.require('getPersonEvents', {person_id:selected_person.id})
     .then(data=>{
       if(data){
-        // console.log(data);
+        console.log(data);
         data = dataStore.processResults(data);
         this.getAddrData(data.events);
       }
