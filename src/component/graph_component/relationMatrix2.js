@@ -256,7 +256,7 @@ class RealtionMatrix extends React.Component{
           height: 480,
           padding:{
               top: 30,
-              bottom: 10,
+              bottom: 0,
               left: 10,
               right: 10
           }

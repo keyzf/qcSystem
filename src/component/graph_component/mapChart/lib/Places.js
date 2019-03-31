@@ -17,9 +17,13 @@ export default class Places extends React.Component{
     this.rscale = d3.scaleLinear()
                     .range([6,12])
     this.getAddrData = this.getAddrData.bind(this);
-    this.renderPlace = this.renderPlace.bind(this);
+    // this.renderPlace = this.renderPlace.bind(this);
     this.renderLines = this.renderLines.bind(this);
-    this.renderPlaces = this.renderPlaces.bind(this);
+    // this.renderPlaces = this.renderPlaces.bind(this);
+    this.renderPie = this.renderPie.bind(this);
+    this.arc=d3.arc()
+               .innerRadius(0)
+    this.pie=d3.pie()
   }
   componentWillMount(){
     let {selected_person} = this.props;
@@ -34,7 +38,7 @@ export default class Places extends React.Component{
     })
   }
   componentDidMount(){
-    this.renderPlaces();
+    this.renderPie();
     this.renderLines();
   }
 
@@ -54,14 +58,14 @@ export default class Places extends React.Component{
           console.log(data);
           data = dataStore.processResults(data)
           this.getAddrData(data.events);
-          this.renderPlaces();
+          this.renderPie();
           this.renderLines();
         }
       })
     }
   }
   componentDidUpdate(){
-    this.renderPlaces();
+    this.renderPie();
     this.renderLines();
   }
   getAddrData(events){
@@ -302,9 +306,47 @@ export default class Places extends React.Component{
           else return color;
         })
   }
+  renderPie(){
+    let {places} = this.state;
+    let {projection,color,isonly,index} = this.props;
+    let node = this.refs.place;
+    this.pie.value(d=>d).sort(null);
+    console.log(places);
+    d3.select(node).select('#piePlace').selectAll('g').remove()
+    places.forEach((place,i)=>{
+      let data = [{'events':place.events,'addr':place.addr,'data':[place.certain_time+place.uncertain_time,place.uncertain_addr]}];
+      let piedata = this.pie(data[0].data);
+      this.arc.outerRadius(this.rscale(data[0].events.length));
+      let dom = d3.select(node).select('#piePlace').selectAll(`pie${i}`)
+                  .data(data);
+      // dom.exit().remove();
+      let gdom=dom.enter()
+         .append('g')
+         .attr('class',`pie${i}`)
+         .attr('transform',d=>{
+          return "translate(" + projection([
+          d.addr.x,
+          d.addr.y
+          ]) + ")"})
+      gdom.append('path')
+          .attr('d',this.arc(piedata[0]))
+          .style('fill',()=>{
+            if(index===0) return '#a2a4bf';
+            else return color;
+          })
+      gdom.append('path')
+          .attr('d',this.arc(piedata[1]))
+          .style('fill',()=>{
+            if(index===0) return '#a2a4bf';
+            else return color;
+          }) 
+          .attr('fill-opacity',0.5)
+    })
+  }
   render(){
     return (
       <g ref="place">
+        <g id="piePlace"></g>
       </g>
     )
   }

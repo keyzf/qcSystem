@@ -99,8 +99,8 @@ class Map extends React.Component {
     let node = this.refs.places;
     d3.select(node)
       .on('mouseover',()=>{
-        let target = d3.select(d3.event.srcElement);
-        if(target.node().tagName==='circle'||target.node().tagName==='rect'){
+        let target = d3.select(d3.event.srcElement.parentNode);
+        if(target.attr('class').substr(0,3)==='pie'){
           let targetdata = target.datum();
           let pos = d3.mouse(node);
           this.setState({
@@ -124,8 +124,8 @@ class Map extends React.Component {
         }
       })
       .on('mousedown',()=>{
-        let target = d3.select(d3.event.srcElement);
-        if(target.node().tagName==='circle'||target.node().tagName==='rect'){
+        let target = d3.select(d3.event.srcElement.parentNode);
+        if(target.attr('class').substr(0,3)==='pie'){
           let targetdata = target.datum();
           let pos = d3.mouse(node);
           this.setState({
@@ -170,6 +170,7 @@ class Map extends React.Component {
                   return person&&<Places key={i} selected_person={person} projection={this.projection} color={this.colors(i)} path={this.path} index={i}/>
                 })}
               </g>
+              <g id="selectedPlace"></g>
             </g>
           </g>
           <foreignObject id="mapLegend" x="10" y="5" width="200" height="80">
