@@ -177,6 +177,7 @@ export default class Places extends React.Component{
     //     }
     //   }
     // })
+    console.log(places_con);
     places_con.sort((a,b)=>{
       return a.time_range[0]-b.time_range[0]
     })

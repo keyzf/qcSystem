@@ -39,6 +39,7 @@ class NetWork {
                 cache:'default'
             })
             .then(res =>{
+                console.log(res)
                 let data = res.json() 
                 this.url2data[url] = data
                 return data

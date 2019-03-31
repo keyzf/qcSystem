@@ -173,20 +173,20 @@ class LifeLikePaint extends Component{
             let imp = event.getImp(selected_person) * Math.exp(-(year-event.time_range[0])/windows_size)
             return total+imp
         }, 0)
-        if(method==='加权平均' || true){
-            types.forEach(type =>{
-                if (type2events[type].length==0) {
-                    type2score[type] = 0  //undefined //叠起来时为0
-                }else{
-                    type2score[type] = type2events[type].reduce((total, event)=>{
-                        let imp = event.getImp(selected_person)  * Math.exp(-(year-event.time_range[0])/windows_size)
-                        let score = event.getScore(selected_person) * imp / total_imp
-                        // console.log(score, event.getScore(selected_person), imp, total_imp)
-                        return total + score
-                    }, 0)                    
-                }
-            })
-        }
+
+        types.forEach(type =>{
+            if (type2events[type].length==0) {
+                type2score[type] = 0  //undefined //叠起来时为0
+            }else{
+                type2score[type] = type2events[type].reduce((total, event)=>{
+                    let imp = event.getImp(selected_person)  * Math.exp(-(year-event.time_range[0])/windows_size)
+                    let score = event.getScore(selected_person) * imp / total_imp
+                    // console.log(score, event.getScore(selected_person), imp, total_imp)
+                    return total + score
+                }, 0)                    
+            }
+        })
+
         return type2score
     }
 
@@ -300,6 +300,21 @@ class LifeLikePaint extends Component{
         
         let maxy_sum=0;
         let maxy=0;
+        // rangeGenrator(min_year, max_year+1)
+
+        let temp_years = []
+        years.forEach((year,index)=>{
+            if (index===years.length-1) {
+                return
+            }
+            let next_year = years[index+1]
+            temp_years.push(year)
+            while(next_year-year>3) {
+                year = year + Math.ceil((next_year-year)/3)
+                temp_years.push(year)
+            }
+        })
+        years = temp_years
         years.forEach(year=>{
           let events = year2events[year] || []
           let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])

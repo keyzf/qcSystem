@@ -19,7 +19,7 @@ import id2social_status from '../data/data_v3_20/社会区分.json'
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = true;
+var IS_EN = false;
 
 class DataStore{
   constructor(){
@@ -185,6 +185,8 @@ class Manager {
   }
 
   create(_object){
+    if(!_object.id)
+      return undefined
     // console.log(_object)
     if (this.id_set.has(_object.id)) {
       return this.id2object[_object.id]
@@ -340,6 +342,13 @@ class _object{
       this.en_name = _object.name
     else
       this.en_name = _object.en_name
+
+    let en_name = this.en_name
+    if (en_name==='死亡') 
+      this.en_name = 'died'
+    if (en_name==='出生') 
+      this.en_name = 'born'
+    
   }
 
   toVec(){
@@ -434,7 +443,7 @@ class Event extends _object{
     let parent_type = this.trigger.parent_type
     let type_p = stateManager.type2p[parent_type]
     if (parent_type!=='政治') {
-      type_p *= 20
+      type_p *= 10
     }
     // type_p = type_p || 1
     if (trigger_imp[trigger_id]) {
@@ -787,6 +796,18 @@ class Trigger extends _object{
     this.vec = _object.vec
     this.role2score = _object.role2score
 
+    let name = _object.name
+    if (['排挤', '忌恶', '弹劾', '攻讦', '反对Y称帝', '排Y之学', '拒绝会面', '其党攻讦Y'].includes(name)) {
+      this.role2score['主角'] = 0
+      this.role2score['对象'] = -5
+      // console.log(this.role2score)
+    }
+    // console.log(name)
+    if (name==='为Y作墓志铭') {
+      this.en_name = 'wrote epitaph for' 
+    }else if(name==='为Y作字说名述'){
+      this.en_name = 'explanation of capping zixu'
+    }
     this.pair_trigger = _object.pair_trigger
   }
 

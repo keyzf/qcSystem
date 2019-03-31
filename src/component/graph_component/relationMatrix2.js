@@ -64,8 +64,8 @@ class RealtionMatrix extends React.Component{
                 // console.log(data)
                 let graph_data = dataStore.processResults(data.data)
                 let {events} = graph_data
-
-                // 对多个人的情况取并集
+                // this.all_events = dataStore.dict2array(events)
+                // // 对多个人的情况取并集
                 let intersect_people = new Set()
                 selected_people.forEach((person, index)=>{
                     let related_people = new Set( person.getRelatedPeople() )
@@ -301,22 +301,23 @@ class RealtionMatrix extends React.Component{
             })
         }else if(color_method==='类型'){
             const type2color = {
-                '其它': '#667db6',
-                '学术': '#2C5364',
-                '政治': '#FDC830',
-                '社交': '#ffc3a0',
-                '著述': '#c0c0aa',
-                '迁徙': '#FFEFBA',
-                // '#ACB6E5'
+                '其它': '#e7cb99',
+                '学术': '#5f8d8a',
+                '政治': '#577886',
+                '社交': '#c4b086',
+                '著述': '#b2c3a9',
+                '军事': '#89beb7',
+                '宗教': '#e6cab6'
             }
-            const types = Object.keys(type2color)
             events_rect_data.forEach(elm=>{
                 let events = elm.event_ids.map(id=> eventManager.get(id))
                 let parent_types = events.map(elm=> elm.trigger.parent_type)
                 let counts = {}
-                parent_types.forEach(elm=>{
-                    counts[elm]= counts[elm] || 0
-                    counts[elm]++
+                events.forEach(elm=>{
+                    let parent_type = elm.trigger.parent_type
+                    counts[parent_type]= counts[parent_type] || 0
+                    counts[parent_type] += 1 //elm.getImp(elm.roles[0].person)
+                    // console.log(elm.getImp(elm.roles[0].person))
                 })
     
                 let max_type = parent_types[0]
@@ -328,19 +329,30 @@ class RealtionMatrix extends React.Component{
                 elm.color = d3.color(type2color[max_type])
             })
         }else if(color_method==='正负向'){
-            const green = d3.rgb(66,251,75);	//浅绿
-            const red = d3.rgb(212,42,42);		//深绿
-            const color = d3.interpolate(green,red);		//颜色插值函数
+            const blue = d3.rgb(39,112,167) //.brighter();	//浅绿
+            const white = d3.color('white')
+            const red = d3.rgb(204,98,100) //.brighter();		//深绿
+            const color1 = d3.interpolate(white, blue);
+            const color2 = d3.interpolate(white,red);
+            //颜色插值函数
             const colorLiner = d3.scaleLinear()
-                                .domain([-10,10])
+                                .domain([0,10])
                                 .range([0,1])
             events_rect_data.forEach(elm=>{
                 let events = elm.event_ids.map(id=> eventManager.get(id))
                 let score = events.reduce((total, event)=>{
                     let people = event.getPeople()
-                    return people.reduce((total, person)=> event.getScore(person), 0)/people.length
-                }, 0)>0?10:-10
-                elm.color = color(colorLiner(score))
+                    let score = people.reduce((total, person)=> event.getScore(person)+total, 0)/people.length
+                    return total + (score<0?score*5:score)
+                }, 0)
+                // console.log(events, score)
+                score = score>=10?10:score
+                score = score<=-10?-10:score
+                if (score>0) {
+                    elm.color = color2(colorLiner(score))
+                }else{
+                    elm.color = color1(colorLiner(-score))
+                }
             })
         }
 
@@ -361,8 +373,8 @@ class RealtionMatrix extends React.Component{
             hint_value.y = (y+y0)/2
             if (personX && personY) {
                 label_datas = [
-                    { x: 0, y: (y+y0)/2, label: personX.name, style:{fontFamily: 'STKaiti'}},
-                    { x: (x+x0)/2+rect_width, y: people_array.length*rect_width, label: personY.name, style:{fontFamily: 'STKaiti'}}
+                    { x: 0, y: (y+y0)/2, label: personX.getName(), style:{fontFamily: 'STKaiti'}},
+                    { x: (x+x0)/2+rect_width, y: people_array.length*rect_width, label: personY.getName(), style:{fontFamily: 'STKaiti'}}
                 ]                
             }
         }
@@ -389,6 +401,8 @@ class RealtionMatrix extends React.Component{
 
         const padding_e = people_num<=3?2:1.1
 
+        let default_domain = [-people_num*(padding_e-1), people_num*padding_e]
+        this.max_people_num = this.max_people_num>300?300:this.max_people_num
         return (
             <div style={{width:width, height:height}}>
                 <div className="relation_tip">
@@ -431,8 +445,8 @@ class RealtionMatrix extends React.Component{
                     height={svg_height}
                     // animation
                     onMouseLeave={event => this.setState({hint_value: undefined})}
-                    xDomain={[-people_num*(padding_e-1), people_num*padding_e]}
-                    yDomain={[-people_num*(padding_e-1), people_num*padding_e]}
+                    xDomain={default_domain}
+                    yDomain={default_domain}
                     >
                     <VerticalRectSeries
                         data={events_rect_data} 

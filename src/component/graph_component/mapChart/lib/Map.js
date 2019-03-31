@@ -16,6 +16,7 @@ class Map extends React.Component {
       super(props);
       this.state = {
         selected_people:[],
+        selected_places: [],
         places: [],
         event: undefined,
         chooseEvent: undefined,
@@ -40,11 +41,13 @@ class Map extends React.Component {
       let used_types = stateManager.used_types
       let need_refesh = stateManager.need_refresh
       let selected_people = stateManager.selected_people;
+      let selected_places = stateManager.map_event_ids;
       let event_id = stateManager.selected_event_id.get()
       let event = eventManager.get(event_id)
       this.setState({
         event: event,
-        selected_people: selected_people
+        selected_people: selected_people,
+        selected_places:selected_places
       })
     }
   })
@@ -82,7 +85,7 @@ class Map extends React.Component {
       })
       .attr("d", this.path);
     let pos = this.projection([112, 31]);
-    console.log(pos);
+    // console.log(pos);
     d3.select(node)
       .append('text')
       .text(()=>{
@@ -94,6 +97,7 @@ class Map extends React.Component {
   }
   componentDidUpdate(){
     this.handleMouseOver();
+    this.renderPlaces();
   }
   handleMouseOver(){
     let node = this.refs.places;
@@ -154,6 +158,32 @@ class Map extends React.Component {
     this.selected = 0;
   }
 
+  renderPlaces(){
+    let {selected_places} = this.state;
+    let node = this.refs.map;
+    let data = selected_places.map((event)=>{
+      let e=eventManager.get(event);
+      if(e.addrs.length>0) return e.addrs[0];
+    }).filter(elm=> elm);
+    // console.log(data)
+    d3.select(node).select('#selectedPlace').selectAll('circle').remove();
+    let doms = d3.select(node).select('#selectedPlace').selectAll('circle')
+    .data(data);
+    doms.exit().remove();
+    doms.enter()
+    .append('circle')
+    .attr('r',5)
+    .attr('transform',d=>{
+    return "translate(" + this.projection([
+    d.x,
+    d.y
+    ]) + ")"})
+    .attr('fill',()=>{
+    return '#ffbe86';
+    })
+    .attr('fill-opacity',0.5)
+    .attr('stroke','#898989')
+  }
   render () {
     let {width,height}= this.props;
     let {selected_people,chooseEvent,selectAddr} = this.state;
@@ -176,6 +206,7 @@ class Map extends React.Component {
               </g>
               <g id="selectedPlace"></g>
             </g>
+            <g id="selectedPlace"></g>
           </g>
           <foreignObject id="mapLegend" x="10" y="5" width="200" height="80">
             <div>

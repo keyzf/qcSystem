@@ -47,6 +47,7 @@ class StateManager{
         this.relation_event_ids.replace(events.map(elm=> elm.id))
     }
     @action setMapEvents(events){
+        console.log(events)
         this.map_event_ids.replace(events.map(elm=> elm.id))
     }
     @action setMountainEvents(events){
