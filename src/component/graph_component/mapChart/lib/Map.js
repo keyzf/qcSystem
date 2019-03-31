@@ -100,6 +100,7 @@ class Map extends React.Component {
     d3.select(node)
       .on('mouseover',()=>{
         let target = d3.select(d3.event.srcElement.parentNode);
+        if(target.attr('class')){
         if(target.attr('class').substr(0,3)==='pie'){
           let targetdata = target.datum();
           let pos = d3.mouse(node);
@@ -116,6 +117,7 @@ class Map extends React.Component {
             .attr('x',pos[0])
             .attr('y', pos[1])
         }
+      }
       })
       .on('mouseout',()=>{
         if(this.selected===0){
@@ -125,6 +127,7 @@ class Map extends React.Component {
       })
       .on('mousedown',()=>{
         let target = d3.select(d3.event.srcElement.parentNode);
+        if(target.attr('class')){
         if(target.attr('class').substr(0,3)==='pie'){
           let targetdata = target.datum();
           let pos = d3.mouse(node);
@@ -142,6 +145,7 @@ class Map extends React.Component {
             .attr('y', pos[1])
         }
         this.selected = 1;
+      }
       })
   }
 

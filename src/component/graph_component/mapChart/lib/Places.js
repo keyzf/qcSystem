@@ -311,7 +311,6 @@ export default class Places extends React.Component{
     let {projection,color,isonly,index} = this.props;
     let node = this.refs.place;
     this.pie.value(d=>d).sort(null);
-    console.log(places);
     d3.select(node).select('#piePlace').selectAll('g').remove()
     places.forEach((place,i)=>{
       let data = [{'events':place.events,'addr':place.addr,'data':[place.certain_time+place.uncertain_time,place.uncertain_addr]}];
