@@ -97,11 +97,11 @@ class AddrSunBursts extends React.Component {
       console.warn('中心事件不存在')
       return
     }
-    console.log('更新地点', center_addr)
+    // console.log('更新地点', center_addr)
 
     let leaf_addrs_num = center_addr.getLeafAddrs().length
     this.leaf_node_angle = 2*PI/leaf_addrs_num
-    console.log(this.leaf_node_angle)
+    // console.log(this.leaf_node_angle)
 
     this.addNode(center_addr, 0, 0, 0, 2*PI)
     let {addr2level, addr2node, nodes, all_addrs} = this
@@ -130,7 +130,7 @@ class AddrSunBursts extends React.Component {
 
 
   render() {
-    console.log('render 地点结构树')
+    // console.log('render 地点结构树')
     let {addr_arc_data, hint_value} = this.state
     let {width} = this.props
 

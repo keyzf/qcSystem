@@ -61,13 +61,13 @@ class LifeLikePaint extends Component{
         .then(data=>{
             data = dataStore.processResults(data)
             this.all_events = dataStore.dict2array(data.events)
-            console.log('eventdata',this.all_events)
+            // console.log('eventdata',this.all_events)
             this.loadLifeLineData(selected_person)
         })
         // 推测的那几个圆
         net_work.require('infer_person', {person_id:selected_person.id})
         .then(data=>{
-            console.log(data)
+            // console.log(data)
             let infer = data.infer
             data = data.data
             data = dataStore.processResults(data)
@@ -160,7 +160,7 @@ class LifeLikePaint extends Component{
     eventNumScale = num => Math.log(num+1)
 
     loadInferMarkData(data, infer){
-        console.log('mark',data, infer)
+        // console.log('mark',data, infer)
         let {yearScale, scoreScale, eventNumScale} = this
         let id2event = data.events
         let mark_datas = []
@@ -192,13 +192,13 @@ class LifeLikePaint extends Component{
 
 
     loadLifeLineData(selected_person){
-        console.log('loadLifeLineData', selected_person, this.state.chosed_calculate_method)
+        // console.log('loadLifeLineData', selected_person, this.state.chosed_calculate_method)
         let {calcualte_method} = this.props
         let parent_types = [...triggerManager.parent_types].sort()  //分类
 
         let year2events = selected_person.year2events()
         let events = selected_person.getCertainEvents()
-        console.log(year2events,events);
+        // console.log(year2events,events);
         // 找到出生和死亡
         let birth_event = undefined, death_event = undefined
         events.forEach(event=>{
@@ -268,7 +268,7 @@ class LifeLikePaint extends Component{
         })
         this.maxy=maxy;
         this.maxy_sum=maxy_sum;
-        console.log('type',type2area_datas);
+        // console.log('type',type2area_datas);
         let area_datas = []
         for(let type in type2area_datas){
             area_datas.push({
@@ -283,7 +283,7 @@ class LifeLikePaint extends Component{
             })
         }
         area_datas = area_datas.filter(line_data=> area_datas.length>0)
-        console.log('area',area_datas)
+        // console.log('area',area_datas)
 
         // 在line data上用area来编码事件
         area_datas.forEach(elm=>{
@@ -437,9 +437,9 @@ class LifeLikePaint extends Component{
     render(){
         const padding_bottom = 20
         const {height, width, padding, selected_person} = this.props
-        console.log('render lifeLikePaint 主视图', selected_person)
+        // console.log('render lifeLikePaint 主视图', selected_person)
         let {area_datas, showEventMark, prob_mark_datas} = this.state;
-        console.log('prob',prob_mark_datas);
+        // console.log('prob',prob_mark_datas);
         let svgWidth=width-padding.left-padding.right;
         let svgHeight=height-padding.top-padding.bottom;
         // let ownCountType = triggerManager.ownCountType(this.all_events)
@@ -448,7 +448,7 @@ class LifeLikePaint extends Component{
             Math.max(...area_datas.map(data=> data.x_domain[1]).filter(elm=>elm))
         ]
 
-        console.log(x_domain);
+        // console.log(x_domain);
         this.xscale.domain(x_domain)
                    .range([0,svgWidth]);
         this.yscale.domain([0,this.maxy_sum])
@@ -456,7 +456,7 @@ class LifeLikePaint extends Component{
 
         // console.log(area_datas.map(data=> data.x_domain[0]).filter(elm=>elm),x_domain)
         let select_bar_width = 325
-        console.log('state',area_datas)
+        // console.log('state',area_datas)
         return (
             <div className="lifeMountain" style={{ height: height, width:width}}>
                 <div className="ui toggle checkbox">

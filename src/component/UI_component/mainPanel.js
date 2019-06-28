@@ -17,7 +17,7 @@ class MainPanel extends Component {
   constructor(props){
     super(props)
     this.state={
-      checked:false,
+      checked:true,
       selected_people:[],
       zoomTransform: null,
       relationLines: []
@@ -34,8 +34,9 @@ class MainPanel extends Component {
   }
 
   _changeShowPeople = autorun(()=>{
+    let selected_people = stateManager.selected_people
     if (stateManager.is_ready) {
-      let selected_people = stateManager.selected_people
+      selected_people = stateManager.selected_people
       this.setState({selected_people: selected_people});
     }
   })
@@ -101,7 +102,7 @@ class MainPanel extends Component {
   }
 
   render() {
-    console.log('render 上半部分')
+    // console.log('render 上半部分')
     let { width, height, padding, calcualte_method} = this.props;
     let {zoomTransform,selected_people,relationLines,checked} = this.state;
     // const padding_botton = 20, padding_right = 10
@@ -136,15 +137,13 @@ class MainPanel extends Component {
     }
     return (
       <div className="mainPanel" style={{height:height, width: width}}>
-        <div className="mountainHeader">
+        <div className="header">
+          <div className="headerlogo">
           <img className='brand' src={logo}></img>
-          <div>
-          <span>人生起伏</span>
-          <span>Life Mountain View</span>
           </div>
-          <div className="toggleView">
-            <input type="checkbox" name="public" onChange={this.changeViewType} checked={this.state.checked}/>
-            <label>{IS_EN?'Category':'分类视图'}</label>
+          <div className="headerText">
+            {/* <span>行迹</span> */}
+            <span>Life Mountain View</span>
           </div>
         </div>
           <div className="lineChart" style={{height:height}}>
@@ -208,7 +207,7 @@ class MainPanel extends Component {
               }
               </g>
               <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top+lifeLikePaint_height-uncertainHeight})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
-              <image href={legend} x={70} y={10} />
+              {/* <image href={legend} x={70} y={10} /> */}
             </svg>
           </div>
       </div>

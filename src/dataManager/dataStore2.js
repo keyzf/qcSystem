@@ -19,7 +19,7 @@ import id2social_status from '../data/data_v3_20/社会区分.json'
 // import {observable, action} from 'mobx';
 
 // 显示中文还是英文
-var IS_EN = false;
+var IS_EN = true;
 
 class DataStore{
   constructor(){
@@ -28,6 +28,7 @@ class DataStore{
 
     net_work.require('init')
     .then(data=>{
+      console.log(data)
       this.processInitData(data)
       stateManager.is_ready = true
       console.log('初始化完成')
@@ -76,6 +77,23 @@ class DataStore{
     }
 
     triggerManager.countTypes()
+
+    // 加个范仲淹的事情
+    // eventManager.create({
+    //   id: 'event_假1',
+    //   trigger: '担任_trigger',
+    //   addrs: ['addr_13779'],
+    //   roles:[{role:'主角', person: 'person_7111'}],
+    //   time_range: [1097, 1097],
+    //   detail: '',
+    //   vec: new Array(64).fill(0),
+    //   prob_year: {},
+    //   prob_addr: {},
+    //   prob_person: {},
+    //   text: '',
+    //   source: '',
+    // })
+    // console.log(eventManager.get('event_假1'))
   }
 
   // 将对象处理，连接
@@ -112,6 +130,9 @@ class DataStore{
         event.prob_year = _object.prob_year
         // console.log(event)
       }
+      // if(Object.keys(_object.prob_year).length>1){
+      //   console.log(event)
+      // }
       if (Object.keys(_object.prob_person).length>0) {
         event.prob_person = _object.prob_person
       }
@@ -168,6 +189,10 @@ class Manager {
 
   // 使用的时候注意判断是否找到了
   get(_object){
+    if(!_object){
+      console.warn(_object, '为空')
+      return undefined
+    }
     if (typeof(_object)=='number') {
       _object = _object.toString()
     }
@@ -185,10 +210,14 @@ class Manager {
   }
 
   create(_object){
-    if(!_object.id)
+    if(!_object || !_object.id)
       return undefined
     // console.log(_object)
     if (this.id_set.has(_object.id)) {
+      let elm = this.id2object[_object.id]
+      if (elm.vec.length===0 && _object.vec.length!==0) {
+        elm.vec = _object.vec
+      }
       return this.id2object[_object.id]
     }else{
       let new_object = new this._object(_object)
@@ -201,8 +230,11 @@ class Manager {
 }
 
 class ObjectManager{
+  constructor(){
+    this.manager = [triggerManager, timeManager, addrManager, personManager]
+  }
   get(id){
-    let managers = [triggerManager, timeManager, addrManager, personManager]
+    const managers = this.manager
     for (let index = 0; index < managers.length; index++) {
       const manager = managers[index];
       const elm = manager.get(id)
@@ -359,7 +391,7 @@ class _object{
     if (IS_EN)
       return ' ' + this.en_name + ' '
     else
-      return this.name
+      return this.name  // '('+ this.id + ')' + 
   }
 
   toText(){
@@ -412,6 +444,9 @@ class Event extends _object{
     this.is_change_trigger = false;
     this.is_change_people = false;
     this.is_change_place = false;
+
+    // 判断时间是否正确
+    this.time_right = true
     // console.log(this.source, this.text)
     // console.log(this.prob_year, this.prob_addr, this.prob_person, _object)
   }
@@ -443,7 +478,7 @@ class Event extends _object{
     let parent_type = this.trigger.parent_type
     let type_p = stateManager.type2p[parent_type]
     if (parent_type!=='政治') {
-      type_p *= 10
+      type_p *= 5
     }
     // type_p = type_p || 1
     if (trigger_imp[trigger_id]) {
@@ -620,6 +655,10 @@ class Person extends _object{
 
     this.source = _object.source
     this.text = _object.text
+
+    if (this.name==='邓绾') {
+      this.page_rank = 1
+    }
   }
 
   getAltNames(){
@@ -705,12 +744,12 @@ class Person extends _object{
     return  text
   }
 
-  getName(){
-    if (IS_EN)
-      return ' ' + this.en_name + ' '
-    else
-      return this.name
-  }
+  // getName(){
+  //   if (IS_EN)
+  //     return ' ' + this.en_name + ' '
+  //   else
+  //     return this.name
+  // }
 
   getCertainEvents(){
     return this.events.filter(event=> isCertainTimeRange(event.time_range))
@@ -818,12 +857,12 @@ class Trigger extends _object{
   equal(value){
     return value===this.name || this.parent_type===value || this.type===value
   }
-  getName(){
-    if (IS_EN)
-      return ' ' + this.en_name.toLowerCase() + ' '
-    else
-      return this.name
-  }
+  // getName(){
+  //   if (IS_EN)
+  //     return ' ' + this.en_name.toLowerCase() + ' '
+  //   else
+  //     return this.name
+  // }
 }
 
 var personManager = new PersonManager()
@@ -842,83 +881,11 @@ var isCertainTimeRange = (time_range)=>{
 }
 const rangeGenrator  = (start, end) => new Array(end - start).fill(start).map((el, i) => start + i);
 
-//为了添加规则而加的过滤器 
-const yearFilter = (events)=>{
-  let show_years = stateManager.show_years_id,
-      show_addrs = stateManager.show_addrs,
-      show_people = stateManager.show_people,
-      show_triggers = stateManager.show_triggers
-
-  return events.filter(elm => show_years.length===0 || (elm.isTimeCertain && show_years.includes(elm.time_range)))
-}
-const addrFilter = (events)=>{
-  let show_years = stateManager.show_years_id,
-      show_addrs = stateManager.show_addrs,
-      show_people = stateManager.show_people,
-      show_triggers = stateManager.show_triggers
-
-  return events.filter(elm => show_addrs.length===0 || hasSimElmIn(elm.addrs, show_addrs))
-}
-const peopleFilter = (events)=>{
-  let show_years = stateManager.show_years_id,
-      show_addrs = stateManager.show_addrs,
-      show_people = stateManager.show_people,
-      show_triggers = stateManager.show_triggers
-
-  return events.filter(elm => show_people.length===0 || hasSimElmIn(elm.getPeople(), show_people))
-}
-const triggerFilter = (events)=>{
-  let show_years = stateManager.show_years_id,
-      show_addrs = stateManager.show_addrs,
-      show_people = stateManager.show_people,
-      show_triggers = stateManager.show_triggers
-
-  return events.filter(elm => show_triggers.length===0 || show_triggers.includes(elm.trigger))
-}
-
-const ruleFilterWith = (events, used_filter)=>{
-  if(used_filter.includes('t'))
-    events = triggerFilter(events)
-  if(used_filter.includes('a'))
-    events = addrFilter(events)
-  if(used_filter.includes('p'))
-    events = peopleFilter(events)
-  if(used_filter.includes('y'))
-    events = yearFilter(events)
-  // console.log(events)
-  return events
-}
-
 const filtEvents = (events)=>{
   let used_types = stateManager.used_types
 
   events = events.filter(event=> used_types.includes(event.trigger.name) || used_types.includes(event.trigger.parent_type) || used_types.includes(event.trigger.parent_type) )
   return events
-}
-
-
-const ruleFilter = events=>{
-  // console.log(stateManager.rules)
-  return events.filter(event=>{
-    let rules = stateManager.rules
-    if (rules.length===0)
-      return true
-    let objects = event.getAllObjects()
-    let is_ok = false
-    rules.forEach(role=>{
-      if (is_ok)
-        return
-      let related_object = role.getAllObjects()
-      let has_all = true
-      related_object.forEach(elm=>{
-        if (!objects.includes(elm))
-          has_all = false
-      })
-      if (has_all)
-        is_ok = true
-    })
-    return is_ok
-  })
 }
 
 const eucDist = (vec1, vec2)=>{
@@ -1086,12 +1053,6 @@ export {
   // mypqsort,
 
   filtEvents, 
-  addrFilter,
-  yearFilter,
-  peopleFilter,
-  triggerFilter,
-  ruleFilterWith,
-  ruleFilter,
 
   union,
   intersect,

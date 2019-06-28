@@ -11,7 +11,7 @@ import legend from './static/legendmap.png';
 import './style/map.scss';
 import { IS_EN } from '../../../../dataManager/dataStore2';
 
-class Map extends React.Component {
+class Maps extends React.Component {
   constructor (props) {
       super(props);
       this.state = {
@@ -23,6 +23,8 @@ class Map extends React.Component {
         selectAddr: ''
       };
       this.init = this.init.bind(this);
+      this.rscale = d3.scaleLinear()
+                    .range([6,12])
       // 定义地图投影
       this.projection = d3.geoMercator()
                           .center([112, 29])
@@ -161,22 +163,50 @@ class Map extends React.Component {
   renderPlaces(){
     let {selected_places} = this.state;
     let node = this.refs.map;
-    let data = selected_places.map((event)=>{
+    let sets = new Map();
+    let data=[];
+    selected_places.forEach((event)=>{
       let e=eventManager.get(event);
-      if(e.addrs.length>0) return e.addrs[0];
-    }).filter(elm=> elm);
-    // console.log(data)
+      if(e.addrs.length>0){
+        // console.log(e.addrs)
+        let addr = e.addrs[0].id;
+        // console.log(addr);
+        let count = sets.get(addr);
+        // console.log(count);
+        if(count){
+          sets.set(addr,count+1);
+        }else{
+          sets.set(addr,1);
+          // console.log()
+        }
+      }
+    });
+    let tmp,max=0;
+    sets.forEach((value,key,map)=>{
+      tmp={'place':addrManager.get(key),'value':value};
+      if(value>max) max=value;
+      data.push(tmp);
+    })
+    this.rscale.domain([1,max])
+
+    // let data = selected_places.map((event)=>{
+    //   let e=eventManager.get(event);
+    //   if(e.addrs.length>0) return e.addrs[0];
+    // }).filter(elm=> elm);
+    // // console.log(data)
     d3.select(node).select('#selectedPlace').selectAll('circle').remove();
     let doms = d3.select(node).select('#selectedPlace').selectAll('circle')
     .data(data);
     doms.exit().remove();
     doms.enter()
     .append('circle')
-    .attr('r',5)
+    .attr('r',d=>{
+      return this.rscale(d.value)
+    })
     .attr('transform',d=>{
     return "translate(" + this.projection([
-    d.x,
-    d.y
+    d.place.x,
+    d.place.y
     ]) + ")"})
     .attr('fill',()=>{
     return '#ffbe86';
@@ -201,6 +231,7 @@ class Map extends React.Component {
               </g>
               <g ref="places">
                 {selected_people.map((person,i)=>{
+                  // console.log(person)
                   return person&&<Places key={i} selected_person={person} projection={this.projection} color={this.colors(i)} path={this.path} index={i}/>
                 })}
               </g>
@@ -221,4 +252,4 @@ class Map extends React.Component {
     );
   }
 }
-export default Map;
+export default Maps;

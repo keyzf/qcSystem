@@ -5,9 +5,10 @@ import * as serviceWorker from './serviceWorker';
 import '../node_modules/semantic-ui-css/semantic.min.css';
 import applyDecoratedDescriptor from '@babel/runtime/helpers/esm/applyDecoratedDescriptor';
 import initializerDefineProperty from '@babel/runtime/helpers/esm/initializerDefineProperty';
+import EventMatrix from './component/graph_component/eventMatrix1';
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
+// ReactDOM.render(<EventMatrix />, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA

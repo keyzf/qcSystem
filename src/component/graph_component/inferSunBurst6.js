@@ -64,6 +64,7 @@ class InferSunBurst extends React.Component{
 
     sunbursts = []  //等于state中那个
     mouseover_value = undefined
+    highlightingSelectedValues = undefined
 
     mouse_postion = [0,0]
     constructor(){
@@ -77,6 +78,10 @@ class InferSunBurst extends React.Component{
 
             mouse_postion: [0,0],
             sunbursts: [],
+
+            highlighting: false,
+            selected_area: undefined,
+            highlightingSelectedValues: undefined,
         }
     }
 
@@ -89,11 +94,13 @@ class InferSunBurst extends React.Component{
 
     loadNewEvent = autorun(()=>{
         // console.log(stateManager.selected_event)
+        let selected_event_id = stateManager.selected_event_id.get()
         if (stateManager.is_ready) {
-            let selected_event_id = stateManager.selected_event_id.get()
-            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:5000})
+            selected_event_id = stateManager.selected_event_id.get()
+            // console.log(selected_event_id)
+            net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:100})
             .then(data=>{
-                console.log(data)
+                // console.log(data)
                 data = dataStore.processResults(data.data)
                 let {events} = data
                 let center_event = eventManager.get(selected_event_id)
@@ -166,7 +173,7 @@ class InferSunBurst extends React.Component{
         // console.log(this.state)
         // console.log('render triggerSunBurst')
         let {width, height} = this.props
-        let {isMousePressed, sunbursts, big_mode,  show_event_hint_value} = this.state
+        let {isMousePressed, sunbursts, big_mode,  show_event_hint_value, area, highlighting} = this.state
         let {center_event} = this
 
 
@@ -388,6 +395,10 @@ class InferSunBurst extends React.Component{
                             this.setState({isMousePressed: false})
                         }
                     }}>
+                        <Highlight
+                            onBrushEnd={area => this.setState({highlighting: false,area: area})}
+                            onBrushStart={area => this.setState({highlighting: true, area: undefined})}
+                        />
                         {
                             sunbursts.map(elm=> {
                                 // console.log(elm.render())
@@ -550,6 +561,9 @@ class OnePart{
             mouseover_value,
             isMousePressed,
             big_mode,
+
+            area,
+            highlighting
         } = this.getState()
         let ruleManager_mark = ruleManager.getNodeInGraph()
 
@@ -560,23 +574,54 @@ class OnePart{
         this.all_values.forEach((elm,index)=>{
             elm._index = index
         })
+
+        // console.log(area)
+        let {highlightingSelectedValues} = this
+        if(area){
+            // console.log(area)
+            const is_in = label=>{
+                let {right, left, bottom, top} = area
+                let width = left-right, height = top-bottom
+                let {x, y} = label
+                return x<=right && x>=left && y<=top && y>=bottom
+            }
+            highlightingSelectedValues = label_data.filter(elm=>{
+                // if(is_in(elm))
+                //     console.log(elm.label, area, is_in(elm))
+                return is_in(elm)
+            })
+            this.highlightingSelectedValues = highlightingSelectedValues
+            // this.setState({area: undefined})
+            parent_component.state.area = undefined
+
+        }
+
         // 高亮
+        const highlightLabel = elm =>{
+            elm.opacity = 1
+            elm.style = elm.style || {}
+            elm.style.opacity = 1
+        }
         this.all_values.forEach(elm=> {
             // console.log(elm)
             if (mouseover_value && elm.object_id===mouseover_value.object_id) {
-                elm.opacity = 1
-                elm.style = elm.style || {}
-                elm.style.opacity = 1
+                // elm.opacity = 1
+                // elm.style = elm.style || {}
+                // elm.style.opacity = 1
+                highlightLabel(elm)
             }else{
                 elm.opacity = 0.5
                 elm.style = elm.style || {}
                 elm.style.opacity = 0.5
             }
         })
+        if(highlightingSelectedValues){
+            highlightingSelectedValues.forEach(elm=>{
+                highlightLabel(elm)
+            })
+        }
 
         let {former_isMousePressed} = this
-
-        
         // 可以放到监听函数中
         if (isMousePressed) {
             // 判断实在哪个当中
@@ -585,55 +630,106 @@ class OnePart{
             parent_component.now_part_index = Math.floor(index)
         }
         if (this.all_values.includes(mouseover_value) || this.drag_value) {
+            let is_drag_area = highlightingSelectedValues && highlightingSelectedValues.includes(this.drag_value)
+            // console.log(highlightingSelectedValues)
             if (isMousePressed) {
+                // 如果是拖动区域的
                 this.mouse_press_value = mouseover_value
                 // 第一次点击
                 if (!former_isMousePressed) {
                     if (mouseover_value) {
                         if (mouseover_value.node_type==='related_value') {
                             this.drag_value = mouseover_value
-                            mouseover_value.origin_x = mouseover_value.x
-                            mouseover_value.origin_y = mouseover_value.y 
+                            is_drag_area = highlightingSelectedValues && highlightingSelectedValues.includes(this.drag_value)
+                            if(is_drag_area){
+                                highlightingSelectedValues.forEach(elm=>{
+                                    elm.origin_x = elm.x
+                                    elm.origin_y = elm.y 
+                                })
+                            }else{
+                                mouseover_value.origin_x = mouseover_value.x
+                                mouseover_value.origin_y = mouseover_value.y
+                                highlightingSelectedValues = undefined
+                                this.highlightingSelectedValues = undefined
+                            }
                         }
                     }
                 }
                 const {drag_value}  = this
                 // console.log(mouseover_value, this.drag_value, former_isMousePressed ,isMousePressed)
                 if(drag_value && former_isMousePressed && parent_component.mouse_postion){
-                    drag_value.x = parent_component.mouse_postion[0]
-                    drag_value.y = parent_component.mouse_postion[1]   
+                    if(is_drag_area){
+                        const {mouse_postion} = parent_component
+                        const d_x =  - drag_value.x + mouse_postion[0]
+                        const d_y = - drag_value.y + mouse_postion[1]
+                        highlightingSelectedValues.forEach(elm=>{
+                            elm.x += d_x
+                            elm.y += d_y 
+                        })
+                    }else{
+                        drag_value.x = parent_component.mouse_postion[0]
+                        drag_value.y = parent_component.mouse_postion[1]   
+                    }
                     // console.log(drag_value)           
                 }
                 this.former_isMousePressed = true   
-            }else{
+            }else{ 
                 let {drag_value} = this
-                if (drag_value && drag_value.node_type!=='filter_value') {
+                if (drag_value && drag_value.node_type!=='filter_value') { //拖拽中放手
                     if (drag_value.x>(center_x+r) && drag_value.node_type==='related_value') {
+                        let {now_filter_x, now_filter_y} = this
+                        now_filter_x = now_filter_x || center_x + r  
+                        now_filter_y = now_filter_y || center_y + r -0.3
+
                         let {filter_values} = this
+                        const addNewFilter = (drag_value, d_x, d_y) => {
+                            console.log(d_x, d_y)
+                            let find = filter_values.find(elm=> elm.object_id===drag_value.object_id)
+                            if (!find) {
+                                let filter_value = dictCopy(drag_value)
+                                
+                                filter_value.node_type = 'filter_value'
+                                filter_values.push(filter_value)
+                                filter_value.rotation = 0
 
-                        let find = filter_values.find(elm=> elm.object_id===drag_value.object_id)
-                        if (!find) {
-                            let filter_value = dictCopy(drag_value)
-                            
-                            filter_value.node_type = 'filter_value'
-                            filter_values.push(filter_value)
-                            filter_value.rotation = 0
-                            filter_value.x = center_x + r  + 0.1*filter_values.length
-                            filter_value.y = center_y + r - 0.2*filter_values.length-0.3
-                            this.all_values.push(filter_value)
-                            filter_value._index = this.all_values.length-1
-                            this.filter_values = filter_values
+                                now_filter_x += d_x
+                                now_filter_y += d_y
+                                filter_value.x = now_filter_x  //center_x + r  + 0.1*filter_values.length
+                                filter_value.y = now_filter_y  //center_y + r - 0.2*filter_values.length-0.3
+                                this.now_filter_x = now_filter_x
+                                this.now_filter_y = now_filter_y
 
-                            this.former_isMousePressed = undefined
-                            ruleManager.create([filter_value])
-                            this.need_forward = true
+                                this.all_values.push(filter_value)
+                                filter_value._index = this.all_values.length-1
+                                this.filter_values = filter_values
+    
+                                this.former_isMousePressed = undefined
+                                ruleManager.create([filter_value])
+                                this.need_forward = true
+                            }
+                            drag_value.x = drag_value.origin_x
+                            drag_value.y = drag_value.origin_y
+                        }
+                        if(is_drag_area){
+                            highlightingSelectedValues.forEach(drag_value=>{
+                                addNewFilter(drag_value, 0.1, 0.2)
+                            })
+                        }else{
+                            addNewFilter(drag_value, 0.1, 0.2)
                         }
                     }
                     drag_value.x = drag_value.origin_x
                     drag_value.y = drag_value.origin_y
+                    if(highlightingSelectedValues){
+                        highlightingSelectedValues.forEach(elm=>{
+                            elm.x = elm.origin_x
+                            elm.y = elm.origin_y
+                        })
+                    }
+                    this.highlightingSelectedValues = highlightingSelectedValues
                 }else if (former_isMousePressed) {
                     if (mouseover_value===this.mouse_press_value && ['rule', 'filter_value'].includes(mouseover_value.node_type) ) {
-                        console.log('click', mouseover_value)
+                        // console.log('click', mouseover_value)
                         if (former_click_values[former_click_values.length-1]!==mouseover_value) {
                             this.former_click_values.push(mouseover_value)
                         }
@@ -695,27 +791,41 @@ class OnePart{
             data={part_index_data}
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
-            onValueMouseOut={handleLabelDataOut}/>
+            onValueMouseOut={handleLabelDataOut}
+            style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
+            />
         )
              
-        
         const border_r = (big_mode?0.95:0.80)*r
         const delta_y = (big_mode?0.02:0.03)+0.02
 
-        component_array.push(
-            <LineSeries
-            stroke='#989898'
-            key={part_index+'-warp_line'}
-            strokeWidth={1}
-            data={[
-                {x:center_x-border_r, y:center_y-border_r+delta_y},
-                {x:center_x-border_r, y:center_y+border_r-delta_y},
-                {x:center_x+3.25-r, y:center_y+border_r-delta_y},
-                {x:center_x+3.25-r, y:center_y-border_r+delta_y},
-                {x:center_x-border_r, y:center_y-border_r+delta_y},
-            ]}
-            />
-        )
+        // 包在周围的线
+        
+        const border_line_data = [
+            {x:center_x-border_r, y:center_y-border_r+delta_y},
+            {x:center_x-border_r, y:center_y+border_r-delta_y},
+            {x:center_x+3.25-r, y:center_y+border_r-delta_y},
+            {x:center_x+3.25-r, y:center_y-border_r+delta_y},
+            {x:center_x-border_r, y:center_y-border_r+delta_y},
+        ]
+        border_line_data.forEach((elm,index)=>{
+            if(index===0){
+                return
+            }
+            component_array.push(
+                <LineSeries
+                stroke='#989898'
+                key={part_index+'-warp_line'+index}
+                strokeWidth={1}
+                data={[
+                        border_line_data[index-1],
+                        elm,
+                ]}
+                style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
+                />
+            )
+        })
+
         component_array.push(
             <LineSeries
             stroke='#989898'
@@ -726,6 +836,7 @@ class OnePart{
                 {x:center_x+r, y:center_y-border_r+delta_y},
                 {x:center_x+r, y:center_y+border_r-delta_y},
             ]}
+            style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
             />
         )
         // 规则和筛选实体之间连线
@@ -755,7 +866,9 @@ class OnePart{
                     key={part_index+ '-'+ elm_index+'_'+index}   //key可以更加的优化
                     data={generateSoftPath([value, elm])}
                     curve={d3.curveBundle.beta(0.5)}
-                    color='#1234'/>
+                    color='#1234'
+                    style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
+                    />
                     )
                 })
             })
@@ -772,6 +885,7 @@ class OnePart{
             sizeRange={[2,5]}
             onValueMouseOver={handleLabelDataOver}
             onValueMouseOut={handleLabelDataOut}
+            style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
             />
         )
 
@@ -795,6 +909,7 @@ class OnePart{
             onValueMouseOver={handleLabelDataOver}
             onValueMouseOut={handleLabelDataOut}
             color='literal'
+            style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
             allowOffsetToBeReversed/>
         )
         
@@ -808,7 +923,7 @@ class OnePart{
             event_mark_data.forEach(elm=>{
                 let links = elm.links  
                 // console.log(elm.object_index)
-                links = links.filter(elm=>elm.object_index<small_show_num) // big_mode || 
+                links = links.filter(elm=>big_mode ||  elm.object_index<small_show_num) // 
                 let link_ids = links.map(elm=> elm.object_id)
                 if (mouseover_object && link_ids.includes(mouseover_object.id) && links.length>1) {
                     show_event_mark_data.push(elm)  //事件点
@@ -851,10 +966,11 @@ class OnePart{
                 key={part_index+ 'related_value_links'+index}
                 color='#1234'
                 data={elm}
-                style={{
-                    pointerEvents: isDrag ? 'none' : '',
-                    lineerEvents: isDrag ? 'none' : ''
-                }}
+                // style={{
+                //     pointerEvents: isDrag ? 'none' : '',
+                //     lineerEvents: isDrag ? 'none' : ''
+                // }}
+                style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
                 // curve={d3.curveCatmullRom}
                 />
             )
@@ -875,10 +991,12 @@ class OnePart{
             onValueMouseOver={value=> parent_component.setState({show_event_hint_value:value})}
             onValueMouseOut={value=> parent_component.setState({show_event_hint_value:undefined})}
             sizeRange={[2,5]}
-            style={{
-                pointerEvents: isDrag ? 'none' : '',
-                lineerEvents: isDrag ? 'none' : ''
-            }}/>
+            // style={{
+            //     pointerEvents: isDrag ? 'none' : '',
+            //     lineerEvents: isDrag ? 'none' : ''
+            // }}
+            style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
+            />
         )
 
         // 中心事件周围的实体(要跟rotation改end 和 start)
@@ -894,7 +1012,9 @@ class OnePart{
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
-            onValueMouseOut={handleLabelDataOut}/>
+            onValueMouseOut={handleLabelDataOut}
+            style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
+            />
         )
 
         component_array.push(
@@ -907,7 +1027,9 @@ class OnePart{
             color='literal'
             allowOffsetToBeReversed
             onValueMouseOver={handleLabelDataOver}
-            onValueMouseOut={handleLabelDataOut}/>
+            onValueMouseOut={handleLabelDataOut}
+            style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
+            />
         )
         
         
@@ -929,7 +1051,7 @@ class OnePart{
 
 
     loadSunBurstData(){
-        console.log('loadSunBurstData', this.part_index)
+        // console.log('loadSunBurstData', this.part_index)
 
         this.filter_values = []
         this.ruleManager.rules = []
@@ -956,6 +1078,24 @@ class OnePart{
             center_time_vec = meanVec(time_range.map(elm=> timeManager.get(elm)))
         }
         
+        // let fake_event = eventManager.create({
+        //   id: 'event_假1',
+        //   trigger: '担任_trigger',
+        //   addrs: ['addr_13779'],
+        //   roles:[{role:'主角', person: 'person_7111'}],
+        //   time_range: [1097, 1097],
+        //   detail: '',
+        //   vec: new Array(64).fill(0),
+        //   prob_year: {},
+        //   prob_addr: {},
+        //   prob_person: {},
+        //   text: '',
+        //   source: '',
+        // })
+        // // console.log(fake_event)
+        // if (!all_events.includes(fake_event))
+        //     all_events.push(fake_event)
+// console.log(addrManager.get('addr_13779'))
         let all_triggers = [...new Set(all_events.map(event=> event.trigger))]
         let trigger2sim = {}
         all_triggers.forEach(trigger=>{

@@ -25,8 +25,9 @@ class EventMatrix extends Component {
     _changeSelectedEevnt = autorun(()=>{
         let event_id = stateManager.selected_event_id.get()
         if (stateManager.is_ready) {
-            console.log('_changeSelectedEevnt')
-            net_work.require('getRelatedEvents', {event_id:event_id})
+            // console.log('_changeSelectedEevnt')
+            event_id = 'event_卸任2297462'
+            net_work.require('getRelatedEvents', {event_id:event_id, event_num:50})
             .then(data=>{
                 console.log(data)
                 let graph_data = dataStore.processResults(data.data)
@@ -138,7 +139,7 @@ let isValidRange = time_range=>{
 
 
 function initMatrix(center_event, data, config){
-    let {events, addrs, people, triggers} = data
+    let {events: id2event, addrs, people, triggers} = data
     let {start_x, start_y, center_padding, time_len, addr_len, person_len_x, person_len_y, width, height} = config
 
     let total_time_range = [9999,-9999]
@@ -146,8 +147,8 @@ function initMatrix(center_event, data, config){
     // 改为时间不连续
     let year_array = new Set()
     // console.log(events)
-    for(let event_id in events){
-        let event = events[event_id]
+    for(let event_id in id2event){
+        let event = id2event[event_id]
         let time_range = event.time_range
         year_array.add(time_range[0])
         year_array.add(time_range[1])
@@ -183,19 +184,30 @@ function initMatrix(center_event, data, config){
         person2matrix_id[person.id] = index
     })
 
-    let addr_array = dataStore.dict2array(addrs)
+    let addr_array = []
+    for(let event_id in id2event){
+        let event = id2event[event_id]
+        let {addrs} = event
+        // console.log(addrs)
+        // if(addrs[0]){
+        //     console.warn(event)
+        // }
+        addr_array = [...addr_array, ...addrs]
+    }
+    addr_array = [...new Set(addr_array)]
     addr_array = addr_array.sort((a,b)=> a.id-b.id)
     if (addr_array.length===0) {
-        addr_array = [addrManager.get('2809')]
+        addr_array = [addrManager.get('addr_2809')]
         addrs = {
-            '2809': addrManager.get('2809')
+            'addr_2809': addrManager.get('addr_2809')
         }
     }
+    addr_array = addr_array.filter(elm=> elm)
     addr_array.forEach((addr,index)=>{
         addr2matrix_id[addr.id] = index
     })
 
-    // console.log(person_array, people)
+    console.log(person_array, addr_array, year_array, id2event)
 
     let time_unit, addr_unit, person_unit_x,person_unit_y
     time_unit = person_unit_y = height/(year_array.length+person_array.length)
@@ -203,6 +215,9 @@ function initMatrix(center_event, data, config){
 
     // //注意之后还要加上正负映射
     let timeScale = year => {
+        if(!year){
+            return 0
+        }
         let index = year_array.findIndex(elm=>elm==year)
         index===-1 && console.warn(year, '没有找到')
         return center_padding + index*time_unit + time_unit/2 + start_y
@@ -210,6 +225,9 @@ function initMatrix(center_event, data, config){
 
     // 写的很蠢懒得改了
     let personScaleX = person => {
+        if(!person){
+            return 0
+        }
         if (person2matrix_id[person.id] || person2matrix_id[person.id]===0) {
             return -(person2matrix_id[person.id]*person_unit_x + person_unit_x/2 + center_padding)  + start_x
         }else{
@@ -218,6 +236,9 @@ function initMatrix(center_event, data, config){
     }
 
     let personScaleY = person => {
+        if(!person){
+            return 0
+        }
         if (person2matrix_id[person.id] || person2matrix_id[person.id]===0) {
             return -(person2matrix_id[person.id]*person_unit_y + person_unit_y/2 + center_padding)  + start_y
         }else{
@@ -225,12 +246,12 @@ function initMatrix(center_event, data, config){
         }
     }
 
-    let addrScale = addr => addr2matrix_id[addr.id]*addr_unit + addr_unit/2 + center_padding + start_x
+    let addrScale = addr => addr? addr2matrix_id[addr.id]*addr_unit + addr_unit/2 + center_padding + start_x : 0
 
     let event_mark_datas = []
     let event_line_datas = []
-    for(let event_id in events){
-        let event = events[event_id]
+    for(let event_id in id2event){
+        let event = id2event[event_id]
         
         let event_mark_data = []
         // console.log(event_addr)

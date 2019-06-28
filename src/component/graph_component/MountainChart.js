@@ -92,6 +92,7 @@ export default class AreaLineChart extends React.Component {
   renderCircles(){
     let {yscale,xscale,onMouseOver,onMouseOut,onMouseClick,width,height,viewType} = this.props;
     const node = this.refs.area;
+    // console.log(this.eventArray)
     // d3.select(this.refs.area)
     //   .selectAll('circle').remove();
     let dom;

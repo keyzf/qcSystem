@@ -1,9 +1,9 @@
-import { Promise } from "q";
-import { copyFileSync } from "fs";
+// import { Promise } from "q";
+import deepcopy from 'deepcopy'
 
 class NetWork {
     constructor(){
-        this.fetch_url = 'http://localhost:8000/'
+        this.fetch_url = 'http://localhost:8000/'//'http://localhost:8000/' //'http://10.180.151.233:8000/' //'http://localhost:8000/'//'http://songciserver.vps.lppy.site:6060/' //
         this.require('test').then(res => console.log(res))
         // this.
     }
@@ -23,13 +23,16 @@ class NetWork {
             url = url.slice(0,-1)            
         }
 
-        if (false) {
+        if (url2data[url]) {
             return new Promise(()=>{
                 console.log('已获得' , url, url2data[url])
                 return url2data[url]
+            }).then(res=> {
+                console.log(res)
+                return res
             })
         }else{
-            console.log('get', url.slice(0, 100))
+            console.log('get', url.slice(0, 50))
             // 已经加个获得过url的data可以直接存着
             return fetch(url,{
                 method:'GET',
@@ -39,9 +42,10 @@ class NetWork {
                 cache:'default'
             })
             .then(res =>{
-                console.log(res)
-                let data = res.json() 
-                this.url2data[url] = data
+                // console.log(res)
+                let data = res.json()
+                // this.url2data[url] = deepcopy(data)  //现在有问题
+                // console.log(data)
                 return data
             })            
         }

@@ -24,7 +24,7 @@ export default class MountainView extends React.Component {
     let {data,xscale,yscale,translate,viewType,selected_person} = this.props;
     let colors = ['#454545','#0F3F53','#1B5D59','#AB8E52','#92AA84','#DBB397']
     if(data[0]){
-    console.log(data);
+    // console.log(data);
       if(viewType){
         data=data.slice(1);
       }
@@ -32,7 +32,7 @@ export default class MountainView extends React.Component {
         data=[data[0]];
       }
       let DataArray = this.processLineData(data,selected_person);
-      console.log(DataArray);
+      // console.log(DataArray);
       let node = this.refs.area;
       const rc = rough.svg(d3.select(node));
       d3.select(node).selectAll('g').remove();

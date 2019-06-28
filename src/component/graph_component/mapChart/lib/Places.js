@@ -1,6 +1,6 @@
 import React from 'react';
 import stateManager from '../../../../dataManager/stateManager';
-import dataStore, {addrManager} from '../../../../dataManager/dataStore2'
+import dataStore, {addrManager, eventManager} from '../../../../dataManager/dataStore2'
 import net_work from '../../../../dataManager/netWork';
 import * as d3 from 'd3';
 import {autorun} from 'mobx';
@@ -28,40 +28,60 @@ export default class Places extends React.Component{
   componentWillMount(){
     let {selected_person} = this.props;
     this.selected_person = selected_person;
-    net_work.require('getPersonEvents', {person_id:selected_person.id})
-    .then(data=>{
-      if(data){
-        console.log(data);
-        data = dataStore.processResults(data);
-        this.getAddrData(data.events);
-      }
-    })
+    // net_work.require('getPersonEvents', {person_id:selected_person.id})
+    // .then(data=>{
+    //   if(data){
+    //     console.log(data);
+    //     data = dataStore.processResults(data);
+    //     this.getAddrData(data.events);
+    //   }
+    // })
   }
   componentDidMount(){
     this.renderPie();
     this.renderLines();
   }
 
-  _eventUpdate = autorun(()=>{
-    if(stateManager.is_ready){
-      let need_refesh = stateManager.need_refresh;
-      this.getAddrData(this.selected_person.events)
+  // _eventUpdate = autorun(()=>{
+  //   if(stateManager.is_ready){
+  //     let need_refesh = stateManager.need_refresh;
+  //     this.getAddrData(this.selected_person.events)
+  //   }
+  // })
+
+  // 因为现在的画的都是同一个人
+  _onPeopelEventsChange =  autorun(()=>{
+    // console.log('setPeopleMapEvents', stateManager.people_map_event_ids.slice(), stateManager.is_ready)
+    if(stateManager.is_ready && this.props){
+      // let need_refesh = stateManager.need_refresh;
+      let {selected_person} = this.props
+      this.selected_person = selected_person
+      // console.log(selected_person)
+      let event_ids = stateManager.people_map_event_ids.slice()
+      let events = selected_person.events //event_ids.map(id=>eventManager.get(id))
+      let id2events = {}
+      // console.log(id2events)
+      events.forEach(elm=> id2events[elm.id]=elm)
+      this.getAddrData(id2events);
+      // this.getAddrData(this.selected_person.events)
+      this.renderPie();
+      this.renderLines();
     }
   })
   componentWillReceiveProps(nextProps){
     let {selected_person} = nextProps;
     if(selected_person.id !== this.props.selected_person.id){
       this.selected_person = selected_person;
-      net_work.require('getPersonEvents', {person_id:selected_person.id})
-      .then(data=>{
-        if(data){
-          console.log(data);
-          data = dataStore.processResults(data)
-          this.getAddrData(data.events);
-          this.renderPie();
-          this.renderLines();
-        }
-      })
+      // net_work.require('getPersonEvents', {person_id:selected_person.id})
+      // .then(data=>{
+      //   console.log(data);
+      //   if(data){
+      //     data = dataStore.processResults(data)
+      //     this.getAddrData(data.events);
+      //     this.renderPie();
+      //     this.renderLines();
+      //   }
+      // })
     }
   }
   componentDidUpdate(){
@@ -177,7 +197,7 @@ export default class Places extends React.Component{
     //     }
     //   }
     // })
-    console.log(places_con);
+    // console.log(places_con);
     places_con.sort((a,b)=>{
       return a.time_range[0]-b.time_range[0]
     })

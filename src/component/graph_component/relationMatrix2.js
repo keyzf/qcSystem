@@ -2,7 +2,7 @@
 
 import React from 'react';
 // import jsonFormat from 'json-format'
-import {XYPlot,CustomSVGSeries, VerticalRectSeries,ContourSeries, VerticalRectSeriesCanvas, Hint, YAxis, VerticalBarSeries, LabelSeries, MarkSeriesCanvas, LineSeriesCanvas, MarkSeries, LineSeries,  XAxis, AreaSeries} from 'react-vis';
+import {XYPlot,CustomSVGSeries, VerticalRectSeries,ContourSeries, VerticalRectSeriesCanvas, Hint, YAxis, VerticalBarSeries, LabelSeries, MarkSeriesCanvas, LineSeriesCanvas, MarkSeries, LineSeries,  XAxis, AreaSeries, Highlight} from 'react-vis';
 import * as d3 from 'd3'
 import {autorun, set} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
@@ -30,22 +30,85 @@ class RealtionMatrix extends React.Component{
             events_rect_data : [],
             hint_value: undefined,
             color_method: '数量',
+            highlighting: false,
+            selected_area: undefined
         }
     }
 
     _onInferEventsInput = autorun(()=>{
         let event_ids = stateManager.relation_event_ids.slice()
         let events =  event_ids.map(id=> eventManager.get(id))
-        
-        if (events.length>0) {
-            this.all_events = events
-            this.loadMatrix()
-        }
+        let person_ids = new Set()
+        events.forEach(elm=> {
+            elm.roles.forEach(role=>{
+                person_ids.add(role.person.id)
+            })
+        })
+        // console.log(person_ids)
+        person_ids = [...person_ids]
+        this.loadPersonId(person_ids)
+        // if (events.length>0) {
+        //     this.all_events = events
+        //     this.loadMatrix()
+        // }
     })
+
+    loadPersonId(person_ids){
+            // 可以加个判断人是否已经全部提取所有数据了
+            let selected_people = person_ids.map(elm=> personManager.get(elm))
+            net_work.require('getPersonRelation', {person_ids:person_ids})
+            .then(data=>{
+                // console.log(data)
+                let graph_data = dataStore.processResults(data.data)
+                let {events} = graph_data
+                // this.all_events = dataStore.dict2array(events)
+                // // 对多个人的情况取并集
+                let intersect_people = new Set()
+                selected_people.forEach((person, index)=>{
+                    let related_people = new Set( person.getRelatedPeople() )
+                    if (index===0) {
+                        intersect_people = related_people
+                    }else{
+                        intersect_people = new Set([...related_people].filter(person=> intersect_people.has(person)))
+                    }
+                })
+                this.all_events = dataStore.dict2array(events).filter(event=> event.roles.length>1)
+                selected_people.forEach(person=>{
+                    intersect_people.add(person)
+                })
+                this.all_events = this.all_events.filter(event=>{
+                    let people = event.getPeople()
+                    let all_is_in = true
+                    people.forEach(person=>{
+                        if (!intersect_people.has(person)) {
+                            all_is_in = false
+                        }
+                    })
+                    return all_is_in
+                })
+
+                let person2person = {}
+                this.all_events.forEach(event=>{
+                    let people = event.getPeople()
+                    people.forEach(person1=>{
+                        person2person[person1.id] = person2person[person1.id] || {}
+                        people.forEach(person2=>{
+                            if (person1 === person2) {
+                                return
+                            }
+                            person2person[person1.id][person2.id] = 1
+                        })
+                    })
+                })
+
+                this.selected_people = selected_people
+                this.loadMatrix()
+            })
+    }
 
     _onEventFilterChange = autorun(()=>{
         if (stateManager.is_ready) {
-            console.log('更新事件筛选')
+            // console.log('更新事件筛选')
             let used_types = stateManager.used_types
             let need_refresh = stateManager.need_refresh
             // this.loadMatrix()
@@ -265,7 +328,7 @@ class RealtionMatrix extends React.Component{
     
     // 分两个矩阵画？
     render(){
-        console.log('render 关系矩阵')
+        // console.log('render 关系矩阵')
         let { width, height, padding} = this.props
         const right_part_width = 250
         // let svg_width = width-right_part_width>height?height:width-right_part_width
@@ -289,10 +352,50 @@ class RealtionMatrix extends React.Component{
             }
         })
 
-        let {events_rect_data, hint_value, color_method} = this.state
+        let {events_rect_data, hint_value, color_method, highlighting, selected_area} = this.state
         let hint_point_rect = [], personX, personY, label_datas = []
-        const people_num = people_array.length
 
+        if (selected_area) {
+            const is_in = (rect, area)=>{
+                let {right, left, bottom, top} = area
+                let width = left-right, height = top-bottom
+                let {x ,x0, y, y0} = rect
+                x =  (x+x0)/2+1
+                y = (y+y0)/2
+                // if(width>height){
+                //     let d = width-height
+                //     bottom -= d/2
+                //     top += d/2
+                // }else{
+                //     let d = height-width
+                //     left -= d/2
+                //     right += d/2
+                // }
+                return x<=right && x>=left && y<=top && y>=bottom
+            }
+            let temp_events_rect_data = events_rect_data.filter(elm=> is_in(elm, selected_area))
+            people_array = people_array.filter(person=>{
+                const {id} = person
+                // console.log(person, id)
+                for (let index = 0; index < temp_events_rect_data.length; index++) {
+                    const element = temp_events_rect_data[index];
+                    const {person_x_id, person_y_id} = element
+                    // console.log(person_x_id, person_y_id)
+                    if(id===person_x_id || person_y_id===id){
+                        return true
+                    }
+                }
+                return false
+            })
+            const p_ids = people_array.map(elm=> elm.id)
+            events_rect_data = events_rect_data.filter(elm=>{
+                const {person_x_id, person_y_id} = elm
+                return p_ids.includes(person_x_id) && p_ids.includes(person_y_id)
+            })
+            console.log(temp_events_rect_data, people_array, events_rect_data)
+        }
+
+        const people_num = people_array.length
         if (color_method==='数量') {
             const color = d3.rgb(200, 200, 200)
             events_rect_data.forEach(elm=>{
@@ -355,7 +458,6 @@ class RealtionMatrix extends React.Component{
                 }
             })
         }
-
         if (hint_value && people_num>17) {
             hint_value = dictCopy(hint_value)
             const {rect_width} = this
@@ -378,7 +480,8 @@ class RealtionMatrix extends React.Component{
                 ]                
             }
         }
-
+        // console.log(people_array)
+        // console.log(events_rect_data)
         let x_label_data = people_array.map(person=>{
             return {
                 x: this.personScale(person)+this.rect_width/2, 
@@ -398,10 +501,31 @@ class RealtionMatrix extends React.Component{
                 style:{fontFamily: 'STKaiti'}
             }
         })
+        if (selected_area) {
+            let {right, left, bottom, top} = selected_area
+            y_label_data.forEach(elm=>{
+                elm.x = left - this.rect_width
+            })
+            x_label_data.forEach(elm=>{
+                elm.y = top + this.rect_width/2
+            })
+        }
 
         const padding_e = people_num<=3?2:1.1
+        let ys = events_rect_data.map(elm=> {
+            const {x ,x0, y, y0} = elm
+            return (y+y0)/2
+        }), xs = events_rect_data.map(elm=> {
+            const {x ,x0, y, y0} = elm
+            return (x+x0)/2
+        })
+        let up = Math.max(...ys)
+        let down = Math.min(...ys)
+        let right = Math.max(...xs)
+        let left = Math.min(...xs)
 
         let default_domain = [-people_num*(padding_e-1), people_num*padding_e]
+
         this.max_people_num = this.max_people_num>300?300:this.max_people_num
         return (
             <div style={{width:width, height:height}}>
@@ -426,15 +550,6 @@ class RealtionMatrix extends React.Component{
                     <button onClick={(event)=>{
                         this.setState({color_method: '类型'})
                     }}>{IS_EN?'category':'类型'}</button>
-                    {/* <label><input type="checkbox" onChange={(event)=>{
-                        this.setState({color_method: '数量'})
-                    }} checked={color_method==='数量'}/>数量</label> 
-                    <label><input type="checkbox"onChange={(event)=>{
-                        this.setState({color_method: '正负向', events_rect_data: events_rect_data})
-                    }} checked={color_method==='正负向'}/>正负向</label> 
-                    <label><input type="checkbox"onChange={(event)=>{
-                        this.setState({color_method: '类型'})
-                    }} checked={color_method==='类型'}/>类型</label>  */}
                     </div>
                 </div>
                 <div className="inputname"><span>Showing threshold</span></div>
@@ -445,14 +560,20 @@ class RealtionMatrix extends React.Component{
                     height={svg_height}
                     // animation
                     onMouseLeave={event => this.setState({hint_value: undefined})}
-                    xDomain={default_domain}
-                    yDomain={default_domain}
+                    // xDomain={default_domain}
+                    // yDomain={default_domain}
+                    xDomain={[left, right]}
+                    yDomain={[down, up+30/people_num]}
                     >
+                    <Highlight
+                        onBrushEnd={area => this.setState({highlighting: false,selected_area: area})}
+                        onBrushStart={area => this.setState({highlighting: true})}
+                    />
                     <VerticalRectSeries
                         data={events_rect_data} 
                         colorType= "literal"
                         stroke='white'
-                        style={{strokeWidth: 1}}
+                        style={{strokeWidth: 1, pointerEvents: highlighting ? 'none' : ''}}
                         onValueMouseOver={value=>this.setState({hint_value: value})}
                     />
                     {
@@ -472,26 +593,29 @@ class RealtionMatrix extends React.Component{
                         hint_value &&
                         <LabelSeries 
                         data={label_datas}
-                        labelAnchorX= 'end'
-                        labelAnchorY= 'end'
+                        labelAnchorX= 'middle'
+                        labelAnchorY= 'middle'
                         />
                     }
                     {
                         people_num<19 && 
                         <LabelSeries
                         labelAnchorX= 'middle'
-                        labelAnchorY= 'end'
+                        labelAnchorY= 'middle'
                         data = {x_label_data}
                         />
                     }
                      {
                         people_num<19 && 
                         <LabelSeries
-                        labelAnchorX= 'end'
+                        onBrushEnd={area => this.setState({area: area})}
+                        labelAnchorX= 'middle'
                         labelAnchorY= 'middle'
                         data = {y_label_data}
                         />
                     }
+                    {/* <XAxis></XAxis>
+                    <YAxis></YAxis> */}
                     </XYPlot>
                 </div>
                 </div>

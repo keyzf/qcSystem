@@ -7,10 +7,23 @@ class StateManager{
     @observable is_ready = false  //还没有用，初始化缓存用的
     @observable need_refresh = 0 
 
-    @observable refresh(){
+    @action refresh(){
         this.need_refresh++
     }
-    
+
+    // 用来存储选择人物后地图显示的events
+    @observable people_map_event_ids = []
+    @action setPeopleMapEvents(events){
+        this.people_map_event_ids.replace(events.map(elm=> elm.id))
+        // console.log(this.people_map_event_ids)
+    }
+    //用来存储选择人物后表格显示的events
+    @observable people_table_event_ids = []
+    @action setPeopleTableEvents(events){
+        // console.error('这里这里')
+        this.people_table_event_ids.replace(events.map(elm=> elm.id))
+    }
+
     is_ready_without_notice = false
     notice_ready = autorun(()=>{
         this.is_ready_with_out_notice = this.is_ready
@@ -27,14 +40,10 @@ class StateManager{
     }
     @observable life_refresh = true
     @action setType2p(type, p){
-        // console.log(type, p)
-        // let type2p = this.type2p
-        // type2p[type] = p
         this.type2p[type] = p
-        // console.log(this.type2p, this.type2p['政治'], this.type2p['社交'])
         this.life_refresh = !this.life_refresh
-        // console.log(this.type2p.)
     }
+
 
     // 测试用平时用不到的
     @observable test_count = 0
@@ -47,7 +56,7 @@ class StateManager{
         this.relation_event_ids.replace(events.map(elm=> elm.id))
     }
     @action setMapEvents(events){
-        console.log(events)
+        // console.log(events)
         this.map_event_ids.replace(events.map(elm=> elm.id))
     }
     @action setMountainEvents(events){
@@ -65,8 +74,8 @@ class StateManager{
     }
     @computed get selected_people(){
         // console.log(this.selected_people_id)
-        console.log(this.selected_people_id.slice(), this.selected_people_id.slice().map(id=> personManager.get(id)))
-        return this.selected_people_id.slice().map(id=> personManager.get(id))
+        // console.log(this.selected_people_id.slice(), this.selected_people_id.slice().map(id=> personManager.get(id)))
+        return this.selected_people_id.slice().map(id=> personManager.get(id)).filter(elm=>elm)
     }
     @action addSelectedPeople = (person_id)=>{
         let selected_people_id = this.selected_people_id.slice()
@@ -101,6 +110,7 @@ class StateManager{
         return eventManager.get(this.selected_event_id.get())
     }
 
+    // 过滤器
     @observable used_types_set = []
     @action setUsedTypes(types){
         // console.log(types)
@@ -116,51 +126,6 @@ class StateManager{
             // console.log(used_types)
             return used_types
         }
-    }
-
-    @observable show_triggers_id = []
-    @observable show_people_id = []
-    @observable show_years_id = []
-    @observable show_addrs_id = []
-    @action setShowTriggers(ids){
-        this.need_refresh++
-        this.show_triggers_id.replace(ids)
-    } 
-    @action setShowAddrs(ids){
-        this.need_refresh++
-        this.show_addrs_id.replace(ids)
-    }
-    @action setShowYears(ids){
-        this.need_refresh++
-        this.show_years_id.replace(ids)
-    } 
-    @action setShowPeople(ids){
-        this.need_refresh++
-        this.show_people_id.replace(ids)
-    }
-
-    @computed get show_triggers(){
-        let show_triggers_id = this.show_triggers_id.slice()
-        return show_triggers_id.map(id=> triggerManager.get(id))
-    }
-    @computed get show_addrs(){
-        let show_addrs_id = this.show_addrs_id.slice()
-        return show_addrs_id.map(id=> addrManager.get(id))
-    }
-    @computed get show_people(){
-        let show_people_id = this.show_people_id.slice()
-        return show_people_id.map(id=> personManager.get(id))
-    }
-    @computed get show_years(){
-        return this.show_years_id.slice()
-    }
-
-
-    rules = []  //存新的推理图的rules
-    @action setRules(rules){
-        this.rules = rules
-        console.log(rules)
-        stateManager.need_refresh++
     }
 }
 

@@ -51,13 +51,13 @@ class InferContour extends React.Component {
             }else{
                 people = center_event.getPeople()
             }
-            console.log(people)
+            // console.log(people)
             net_work.require('getRelatedPeopleEvents', {person_ids:people.map(person=> person.id), depth:2})
             .then(data=>{
                 let graph_data = dataStore.processResults(data.data)
                 let {events} = graph_data
                 this.events = dataStore.dict2array(events)
-                console.log(events)
+                // console.log(events)
                 if(!center_event){
                     center_event = people[0].events[0]
                 }

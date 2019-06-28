@@ -16,12 +16,12 @@ import RelationMatrix from './component/graph_component/relationMatrix2'
 // import people_list from './data/temp_data/all_persons.json'
 // import PeopleSelector from './component/UI_component/peopleSelector'
 import MainPanel from './component/UI_component/mainPanel'
-import Map from './component/graph_component/mapChart'
+import Maps from './component/graph_component/mapChart'
 import { Dropdown, Input } from 'semantic-ui-react';
 import stateManager from './dataManager/stateManager';
 import {autorun} from 'mobx';
 // import LifeLineMethod from './component/UI_component/lifeLineMethod';
-import { triggerManager,personManager,IS_EN } from './dataManager/dataStore2'
+import dataStore, { triggerManager,personManager,IS_EN } from './dataManager/dataStore2'
 import PersonInfo from './component/UI_component/PersonInfo';
 import EventFilter from './component/UI_component/EventFilter2';
 // import InferSunBurst from './component/graph_component/inferSunBurst';
@@ -34,6 +34,8 @@ import maplogo from './static/maplogo.png';
 import matrixlogo from './static/matrixlogo.png';
 import reasonlogo from './static/reasonlogo.png';
 import '../node_modules/react-vis/dist/style.css';
+import net_work from './dataManager/netWork';
+import EventMatrix from './component/graph_component/eventMatrix1';
 // import  MergeSunBurstGraph from './component/UI_component/mergeSunBurstFraph'
 
 
@@ -58,7 +60,7 @@ class App extends Component {
 
   _loadData = autorun(()=>{
     if (stateManager.is_ready) {
-      console.log('加载苏轼数据');
+      // console.log('加载苏轼数据');
       this.defaultPerson = personManager.get('person_3767');
       this.setState({
         selected_people:[this.defaultPerson]
@@ -82,9 +84,10 @@ class App extends Component {
   })
   
   _onSelectedPeopleChange = autorun(()=>{
+    let selected_people = stateManager.selected_people
     if (stateManager.is_ready) {
-      let selected_people = stateManager.selected_people
       // console.log()
+      selected_people = stateManager.selected_people
       this.setState({selected_people: selected_people})
     }
   })
@@ -103,8 +106,28 @@ class App extends Component {
     event.preventDefault();
     // console.log(value);
     if(value.length!==0){
+      let selected_people = value.map(person_id=> personManager.get(person_id))
       this.setState({selected_people: value.map(person_id=> personManager.get(person_id))})
-      stateManager.setSelectedPeople(value)
+      let former_selected_people = stateManager.selected_people
+      if(former_selected_people.length>value.length){
+        stateManager.setSelectedPeople(value)
+      }
+      selected_people.forEach(person => {
+        if (!former_selected_people.includes(person)) {
+          net_work.require('getPersonEvents', {person_id:person.id})
+          .then(data=>{
+            // console.log(data)
+            if(data){
+                data = dataStore.processResults(data)
+                this.all_events = dataStore.dict2array(data.events)
+                stateManager.setSelectedPeople(value)
+                stateManager.setPeopleTableEvents(selected_people[0].events)
+            }
+          })
+        }
+      });
+      // console.log(selected_people)
+      stateManager.setPeopleTableEvents(selected_people[0].events)
     }
     else{
       this.setState({
@@ -126,8 +149,9 @@ class App extends Component {
   }
 
   render() {
-    console.log('render App');
+    // console.log('render App');
     let {person_options, selected_people, calcualte_method} = this.state
+    // console.log(selected_people)
     let calcualte_method_option = this.calcualte_method_option;
     let relation=triggerManager.countTypes();
     const { width, height} = this.props
@@ -184,11 +208,11 @@ class App extends Component {
                 <img src={maplogo}/>
               </div>
               <div className="headerText">
-                <span>行迹</span>
+                {/* <span>行迹</span> */}
                 <span>Map View</span>
               </div>
             </div>
-            <Map selected_people={this.state.selected_people}/>
+            <Maps selected_people={this.state.selected_people}/>
           </div>
           <div id="relationview" ref="inferSun">
             <div className="header">
@@ -196,7 +220,7 @@ class App extends Component {
                 <img src={reasonlogo} alt=''/>
               </div>
               <div className="headerText">
-                <span>推理视图</span>
+                {/* <span>推理视图</span> */}
                 <span>Uncertainty Reasoning View</span>
               </div>
             </div>
@@ -208,7 +232,7 @@ class App extends Component {
                 <img src={matrixlogo}/>
               </div>
               <div className="headerText">
-                <span>关系矩阵</span>
+                {/* <span>关系矩阵</span> */}
                 <span>Relation Matrix View</span>
               </div>
             </div>

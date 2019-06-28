@@ -1,5 +1,5 @@
 // import dataGetter from '../../dataManager/dataGetter2'
-import dataStore, { personManager, triggerManager, filtEvents, eventManager, triggerFilter, peopleFilter, addrFilter, yearFilter, ruleFilter } from '../../dataManager/dataStore2'
+import dataStore, { personManager, triggerManager, filtEvents, eventManager} from '../../dataManager/dataStore2'
 import React, { Component } from 'react'
 import * as d3 from 'd3';
 import _ from 'lodash';
@@ -85,18 +85,32 @@ class LifeLikePaint extends Component{
         this.setState({
             vis:index===0?'visible':'hidden'
         })
-        // console.log(selected_person);
-        net_work.require('getPersonEvents', {person_id:selected_person.id})
-        .then(data=>{
-            if(data){
-                data = dataStore.processResults(data)
-                this.all_events = dataStore.dict2array(data.events)
-                // console.log(data)
-                this.loadLifeLineData()
-                this.loadInferMarkData()
-                this.getRelationLine()
-            }
-        })
+
+        this.all_events = selected_person.events
+        // console.log(selected_person.events)
+        // console.log(data)
+        this.loadLifeLineData()
+        this.loadInferMarkData()
+        this.getRelationLine()
+        
+        stateManager.setPeopleMapEvents(this.all_events)
+
+        // // console.log(selected_person);
+        // net_work.require('getPersonEvents', {person_id:selected_person.id})
+        // .then(data=>{
+        //     console.log(data)
+        //     if(data){
+        //         data = dataStore.processResults(data)
+        //         this.all_events = dataStore.dict2array(data.events)
+        //         // console.log(data)
+        //         this.loadLifeLineData()
+        //         this.loadInferMarkData()
+        //         this.getRelationLine()
+
+        //         stateManager.setPeopleMapEvents(this.all_events)
+        //         stateManager.setPeopleTableEvents(this.all_events)
+        //     }
+        // })
     }
 
     componentWillReceiveProps(nextProps){
@@ -242,7 +256,7 @@ class LifeLikePaint extends Component{
             console.warn('没有选择的人物')
             return
         }
-        console.log('loadLifeLineData', selected_person)
+        // console.log('loadLifeLineData', selected_person)
         let {calcualte_method} = this.props
         if(!calcualte_method){
             console.warn('没有calcualte_method')
@@ -251,7 +265,6 @@ class LifeLikePaint extends Component{
         let parent_types = [...triggerManager.getParentTypes()].sort()  //分类
         let all_events = selected_person.getCertainEvents()  
         all_events = filtEvents(all_events)
-        all_events = ruleFilter(all_events)
         // all_events = triggerFilter(all_events)
         // all_events = peopleFilter(all_events)
         // all_events = addrFilter(all_events)
@@ -520,7 +533,7 @@ class LifeLikePaint extends Component{
 
     render(){
         const {transform, checked, zoomTransform, xscale, height, width, selected_person, line, index,uncertainHeight, handleEventMarkClick} = this.props
-        console.log('render lifeLikePaint 主视图')
+        // console.log('render lifeLikePaint 主视图')
         let {selectTrigger,area_datas, relationLines, prob_mark_data, triggerName, chooseEvent, vis } = this.state
         this.yscale.domain([0,this.maxy_sum])
                    .range([height-uncertainHeight,30]);

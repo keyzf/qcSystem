@@ -4,3 +4,6 @@
 [0320/125337.810:ERROR:http_transport_win.cc(273)] WinHttpSendRequest: 操作成功完成。 (0x0)
 [0320/141422.888:ERROR:http_transport_win.cc(273)] WinHttpSendRequest: 操作成功完成。 (0x0)
 [0328/205701.634:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)
+[0427/161037.645:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)
+[0506/164145.437:ERROR:process_reader_win.cc(151)] SuspendThread: 拒绝访问。 (0x5)
+[0506/164206.737:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)

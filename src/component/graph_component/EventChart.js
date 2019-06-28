@@ -19,7 +19,7 @@ export default class EventChart extends React.Component {
 
   render() {
     let {data,xscale,yscale,translate} = this.props;
-    console.log('hh',data);
+    // console.log('hh',data);
     return(
     <g className="events" ref="events" translate={translate}>
       {data && data.map((type)=>{if(type) return type.map((d,i)=>(<circle key={i} cx={xscale(d.data.x)} cy={yscale(d.data.y)} r={3} fill={'green'}></circle>))})}

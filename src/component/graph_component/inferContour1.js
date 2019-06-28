@@ -8,7 +8,7 @@ import * as d3 from 'd3'
 import {autorun, keys} from 'mobx';
 import stateManager from '../../dataManager/stateManager'
 import net_work from '../../dataManager/netWork'
-import dataStore, { eventManager, addrManager, personManager, isValidYear, filtEvents, triggerFilter, timeManager, dictCopy} from '../../dataManager/dataStore2'
+import dataStore, { eventManager, addrManager, personManager, isValidYear, filtEvents, timeManager, dictCopy} from '../../dataManager/dataStore2'
 import tsnejs from '../../dataManager/tsne'
 import { Divider, Container, Header, Table, Checkbox, Dropdown} from 'semantic-ui-react'
 import cos_dist from 'compute-cosine-distance'
@@ -87,7 +87,6 @@ class InferContour extends React.Component {
     calcualteEventMark = ()=>{
         let {all_events, center_event} = this
         all_events = filtEvents(all_events)
-        all_events = triggerFilter(all_events)
 
         let all_triggers = all_events.map(event=> event.trigger)
         let all_addrs = [], all_people = [], all_years = []

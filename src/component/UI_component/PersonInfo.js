@@ -12,14 +12,15 @@ export default class PersonInfo extends React.Component{
     }
   }
   _changeShowPeople = autorun(()=>{
+    let selected_people = stateManager.selected_people
     if (stateManager.is_ready) {
-      let selected_people = stateManager.selected_people
+      selected_people = stateManager.selected_people
       this.setState({selected_people: selected_people[0]});
     }
   })
   render(){
     let {selected_people} = this.state;
-    console.log(selected_people);
+    // console.log(selected_people);
     return (
       <div className="personInfo">
         <div className="nameLabel">
