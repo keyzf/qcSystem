@@ -186,7 +186,7 @@ class InferSunBurst extends React.Component{
         const title_height = 30
         // const control_bar_height = 100
         width = big_mode?1920:width
-        const graph_height = (big_mode?1000:height)-title_height//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
+        const graph_height = (big_mode?1000:height)-title_height-10//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = big_mode?
             [-r,-r + 2*r/graph_height*graph_width]:
             [-shink_p*r,-shink_p*r + 2*shink_p*r/graph_height*graph_width], 
@@ -237,15 +237,33 @@ class InferSunBurst extends React.Component{
                                     event.preventDefault()
                                     let {now_part_index} = this
                                     let now_graph = this.sunbursts[now_part_index]
-                                    let {former_click_values, ruleManager} = now_graph
+                                    let {former_click_values, ruleManager, highlightingSelectedFilters} = now_graph
                                     let former_click_value = former_click_values[former_click_values.length-2]
                                     let now_click_value = former_click_values[former_click_values.length-1]
                                     // console.log(now_click_value, former_click_value)
+                                    const can_types = ['filter_value', 'rule']
+
+                                    if(now_click_value && highlightingSelectedFilters && can_types.includes(now_click_value.node_type)){
+                                        let new_rule = ruleManager.create(highlightingSelectedFilters)
+                                        new_rule.setType('or')
+                                        let new_rule2 = ruleManager.create([new_rule, now_click_value])
+                                        new_rule2.setType('and')
+                                        now_graph.highlightingSelectedFilters = undefined
+                                        this.setState({hi: !this.state.hi})
+                                        return 
+                                    }
+                                    if(highlightingSelectedFilters){
+                                        let new_rule = ruleManager.create(highlightingSelectedFilters)
+                                        new_rule.setType('and')
+                                        now_graph.highlightingSelectedFilters = undefined
+                                        this.setState({hi: !this.state.hi})
+                                        return
+                                    }
+
                                     if (!former_click_value || !now_click_value) {
                                         console.warn('错误点击')
                                         return
                                     }
-                                    const can_types = ['filter_value', 'rule']
                                     if (former_click_value && now_click_value && former_click_value!==now_click_value && can_types.includes(former_click_value.node_type) && can_types.includes(now_click_value.node_type)) {
                                         let new_rule = ruleManager.create([now_click_value, former_click_value])
                                         new_rule.setType('and')
@@ -261,11 +279,28 @@ class InferSunBurst extends React.Component{
                                     event.preventDefault()
                                     let {now_part_index} = this
                                     let now_graph = this.sunbursts[now_part_index]
-                                    let {former_click_values, ruleManager} = now_graph
+                                    let {former_click_values, ruleManager, highlightingSelectedFilters} = now_graph
                                     let former_click_value = former_click_values[former_click_values.length-2]
                                     let now_click_value = former_click_values[former_click_values.length-1]
                                     const can_types = ['filter_value', 'rule']
                                     // console.log(now_click_value, former_click_value)
+
+                                    if(now_click_value && highlightingSelectedFilters && can_types.includes(now_click_value.node_type)){
+                                        let new_rule = ruleManager.create(highlightingSelectedFilters)
+                                        new_rule.setType('or')
+                                        let new_rule2 = ruleManager.create([new_rule, now_click_value])
+                                        new_rule2.setType('or')
+                                        now_graph.highlightingSelectedFilters = undefined
+                                        this.setState({hi: !this.state.hi})
+                                        return 
+                                    }
+                                    if(highlightingSelectedFilters){
+                                        let new_rule = ruleManager.create(highlightingSelectedFilters)
+                                        new_rule.setType('or')
+                                        now_graph.highlightingSelectedFilters = undefined
+                                        this.setState({hi: !this.state.hi})
+                                        return
+                                    }
                                     if (!former_click_value || !now_click_value) {
                                         console.warn('错误点击')
                                         return
@@ -576,12 +611,12 @@ class OnePart{
         })
 
         // console.log(area)
-        let {highlightingSelectedValues} = this
+        let {highlightingSelectedValues, highlightingSelectedFilters} = this
         if(area){
             // console.log(area)
             const is_in = label=>{
                 let {right, left, bottom, top} = area
-                let width = left-right, height = top-bottom
+                // let width = left-right, height = top-bottom
                 let {x, y} = label
                 return x<=right && x>=left && y<=top && y>=bottom
             }
@@ -590,10 +625,26 @@ class OnePart{
                 //     console.log(elm.label, area, is_in(elm))
                 return is_in(elm)
             })
-            this.highlightingSelectedValues = highlightingSelectedValues
+            highlightingSelectedFilters = filter_values.filter(elm=>{
+                return is_in(elm)
+            })
+            if(highlightingSelectedFilters.length>0){
+                this.highlightingSelectedFilters = highlightingSelectedFilters
+                this.former_click_values.push(undefined)
+            }else{
+                this.highlightingSelectedFilters = undefined
+                highlightingSelectedFilters = undefined
+            }
+
+            if(highlightingSelectedValues.length>0){
+                this.highlightingSelectedValues = highlightingSelectedValues
+                this.former_click_values.push(undefined)
+            }else{
+                this.highlightingSelectedValues = undefined
+                highlightingSelectedValues = undefined
+            }
             // this.setState({area: undefined})
             parent_component.state.area = undefined
-
         }
 
         // 高亮
@@ -601,6 +652,27 @@ class OnePart{
             elm.opacity = 1
             elm.style = elm.style || {}
             elm.style.opacity = 1
+        }
+        const unhighlightLabel = elm =>{
+            elm.opacity = 0.5
+            elm.style = elm.style || {}
+            elm.style.opacity = 0.5
+        }
+        const clearSelected = ()=>{
+            if(this.highlightingSelectedValues){
+                this.highlightingSelectedValues.map(elm=>{
+                    unhighlightLabel(elm)
+                })
+                this.highlightingSelectedValues = undefined
+                highlightingSelectedFilters = undefined
+            }
+            if(this.highlightingSelectedFilters){
+                this.highlightingSelectedFilters.map(elm=>{
+                    elm.style.textDecoration = 'none'
+                })
+                this.highlightingSelectedFilters = undefined
+                highlightingSelectedFilters = undefined
+            }
         }
         this.all_values.forEach(elm=> {
             // console.log(elm)
@@ -649,8 +721,7 @@ class OnePart{
                             }else{
                                 mouseover_value.origin_x = mouseover_value.x
                                 mouseover_value.origin_y = mouseover_value.y
-                                highlightingSelectedValues = undefined
-                                this.highlightingSelectedValues = undefined
+                                clearSelected()
                             }
                         }
                     }
@@ -682,18 +753,19 @@ class OnePart{
                         now_filter_y = now_filter_y || center_y + r -0.3
 
                         let {filter_values} = this
-                        const addNewFilter = (drag_value, d_x, d_y) => {
-                            console.log(d_x, d_y)
+                        const addNewFilter = (drag_value) => {
+                            // console.log(d_x, d_y)
                             let find = filter_values.find(elm=> elm.object_id===drag_value.object_id)
                             if (!find) {
                                 let filter_value = dictCopy(drag_value)
-                                
+                                filter_value.style = drag_value.style && dictCopy(drag_value.style)
+
                                 filter_value.node_type = 'filter_value'
                                 filter_values.push(filter_value)
                                 filter_value.rotation = 0
 
-                                now_filter_x += d_x
-                                now_filter_y += d_y
+                                now_filter_x += 0.2
+                                now_filter_y += 0.2
                                 filter_value.x = now_filter_x  //center_x + r  + 0.1*filter_values.length
                                 filter_value.y = now_filter_y  //center_y + r - 0.2*filter_values.length-0.3
                                 this.now_filter_x = now_filter_x
@@ -712,10 +784,10 @@ class OnePart{
                         }
                         if(is_drag_area){
                             highlightingSelectedValues.forEach(drag_value=>{
-                                addNewFilter(drag_value, 0.1, 0.2)
+                                addNewFilter(drag_value)
                             })
                         }else{
-                            addNewFilter(drag_value, 0.1, 0.2)
+                            addNewFilter(drag_value)
                         }
                     }
                     drag_value.x = drag_value.origin_x
@@ -726,12 +798,16 @@ class OnePart{
                             elm.y = elm.origin_y
                         })
                     }
-                    this.highlightingSelectedValues = highlightingSelectedValues
+                    clearSelected()
                 }else if (former_isMousePressed) {
                     if (mouseover_value===this.mouse_press_value && ['rule', 'filter_value'].includes(mouseover_value.node_type) ) {
                         // console.log('click', mouseover_value)
-                        if (former_click_values[former_click_values.length-1]!==mouseover_value) {
+                        const last = former_click_values[former_click_values.length-1]
+                        if (last!==mouseover_value) {
                             this.former_click_values.push(mouseover_value)
+                            if(last){
+                                clearSelected()
+                            }
                         }
                     }
                 }
@@ -743,11 +819,11 @@ class OnePart{
 
         filter_values.forEach((filter_value,index)=>{
             if (big_mode) {
-                filter_value.x = center_x + r  + 0.025*index +0.05
-                filter_value.y = center_y + r - 0.1*index-0.4
+                filter_value.x =  center_x + r + 0.1  //+ 0.025*index
+                filter_value.y = center_y + r - 0.5*index-0.4
             }else{
-                filter_value.x = center_x + r  + 0.05*index +0.05
-                filter_value.y = center_y + r - 0.15*index-0.5
+                filter_value.x = center_x + r  + 0.1  //+ 0.05*index
+                filter_value.y = center_y + r - 0.12*index-0.5
             }
         })
 
@@ -875,6 +951,14 @@ class OnePart{
         )
 
         // 规则
+        rules.forEach(elm=>{
+            if (former_click_value===elm || now_click_value===elm) {
+                elm.opacity = 1
+            }else{
+                elm.opacity = 0.5
+            }
+        })
+        
         // console.log(rules)
         component_array.push(
             <MarkSeries
@@ -898,6 +982,12 @@ class OnePart{
                 elm.style.textDecoration = 'none'
             }
         })
+        if(highlightingSelectedFilters){
+            highlightingSelectedFilters.forEach(elm=>{
+                elm.style.textDecoration = 'overline'
+            })            
+        }
+
         // 拖出来用来选择的实体
         component_array.push(
             <LabelSeries
@@ -976,13 +1066,7 @@ class OnePart{
             )
         )
 
-        rules.forEach(elm=>{
-            if (former_click_value===elm || now_click_value===elm) {
-                elm.opacity = 1
-            }else{
-                elm.opacity = 0.5
-            }
-        })
+
         // 中心事件周围的事件
         component_array.push(
             <MarkSeries
@@ -1045,7 +1129,6 @@ class OnePart{
         //     />
         // )
 
-        // console.log('hi')
         return component_array
     }
 
@@ -1200,7 +1283,7 @@ class OnePart{
                 center_index = vecs.length-1
             }
             
-            let angles = vecs.map(elm=> Math.random()) //myTsne(vecs).map(elm=> elm[0])
+            let angles = myTsne(vecs).map(elm=> elm[0])  //vecs.map(elm=> Math.random()) //
             let min_angle = Math.min(...angles),
                 max_angle = Math.max(...angles)
 
@@ -1715,7 +1798,7 @@ class Rule{
             return related_objects[0]
         }
         this.x = Math.max(...related_objects.map(elm=> elm.x))
-        this.x += 0.12
+        this.x += 0.15
         
         this.y = related_objects.reduce((total, elm)=>  total+elm.y, 0)/related_objects.length
         this.color = Rule.type2color[this.type]
