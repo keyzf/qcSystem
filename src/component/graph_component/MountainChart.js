@@ -163,11 +163,15 @@ export default class AreaLineChart extends React.Component {
               y= y-10<0? 10: y;
               y = y+160>height? y-20: y;
               onMouseOver(d.event,[x,y]);
-              d3.select(this).attr('opacity',1.0);
+              d3.select(this).attr('opacity',1.0)
+              .attr('width',(d)=>d.len*30)
+              .attr('height',(d)=>d.len*30);
             })
             .on('mouseout',function(d){
               onMouseOut();
               d3.select(this).attr('opacity',0.1)
+              .attr('width',(d)=>d.len*20)
+              .attr('height',(d)=>d.len*20)
             })
             .on('mousedown',function(d){
               let pos = d3.mouse(node);
@@ -222,20 +226,25 @@ export default class AreaLineChart extends React.Component {
   }
 
   hoverEventPoints(name){
+    let {yscale,xscale} = this.props;
     d3.select(this.refs.area)
             .select('.certainEventPoint')
             .selectAll('image')
             // .style('mix-blend-mode','soft-light')
             .attr('opacity',0.1)
+            .attr('width',(d)=>d.len*20)
+            .attr('height',(d)=>d.len*20)
     let dom = d3.select(this.refs.area)
             .select('.certainEventPoint')
-   .selectAll('image')         
+            .selectAll('image')         
             .filter((d,i)=>{
               return d.event.trigger.getName() === name
             })
     dom
     // .style('mix-blend-mode','hard-light')
     .attr('opacity',1.0)
+    .attr('width',(d)=>d.len*30)
+            .attr('height',(d)=>d.len*30)
   }
 
   renderCanvas(){

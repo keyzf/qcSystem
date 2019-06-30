@@ -331,7 +331,7 @@ class LifeLikePaint extends Component{
         years.forEach(year=>{
           let events = year2events[year] || []
           let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
-        //   console.log(scores)
+          console.log(scores)
           let stack_y = 0
           parent_types.forEach((type,i)=>{
               let this_events = events.filter(event => event.trigger.parent_type===type)
@@ -339,6 +339,7 @@ class LifeLikePaint extends Component{
               if (!score_tmp) {
                 score_tmp = 0
               }
+            //   console.log(score_tmp);
             type2area_datas[type].push({
                 x: yearScale(year),
                 y: stack_y +  scoreScale(score_tmp),
@@ -543,7 +544,7 @@ class LifeLikePaint extends Component{
         return (
             <g ref="svg" width={width} height={height}>
                 <g ref="content" transform={transform}>
-                    <text className="personName" x={0} y={20}>{selected_person.getName()}</text>
+                    <text className="personName" x={0} y={index===0?50:10}>{selected_person.getName()}</text>
                     <Axis xscale={xscale} translate={`translate(0, ${height-uncertainHeight})` } zoomTransform={zoomTransform} width={width} birth={this.birth_year} death={this.death_year}></Axis>
                     {/* <MountainView  data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}/> */}
                     <MountainChart data={area_datas.map((d)=>d.line_data)} xscale={xscale} yscale={this.yscale} width={width} height={height-uncertainHeight} translate={`translate(0, ${height-uncertainHeight})`} viewType={checked} selected_person={selected_person} index={index} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseClick={this.onMouseClick} selectTrigger={selectTrigger}></MountainChart>
