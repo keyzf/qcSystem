@@ -294,7 +294,20 @@ class LifeLikePaint extends Component{
                 triggerArray.push(tmp);
             }
         })
-        this.triggerArray = triggerArray;
+        let numbers = [];
+        for (let name in triggerName){
+            numbers.push(triggerName[name])
+        }
+        numbers.sort((a,b)=>b-a);
+        console.log(numbers);
+        if(numbers.length>30){
+            let tmpnum = numbers[30];
+            this.triggerArray = triggerArray.filter((d)=>triggerName[d]>=tmpnum).slice(0,30);
+
+        }else{
+            this.triggerArray = triggerArray;
+        }
+        
 
         let years = Object.keys(year2events).map(year=> parseInt(year))
         years = years.sort((a,b)=> a-b)
@@ -331,7 +344,7 @@ class LifeLikePaint extends Component{
         years.forEach(year=>{
           let events = year2events[year] || []
           let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
-          console.log(scores)
+        //   console.log(scores)
           let stack_y = 0
           parent_types.forEach((type,i)=>{
               let this_events = events.filter(event => event.trigger.parent_type===type)

@@ -207,7 +207,7 @@ class MainPanel extends Component {
               }
               </g>
               <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top+lifeLikePaint_height-uncertainHeight})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
-              <image href={legend} x={160} y={10} />
+              <image href={legend} x={160} y={5} width={500}/>
             </svg>
           </div>
       </div>
