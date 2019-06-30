@@ -855,7 +855,8 @@ class OnePart{
         part_index_data.forEach(elm=>
             elm.style = {
                 fontSize: 20,
-                fontFamily: 'STKaiti'
+                fontFamily: 'STKaiti',
+                fontWeight: 600
             }
         )
         component_array.push(
