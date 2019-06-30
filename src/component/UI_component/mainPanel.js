@@ -137,7 +137,7 @@ class MainPanel extends Component {
     }
     return (
       <div className="mainPanel" style={{height:height, width: width}}>
-        <div className="header">
+        <div className="mountainHeader">
           <div className="headerlogo">
           <img className='brand' src={logo}></img>
           </div>
@@ -207,7 +207,7 @@ class MainPanel extends Component {
               }
               </g>
               <HistoryEvent xscale={this.xscale} translate={`translate(0, ${padding.top+lifeLikePaint_height-uncertainHeight})`} width={width} height={lifeLikePaint_height} zoomTransform={zoomTransform} uncertainHeight={uncertainHeight}></HistoryEvent>
-              {/* <image href={legend} x={70} y={10} /> */}
+              <image href={legend} x={160} y={10} />
             </svg>
           </div>
       </div>

@@ -7,3 +7,10 @@
 [0427/161037.645:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)
 [0506/164145.437:ERROR:process_reader_win.cc(151)] SuspendThread: 拒绝访问。 (0x5)
 [0506/164206.737:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)
+[0629/125940.968:ERROR:process_info.cc(359)] UncheckedAllocate
+[0629/130002.105:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)
+[0629/142248.739:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)
+[0629/152535.632:ERROR:http_transport_win.cc(276)] WinHttpSendRequest: 操作成功完成。 (0x0)
+[0629/153104.728:ERROR:process_info.cc(359)] UncheckedAllocate
+[0629/153108.050:ERROR:process_info.cc(359)] UncheckedAllocate
+[0629/155154.973:ERROR:process_info.cc(359)] UncheckedAllocate

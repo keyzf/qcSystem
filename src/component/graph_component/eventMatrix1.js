@@ -2,7 +2,7 @@ import {XYPlot, MarkSeriesCanvas, LineSeriesCanvas, MarkSeries, LineSeries, Hint
 import {WhiskerSeries, AreaSeries, LabelSeries, LineMarkSeries, DecorativeAxis, VerticalGridLines , HorizontalGridLines, XAxis, YAxis} from 'react-vis'
 import React, { Component } from 'react'
 import * as d3 from 'd3'
-import { max } from 'C:/Users/Tan Siwei/AppData/Local/Microsoft/TypeScript/3.2/node_modules/moment/moment.js';
+// import { max } from 'C:/Users/Tan Siwei/AppData/Local/Microsoft/TypeScript/3.2/node_modules/moment/moment.js';
 import data from "../../data/temp_data/1762.json";
 import jsonFormat from 'json-format'
 
