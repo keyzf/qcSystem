@@ -332,7 +332,7 @@ class RealtionMatrix extends React.Component{
         let { width, height, padding} = this.props
         const right_part_width = 250
         // let svg_width = width-right_part_width>height?height:width-right_part_width
-        let svg_width = width - padding.right- padding.left;
+        let svg_width = width - padding.right- padding.left - 20;
         let svg_height = svg_width - padding.top - padding.bottom;
 
         let people_array = this.people_array
@@ -392,7 +392,7 @@ class RealtionMatrix extends React.Component{
                 const {person_x_id, person_y_id} = elm
                 return p_ids.includes(person_x_id) && p_ids.includes(person_y_id)
             })
-            console.log(temp_events_rect_data, people_array, events_rect_data)
+            // console.log(temp_events_rect_data, people_array, events_rect_data)
         }
 
         const people_num = people_array.length

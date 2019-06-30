@@ -120,8 +120,10 @@ class App extends Component {
             if(data){
                 data = dataStore.processResults(data)
                 this.all_events = dataStore.dict2array(data.events)
+                console.log('change')
                 stateManager.setSelectedPeople(value)
                 stateManager.setPeopleTableEvents(selected_people[0].events)
+                // stateManager.setPeopleMapEvents(selected_people[0].events)
             }
           })
         }
