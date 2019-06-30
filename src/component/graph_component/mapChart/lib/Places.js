@@ -52,6 +52,7 @@ export default class Places extends React.Component{
   // 因为现在的画的都是同一个人
   _onPeopelEventsChange =  autorun(()=>{
     // console.log('setPeopleMapEvents', stateManager.people_map_event_ids.slice(), stateManager.is_ready)
+
     if(stateManager.is_ready && this.props){
       // let need_refesh = stateManager.need_refresh;
       let {selected_person} = this.props
@@ -74,7 +75,7 @@ export default class Places extends React.Component{
       this.selected_person = selected_person;
       // net_work.require('getPersonEvents', {person_id:selected_person.id})
       // .then(data=>{
-      //   console.log(data);
+      //   // console.log(data);
       //   if(data){
       //     data = dataStore.processResults(data)
       //     this.getAddrData(data.events);

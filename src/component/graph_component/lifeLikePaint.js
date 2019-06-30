@@ -331,7 +331,7 @@ class LifeLikePaint extends Component{
         years.forEach(year=>{
           let events = year2events[year] || []
           let scores = this.calculateScore(year2events, year, calcualte_method, selected_person, [...parent_types, '总'])
-          console.log(scores)
+        //   console.log(scores)
           let stack_y = 0
           parent_types.forEach((type,i)=>{
               let this_events = events.filter(event => event.trigger.parent_type===type)

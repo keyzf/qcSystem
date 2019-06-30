@@ -39,6 +39,7 @@ class Maps extends React.Component {
       this.selected = 0;
   }
   _getSelectedEvent = autorun(()=>{
+    console.log('change')
     if(stateManager.is_ready){
       let used_types = stateManager.used_types
       let need_refesh = stateManager.need_refresh
