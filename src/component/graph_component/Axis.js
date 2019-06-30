@@ -34,7 +34,7 @@ export default class Axis extends React.Component {
       }
       return (<g className="axis" ref="axis" transform={this.props.translate}>
         <rect width={width} height={22} x={0} y={0} fill={'#efefef'}></rect>
-        <rect width={right-left} height={22} x={left} y={0} fill={'#dfdfdf'}></rect>
+        <rect width={right-left} height={22} x={left} y={0} fill={'#d1d1d1'}></rect>
       </g>);
     }
   }
