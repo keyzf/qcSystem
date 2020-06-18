@@ -5,6 +5,10 @@ import net_work from '../../../../dataManager/netWork';
 import * as d3 from 'd3';
 import {autorun} from 'mobx';
 
+
+const certain_color = '#365258'
+const uncertain_color = '#839ba0'
+
 export default class Places extends React.Component{
   constructor(){
     super();
@@ -258,7 +262,7 @@ export default class Places extends React.Component{
       .attr('class','route')
       .attr('d',path)
       .attr('stroke',()=>{
-        if(index===0) return '#a2a4bf';
+        if(index===0) return certain_color;  //饼图上的颜色
         else return color;
       })
       .attr('fill','none');
@@ -279,10 +283,10 @@ export default class Places extends React.Component{
         d.addr.y
         ]) + ")")
       .attr('fill',()=>{
-        if(index===0) return '#a2a4bf';
+        if(index===0) return certain_color;
         else return color;
       })
-      .attr('stroke','#898989');
+      .attr('stroke',uncertain_color);
   }
   renderPlaces(){
     let node = this.refs.place;
@@ -302,11 +306,11 @@ export default class Places extends React.Component{
           d.addr.y
           ]) + ")"})
         .attr('fill',()=>{
-          if(index===0) return '#a2a4bf';
+          if(index===0) return certain_color;
           else return color;
         })
         .attr('fill-opacity',0.5)
-        .attr('stroke','#898989')
+        .attr('stroke',uncertain_color)
     doms.append('rect')
         .attr('class','placeRect')
         .attr('width',d=>{
@@ -324,7 +328,7 @@ export default class Places extends React.Component{
           d.addr.y
           ]) + ")"})
         .attr('fill',()=>{
-          if(index===0) return '#a2a4bf';
+          if(index===0) return certain_color;
           else return color;
         })
   }
@@ -352,13 +356,13 @@ export default class Places extends React.Component{
       gdom.append('path')
           .attr('d',this.arc(piedata[0]))
           .style('fill',()=>{
-            if(index===0) return '#a2a4bf';
+            if(index===0) return certain_color;
             else return color;
           })
       gdom.append('path')
           .attr('d',this.arc(piedata[1]))
           .style('fill',()=>{
-            if(index===0) return '#a2a4bf';
+            if(index===0) return certain_color;
             else return color;
           }) 
           .attr('fill-opacity',0.5)
