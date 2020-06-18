@@ -3,7 +3,7 @@ import deepcopy from 'deepcopy'
 
 class NetWork {
     constructor(){
-        this.fetch_url = 'http://localhost:8000/'//'http://localhost:8000/' //'http://10.180.151.233:8000/' //'http://localhost:8000/'//'http://songciserver.vps.lppy.site:6060/' //
+        this.fetch_url = 'http://10.188.186.21:8000/'//'http://localhost:8000/' //'http://10.180.151.233:8000/' //'http://localhost:8000/'//'http://songciserver.vps.lppy.site:6060/' //
         this.require('test').then(res => console.log(res))
         // this.
     }

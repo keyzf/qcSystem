@@ -299,7 +299,20 @@ class LifeLikePaint extends Component{
                 triggerArray.push(tmp);
             }
         })
-        this.triggerArray = triggerArray;
+        let numbers = [];
+        for (let name in triggerName){
+            numbers.push(triggerName[name])
+        }
+        numbers.sort((a,b)=>b-a);
+        console.log(numbers);
+        if(numbers.length>30){
+            let tmpnum = numbers[30];
+            this.triggerArray = triggerArray.filter((d)=>triggerName[d]>=tmpnum).slice(0,30);
+
+        }else{
+            this.triggerArray = triggerArray;
+        }
+        
 
         let years = Object.keys(year2events).map(year=> parseInt(year))
         years = years.sort((a,b)=> a-b)
