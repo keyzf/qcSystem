@@ -190,7 +190,7 @@ class Manager {
   // 使用的时候注意判断是否找到了
   get(_object){
     if(!_object){
-      console.warn(_object, '为空')
+      // console.warn(_object, '为空')
       return undefined
     }
     if (typeof(_object)=='number') {
@@ -445,8 +445,6 @@ class Event extends _object{
     this.is_change_people = false;
     this.is_change_place = false;
 
-    // 判断时间是否正确
-    this.time_right = true
     // console.log(this.source, this.text)
     // console.log(this.prob_year, this.prob_addr, this.prob_person, _object)
   }

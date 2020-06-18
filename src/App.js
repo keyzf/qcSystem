@@ -223,7 +223,7 @@ class App extends Component {
               </div>
               <div className="headerText">
                 {/* <span>推理视图</span> */}
-                <span>Uncertainty Reasoning View</span>
+                <span>Reasoning View</span>
               </div>
             </div>
             <InferSunBurst height={465} width={1000} toggleLayout={this.toggleLayout}/>
@@ -235,7 +235,7 @@ class App extends Component {
               </div>
               <div className="headerText">
                 {/* <span>关系矩阵</span> */}
-                <span>Relation Matrix View</span>
+                <span>Relation View</span>
               </div>
             </div>
             <RelationMatrix />

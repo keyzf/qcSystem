@@ -70,6 +70,7 @@ class MainPanel extends Component {
     .attr('visibility','hidden')
   }
 
+  // 应该是改变灰色和彩色的现在不用了
   changeViewType=()=>{
     this.setState({
         checked: !this.state.checked,
@@ -143,13 +144,45 @@ class MainPanel extends Component {
           </div>
           <div className="headerText">
             {/* <span>行迹</span> */}
-            <span>Life Mountain View</span>
+            <span>Life Mountain</span>
           </div>
         </div>
           <div className="lineChart" style={{height:height}}>
             <svg ref="svg" width={chart_width} height={lifeLikePaint_height*(selected_people.length===0?1:selected_people.length)}>
               <defs>
-                <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
+              <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#222222" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear0" x1="0%" y1="100%" x2="0%" y2="0%">
+                <stop offset="0%"   stopColor="#a3b3b9" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#0F3F53" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear1" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#6c918f" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#1B5D59" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear2" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#beb197" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#AB8E52" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear3" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#d0ddc8" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#92AA84" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear4" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#ebdbd0" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#DBB397" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear5" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#8a9190" stopOpacity="0.5" />
+                  <stop offset="100%"   stopColor="#57A399" stopOpacity="1.0" />
+                </linearGradient>
+                <linearGradient id="linear6" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%"   stopColor="#dbcfba" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#DDB56D" stopOpacity="1.0" />
+                </linearGradient>
+                {/* <linearGradient id="linear" x1="0%" y1="100%" x2="0%" y2="0%">
                   <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
                   <stop offset="100%" stopColor="#222222" stopOpacity="1.0" />
                 </linearGradient>
@@ -180,7 +213,7 @@ class MainPanel extends Component {
                 <linearGradient id="linear6" x1="0%" y1="100%" x2="0%" y2="0%">
                   <stop offset="0%"   stopColor="#dfdfdf" stopOpacity="0.5" />
                   <stop offset="100%" stopColor="#DDB56D" stopOpacity="1.0" />
-                </linearGradient>
+                </linearGradient> */}
               </defs>
               <g transform={'translate(0,5)'}>
               {

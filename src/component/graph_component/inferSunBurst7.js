@@ -42,13 +42,16 @@ import auto2 from '../../dataManager/translator';
 
 
 const PI = Math.PI
-const inner_radius = 0.2 //圆的内轮廓
-
-const show_object_num = 20  //最多的时候
-const small_show_num = 10   //最少的时候
+const inner_radius = 0.3 //圆的内轮廓
+const show_object_num = 10
+// 25
+const small_show_num = 10
 const shink_p = (show_object_num-small_show_num)/show_object_num
 
 class InferSunBurst extends React.Component{
+    id2ids = {} //记录了上一步
+
+    stateStack = []  //回到上一步用的
 
     all_events = []
     all_people = []
@@ -89,11 +92,14 @@ class InferSunBurst extends React.Component{
     })
 
     loadNewEvent = autorun(()=>{
+        // console.log(stateManager.selected_event)
         let selected_event_id = stateManager.selected_event_id.get()
         if (stateManager.is_ready) {
             selected_event_id = stateManager.selected_event_id.get()
+            // console.log(selected_event_id)
             net_work.require('getAllRelatedEvents', {event_id:selected_event_id, event_num:2000})
             .then(data=>{
+                // console.log(data)
                 data = dataStore.processResults(data.data)
                 let {events} = data
                 let center_event = eventManager.get(selected_event_id)
@@ -148,7 +154,12 @@ class InferSunBurst extends React.Component{
     
     componentDidUpdate(){
         let {sunbursts} = this.state
+        // let last_sunburst = sunbursts[sunbursts.length-1]
+        // let {center_event} = this
+        // 可以改为判断是否和this相等
         if (this.temp_sunbursts) {
+            // console.log('change')
+            // console.log(this.temp_sunbursts)
             this.setState({sunbursts: this.temp_sunbursts})
             this.temp_sunbursts = undefined
         }
@@ -157,6 +168,9 @@ class InferSunBurst extends React.Component{
         sunbursts.forEach(elm=> elm.completeSetStateLater())
     }
     render(){
+        // console.log(this.state.sunbursts)
+        // console.log(this.state)
+        // console.log('render triggerSunBurst')
         let {width, height} = this.props
         let {isMousePressed, sunbursts, big_mode,  show_event_hint_value, area, highlighting} = this.state
         let {center_event} = this
@@ -174,8 +188,8 @@ class InferSunBurst extends React.Component{
         const graph_height = (big_mode?1000:height)-title_height-10//-control_bar_height //graph_width/(xDomain[1]-xDomain[0])*(yDomain[1]-yDomain[0])
         const xDomain = big_mode?
             [-r,-r + 2*r/graph_height*graph_width]:
-            [(-shink_p*r-0.3),-shink_p*r + 2*shink_p*r/graph_height*graph_width+ 4], 
-            yDomain = big_mode?[-r,r]:[-shink_p*r-0.2,shink_p*r+0.2]
+            [-shink_p*r,-shink_p*r + 2*shink_p*r/graph_height*graph_width], 
+            yDomain = big_mode?[-r,r]:[-shink_p*r,shink_p*r]
         
         const trueX2X =  d3.scaleLinear().domain([0, graph_width]).range(xDomain),
             trueY2Y =  d3.scaleLinear().domain([0, graph_height]).range([yDomain[1], yDomain[0]])
@@ -201,7 +215,6 @@ class InferSunBurst extends React.Component{
                             this.allPage = 0;
                             this.setState({big_mode: false})
                         }
-                        
                     }}/>
                 </div>
                 <div style={{height: title_height, width: width}}>
@@ -317,8 +330,11 @@ class InferSunBurst extends React.Component{
                                             this.sunbursts = temp_sunbursts
                                             this.setState({sunbursts: temp_sunbursts})
                                         }else if(now_click_value.node_type==='filter_value'){
+                                            // let events = now_click_value.filter(this.all_events)
+                                            // console.log(this.ruleManager.rules, now_click_value)
                                             let rule = now_graph.ruleManager.rules.find(elm=> elm.related_objects.length===1 &&  elm.related_objects[0]===now_click_value)
                                             let sunburst = rule.getSunBurst()
+                                            // let now_index = part_index
                                             temp_sunbursts.push(sunburst)
                                             this.sunbursts = temp_sunbursts
                                             this.setState({sunbursts: temp_sunbursts})
@@ -392,7 +408,8 @@ class InferSunBurst extends React.Component{
                         </div>
                     </div>
                 </div>
-
+                {/* <div style={{height: control_bar_height, width: width}}>
+                </div> */}
                 <div style={{height: graph_height+5, width: width-10, overflowX:'auto', overflowY:'hidden'}}>
                     <XYPlot 
                     width={graph_width} 
@@ -400,12 +417,14 @@ class InferSunBurst extends React.Component{
                     xDomain={xDomain}
                     yDomain={yDomain}
                     onMouseDown = {event=>{
+                        // console.log('MouseDown', event)
                         let {isMousePressed} = this.state
                         if (!isMousePressed) {
                             this.setState({isMousePressed: true})
                         }
                     }}
                     onMouseUp = {event=>{
+                        // console.log('MouseUp', event)
                         let {isMousePressed} = this.state
                         if (isMousePressed) {
                             this.setState({isMousePressed: false})
@@ -426,7 +445,7 @@ class InferSunBurst extends React.Component{
                             }
                             return {
                                 x: index*3.25-r-(big_mode?0.09:0.04),
-                                y: 0, 
+                                y: 0, //center_x
                                 customComponent: (row, positionInPixels) => {
                                     return (
                                     <g className="inner-inner-component">
@@ -445,10 +464,12 @@ class InferSunBurst extends React.Component{
                         size={0}
                         data={[{x:0,y:0, size:0}]}
                         onNearestXY={(value, {event})=>{
+                            // console.log(event)
                             let {offsetX, offsetY} = event
                             let {isDrag} = this.state
                             let graph_x = trueX2X(offsetX), graph_y = trueY2Y(offsetY)
                             this.mouse_postion = [graph_x, graph_y]
+                            // console.log(isMousePressed)
                             if (isMousePressed) {
                                 this.setState({mouse_postion: [graph_x, graph_y]})
                             }
@@ -474,6 +495,7 @@ class InferSunBurst extends React.Component{
 class OnePart{
     static id_count = 0
     constructor(all_events, center_event, center_x, center_y, index, r, parent_component){
+        // const graph_width = 2
         this.ruleManager = new RuleManager(this)
         this.center_x = center_x
         this.center_y = center_y-0.05
@@ -484,6 +506,7 @@ class OnePart{
         this.this_part = this
         this.parent_component = parent_component
 
+        // console.log(index, center_x, center_y)
         this.all_values = []
 
         this.all_addrs = []
@@ -492,7 +515,8 @@ class OnePart{
         this.all_years = []
 
         this.self_id = OnePart.id_count
-        OnePart.id_count++  
+        OnePart.id_count++
+        // console.log(OnePart.id_count, this.self_id)     
         this.loadSunBurstData()
 
     }
@@ -509,10 +533,13 @@ class OnePart{
     }
 
     setState(update_state){
+        // console.log('set State')
         let prefix = this.self_id
+        // console.log(this, this.self_id)
         let temp_state = {}
         for(let key in update_state)
             temp_state[prefix+'-'+key] = update_state[key]
+        // console.log(temp_state)
         this.parent_component.setState(temp_state)
     }
 
@@ -529,9 +556,11 @@ class OnePart{
     getState(){
         let self_state = {}
         const prefix = this.self_id
+        // console.log(this, this.self_id)
         const {parent_component} = this
         const parent_state = parent_component.state
-
+        // console.log(parent_component.state, prefix)
+        // console.log(parent_component.state)
         for(let key in parent_state){
             if (key.indexOf('-')===-1 ) {
                 self_state[key] = parent_state[key]
@@ -540,6 +569,7 @@ class OnePart{
                 self_state[temp_key] = parent_state[key]
             }
         }
+        // console.log(self_state)
         return self_state
     }
 
@@ -574,18 +604,18 @@ class OnePart{
         let ruleManager_mark = ruleManager.getNodeInGraph()
 
         let rules = ruleManager.rules
-
+        // console.log(part_index, this.all_events)
 
         this.all_values = [...label_data, ...event_mark_data, ...filter_values, ...rules, ruleManager_mark]
         this.all_values.forEach((elm,index)=>{
             elm._index = index
         })
 
-
+        // console.log(area)
         let {highlightingSelectedValues, highlightingSelectedFilters} = this
         // 还要加上是否显示
         if(area){
-
+            // console.log(area)
             const is_in = label=>{
                 let {right, left, bottom, top} = area
                 // let width = left-right, height = top-bottom
@@ -722,7 +752,7 @@ class OnePart{
                     if (drag_value.x>(center_x+r) && drag_value.node_type==='related_value') {
                         let {now_filter_x, now_filter_y} = this
                         now_filter_x = now_filter_x || center_x + r  
-                        now_filter_y = now_filter_y || center_y + r -0.4
+                        now_filter_y = now_filter_y || center_y + r -0.3
 
                         let {filter_values} = this
                         const addNewFilter = (drag_value) => {
@@ -817,12 +847,12 @@ class OnePart{
 
         let part_index_data = big_mode?
         [
-            {x: center_x-r+0.1, y: center_y+shink_p*r+0.3, label: 'Step '+(part_index+1)},
-            {x: center_x+r+0.05, y: center_y+shink_p*r+0.3, label: 'Filter '+(part_index+1)}
+            {x: center_x-r+0.1, y: center_y+shink_p*r-0.01, label: 'Step '+(part_index+1)},
+            {x: center_x+r+0.02, y: center_y+shink_p*r-0.01, label: 'Filter '+(part_index+1)}
         ]:
         [
-            {x: center_x-r+0.3, y: center_y+shink_p*r+0.12, label: 'Step '+(part_index+1)},
-            {x: center_x+r+0.05, y: center_y+shink_p*r+0.12, label: 'Filter '+(part_index+1)}
+            {x: center_x-r+0.25, y: center_y+shink_p*r-0.1, label: 'Step '+(part_index+1)},
+            {x: center_x+r+0.05, y: center_y+shink_p*r-0.1, label: 'Filter '+(part_index+1)}
         ]
         part_index_data.forEach(elm=>
             elm.style = {
@@ -844,8 +874,6 @@ class OnePart{
             style={{pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}}
             />
         )
-
-
              
         const border_r = (big_mode?0.95:0.80)*r
         const delta_y = (big_mode?0.02:0.03)+0.02
@@ -876,45 +904,6 @@ class OnePart{
                 />
             )
         })
-
-        const line_style = {pointerEvents: isDrag||highlighting ? 'none' : '', lineerEvents: isDrag||highlighting ? 'none' : ''}
-        
-        let cor_lines = [
-            [
-                {x: center_x, y: center_y + 0.8},
-                {x: center_x, y: center_y+inner_radius},
-            ],
-            [
-                {x: center_x, y: center_y - 0.8},
-                {x: center_x, y: center_y-inner_radius},
-            ],
-            [
-                {x: center_x-0.8, y: center_y},
-                {x: center_x-inner_radius, y: center_y},
-            ],
-            [
-                {x: center_x+0.8, y: center_y},
-                {x: center_x+inner_radius, y: center_y},
-            ]
-        ]
-        cor_lines.forEach((elm, index) => {
-            component_array.push(
-                <LineSeries
-                stroke='#989898'
-                key={part_index+'四分线' + index}
-                strokeWidth={1.5}
-                data={elm}
-                strokeDasharray={[3, 3]}
-                style={line_style}
-                />
-            )
-        })
-
-        
-
-
-
-
 
         component_array.push(
             <LineSeries
@@ -1295,8 +1284,8 @@ class OnePart{
                 vecs.push(center_vec)
                 center_index = vecs.length-1
             }
-            // myTsne(vecs).map(elm=> elm[0])  //
-            let angles = vecs.map(elm=> Math.random()) //
+            
+            let angles = myTsne(vecs).map(elm=> elm[0])  //vecs.map(elm=> Math.random()) //
             let min_angle = Math.min(...angles),
                 max_angle = Math.max(...angles)
 
@@ -1317,15 +1306,13 @@ class OnePart{
 
             
             dists = dists.map(dist=> {
-                // dist = 1-(dist-1)*(dist-1)
                 if (dist<0.5) {
-                    return dist * 1.5
+                    return dist * 2
                 }else{
                     return (dist-0.5)*0.5+0.5
                 }
-                // return 
             })
-            // dists = dists.map(dist=> dist*0.9)
+            dists = dists.map(dist=> dist*1.1)
             angles[center_index] = Math.random()*(max_angle-min_angle)+min_angle
             let sort_angles = [...angles].sort((a,b)=> a-b)
 
@@ -1337,7 +1324,7 @@ class OnePart{
                 return dists[index_a] - dists[index_b]
             })
             
-            for (let index = 0; index < 100; index++) {
+            for (let index = 0; index < 10000; index++) {
                 all_objects.forEach((elm, index)=>{
                     all_objects.forEach((elm2, index2)=>{
                         if(elm===elm2)
@@ -1349,17 +1336,15 @@ class OnePart{
                         let f_d = dists[index2]
                         let f_a = angles[index2]
         
-                        if( Math.abs(d-f_d) < 0.15){
-                            if( Math.abs(a-f_a) < 0.06){
-                                // angles[index] = Math.random()
-                                // console.log(elm2.name, elm.name, d,f_d, a, f_a)
-                                // console.log('c')
+                        if( (d-f_d) < 0.15){
+                            let d_a = Math.abs(a-f_a)
+                            if( d_a < 0.025){
                                 if(a<f_a){
-                                    angles[index] -= 0.04  * Math.random()
-                                    // angles[index2] += 0.01
+                                    angles[index] -= 0.02
+                                    angles[index2] += 0.02
                                 }else{
-                                    // angles[index] += 0.01
-                                    angles[index2] -= 0.04 // * Math.random()
+                                    angles[index] += 0.02
+                                    angles[index2] -= 0.02
                                 }
                             }
                         }

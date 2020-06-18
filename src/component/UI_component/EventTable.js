@@ -131,11 +131,17 @@ export default class EventTable extends React.Component{
 
   sortByCertainty(){
     const {data} = this.state;
+
+    
+    let getProp = (event) => {
+      var p_a = event.time === ""? 0 : 1
+      var p_y = event.place.length
+      return p_a + p_y
+    }
     this.setState({
-      data: data.sort((a,b)=>{
-        return Object.values(b.prob_addr)[0]+Object.values(b.prob_year)[0]-Object.values(a.prob_addr)[0]-Object.values(a.prob_year)[0]
-      })
+      data: data.sort((a,b)=> -getProp(a) + getProp(b))
     })
+    // console.log('111')
   }
 
   componentDidUpdate(){
@@ -175,6 +181,7 @@ export default class EventTable extends React.Component{
     .style('visibility','hidden')
   }
   render(){
+    // console.log('r')
     const { column, data, direction } = this.state;
     let handleEventClick = this.handleEventClick;
     let handleMouseOver = this.handleMouseOver;
@@ -182,7 +189,7 @@ export default class EventTable extends React.Component{
     return (
       <div className="eventList" ref="eventList">
         <div className="listHeader">
-          <h3>{IS_EN?'Chronology List':'年谱列表'}</h3>
+          <h3>{IS_EN?'Chronology Table':'年谱列表'}</h3>
           <button onClick={this.sortByCertainty}>{IS_EN?'sort by uncertainty':'排序'}</button>
           <div className="tableLegend">
             {/* <img src={modifyIcon}/>*/}

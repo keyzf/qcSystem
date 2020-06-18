@@ -131,28 +131,32 @@ class LifeLikePaint extends Component{
         selected_person.events.forEach((d,index)=>{
             if(d.roles.length>1){
                 for(let i=0;i<d.roles.length;i++){
-                    if(d.roles[i].person.id!==selected_person.id){
-                        let person_index = other_people.indexOf(d.roles[i].person.id);
-                        if(person_index<len){
-                            if(person_index!==-1){
-                                let year;
-                                if(d.time_range[0]===d.time_range[1]){
-                                    year = d.time_range[0];
-                                    if(relationLines[year]){
-                                        let tmp=relationLines[year];
-                                        tmp.event.push(d);
-                                        tmp.count++;
-                                        relationLines[year]=tmp;
-                                    }else if(year){
-                                        let tmp={};
-                                        tmp.event=[d];
-                                        tmp.count = 1;
-                                        let tmpLines=[];
-                                        tmpLines[0]={'person_index':len+1,'x':parseInt(year)};
-                                        tmpLines[1]={'person_index':person_index+1,'x':parseInt(year)};
-                                        tmp.lines = tmpLines;
-                                        relationLines[year]=tmp;
-                                    }
+                    if(d.roles[i].person.id===selected_person.id)
+                        continue
+                    let person_index = other_people.indexOf(d.roles[i].person.id);
+                    if(person_index<len){
+                        // console.log('eeee')
+                        if(person_index!==-1){
+                            // console.log('aaaaa', d)
+                            let year;
+                            // ===d.time_range[1]
+                            if(d.time_range[0] !== -9999){
+                                year = d.time_range[0];
+                                console.log(year)
+                                if(relationLines[year]){
+                                    let tmp=relationLines[year];
+                                    tmp.event.push(d);
+                                    tmp.count++;
+                                    relationLines[year]=tmp;
+                                }else if(year){
+                                    let tmp={};
+                                    tmp.event=[d];
+                                    tmp.count = 1;
+                                    let tmpLines=[];
+                                    tmpLines[0]={'person_index':len+1,'x':parseInt(year)};
+                                    tmpLines[1]={'person_index':person_index+1,'x':parseInt(year)};
+                                    tmp.lines = tmpLines;
+                                    relationLines[year]=tmp;
                                 }
                             }
                         }
@@ -160,6 +164,7 @@ class LifeLikePaint extends Component{
                 }
             }
         })
+        // console.log(relationLines)
         this.setState({
             relationLines:relationLines
         })
