@@ -531,7 +531,7 @@ class OnePart{
         const prefix = this.self_id
         const {parent_component} = this
         const parent_state = parent_component.state
-
+        // console.log(prefix, parent_state)
         for(let key in parent_state){
             if (key.indexOf('-')===-1 ) {
                 self_state[key] = parent_state[key]
@@ -583,6 +583,7 @@ class OnePart{
 
 
         let {highlightingSelectedValues, highlightingSelectedFilters} = this
+        // console.log(part_index, area)
         // 还要加上是否显示
         if(area){
 
@@ -616,7 +617,12 @@ class OnePart{
                 highlightingSelectedValues = undefined
             }
             // this.setState({area: undefined})
-            parent_component.state.area = undefined
+
+            // 这里是不对的
+            if(part_index===parent_component.now_part_index){
+                parent_component.state.area = undefined
+            }
+            
         }
 
         // 高亮

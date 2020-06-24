@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import '../node_modules/semantic-ui-css/semantic.min.css';
 import applyDecoratedDescriptor from '@babel/runtime/helpers/esm/applyDecoratedDescriptor';
 import initializerDefineProperty from '@babel/runtime/helpers/esm/initializerDefineProperty';
-import EventMatrix from './component/graph_component/eventMatrix1';
+// import EventMatrix from './component/graph_component/eventMatrix1';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 // ReactDOM.render(<EventMatrix />, document.getElementById('root'));

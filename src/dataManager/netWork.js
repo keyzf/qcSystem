@@ -32,7 +32,8 @@ class NetWork {
                 return res
             })
         }else{
-            console.log('get', url.slice(0, 50))
+            console.log('get', url)
+            // .slice(0, 100)
             // 已经加个获得过url的data可以直接存着
             return fetch(url,{
                 method:'GET',
